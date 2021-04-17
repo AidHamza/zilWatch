@@ -1,9 +1,4 @@
-html {
-  font-size: 1rem;
-}
-
 /*  Extra small devices (portrait phones, less than 576px) */
-
 @media (max-width: 575.98px) {
   html {
     font-size: 0.8rem;
@@ -24,8 +19,8 @@ body {
 
 .box {
   margin: 0.3rem;
-  padding-right: 0.6rem;
   /* this is a hack to keep the table inside the box */
+  padding-right: 0.6rem;
   background-color: rgba(221, 221, 221, 0.15);
   border: 1px solid rgba(104, 104, 104, 0.15);
 }
