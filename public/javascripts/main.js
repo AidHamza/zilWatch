@@ -1,5 +1,5 @@
 const ZilSwapDexAddress = "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w";
-const ZilpayStatus = Object.freeze({ "not_installed": 1, "locked": 2, "not_connected":3, "not_mainnet": 4, 'connected': 5 });
+const ZilpayStatus = Object.freeze({ "not_installed": 1, "locked": 2, "not_connected": 3, "not_mainnet": 4, 'connected': 5 });
 
 /** Returns a Promise. */
 function connectZilpayService() {
@@ -28,11 +28,11 @@ function computeZrcTokensPrice(zrcTokensPropertiesMap, onCompleteCallback) {
                     let zilPoolReserveQa = data.result.pools[zrcTokenAddress].arguments[0];
                     let tokenPoolReserveQa = data.result.pools[zrcTokenAddress].arguments[1];
 
-                    var zilAmount = zilPoolReserveQa / Math.pow(10, 12);
-                    var zrcTokenAmount = tokenPoolReserveQa / Math.pow(10, zrcTokenProperties.decimals);
+                    let zilAmount = zilPoolReserveQa / Math.pow(10, 12);
+                    let zrcTokenAmount = tokenPoolReserveQa / Math.pow(10, zrcTokenProperties.decimals);
 
                     // ZIL amount per 1 ZRC-2 token
-                    let zrcTokenPriceInZil = (zilAmount / zrcTokenAmount).toFixed(3);
+                    let zrcTokenPriceInZil = convertFloatToDecimalString(zilAmount / zrcTokenAmount, /* decimals= */ 0);
 
                     onCompleteCallback(zrcTokenPriceInZil, zrcTokenProperties.ticker);
                 }
@@ -53,7 +53,7 @@ function computeZrcTokensBalance(account, zrcTokensPropertiesMap, onCompleteCall
         const walletAddressBase16 = account.base16.toLowerCase();
         window.zilPay.blockchain.getSmartContractSubState(zrcTokenProperties.address, "balances", [walletAddressBase16])
             .then(function (data) {
-                var zrcTokenBalance = null;
+                let zrcTokenBalance = null;
                 if (data.result && data.result.balances) {
                     const zrcTokenBalanceQa = data.result.balances[walletAddressBase16];
                     if (zrcTokenBalanceQa) {
@@ -91,8 +91,8 @@ function computeZrcTokensZilSwapLpBalance(account, zrcTokensPropertiesMap, onCom
 
                     let ourShareRatio = ourLiqudity / poolLiquidity;
 
-                    var ourZilShare = (ourShareRatio * zilPoolReserveQa / Math.pow(10, 12)).toFixed(3);
-                    var ourTokenShare = (ourShareRatio * tokenPoolReserveQa / Math.pow(10, zrcTokenProperties.decimals)).toFixed(3);
+                    let ourZilShare = convertFloatToDecimalString(ourShareRatio * zilPoolReserveQa, /* decimals= */ 12);
+                    let ourTokenShare = convertFloatToDecimalString(ourShareRatio * tokenPoolReserveQa, zrcTokenProperties.decimals);
 
                     onCompleteCallback(ourShareRatio, ourZilShare, ourTokenShare, zrcTokenProperties.ticker);
                 }
@@ -104,6 +104,32 @@ function computeZrcTokensZilSwapLpBalance(account, zrcTokensPropertiesMap, onCom
         .catch(function () {
             onCompleteCallback(null, 0, 0, zrcTokenProperties.ticker);
         });
+}
+
+function computeZilPriceInUsd(onCompleteCallback) {
+    $.ajax({
+        type: "GET",
+        url: "https://api.coingecko.com/api/v3/simple/price?ids=zilliqa&vs_currencies=usd",
+        success: function (data) {
+            onCompleteCallback(data.zilliqa.usd);
+        }
+    });
+}
+
+function computeTotalLpRewardNextEpoch(account, onCompleteCallback) {
+    $.ajax({
+        type: "GET",
+        url: "https://stats.zilswap.org/distribution/current/" + account.bech32,
+        success: function (contractAddressToRewardMap) {
+            // Sum all the rewards from all pools
+            var totalRewardQa = 0;
+            for (var addressKey in contractAddressToRewardMap) {
+                totalRewardQa += parseInt(contractAddressToRewardMap[addressKey]);
+            }
+            const totalRewardZwap = convertQaToDecimalString(totalRewardQa, /* decimals= */ 12)
+            onCompleteCallback(totalRewardZwap);
+        }
+    });
 }
 
 /** Returns an enum. */
@@ -128,23 +154,85 @@ function shortBech32Address(bech32Address) {
 }
 
 /**
- * Returns string. decimals is 6 for li (gas), 12 for ZIL, variable decimals on ZRC tokens. 
- * If amount is extremely small, i.e., < 0.0001, returns null.
+ * Returns string. decimals is 6 for li (gas), 12 for ZIL, variable decimals on ZRC tokens.
+ * 
+ * balanceQa = 123456789
+ * len = 9
+ * decimals = 5
+ * decimalIndex =  9 - 5 = 4
+ * exponent = substring(0, 4)= 1234
+ * mantissa = substring(4, 4+3) = 567
+ * result = "1234.567"
+ * 
+ * balanceQa = 12345
+ * len = 5
+ * decimals = 5
+ * decimalIndex = 5 - 5 = 0
+ * exponent = 0
+ * mantissa = substring(0, 0+3) = 123
+ * result = "0.123"
+ * 
+ * balanceQa = 12345
+ * len = 5
+ * decimals = 6
+ * decimalIndex = 5 - 6 = -1
+ * exponent = 0
+ * mantissa = substring(0, 0+3) = 123 // Need to append "0", decimalIndex times, "0123"
+ * result = "0.0123"
  */
 function convertQaToDecimalString(balanceQa, decimals) {
-    const stringBalanceQa = balanceQa.toString();
-    const stringBalanceQaLength = stringBalanceQa.length;
-    var exponent = stringBalanceQa.substring(0, stringBalanceQaLength - decimals);
-    var mantissa = stringBalanceQa.substring(stringBalanceQaLength - decimals, stringBalanceQaLength - decimals + 3);
-    if (exponent === "") {
-        exponent = "0";
-        if (mantissa === "" || mantissa.startsWith("000")) {
+    let stringBalanceQa = balanceQa.toString();
+    let stringBalanceQaLength = stringBalanceQa.length;
+
+    let decimalIndex = stringBalanceQaLength - decimals;
+    // Compute exponent (the number before the decimal '.')
+    let exponent = "0";
+    if (decimalIndex > 0) {
+        exponent = stringBalanceQa.substring(0, decimalIndex);
+    }
+
+    // Adjust decimal place based on exponent
+    let decimalPlace = Math.max(4 - exponent.length, 0);
+    if (exponent === "0") {
+        decimalPlace = 4;
+    }
+    if (decimalPlace == 0) {
+        return exponent;
+    }
+
+    // Compute mantissa (the number after the decimal '.')
+    let mantissa = "";
+    if (decimalIndex >= 0) {
+        mantissa = stringBalanceQa.substring(decimalIndex, decimalIndex + decimalPlace);
+    } else {
+        mantissa = stringBalanceQa.substring(0, decimalPlace);
+        // decimalIndex is negative;
+        let i;
+        for (i = decimalIndex; i < 0; i++) {
+            mantissa = "0".concat(mantissa);
+        }
+    }
+
+    // If exponent has no value and mantissa is undefined, return.
+    if (exponent === "0" || exponent === "") {
+        if (mantissa === "") {
             return null;
         }
     }
     return exponent.concat('.').concat(mantissa);
 }
 
-function isFloat(n) {
-    return Number(n) === n && n % 1 !== 0;
+function convertFloatToDecimalString(balanceQaFloat, decimals) {
+    let balanceFloat = (balanceQaFloat / Math.pow(10, decimals));
+    if (balanceFloat > 1000) {
+        return balanceFloat.toFixed(0);
+    } else if (balanceFloat > 100) {
+        return balanceFloat.toFixed(1);
+    } else if (balanceFloat > 10) {
+        return balanceFloat.toFixed(2);
+    } else if (balanceFloat > 1) {
+        return balanceFloat.toFixed(3);
+    } else {
+        return balanceFloat.toFixed(4);
+    }
 }

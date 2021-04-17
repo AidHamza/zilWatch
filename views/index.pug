@@ -6,7 +6,7 @@ block content
     a(class='navbar-brand zilwatch-navbar-brand')
       img(src='/images/zilWatch-02.svg' width='30' height='30' class='d-inline-block align-top mr-2' alt='zilWatch')
       = 'zilWatch'
-    
+
     button(id='wallet_refresh' class='btn btn-info my-2 my-sm-0 ml-auto mr-2' style='display: none;')
       i(class='fa fa-refresh mr-2')
       = 'Refresh'
@@ -20,7 +20,7 @@ block content
     div(class='balance-box row container')
       span(id='error_message' class='h3')= 'Loading...'
     hr
-  
+
   // Main Content Container
   div(id='main_content_container' class='container' style='display: none;')
 
@@ -46,8 +46,8 @@ block content
 
     // Wallet Balance
     div(class='container title-box' style='display:table-cell; vertical-align: middle;')
-      img(height='36' src=zrcTokenPropertiesMap['ZLP'].logo_url loading='lazy')
-      span(class='h3 font-weight-bold ml-3' style='vertical-align: middle;')= 'Wallet Balance'
+      img(class='mr-3' height='36' src=zrcTokenPropertiesMap['ZLP'].logo_url loading='lazy')
+      span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Wallet Balance'
 
     div(id='wallet_balance' class='container')
 
@@ -72,9 +72,9 @@ block content
                   td(style='text-align: right; white-space: nowrap; width: 33%;' )
                     span(class='mr-1')= '$'
                     span(id='zil_balance_usd')
-                  
+
         each tokenProperties, key in zrcTokenPropertiesMap
-        
+
           div(id=tokenProperties.ticker+'_container' class='col-lg-6' style='padding: 0; display: none')
             div(class='box')
               table(class='table table-sm table-borderless')
@@ -86,28 +86,45 @@ block content
                       span(class='font-weight-bold')= tokenProperties.name
                   tr
                     td(scope='row' class='font-weight-normal' style='white-space: nowrap; width: 33%;' )
-                        span(id=tokenProperties.ticker+'_price')= 'Loading...'
-                        span(id=tokenProperties.ticker+'_price_unit' class='ml-1')= "ZIL"
+                      span(id=tokenProperties.ticker+'_price')= 'Loading...'
+                      span(id=tokenProperties.ticker+'_price_unit' class='ml-1')= "ZIL"
                     td(style='text-align: right; white-space: nowrap; width: 33%;' )
-                        span(id=tokenProperties.ticker+'_balance')
-                        span(id=tokenProperties.ticker+'_balance_unit' class='ml-1')= tokenProperties.ticker
+                      span(id=tokenProperties.ticker+'_balance')
+                      span(id=tokenProperties.ticker+'_balance_unit' class='ml-1')= tokenProperties.ticker
                     td(style='text-align: right; white-space: nowrap; width: 33%;' )
-                        span(class='mr-1')= '$'
-                        span(id=tokenProperties.ticker+'_balance_usd')
+                      span(class='mr-1')= '$'
+                      span(id=tokenProperties.ticker+'_balance_usd')
 
     hr
 
     div(class='container title-box' style='display:table-cell; vertical-align: middle;')
-      img(height='36' src='/images/zilswap.svg' loading='lazy')
-      span(class='h3 font-weight-bold ml-3' style='vertical-align: middle;')= 'Liquidity Pool Balance'
+      img(class='mr-3' height='36' src='/images/zilswap.svg' loading='lazy')
+      span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Liquidity Pool Balance'
 
     // LP Balance
     div(id='lp_balance' class='container')
 
       div(class='row')
 
+        div(id='lp_reward_next_epoch_container' class='col-lg-6' style='padding: 0; display: none')
+          div(class='highlight-box')
+            table(class='table table-sm table-borderless')
+              tbody
+                tr
+                  td(scope='row' rowspan='2' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                    img(height='36' src=zrcTokenPropertiesMap['ZWAP'].logo_url loading='lazy')
+                  td(colspan='2')
+                    span(class='font-weight-bold')= 'Potential reward next epoch'
+                tr
+                  td(style='text-align: left; white-space: nowrap; width: 49%;' )
+                    span(id='lp_reward_next_epoch_zwap' class='ml-1')
+                    span(id='lp_reward_next_epoch_zwap_unit' class='ml-1')= zrcTokenPropertiesMap['ZWAP'].ticker
+                  td(style='text-align: right; white-space: nowrap; width: 49%;' )
+                    span(class='mr-1')= '$'
+                    span(id='lp_reward_next_epoch_usd')
+
         each tokenProperties, key in zrcTokenPropertiesMap
-      
+
           div(id=tokenProperties.ticker+'_lp_container' class='col-lg-6' style='padding: 0; display: none')
             div(class='box')
               table(class='table table-sm table-borderless')
@@ -122,31 +139,25 @@ block content
                       span(class='ml-1')= '%'
                   tr
                     td(style='text-align: left; white-space: nowrap; width: 49%;' )
-                        span(id=tokenProperties.ticker+'_lp_token_balance')
-                        span(id=tokenProperties.ticker+'_lp_token_balance_unit' class='ml-1')= tokenProperties.ticker
-                        span(class='ml-1')= ':'
-                        span(id=tokenProperties.ticker+'_lp_zil_balance' class='ml-1')
-                        span(id=tokenProperties.ticker+'_lp_zil_balance_unit' class='ml-1')= 'ZIL'
+                      span(id=tokenProperties.ticker+'_lp_token_balance')
+                      span(id=tokenProperties.ticker+'_lp_token_balance_unit' class='ml-1')= tokenProperties.ticker
+                      span(class='ml-1')= ':'
+                      span(id=tokenProperties.ticker+'_lp_zil_balance' class='ml-1')
+                      span(id=tokenProperties.ticker+'_lp_zil_balance_unit' class='ml-1')= 'ZIL'
                     td(style='text-align: right; white-space: nowrap; width: 49%;' )
-                        span(class='mr-1')= '$'
-                        span(id=tokenProperties.ticker+'_lp_balance_usd')
+                      span(class='mr-1')= '$'
+                      span(id=tokenProperties.ticker+'_lp_balance_usd')
     hr
-      
+
 block script
   script(src='/javascripts/main.js')
 
   script.
     var zrcTokensPropertiesMap = !{JSON.stringify(zrcTokenPropertiesMap)};
 
-    $.ajax({
-        type: "GET",
-        url: "https://api.coingecko.com/api/v3/simple/price?ids=zilliqa&vs_currencies=usd",
-        success: function (data) {
-          showZilPriceInUsd(data.zilliqa.usd);
-        }
-      });
-
     window.addEventListener("load", async () => {
+      computeZilPriceInUsd(showZilPriceInUsd);
+
       if (!refreshMainContentVisibility(getZilpayStatus())) {
         return;
       }
@@ -202,6 +213,9 @@ block script
 
       // (6) Get ZRC-2 tokens LP balances in Zilswap, async.
       computeZrcTokensZilSwapLpBalance(account, zrcTokensPropertiesMap, showZrcTokenLpBalance);
+
+      // (7) Get Potential LP reward next epoch.
+      computeTotalLpRewardNextEpoch(account, showTotalLpRewardNextEpoch);
     }
 
     function refreshLoginButtonState(account) {
@@ -247,7 +261,7 @@ block script
 
     function showZilWalletBalance(balance) {
       $('#zil_balance').text(balance);
-  
+
       onZilWalletBalanceLoaded();
     }
 
@@ -287,6 +301,15 @@ block script
       }
     }
 
+    function showTotalLpRewardNextEpoch(zwapReward) {
+      if (zwapReward) {
+        $('#lp_reward_next_epoch_zwap').text(zwapReward);
+        $('#lp_reward_next_epoch_container').show();
+      } else {
+        $('#lp_reward_next_epoch_container').hide();
+      }
+    }
+
     function onZilUsdPriceLoaded() {
       // Wallet Balance
       refreshZilWalletBalanceUsd();
@@ -299,7 +322,10 @@ block script
       for (let ticker in zrcTokensPropertiesMap) {
         refreshZrcTokenLpBalanceUsd(ticker)
       }
-      refreshTotalLpBalanceUsd() 
+      refreshTotalLpBalanceUsd();
+
+      // Lp reward
+      refreshTotalLpRewardUsd();
 
       // Net worth
       refreshNetWorthUsd();
@@ -318,10 +344,15 @@ block script
       // Wallet Balance
       refreshZrcTokenWalletBalanceUsd(ticker);
       refreshTotalWalletBalanceUsd();
-      
+
       // Lp balance
       refreshZrcTokenLpBalanceUsd(ticker)
-      refreshTotalLpBalanceUsd() 
+      refreshTotalLpBalanceUsd();
+
+      // Lp reward
+      if (ticker === 'ZWAP') {
+        refreshTotalLpRewardUsd();
+      }
 
       // Net worth
       refreshNetWorthUsd();
@@ -336,10 +367,14 @@ block script
       refreshNetWorthUsd();
     }
 
+    function onTotalLpRewardNextEpochLoaded() {
+      refreshTotalLpRewardUsd();
+    }
+
     function onZrcTokenLpBalanceLoaded(ticker) {
       // Lp balance
       refreshZrcTokenLpBalanceUsd(ticker)
-      refreshTotalLpBalanceUsd() 
+      refreshTotalLpBalanceUsd();
 
       // Net worth
       refreshNetWorthUsd();
@@ -393,11 +428,11 @@ block script
         totalUsd += zilUsd;
       }
       for (let ticker in zrcTokensPropertiesMap) {
-          let zrcUsd = $('#' + ticker +'_balance_usd').text();
-          zrcUsd = parseFloat(zrcUsd);
-          if (zrcUsd) {
-            totalUsd += zrcUsd;
-          }
+        let zrcUsd = $('#' + ticker +'_balance_usd').text();
+        zrcUsd = parseFloat(zrcUsd);
+        if (zrcUsd) {
+          totalUsd += zrcUsd;
+        }
       }
       $('#wallet_balance_usd').text(totalUsd.toFixed(2));
     }
@@ -427,7 +462,7 @@ block script
       if (!zilLpBalance) {
         return;
       }
-    
+
       let lpTokenBalanceUsd = (usdPrice * (zilLpBalance + (zrcTokenPriceInZil * zrcLpTokenBalance))).toFixed(2)
       $('#' + ticker +'_lp_balance_usd').text(lpTokenBalanceUsd);
     }
@@ -435,11 +470,11 @@ block script
     function refreshTotalLpBalanceUsd() {
       let totalUsd = 0;
       for (let ticker in zrcTokensPropertiesMap) {
-          let lpUsd = $('#' + ticker +'_lp_balance_usd').text();
-          lpUsd = parseFloat(lpUsd);
-          if (lpUsd) {
-            totalUsd += lpUsd;
-          }
+        let lpUsd = $('#' + ticker +'_lp_balance_usd').text();
+        lpUsd = parseFloat(lpUsd);
+        if (lpUsd) {
+          totalUsd += lpUsd;
+        }
       }
       $('#lp_balance_usd').text(totalUsd.toFixed(2));
     }
@@ -460,4 +495,29 @@ block script
       }
 
       $('#net_worth_usd').text(totalUsd.toFixed(2));
+    }
+
+    function refreshTotalLpRewardUsd() {
+      let ticker = 'ZWAP';
+
+      let usdPrice = $('#zil_price').text();
+      usdPrice = parseFloat(usdPrice);
+      if (!usdPrice) {
+        return;
+      }
+
+      let zrcTokenPriceInZil = $('#' + ticker +'_price').text();
+      zrcTokenPriceInZil = parseFloat(zrcTokenPriceInZil);
+      if (!zrcTokenPriceInZil) {
+        return;
+      }
+
+      let rewardBalance = $('#lp_reward_next_epoch_zwap').text();
+      rewardBalance = parseFloat(rewardBalance);
+      if (!rewardBalance) {
+        return;
+      }
+
+      let rewardBalanceUsd = (usdPrice * zrcTokenPriceInZil * rewardBalance).toFixed(2)
+      $('#lp_reward_next_epoch_usd').text(rewardBalanceUsd);
     }

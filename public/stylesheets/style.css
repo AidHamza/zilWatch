@@ -1,4 +1,5 @@
 /*  Extra small devices (portrait phones, less than 576px) */
+
 @media (max-width: 575.98px) {
   html {
     font-size: 0.8rem;
@@ -27,13 +28,26 @@ body {
   border: 1px solid rgba(104, 104, 104, 0.15);
 }
 
+.highlight-box {
+  margin: 0.3rem;
+  /* this is a hack to keep the table inside the box */
+  padding-right: 0.6rem;
+  background-color: rgba(136, 213, 129, 0.20);
+  border: 1px solid rgba(104, 104, 104, 0.15);
+}
+
 .balance-box {
   padding: 1rem;
 }
 
 .title-box {
   margin: 0.6rem;
-  padding: 0.6rem;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+}
+
+.subtitle-box {
+  margin: 0.2rem;
 }
 
 .table {
@@ -41,9 +55,9 @@ body {
 }
 
 .footer {
-    padding: 2.5rem 0;
-    color: #999;
-    text-align: center;
-    background-color: #f9f9f9;
-    border-top: .05rem solid #e5e5e5;
+  padding: 2.5rem 0;
+  color: #999;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-top: .05rem solid #e5e5e5;
 }
