@@ -1,0 +1,72 @@
+doctype html
+html(lang='en')
+
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    title= title
+    link(rel='preconnect' href='https://fonts.gstatic.com')
+    link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Lato&family=Nunito:wght@700&display=swap')
+    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
+    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+    link(rel='stylesheet' href='/stylesheets/style.css')
+
+  body
+    block content
+
+    // jQuery first, then Popper.js, then Bootstrap JS
+    script(src='https://code.jquery.com/jquery-3.6.0.min.js' integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=' crossorigin='anonymous')
+    script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')
+
+    block script 
+
+  footer(class='footer')
+
+    div(class='container pt-4')
+      section(class='mb-4')
+        a(class='btn-lg  text-dark'
+          href='https://t.me/zilWatch_community'
+          role='button')
+            i(class='fa fa-telegram')
+
+        a(class='btn-lg text-dark'
+          href='https://zilwatch.medium.com'
+          role='button')
+            i(class='fa fa-medium')
+
+        a(class='btn-lg text-dark'
+          href='https://twitter.com/zilwatch_io'
+          role='button')
+            i(class='fa fa-twitter')
+    
+    p()= '© 2021 zilWatch.io'
+    p= '―'
+
+    div(class='container pt-1')
+      p= 'Powered by'
+      section(class='mb-4')
+        a(class='btn-lg text-dark'
+          href='https://dev.zilliqa.com/docs/apis/api-introduction/'
+          role='button')
+            img(height='24' src='https://meta.viewblock.io/ZIL/logo' loading='lazy' alt='Zilliqa API')
+
+        a(class='btn-lg text-dark'
+          href='https://zilpay.io'
+          role='button')
+            img(height='24' src=zrcTokenPropertiesMap['ZLP'].logo_url loading='lazy' alt='ZilPay Wallet and API')
+
+        a(class='btn-lg text-dark'
+          href='https://zilswap.io'
+          role='button')
+            img(height='24' src=zrcTokenPropertiesMap['ZWAP'].logo_url loading='lazy' alt='ZilSwap API') 
+
+        a(class='btn-lg text-dark'
+          href='https://viewblock.io/zilliqa'
+          role='button')
+            img(height='24' src='https://cdn.viewblock.io/viewblock-light.png' loading='lazy' alt='Viewblock API')
+
+        a(class='btn-lg text-dark'
+          href='https://www.coingecko.com/en/api#explore-api'
+          role='button')
+            img(height='24' src='https://static.coingecko.com/s/thumbnail-007177f3eca19695592f0b8b0eabbdae282b54154e1be912285c9034ea6cbaf2.png' loading='lazy' alt='CoinGecko API')

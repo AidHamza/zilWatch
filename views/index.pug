@@ -1,0 +1,449 @@
+extends layout
+
+block content
+
+  nav(class='navbar navbar-light bg-light justify-content-between')
+    a(class='navbar-brand zilwatch-brand')
+      img(src='/images/zilWatch-02.svg' width='30' height='30' class='d-inline-block align-top mr-2' alt='zilWatch')
+      = 'zilWatch'
+    
+    a(id='myaddress_anchor')
+      button(id='myaddress' class='btn btn-outline-info my-2 my-sm-0' style='display: none;')
+    button(id='connect' class='btn btn-info my-2 my-sm-0')= 'Connect'
+
+  div(id='error_message' class='container' style='display: none;')
+  
+  div(id='main_content' class='container')
+
+    hr
+
+    div(class='row container')
+      div(class='balance-box col-md-4')
+        h3(class='font-weight-bold')= 'Net Worth'
+        span(class='h4 mr-1')= '$'
+        span(id='net_worth_usd' class='h4')
+
+      div(class='balance-box col-md-4')
+        h3(class='font-weight-bold')= 'Wallet Balance'
+        span(class='h4 mr-1')= '$'
+        span(id='wallet_balance_usd' class='h4')
+
+      div(class='balance-box col-md-4')
+        h3(class='font-weight-bold')= 'LP Balance'
+        span(class='h4 mr-1')= '$'
+        span(id='lp_balance_usd' class='h4')
+
+    hr
+
+    // Wallet Balance
+    div(class='container title-box' style='display:table-cell; vertical-align: middle;')
+      img(height='36' src=zrcTokenPropertiesMap['ZLP'].logo_url loading='lazy')
+      span(class='h3 font-weight-bold ml-3' style='vertical-align: middle;')= 'Wallet Balance'
+
+    div(id='wallet_balance' class='container')
+
+      div(class='row')
+
+        div(class='col-lg-6' style='padding: 0;')
+          div(class='box')
+            table(class='table table-sm table-borderless' width='100%')
+              tbody
+                tr
+                  td(scope='row' rowspan='2' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                    img(height='36' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
+                  td(colspan='3')
+                    span(class='font-weight-bold')= 'Zilliqa'
+                tr
+                  td(scope='row' class='font-weight-normal' style='white-space: nowrap; width: 33%;' )
+                    span(class='mr-1')= '$'
+                    span(id='zil_price')= 'Loading...'
+                  td(style='text-align: right; white-space: nowrap; width: 33%;' )
+                    span(id='zil_balance')
+                    span(id='zil_balance_unit' class='ml-1')= 'ZIL'
+                  td(style='text-align: right; white-space: nowrap; width: 33%;' )
+                    span(class='mr-1')= '$'
+                    span(id='zil_balance_usd')
+                  
+        each tokenProperties, key in zrcTokenPropertiesMap
+        
+          div(id=tokenProperties.ticker+'_container' class='col-lg-6' style='padding: 0; display: none')
+            div(class='box')
+              table(class='table table-sm table-borderless')
+                tbody
+                  tr
+                    td(scope='row' rowspan='2' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                      img(height='36' src=tokenProperties.logo_url loading='lazy')
+                    td(colspan='3')
+                      span(class='font-weight-bold')= tokenProperties.name
+                  tr
+                    td(scope='row' class='font-weight-normal' style='white-space: nowrap; width: 33%;' )
+                        span(id=tokenProperties.ticker+'_price')= 'Loading...'
+                        span(id=tokenProperties.ticker+'_price_unit' class='ml-1')= "ZIL"
+                    td(style='text-align: right; white-space: nowrap; width: 33%;' )
+                        span(id=tokenProperties.ticker+'_balance')
+                        span(id=tokenProperties.ticker+'_balance_unit' class='ml-1')= tokenProperties.ticker
+                    td(style='text-align: right; white-space: nowrap; width: 33%;' )
+                        span(class='mr-1')= '$'
+                        span(id=tokenProperties.ticker+'_balance_usd')
+
+    hr
+
+    div(class='container title-box' style='display:table-cell; vertical-align: middle;')
+      img(height='36' src=zrcTokenPropertiesMap['ZWAP'].logo_url loading='lazy')
+      span(class='h3 font-weight-bold ml-3' style='vertical-align: middle;')= 'Liquidity Pool Balance'
+
+    // LP Balance
+    div(id='lp_balance' class='container')
+
+      div(class='row')
+
+        each tokenProperties, key in zrcTokenPropertiesMap
+      
+          div(id=tokenProperties.ticker+'_lp_container' class='col-lg-6' style='padding: 0; display: none')
+            div(class='box')
+              table(class='table table-sm table-borderless')
+                tbody
+                  tr
+                    td(scope='row' rowspan='2' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                      img(height='36' src=tokenProperties.logo_url loading='lazy')
+                    td
+                      span(class='font-weight-bold')= tokenProperties.name + ' LP'
+                    td(class='font-weight-normal' style='text-align: right; white-space: nowrap;' )
+                      span(id=tokenProperties.ticker+'_lp_pool_share_percent')= 'Loading...'
+                      span(class='ml-1')= '%'
+                  tr
+                    td(style='text-align: left; white-space: nowrap; width: 49%;' )
+                        span(id=tokenProperties.ticker+'_lp_token_balance')
+                        span(id=tokenProperties.ticker+'_lp_token_balance_unit' class='ml-1')= tokenProperties.ticker
+                        span(class='ml-1')= ':'
+                        span(id=tokenProperties.ticker+'_lp_zil_balance' class='ml-1')
+                        span(id=tokenProperties.ticker+'_lp_zil_balance_unit' class='ml-1')= 'ZIL'
+                    td(style='text-align: right; white-space: nowrap; width: 49%;' )
+                        span(class='mr-1')= '$'
+                        span(id=tokenProperties.ticker+'_lp_balance_usd')
+    hr
+      
+block script
+  script(src='/javascripts/main.js')
+
+  script.
+    var zrcTokensPropertiesMap = !{JSON.stringify(zrcTokenPropertiesMap)};
+
+    $.ajax({
+        type: "GET",
+        url: "https://api.coingecko.com/api/v3/simple/price?ids=zilliqa&vs_currencies=usd",
+        success: function (data) {
+          showZilPriceInUsd(data.zilliqa.usd);
+        }
+      });
+
+    window.addEventListener("load", async () => {
+      if (!refreshMainContentVisibility(getZilpayStatus())) {
+        return;
+      }
+
+      // Subscribe if there are changes with the account
+      window.zilPay.wallet.observableAccount().subscribe(account => {
+        refreshMainContentData(account);
+      });
+
+      // Subscribe if there are changes with network
+      window.zilPay.wallet.observableNetwork().subscribe(() => {
+        refreshMainContentVisibility(getZilpayStatus());
+      });
+
+      if (zilPay.wallet.isConnect) {
+        refreshMainContentData(window.zilPay.wallet.defaultAccount);
+      }
+    });
+
+    $("#connect").click(function () {
+      connectZilpayService().then(
+        function(isUnlockSuccessful) {
+          console.log("Wallet connect unlock successful: " + isUnlockSuccessful);
+          if (isUnlockSuccessful) {
+            refreshMainContentData(window.zilPay.wallet.defaultAccount)
+          }
+        },
+        function() {
+          console.log("Wallet connect failed!");
+        }
+      );
+    });
+
+    function refreshMainContentData(account) {
+      // (1) show main screen
+      refreshMainContentVisibility(ZilpayStatus.success);
+
+      // (2) Refresh login button state
+      refreshLoginButtonState(account);
+
+      // (3) Get ZIL balance, async.
+      computeZilBalance(account, showZilWalletBalance);
+
+      // (4) Get ZRC-2 tokens price, async.
+      computeZrcTokensPrice(zrcTokensPropertiesMap, showZrcTokenPriceInZil);
+
+      // (5) Get ZRC-2 tokens balances, async.
+      computeZrcTokensBalance(account, zrcTokensPropertiesMap, showZrcTokenWalletBalance);
+
+      // (6) Get ZRC-2 tokens LP balances in Zilswap, async.
+      computeZrcTokensZilSwapLpBalance(account, zrcTokensPropertiesMap, showZrcTokenLpBalance);
+    }
+
+    function refreshLoginButtonState(account) {
+      $('#connect').hide();
+      $('#myaddress').html(shortBech32Address(account.bech32));
+      $('#myaddress').show();
+      $('#myaddress_anchor').attr("target", "_blank");
+      $('#myaddress_anchor').attr("href", "https://viewblock.io/zilliqa/address/".concat(account.bech32));
+    }
+
+    function refreshMainContentVisibility(zilpayStatus) {
+      if (ZilpayStatus.success === zilpayStatus) {
+        $('#main_content').show();
+        $('#error_message').hide ();
+        return true;
+      } else {
+        possiblyShowErrorState(zilpayStatus);
+        return false;
+      }
+    }
+
+    function possiblyShowErrorState(zilpayStatus) {
+      if (ZilpayStatus.not_installed === zilpayStatus ) {
+        $('#main_content').hide();
+        $('#error_message').html('ZilPay not installed!');
+        $('#error_message').show();
+      } else if (ZilpayStatus.locked === zilpayStatus ) {
+        $('#main_content').hide();
+        $('#error_message').html('Please connect to ZilPay!');
+        $('#error_message').show();
+      } else if (ZilpayStatus.not_mainnet === zilpayStatus ) {
+        $('#main_content').hide();
+        $('#error_message').html('Please switch to mainnet!');
+        $('#error_message').show();
+      }
+    }
+
+    function showZilPriceInUsd(zilPriceInUsd) {
+      $("#zil_price").text(zilPriceInUsd.toFixed(4));
+      onZilUsdPriceLoaded();
+    }
+
+    function showZilWalletBalance(balance) {
+      $('#zil_balance').text(balance);
+  
+      onZilWalletBalanceLoaded();
+    }
+
+    function showZrcTokenPriceInZil(/* nullable */ zrcTokenPriceInZil, ticker) {
+      if (zrcTokenPriceInZil) {
+        $('#' + ticker + '_price').text(zrcTokenPriceInZil);
+
+        onZrcTokenPriceInZilLoaded(ticker);
+      } else {
+        $('#' + ticker + '_price').hide();
+      }
+    }
+
+    function showZrcTokenWalletBalance(/* nullable */ balance, ticker) {
+      if (balance) {
+        $('#' + ticker + '_balance').text(balance);
+        $('#' + ticker + '_container').show();
+
+        onZrcTokenWalletBalanceLoaded(ticker);
+      } else {
+        $('#' + ticker + '_container').hide();
+      }
+    }
+
+    function showZrcTokenLpBalance(/* nullable */ shareRatio, zilBalance, zrcBalance, ticker) {
+      if (shareRatio) {
+        $('#' + ticker + '_lp_token_balance').text(zrcBalance);
+        $('#' + ticker + '_lp_zil_balance').text(zilBalance);
+
+        let poolSharePercent = parseFloat(shareRatio * 100).toPrecision(3)
+        $('#' + ticker + '_lp_pool_share_percent').text(poolSharePercent);
+        $('#' + ticker + '_lp_container').show();
+
+        onZrcTokenLpBalanceLoaded(ticker);
+      } else {
+        $('#' + ticker + '_lp_container').hide();
+      }
+    }
+
+    function onZilUsdPriceLoaded() {
+      // Wallet Balance
+      refreshZilWalletBalanceUsd();
+      for (let ticker in zrcTokensPropertiesMap) {
+        refreshZrcTokenWalletBalanceUsd(ticker);
+      }
+      refreshTotalWalletBalanceUsd();
+
+      // Lp balance
+      for (let ticker in zrcTokensPropertiesMap) {
+        refreshZrcTokenLpBalanceUsd(ticker)
+      }
+      refreshTotalLpBalanceUsd() 
+
+      // Net worth
+      refreshNetWorthUsd();
+    }
+
+    function onZilWalletBalanceLoaded() {
+      // Wallet Balance
+      refreshZilWalletBalanceUsd();
+      refreshTotalWalletBalanceUsd();
+
+      // Net worth
+      refreshNetWorthUsd();
+    }
+
+    function onZrcTokenPriceInZilLoaded(ticker) {
+      // Wallet Balance
+      refreshZrcTokenWalletBalanceUsd(ticker);
+      refreshTotalWalletBalanceUsd();
+      
+      // Lp balance
+      refreshZrcTokenLpBalanceUsd(ticker)
+      refreshTotalLpBalanceUsd() 
+
+      // Net worth
+      refreshNetWorthUsd();
+    }
+
+    function onZrcTokenWalletBalanceLoaded(ticker) {
+      // Wallet Balance
+      refreshZrcTokenWalletBalanceUsd(ticker);
+      refreshTotalWalletBalanceUsd();
+
+      // Net worth
+      refreshNetWorthUsd();
+    }
+
+    function onZrcTokenLpBalanceLoaded(ticker) {
+      // Lp balance
+      refreshZrcTokenLpBalanceUsd(ticker)
+      refreshTotalLpBalanceUsd() 
+
+      // Net worth
+      refreshNetWorthUsd();
+    }
+
+    function refreshZilWalletBalanceUsd() {
+      let usdPrice = $('#zil_price').text();
+      usdPrice = parseFloat(usdPrice);
+      if (!usdPrice) {
+        return;
+      }
+      let zilBalance = $('#zil_balance').text();
+      zilBalance = parseFloat(zilBalance);
+      if (!zilBalance) {
+        return;
+      }
+      let zilBalanceUsd = (usdPrice * zilBalance).toFixed(2)
+      $('#zil_balance_usd').text(zilBalanceUsd);
+    }
+
+    function refreshZrcTokenWalletBalanceUsd(ticker) {
+
+      let usdPrice = $('#zil_price').text();
+      usdPrice = parseFloat(usdPrice);
+      if (!usdPrice) {
+        return;
+      }
+
+      let zrcTokenPriceInZil = $('#' + ticker +'_price').text();
+      zrcTokenPriceInZil = parseFloat(zrcTokenPriceInZil);
+      if (!zrcTokenPriceInZil) {
+
+        return;
+      }
+
+      let zrcTokenBalance = $('#' + ticker +'_balance').text();
+      zrcTokenBalance = parseFloat(zrcTokenBalance);
+      if (!zrcTokenBalance) {
+        return;
+      }
+
+      let zrcTokenBalanceUsd = (usdPrice * zrcTokenPriceInZil * zrcTokenBalance).toFixed(2)
+      $('#' + ticker +'_balance_usd').text(zrcTokenBalanceUsd);
+    }
+
+    function refreshTotalWalletBalanceUsd() {
+      let totalUsd = 0;
+      let zilUsd = $('#zil_balance_usd').text()
+      zilUsd = parseFloat(zilUsd);
+      if (zilUsd) {
+        totalUsd += zilUsd;
+      }
+      for (let ticker in zrcTokensPropertiesMap) {
+          let zrcUsd = $('#' + ticker +'_balance_usd').text();
+          zrcUsd = parseFloat(zrcUsd);
+          if (zrcUsd) {
+            totalUsd += zrcUsd;
+          }
+      }
+      $('#wallet_balance_usd').text(totalUsd.toFixed(2));
+    }
+
+    function refreshZrcTokenLpBalanceUsd(ticker) {
+
+      let usdPrice = $('#zil_price').text();
+      usdPrice = parseFloat(usdPrice);
+      if (!usdPrice) {
+        return;
+      }
+
+      let zrcTokenPriceInZil = $('#' + ticker +'_price').text();
+      zrcTokenPriceInZil = parseFloat(zrcTokenPriceInZil);
+      if (!zrcTokenPriceInZil) {
+        return;
+      }
+
+      let zrcLpTokenBalance = $('#' + ticker +'_lp_token_balance').text();
+      zrcLpTokenBalance = parseFloat(zrcLpTokenBalance);
+      if (!zrcLpTokenBalance) {
+        return;
+      }
+
+      let zilLpBalance = $('#' + ticker +'_lp_zil_balance').text();
+      zilLpBalance = parseFloat(zilLpBalance);
+      if (!zilLpBalance) {
+        return;
+      }
+    
+      let lpTokenBalanceUsd = (usdPrice * (zilLpBalance + (zrcTokenPriceInZil * zrcLpTokenBalance))).toFixed(2)
+      $('#' + ticker +'_lp_balance_usd').text(lpTokenBalanceUsd);
+    }
+
+    function refreshTotalLpBalanceUsd() {
+      let totalUsd = 0;
+      for (let ticker in zrcTokensPropertiesMap) {
+          let lpUsd = $('#' + ticker +'_lp_balance_usd').text();
+          lpUsd = parseFloat(lpUsd);
+          if (lpUsd) {
+            totalUsd += lpUsd;
+          }
+      }
+      $('#lp_balance_usd').text(totalUsd.toFixed(2));
+    }
+
+    function refreshNetWorthUsd() {
+      let totalUsd = 0;
+
+      let walletBalanceUsd = $('#wallet_balance_usd').text();
+      walletBalanceUsd = parseFloat(walletBalanceUsd);
+      if (walletBalanceUsd) {
+        totalUsd += walletBalanceUsd;
+      }
+
+      let lpBalanceUsd = $('#lp_balance_usd').text();
+      lpBalanceUsd = parseFloat(lpBalanceUsd);
+      if (lpBalanceUsd) {
+        totalUsd += lpBalanceUsd;
+      }
+
+      $('#net_worth_usd').text(totalUsd.toFixed(2));
+    }
