@@ -1,2 +1,2 @@
-# ZilWatch.io
+# zilWatch.io
 (In-progress) 

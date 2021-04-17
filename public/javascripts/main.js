@@ -129,6 +129,9 @@ function convertQaToUserFriendlyZil(balanceQa, multiplier) {
     const stringBalanceQa = balanceQa.toString();
     const stringBalanceQaLength = stringBalanceQa.length;
     var exponent = stringBalanceQa.substring(0, stringBalanceQaLength - multiplier);
+    if (exponent === "") {
+        exponent = "0";
+    }
     var mantissa = stringBalanceQa.substring(stringBalanceQaLength - multiplier, stringBalanceQaLength - multiplier + 3);
     return exponent.concat('.').concat(mantissa);
 }
