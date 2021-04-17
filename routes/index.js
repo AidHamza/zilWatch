@@ -55,7 +55,7 @@ const zrcTokenPropertiesMap = {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'zilWatch - Watch em\' all!', zrcTokenPropertiesMap: zrcTokenPropertiesMap });
+  res.render('index', { title: 'zilWatch', zrcTokenPropertiesMap: zrcTokenPropertiesMap });
 });
 
 module.exports = router;

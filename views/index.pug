@@ -11,9 +11,13 @@ block content
       button(id='myaddress' class='btn btn-outline-info my-2 my-sm-0' style='display: none;')
     button(id='connect' class='btn btn-info my-2 my-sm-0')= 'Connect'
 
-  div(id='error_message' class='container' style='display: none;')
+  div(id='error_message_container' class='container')
+    hr
+    div(class='balance-box row container')
+      span(id='error_message' class='h3')= 'Loading...'
+    hr
   
-  div(id='main_content' class='container')
+  div(id='main_content_container' class='container' style='display: none;')
 
     hr
 
@@ -201,8 +205,8 @@ block script
 
     function refreshMainContentVisibility(zilpayStatus) {
       if (ZilpayStatus.success === zilpayStatus) {
-        $('#main_content').show();
-        $('#error_message').hide ();
+        $('#main_content_container').show();
+        $('#error_message_container').hide();
         return true;
       } else {
         possiblyShowErrorState(zilpayStatus);
@@ -212,17 +216,17 @@ block script
 
     function possiblyShowErrorState(zilpayStatus) {
       if (ZilpayStatus.not_installed === zilpayStatus ) {
-        $('#main_content').hide();
-        $('#error_message').html('ZilPay not installed!');
-        $('#error_message').show();
+        $('#main_content_container').hide();
+        $('#error_message').html('ZilPay not installed! <a href="https://zilpay.io">Download here</a>');
+        $('#error_message_container').show();
       } else if (ZilpayStatus.locked === zilpayStatus ) {
-        $('#main_content').hide();
-        $('#error_message').html('Please connect to ZilPay!');
-        $('#error_message').show();
+        $('#main_content_container').hide();
+        $('#error_message').html('Please connect to ZilPay! (top right button)');
+        $('#error_message_container').show();
       } else if (ZilpayStatus.not_mainnet === zilpayStatus ) {
-        $('#main_content').hide();
+        $('#main_content_container').hide();
         $('#error_message').html('Please switch to mainnet!');
-        $('#error_message').show();
+        $('#error_message_container').show();
       }
     }
 
