@@ -9,7 +9,7 @@ function connectZilpayService() {
 /** Void function. invokes onCompleteCallback(string balance) function after computation is done. */
 function computeZilBalance(account, onCompleteCallback) {
     window.zilPay.blockchain.getBalance(account.bech32).then(function (data) {
-        var userFriendlyZilBalance = convertQaToUserFriendlyZil(data.result.balance, 12);
+        var userFriendlyZilBalance = convertQaToDecimalString(data.result.balance, /* decimals= */ 12);
         onCompleteCallback(userFriendlyZilBalance);
     });
 }
@@ -56,7 +56,7 @@ function computeZrcTokensBalance(account, zrcTokensPropertiesMap, onCompleteCall
                 if (data.result.balances) {
                     const zrcTokenBalanceQa = data.result.balances[account.base16.toLowerCase()];
                     if (zrcTokenBalanceQa) {
-                        zrcTokenBalance = convertQaToUserFriendlyZil(zrcTokenBalanceQa, zrcTokenProperties.decimals);
+                        zrcTokenBalance = convertQaToDecimalString(zrcTokenBalanceQa, zrcTokenProperties.decimals);
                     }
                 }
                 onCompleteCallback(zrcTokenBalance, zrcTokenProperties.ticker);
@@ -124,15 +124,21 @@ function shortBech32Address(bech32Address) {
     return firstFive.concat("...", lastFive);
 }
 
-/* Returns string. multiplier is 6 for li (gas), 12 ZIL, and 15 for ZRC. */
-function convertQaToUserFriendlyZil(balanceQa, multiplier) {
+/**
+ * Returns string. decimals is 6 for li (gas), 12 for ZIL, variable decimals on ZRC tokens. 
+ * If amount is extremely small, i.e., < 0.0001, returns null.
+ */
+function convertQaToDecimalString(balanceQa, decimals) {
     const stringBalanceQa = balanceQa.toString();
     const stringBalanceQaLength = stringBalanceQa.length;
-    var exponent = stringBalanceQa.substring(0, stringBalanceQaLength - multiplier);
+    var exponent = stringBalanceQa.substring(0, stringBalanceQaLength - decimals);
+    var mantissa = stringBalanceQa.substring(stringBalanceQaLength - decimals, stringBalanceQaLength - decimals + 3);
     if (exponent === "") {
         exponent = "0";
+        if (mantissa === "" || mantissa.startsWith("000")) {
+            return null;
+        }
     }
-    var mantissa = stringBalanceQa.substring(stringBalanceQaLength - multiplier, stringBalanceQaLength - multiplier + 3);
     return exponent.concat('.').concat(mantissa);
 }
 
