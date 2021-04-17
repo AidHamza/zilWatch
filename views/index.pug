@@ -7,16 +7,21 @@ block content
       img(src='/images/zilWatch-02.svg' width='30' height='30' class='d-inline-block align-top mr-2' alt='zilWatch')
       = 'zilWatch'
     
-    a(id='myaddress_anchor')
-      button(id='myaddress' class='btn btn-outline-info my-2 my-sm-0' style='display: none;')
-    button(id='connect' class='btn btn-info my-2 my-sm-0')= 'Connect'
+    button(id='wallet_refresh' class='btn btn-info my-2 my-sm-0 ml-auto mr-2' style='display: none;')
+      i(class='fa fa-refresh mr-2')
+      = 'Refresh'
+    a(id='wallet_address_anchor')
+      button(id='wallet_address' class='btn btn-outline-info my-2 my-sm-0' style='display: none;')
+    button(id='wallet_connect' class='btn btn-info my-2 my-sm-0')= 'Connect'
 
+  // Error Message Container
   div(id='error_message_container' class='container')
     hr
     div(class='balance-box row container')
       span(id='error_message' class='h3')= 'Loading...'
     hr
   
+  // Main Content Container
   div(id='main_content_container' class='container' style='display: none;')
 
     hr
@@ -161,7 +166,7 @@ block script
       }
     });
 
-    $("#connect").click(function () {
+    $("#wallet_connect").click(function () {
       connectZilpayService().then(
         function(isUnlockSuccessful) {
           console.log("Wallet connect unlock successful: " + isUnlockSuccessful);
@@ -173,6 +178,10 @@ block script
           console.log("Wallet connect failed!");
         }
       );
+    });
+
+    $("#wallet_refresh").click(function () {
+      window.location.reload();
     });
 
     function refreshMainContentData(account) {
@@ -196,11 +205,12 @@ block script
     }
 
     function refreshLoginButtonState(account) {
-      $('#connect').hide();
-      $('#myaddress').html(shortBech32Address(account.bech32));
-      $('#myaddress').show();
-      $('#myaddress_anchor').attr("target", "_blank");
-      $('#myaddress_anchor').attr("href", "https://viewblock.io/zilliqa/address/".concat(account.bech32));
+      $('#wallet_connect').hide();
+      $('#wallet_address_anchor').attr("target", "_blank");
+      $('#wallet_address_anchor').attr("href", "https://viewblock.io/zilliqa/address/".concat(account.bech32));
+      $('#wallet_address').html(shortBech32Address(account.bech32));
+      $('#wallet_address').show();
+      $('#wallet_refresh').show();
     }
 
     function refreshMainContentVisibility(zilpayStatus) {
