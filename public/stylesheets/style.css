@@ -5,8 +5,10 @@
   }
 }
 
-.zilwatch-brand {
+.zilwatch-navbar-brand {
   font-family: 'Nunito', sans-serif;
+  align-items: center;
+  display: flex;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3 {
