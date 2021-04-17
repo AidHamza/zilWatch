@@ -156,7 +156,7 @@ block script
         refreshMainContentVisibility(getZilpayStatus());
       });
 
-      if (zilPay.wallet.isConnect) {
+      if (window.zilPay.wallet.isConnect) {
         refreshMainContentData(window.zilPay.wallet.defaultAccount);
       }
     });
@@ -177,7 +177,7 @@ block script
 
     function refreshMainContentData(account) {
       // (1) show main screen
-      refreshMainContentVisibility(ZilpayStatus.success);
+      refreshMainContentVisibility(ZilpayStatus.connected);
 
       // (2) Refresh login button state
       refreshLoginButtonState(account);
@@ -204,7 +204,7 @@ block script
     }
 
     function refreshMainContentVisibility(zilpayStatus) {
-      if (ZilpayStatus.success === zilpayStatus) {
+      if (ZilpayStatus.connected === zilpayStatus) {
         $('#main_content_container').show();
         $('#error_message_container').hide();
         return true;
@@ -219,7 +219,7 @@ block script
         $('#main_content_container').hide();
         $('#error_message').html('ZilPay not installed! <a href="https://zilpay.io">Download here</a>');
         $('#error_message_container').show();
-      } else if (ZilpayStatus.locked === zilpayStatus ) {
+      } else if (ZilpayStatus.locked === zilpayStatus || ZilpayStatus.not_connected === zilpayStatus) {
         $('#main_content_container').hide();
         $('#error_message').html('Please connect to ZilPay! (top right button)');
         $('#error_message_container').show();

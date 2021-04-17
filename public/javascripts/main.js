@@ -1,5 +1,5 @@
 const ZilSwapDexAddress = "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w";
-const ZilpayStatus = Object.freeze({ "not_installed": 1, "locked": 2, "not_mainnet": 3, 'success': 4 });
+const ZilpayStatus = Object.freeze({ "not_installed": 1, "locked": 2, "not_connected":3, "not_mainnet": 4, 'connected': 5 });
 
 /** Returns a Promise. */
 function connectZilpayService() {
@@ -111,10 +111,12 @@ function getZilpayStatus() {
         return ZilpayStatus.not_installed;
     } else if (!window.zilPay.wallet.isEnable) {
         return ZilpayStatus.locked;
-    } else if (zilPay.wallet.net !== 'mainnet') {
+    } else if (!window.zilPay.wallet.isConnect) {
+        return ZilpayStatus.not_connected;
+    } else if (window.zilPay.wallet.net !== 'mainnet') {
         return ZilpayStatus.not_mainnet;
     }
-    return ZilpayStatus.success;
+    return ZilpayStatus.connected;
 }
 
 /* Returns string. */
