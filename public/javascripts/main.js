@@ -42,7 +42,7 @@ function computeZrcTokensPrice(zrcTokensPropertiesMap, onCompleteCallback) {
             }
         })
         .catch(function () {
-            onCompleteCallback(null, "");
+            onCompleteCallback(null, zrcTokenProperties.ticker);
         });
 }
 
@@ -50,11 +50,12 @@ function computeZrcTokensPrice(zrcTokensPropertiesMap, onCompleteCallback) {
 function computeZrcTokensBalance(account, zrcTokensPropertiesMap, onCompleteCallback) {
     for (const key in zrcTokensPropertiesMap) {
         const zrcTokenProperties = zrcTokensPropertiesMap[key];
-        window.zilPay.blockchain.getSmartContractState(zrcTokenProperties.address)
+        const walletAddressBase16 = account.base16.toLowerCase();
+        window.zilPay.blockchain.getSmartContractSubState(zrcTokenProperties.address, "balances", [walletAddressBase16])
             .then(function (data) {
                 var zrcTokenBalance = null;
-                if (data.result.balances) {
-                    const zrcTokenBalanceQa = data.result.balances[account.base16.toLowerCase()];
+                if (data.result && data.result.balances) {
+                    const zrcTokenBalanceQa = data.result.balances[walletAddressBase16];
                     if (zrcTokenBalanceQa) {
                         zrcTokenBalance = convertQaToDecimalString(zrcTokenBalanceQa, zrcTokenProperties.decimals);
                     }
@@ -62,7 +63,7 @@ function computeZrcTokensBalance(account, zrcTokensPropertiesMap, onCompleteCall
                 onCompleteCallback(zrcTokenBalance, zrcTokenProperties.ticker);
             })
             .catch(function () {
-                onCompleteCallback("Error!", zrcTokenProperties.ticker);
+                onCompleteCallback(null, zrcTokenProperties.ticker);
             })
     }
 }
@@ -101,7 +102,7 @@ function computeZrcTokensZilSwapLpBalance(account, zrcTokensPropertiesMap, onCom
             }
         })
         .catch(function () {
-            onCompleteCallback(null, 0, 0, "");
+            onCompleteCallback(null, 0, 0, zrcTokenProperties.ticker);
         });
 }
 
