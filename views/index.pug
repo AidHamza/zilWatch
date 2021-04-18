@@ -133,7 +133,7 @@ block content
                     td(scope='row' rowspan='2' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
                       img(height='36' src=tokenProperties.logo_url loading='lazy')
                     td
-                      span(class='font-weight-bold')= tokenProperties.name + ' LP'
+                      span(class='font-weight-bold')= tokenProperties.ticker + '-ZIL LP'
                     td(class='font-weight-normal' style='text-align: right; white-space: nowrap;' )
                       span(id=tokenProperties.ticker+'_lp_pool_share_percent')= 'Loading...'
                       span(class='ml-1')= '%'
@@ -141,7 +141,7 @@ block content
                     td(style='text-align: left; white-space: nowrap; width: 49%;' )
                       span(id=tokenProperties.ticker+'_lp_token_balance')
                       span(id=tokenProperties.ticker+'_lp_token_balance_unit' class='ml-1')= tokenProperties.ticker
-                      span(class='ml-1')= ':'
+                      span(class='ml-1')= '-'
                       span(id=tokenProperties.ticker+'_lp_zil_balance' class='ml-1')
                       span(id=tokenProperties.ticker+'_lp_zil_balance_unit' class='ml-1')= 'ZIL'
                     td(style='text-align: right; white-space: nowrap; width: 49%;' )
