@@ -1,6 +1,7 @@
 const ZilSwapDexAddress = "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w";
 const ZilpayStatus = Object.freeze({ "not_installed": 1, "locked": 2, "not_connected": 3, "not_mainnet": 4, 'connected': 5 });
-const MAX_RETRY = 10;
+const MAX_RETRY = 5;
+const RETRY_INTERVAL_MS = 1500;
 
 /** Returns a Promise. */
 function connectZilpayService() {
@@ -8,7 +9,7 @@ function connectZilpayService() {
 }
 
 /** Void function. invokes onCompleteCallback(string balance) function after computation is done. */
-function computeZilBalance(account, onCompleteCallback) {
+async function computeZilBalance(account, onCompleteCallback) {
 
     let retryCounter = MAX_RETRY;
     while (retryCounter--) {
@@ -22,12 +23,14 @@ function computeZilBalance(account, onCompleteCallback) {
             .catch(function () {
                 console.log("computeZilBalance failed!");
             });
+
+        await sleep(RETRY_INTERVAL_MS);
     }
 }
 
 
 /** Void function. invokes onCompleteCallback(string balance, string ticker) function after computation is done. */
-function computeZrcTokensPrice(zrcTokensPropertiesMap, onCompleteCallback) {
+async function computeZrcTokensPrice(zrcTokensPropertiesMap, onCompleteCallback) {
 
     let retryCounter = MAX_RETRY;
     while (retryCounter--) {
@@ -63,43 +66,51 @@ function computeZrcTokensPrice(zrcTokensPropertiesMap, onCompleteCallback) {
             })
             .catch(function () {
                 console.log("computeZrcTokensPrice failed!");
-                onCompleteCallback(null, "");
             });
+
+        await sleep(RETRY_INTERVAL_MS);
     }
 }
 
 /** Void function. invokes onCompleteCallback(string balance, string ticker) function after computation is done. */
-function computeZrcTokensBalance(account, zrcTokensPropertiesMap, onCompleteCallback) {
+async function computeZrcTokensBalance(account, zrcTokensPropertiesMap, onCompleteCallback) {
     for (const key in zrcTokensPropertiesMap) {
-        const zrcTokenProperties = zrcTokensPropertiesMap[key];
-        const walletAddressBase16 = account.base16.toLowerCase();
+        let zrcTokenProperties = zrcTokensPropertiesMap[key];
+        let walletAddressBase16 = account.base16.toLowerCase();
 
-        let retryCounter = MAX_RETRY;
-        while (retryCounter--) {
+        // Ignore Promise result, not important.
+        computeZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onCompleteCallback);
+    }
+}
 
-            window.zilPay.blockchain.getSmartContractSubState(zrcTokenProperties.address, "balances", [walletAddressBase16])
-                .then(function (data) {
-                    retryCounter = 0; // Successful
-                    
-                    let zrcTokenBalance = null;
-                    if (data.result && data.result.balances) {
-                        const zrcTokenBalanceQa = data.result.balances[walletAddressBase16];
-                        if (zrcTokenBalanceQa) {
-                            zrcTokenBalance = convertQaToDecimalString(zrcTokenBalanceQa, zrcTokenProperties.decimals);
-                        }
+/** Private async function, to compute a single zrcToken. */
+async function computeZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onCompleteCallback) {
+    let retryCounter = MAX_RETRY;
+    while (retryCounter--) {
+
+        window.zilPay.blockchain.getSmartContractSubState(zrcTokenProperties.address, "balances", [walletAddressBase16])
+            .then(function (data) {
+                retryCounter = 0; // Successful
+                
+                let zrcTokenBalance = null;
+                if (data.result && data.result.balances) {
+                    const zrcTokenBalanceQa = data.result.balances[walletAddressBase16];
+                    if (zrcTokenBalanceQa) {
+                        zrcTokenBalance = convertQaToDecimalString(zrcTokenBalanceQa, zrcTokenProperties.decimals);
                     }
-                    onCompleteCallback(zrcTokenBalance, zrcTokenProperties.ticker);
-                })
-                .catch(function () {
-                    console.log("computeZrcTokensBalance (%s) failed!", zrcTokenProperties.ticker);
-                    onCompleteCallback(null, zrcTokenProperties.ticker);
-                })
-        }
+                }
+                onCompleteCallback(zrcTokenBalance, zrcTokenProperties.ticker);
+            })
+            .catch(function () {
+                console.log("computeZrcTokensBalance(%s) failed!", zrcTokenProperties.ticker);
+            });
+
+        await sleep(RETRY_INTERVAL_MS);
     }
 }
 
 /** Void function. invokes onCompleteCallback(string balance, string ticker) function after computation is done. */
-function computeZrcTokensZilSwapLpBalance(account, zrcTokensPropertiesMap, onCompleteCallback) {
+async function computeZrcTokensZilSwapLpBalance(account, zrcTokensPropertiesMap, onCompleteCallback) {
 
     let retryCounter = MAX_RETRY;
     while (retryCounter--) {
@@ -143,12 +154,13 @@ function computeZrcTokensZilSwapLpBalance(account, zrcTokensPropertiesMap, onCom
             })
             .catch(function () {
                 console.log("computeZrcTokensZilSwapLpBalance failed!");
-                onCompleteCallback(null, 0, 0, "");
             });
+
+        await sleep(RETRY_INTERVAL_MS);
     }
 }
 
-function computeZilPriceInUsd(onCompleteCallback) {
+async function computeZilPriceInUsd(onCompleteCallback) {
     $.ajax({
         type: "GET",
         url: "https://api.coingecko.com/api/v3/simple/price?ids=zilliqa&vs_currencies=usd",
@@ -166,18 +178,18 @@ function computeZilPriceInUsd(onCompleteCallback) {
     });
 }
 
-function computeTotalLpRewardNextEpoch(account, onCompleteCallback) {
+async function computeTotalLpRewardNextEpoch(account, onCompleteCallback) {
     $.ajax({
         type: "GET",
         url: "https://stats.zilswap.org/distribution/current/" + account.bech32,
         retryLimit: MAX_RETRY,
         success: function (contractAddressToRewardMap) {
             // Sum all the rewards from all pools
-            var totalRewardQa = 0;
-            for (var addressKey in contractAddressToRewardMap) {
+            let totalRewardQa = 0;
+            for (let addressKey in contractAddressToRewardMap) {
                 totalRewardQa += parseInt(contractAddressToRewardMap[addressKey]);
             }
-            const totalRewardZwap = convertQaToDecimalString(totalRewardQa, /* decimals= */ 12)
+            let totalRewardZwap = convertQaToDecimalString(totalRewardQa, /* decimals= */ 12)
             onCompleteCallback(totalRewardZwap);
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -312,4 +324,8 @@ function formatUsd(usdValue) {
  */
 function parseFloatFromUsd(usdString) {
     return parseFloat(usdString.replace(',', ''));
+}
+
+async function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
