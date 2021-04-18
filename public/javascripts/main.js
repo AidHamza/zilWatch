@@ -253,6 +253,9 @@ function shortBech32Address(bech32Address) {
 function convertQaToDecimalString(balanceQa, decimals) {
     let stringBalanceQa = balanceQa.toString();
     let stringBalanceQaLength = stringBalanceQa.length;
+    if (stringBalanceQaLength === 0) {
+        return null;
+    }
 
     let decimalIndex = stringBalanceQaLength - decimals;
     // Compute exponent (the number before the decimal '.')
@@ -285,11 +288,19 @@ function convertQaToDecimalString(balanceQa, decimals) {
 
     // If exponent has no value and mantissa is undefined, return.
     if (exponent === "0" || exponent === "") {
-        if (mantissa === "") {
+        if (mantissa === "" || isAllZeroes(mantissa)) {
             return null;
         }
     }
     return exponent.concat('.').concat(mantissa);
+}
+
+/** Returns true if the string given only contains zeroes. */
+function isAllZeroes(stringVar) {
+    if (stringVar.match(/^0+$/)) {
+        return true;
+    }
+    return false;
 }
 
 function convertFloatToDecimalString(balanceQaFloat, decimals) {
