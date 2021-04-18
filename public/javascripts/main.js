@@ -63,7 +63,7 @@ function computeZrcTokensPrice(zrcTokensPropertiesMap, onCompleteCallback) {
             })
             .catch(function () {
                 console.log("computeZrcTokensPrice failed!");
-                onCompleteCallback(null, zrcTokenProperties.ticker);
+                onCompleteCallback(null, "");
             });
     }
 }
@@ -143,7 +143,7 @@ function computeZrcTokensZilSwapLpBalance(account, zrcTokensPropertiesMap, onCom
             })
             .catch(function () {
                 console.log("computeZrcTokensZilSwapLpBalance failed!");
-                onCompleteCallback(null, 0, 0, zrcTokenProperties.ticker);
+                onCompleteCallback(null, 0, 0, "");
             });
     }
 }
