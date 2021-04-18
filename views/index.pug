@@ -382,7 +382,7 @@ block script
 
     function refreshZilWalletBalanceUsd() {
       let usdPrice = $('#zil_price').text();
-      usdPrice = parseFloat(usdPrice);
+      usdPrice = parseFloatFromUsd(usdPrice);
       if (!usdPrice) {
         return;
       }
@@ -391,14 +391,14 @@ block script
       if (!zilBalance) {
         return;
       }
-      let zilBalanceUsd = (usdPrice * zilBalance).toFixed(2)
-      $('#zil_balance_usd').text(zilBalanceUsd);
+      let zilBalanceUsd = (usdPrice * zilBalance);
+      $('#zil_balance_usd').text(formatUsd(zilBalanceUsd));
     }
 
     function refreshZrcTokenWalletBalanceUsd(ticker) {
 
       let usdPrice = $('#zil_price').text();
-      usdPrice = parseFloat(usdPrice);
+      usdPrice = parseFloatFromUsd(usdPrice);
       if (!usdPrice) {
         return;
       }
@@ -416,31 +416,31 @@ block script
         return;
       }
 
-      let zrcTokenBalanceUsd = (usdPrice * zrcTokenPriceInZil * zrcTokenBalance).toFixed(2)
-      $('#' + ticker +'_balance_usd').text(zrcTokenBalanceUsd);
+      let zrcTokenBalanceUsd = (usdPrice * zrcTokenPriceInZil * zrcTokenBalance);
+      $('#' + ticker +'_balance_usd').text(formatUsd(zrcTokenBalanceUsd));
     }
 
     function refreshTotalWalletBalanceUsd() {
       let totalUsd = 0;
       let zilUsd = $('#zil_balance_usd').text()
-      zilUsd = parseFloat(zilUsd);
+      zilUsd = parseFloatFromUsd(zilUsd);
       if (zilUsd) {
         totalUsd += zilUsd;
       }
       for (let ticker in zrcTokensPropertiesMap) {
         let zrcUsd = $('#' + ticker +'_balance_usd').text();
-        zrcUsd = parseFloat(zrcUsd);
+        zrcUsd = parseFloatFromUsd(zrcUsd);
         if (zrcUsd) {
           totalUsd += zrcUsd;
         }
       }
-      $('#wallet_balance_usd').text(totalUsd.toFixed(2));
+      $('#wallet_balance_usd').text(formatUsd(totalUsd));
     }
 
     function refreshZrcTokenLpBalanceUsd(ticker) {
 
       let usdPrice = $('#zil_price').text();
-      usdPrice = parseFloat(usdPrice);
+      usdPrice = parseFloatFromUsd(usdPrice);
       if (!usdPrice) {
         return;
       }
@@ -463,61 +463,61 @@ block script
         return;
       }
 
-      let lpTokenBalanceUsd = (usdPrice * (zilLpBalance + (zrcTokenPriceInZil * zrcLpTokenBalance))).toFixed(2)
-      $('#' + ticker +'_lp_balance_usd').text(lpTokenBalanceUsd);
+      let lpTokenBalanceUsd = (usdPrice * (zilLpBalance + (zrcTokenPriceInZil * zrcLpTokenBalance)));
+      $('#' + ticker +'_lp_balance_usd').text(formatUsd(lpTokenBalanceUsd));
     }
 
     function refreshTotalLpBalanceUsd() {
       let totalUsd = 0;
       for (let ticker in zrcTokensPropertiesMap) {
         let lpUsd = $('#' + ticker +'_lp_balance_usd').text();
-        lpUsd = parseFloat(lpUsd);
+        lpUsd = parseFloatFromUsd(lpUsd);
         if (lpUsd) {
           totalUsd += lpUsd;
         }
       }
-      $('#lp_balance_usd').text(totalUsd.toFixed(2));
+      $('#lp_balance_usd').text(formatUsd(totalUsd));
     }
 
     function refreshNetWorthUsd() {
       let totalUsd = 0;
 
       let walletBalanceUsd = $('#wallet_balance_usd').text();
-      walletBalanceUsd = parseFloat(walletBalanceUsd);
+      walletBalanceUsd = parseFloatFromUsd(walletBalanceUsd);
       if (walletBalanceUsd) {
         totalUsd += walletBalanceUsd;
       }
 
       let lpBalanceUsd = $('#lp_balance_usd').text();
-      lpBalanceUsd = parseFloat(lpBalanceUsd);
+      lpBalanceUsd = parseFloatFromUsd(lpBalanceUsd);
       if (lpBalanceUsd) {
         totalUsd += lpBalanceUsd;
       }
 
-      $('#net_worth_usd').text(totalUsd.toFixed(2));
+      $('#net_worth_usd').text(formatUsd(totalUsd));
     }
 
     function refreshTotalLpRewardUsd() {
       let ticker = 'ZWAP';
 
       let usdPrice = $('#zil_price').text();
-      usdPrice = parseFloat(usdPrice);
+      usdPrice = parseFloatFromUsd(usdPrice.replace(',',''));
       if (!usdPrice) {
         return;
       }
 
       let zrcTokenPriceInZil = $('#' + ticker +'_price').text();
-      zrcTokenPriceInZil = parseFloat(zrcTokenPriceInZil);
+      zrcTokenPriceInZil = parseFloatFromUsd(zrcTokenPriceInZil);
       if (!zrcTokenPriceInZil) {
         return;
       }
 
       let rewardBalance = $('#lp_reward_next_epoch_zwap').text();
-      rewardBalance = parseFloat(rewardBalance);
+      rewardBalance = parseFloatFromUsd(rewardBalance);
       if (!rewardBalance) {
         return;
       }
 
-      let rewardBalanceUsd = (usdPrice * zrcTokenPriceInZil * rewardBalance).toFixed(2)
-      $('#lp_reward_next_epoch_usd').text(rewardBalanceUsd);
+      let rewardBalanceUsd = (usdPrice * zrcTokenPriceInZil * rewardBalance);
+      $('#lp_reward_next_epoch_usd').text(formatUsd(rewardBalanceUsd));
     }

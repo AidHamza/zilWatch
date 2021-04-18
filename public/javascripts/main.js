@@ -236,3 +236,22 @@ function convertFloatToDecimalString(balanceQaFloat, decimals) {
         return balanceFloat.toFixed(4);
     }
 }
+
+const currencyFractionDigits = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+}).resolvedOptions().maximumFractionDigits;
+
+/**
+ * Given a float of USD value, return USD formatted string. e.g. "123,543.43".
+ */
+function formatUsd(usdValue) {
+    return usdValue.toLocaleString('en-US', { maximumFractionDigits: currencyFractionDigits });
+}
+
+/**
+ * returns float, accepts string in the form of USD. e.g., "123,543.43"
+ */
+function parseFloatFromUsd(usdString) {
+    return parseFloat(usdString.replace(',',''));
+}
