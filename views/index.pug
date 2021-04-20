@@ -287,8 +287,8 @@ block script
       }
     }
 
-    function showZrcTokenLpBalance(/* nullable */ shareRatio, zilBalance, zrcBalance, ticker) {
-      if (shareRatio) {
+    function showZrcTokenLpBalance(/* nullable */ shareRatio, /* nullable */ zilBalance, /* nullable */ zrcBalance, ticker) {
+      if (shareRatio && zilBalance && zrcBalance) {
         $('#' + ticker + '_lp_token_balance').text(zrcBalance);
         $('#' + ticker + '_lp_zil_balance').text(zilBalance);
 

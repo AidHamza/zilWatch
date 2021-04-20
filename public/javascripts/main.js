@@ -53,7 +53,7 @@ async function computeZrcTokensPrice(zrcTokensPropertiesMap, onCompleteCallback)
                             let zrcTokenAmount = tokenPoolReserveQa / Math.pow(10, zrcTokenProperties.decimals);
 
                             // ZIL amount per 1 ZRC-2 token
-                            let zrcTokenPriceInZil = convertFloatToDecimalString(zilAmount / zrcTokenAmount, /* decimals= */ 0);
+                            let zrcTokenPriceInZil = convertNumberQaToDecimalString(zilAmount / zrcTokenAmount, /* decimals= */ 0);
 
                             retryCounterLocal = 0; // Successful
                             onCompleteCallback(zrcTokenPriceInZil, zrcTokenProperties.ticker);
@@ -140,8 +140,8 @@ async function computeZrcTokensZilSwapLpBalance(account, zrcTokensPropertiesMap,
 
                             let ourShareRatio = ourLiqudity / poolLiquidity;
 
-                            let ourZilShare = convertFloatToDecimalString(ourShareRatio * zilPoolReserveQa, /* decimals= */ 12);
-                            let ourTokenShare = convertFloatToDecimalString(ourShareRatio * tokenPoolReserveQa, zrcTokenProperties.decimals);
+                            let ourZilShare = convertNumberQaToDecimalString(ourShareRatio * zilPoolReserveQa, /* decimals= */ 12);
+                            let ourTokenShare = convertNumberQaToDecimalString(ourShareRatio * tokenPoolReserveQa, zrcTokenProperties.decimals);
 
                             retryCounterLocal = 0; // Successful
                             onCompleteCallback(ourShareRatio, ourZilShare, ourTokenShare, zrcTokenProperties.ticker);
@@ -301,21 +301,6 @@ function isAllZeroes(stringVar) {
         return true;
     }
     return false;
-}
-
-function convertFloatToDecimalString(balanceQaFloat, decimals) {
-    let balanceFloat = (balanceQaFloat / Math.pow(10, decimals));
-    if (balanceFloat > 1000) {
-        return balanceFloat.toFixed(0);
-    } else if (balanceFloat > 100) {
-        return balanceFloat.toFixed(1);
-    } else if (balanceFloat > 10) {
-        return balanceFloat.toFixed(2);
-    } else if (balanceFloat > 1) {
-        return balanceFloat.toFixed(3);
-    } else {
-        return balanceFloat.toFixed(4);
-    }
 }
 
 const currencyFractionDigits = new Intl.NumberFormat('en-US', {
