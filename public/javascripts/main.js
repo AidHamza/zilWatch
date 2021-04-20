@@ -330,13 +330,6 @@ function formatUsd(usdValue) {
     return usdValue.toLocaleString('en-US', { maximumFractionDigits: currencyFractionDigits });
 }
 
-/**
- * returns float, accepts string in the form of USD. e.g., "123,543.43"
- */
-function parseFloatFromUsd(usdString) {
-    return parseFloat(usdString.replace(',', ''));
-}
-
 async function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
