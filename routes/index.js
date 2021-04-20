@@ -16,6 +16,13 @@ const zrcTokenPropertiesMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil18f5rlhqz9vndw4w8p60d0n7vg3n9sqvta7n6t2/logo",
     "decimals": 4,
   },
+  'XPORT': {
+    "ticker": "XPORT",
+    "name": "Proof Of Receipt Token",
+    "address": "zil1hpwshtxspjakjh5sn7vn4e7pp4gaqkefup24h2",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1hpwshtxspjakjh5sn7vn4e7pp4gaqkefup24h2/logo",
+    "decimals": 4,
+  },
   'ZWAP': {
     "ticker": "ZWAP",
     "name": "Zilswap",
