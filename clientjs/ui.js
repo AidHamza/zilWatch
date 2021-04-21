@@ -237,7 +237,7 @@ function refreshZilWalletBalanceUsd() {
         return;
     }
     let zilBalanceUsd = (usdPrice * zilBalance);
-    $('#zil_balance_usd').text(formatUsd(zilBalanceUsd));
+    $('#zil_balance_usd').text(commafyNumberToString(zilBalanceUsd));
 }
 
 function refreshZrcTokenWalletBalanceUsd(ticker) {
@@ -262,7 +262,7 @@ function refreshZrcTokenWalletBalanceUsd(ticker) {
     }
 
     let zrcTokenBalanceUsd = (usdPrice * zrcTokenPriceInZil * zrcTokenBalance);
-    $('#' + ticker + '_balance_usd').text(formatUsd(zrcTokenBalanceUsd));
+    $('#' + ticker + '_balance_usd').text(commafyNumberToString(zrcTokenBalanceUsd));
 }
 
 function refreshTotalWalletBalanceUsd() {
@@ -279,7 +279,7 @@ function refreshTotalWalletBalanceUsd() {
             totalUsd += zrcUsd;
         }
     }
-    $('#wallet_balance_usd').text(formatUsd(totalUsd));
+    $('#wallet_balance_usd').text(commafyNumberToString(totalUsd));
 }
 
 function refreshZrcTokenLpBalanceUsd(ticker) {
@@ -309,7 +309,7 @@ function refreshZrcTokenLpBalanceUsd(ticker) {
     }
 
     let lpTokenBalanceUsd = (usdPrice * (zilLpBalance + (zrcTokenPriceInZil * zrcLpTokenBalance)));
-    $('#' + ticker + '_lp_balance_usd').text(formatUsd(lpTokenBalanceUsd));
+    $('#' + ticker + '_lp_balance_usd').text(commafyNumberToString(lpTokenBalanceUsd));
 }
 
 function refreshTotalLpBalanceUsd() {
@@ -321,7 +321,7 @@ function refreshTotalLpBalanceUsd() {
             totalUsd += lpUsd;
         }
     }
-    $('#lp_balance_usd').text(formatUsd(totalUsd));
+    $('#lp_balance_usd').text(commafyNumberToString(totalUsd));
 }
 
 function refreshNetWorthUsd() {
@@ -339,7 +339,7 @@ function refreshNetWorthUsd() {
         totalUsd += lpBalanceUsd;
     }
 
-    $('#net_worth_usd').text(formatUsd(totalUsd));
+    $('#net_worth_usd').text(commafyNumberToString(totalUsd));
 }
 
 function refreshTotalLpRewardUsd() {
@@ -364,5 +364,5 @@ function refreshTotalLpRewardUsd() {
     }
 
     let rewardBalanceUsd = (usdPrice * zrcTokenPriceInZil * rewardBalance);
-    $('#lp_reward_next_epoch_usd').text(formatUsd(rewardBalanceUsd));
+    $('#lp_reward_next_epoch_usd').text(commafyNumberToString(rewardBalanceUsd));
 }

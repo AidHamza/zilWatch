@@ -48,6 +48,249 @@ describe('FormattingUtils', function () {
     });
   });
 
+  describe('#commafyNumberToString(decimalPlace=default=2)', function () {
+
+    it('floating point only', function () {
+      let result = FormattingUtils.commafyNumberToString(0.023231423);
+      let expected = "0.02";
+      assert.strictEqual(result, expected);
+    });
+
+    it('hundreds with long floating point', function () {
+      let result = FormattingUtils.commafyNumberToString(143.23231423);
+      let expected = "143.23";
+      assert.strictEqual(result, expected);
+    });
+
+    it('hundreds with cents', function () {
+      let result = FormattingUtils.commafyNumberToString(143.23);
+      let expected = "143.23";
+      assert.strictEqual(result, expected);
+    });
+
+    it('hundreds', function () {
+      let result = FormattingUtils.commafyNumberToString(143);
+      let expected = "143.00";
+      assert.strictEqual(result, expected);
+    });
+
+    it('thousands with long floating point', function () {
+      let result = FormattingUtils.commafyNumberToString(14243.23231423);
+      let expected = "14,243.23";
+      assert.strictEqual(result, expected);
+    });
+
+    it('thousands with cents', function () {
+      let result = FormattingUtils.commafyNumberToString(14243.23);
+      let expected = "14,243.23";
+      assert.strictEqual(result, expected);
+    });
+
+    it('thousands', function () {
+      let result = FormattingUtils.commafyNumberToString(14243);
+      let expected = "14,243.00";
+      assert.strictEqual(result, expected);
+    });
+
+    it('millions with cents', function () {
+      let result = FormattingUtils.commafyNumberToString(2447243.23);
+      let expected = "2,447,243.23";
+      assert.strictEqual(result, expected);
+    });
+
+    it('millions', function () {
+      let result = FormattingUtils.commafyNumberToString(2447243);
+      let expected = "2,447,243.00";
+      assert.strictEqual(result, expected);
+    });
+
+    it('billions with long floating point', function () {
+      let result = FormattingUtils.commafyNumberToString(9722447243.23231423);
+      let expected = "9,722,447,243.23";
+      assert.strictEqual(result, expected);
+    });
+
+    it('billions with cents', function () {
+      let result = FormattingUtils.commafyNumberToString(9722447243.23);
+      let expected = "9,722,447,243.23";
+      assert.strictEqual(result, expected);
+    });
+
+    it('billions', function () {
+      let result = FormattingUtils.commafyNumberToString(9722447243);
+      let expected = "9,722,447,243.00";
+      assert.strictEqual(result, expected);
+    });
+
+    it('numberVar not number: null', function () {
+      let result = FormattingUtils.commafyNumberToString("9432.45");
+      let expected = null;
+      assert.strictEqual(result, expected);
+    });
+  });
+
+  describe('#commafyNumberToString(decimalPlace=1)', function () {
+
+    it('floating point only', function () {
+      let result = FormattingUtils.commafyNumberToString(0.023231423, /* decimalPlace= */ 1);
+      let expected = "0.0";
+      assert.strictEqual(result, expected);
+    });
+
+    it('hundreds with long floating point', function () {
+      let result = FormattingUtils.commafyNumberToString(143.23231423, /* decimalPlace= */ 1);
+      let expected = "143.2";
+      assert.strictEqual(result, expected);
+    });
+
+    it('hundreds with cents', function () {
+      let result = FormattingUtils.commafyNumberToString(143.23, /* decimalPlace= */ 1);
+      let expected = "143.2";
+      assert.strictEqual(result, expected);
+    });
+
+    it('hundreds', function () {
+      let result = FormattingUtils.commafyNumberToString(143, /* decimalPlace= */ 1);
+      let expected = "143.0";
+      assert.strictEqual(result, expected);
+    });
+
+    it('thousands with long floating point', function () {
+      let result = FormattingUtils.commafyNumberToString(14243.23231423, /* decimalPlace= */ 1);
+      let expected = "14,243.2";
+      assert.strictEqual(result, expected);
+    });
+
+    it('thousands with cents', function () {
+      let result = FormattingUtils.commafyNumberToString(14243.23, /* decimalPlace= */ 1);
+      let expected = "14,243.2";
+      assert.strictEqual(result, expected);
+    });
+
+    it('thousands', function () {
+      let result = FormattingUtils.commafyNumberToString(14243, /* decimalPlace= */ 1);
+      let expected = "14,243.0";
+      assert.strictEqual(result, expected);
+    });
+
+    it('millions with cents', function () {
+      let result = FormattingUtils.commafyNumberToString(2447243.23, /* decimalPlace= */ 1);
+      let expected = "2,447,243.2";
+      assert.strictEqual(result, expected);
+    });
+
+    it('millions', function () {
+      let result = FormattingUtils.commafyNumberToString(2447243, /* decimalPlace= */ 1);
+      let expected = "2,447,243.0";
+      assert.strictEqual(result, expected);
+    });
+
+    it('billions with long floating point', function () {
+      let result = FormattingUtils.commafyNumberToString(9722447243.23231423, /* decimalPlace= */ 1);
+      let expected = "9,722,447,243.2";
+      assert.strictEqual(result, expected);
+    });
+
+    it('billions with cents', function () {
+      let result = FormattingUtils.commafyNumberToString(9722447243.23, /* decimalPlace= */ 1);
+      let expected = "9,722,447,243.2";
+      assert.strictEqual(result, expected);
+    });
+
+    it('billions', function () {
+      let result = FormattingUtils.commafyNumberToString(9722447243, /* decimalPlace= */ 1);
+      let expected = "9,722,447,243.0";
+      assert.strictEqual(result, expected);
+    });
+
+    it('numberVar not number: null', function () {
+      let result = FormattingUtils.commafyNumberToString("9432.45", /* decimalPlace= */ 1);
+      let expected = null;
+      assert.strictEqual(result, expected);
+    });
+  });
+
+  describe('#commafyNumberToString(decimalPlace=0)', function () {
+
+    it('floating point only', function () {
+      let result = FormattingUtils.commafyNumberToString(0.023231423, /* decimalPlace= */ 0);
+      let expected = "0";
+      assert.strictEqual(result, expected);
+    });
+
+    it('hundreds with long floating point', function () {
+      let result = FormattingUtils.commafyNumberToString(143.23231423, /* decimalPlace= */ 0);
+      let expected = "143";
+      assert.strictEqual(result, expected);
+    });
+
+    it('hundreds with cents', function () {
+      let result = FormattingUtils.commafyNumberToString(143.23, /* decimalPlace= */ 0);
+      let expected = "143";
+      assert.strictEqual(result, expected);
+    });
+
+    it('hundreds', function () {
+      let result = FormattingUtils.commafyNumberToString(143, /* decimalPlace= */ 0);
+      let expected = "143";
+      assert.strictEqual(result, expected);
+    });
+
+    it('thousands with long floating point', function () {
+      let result = FormattingUtils.commafyNumberToString(14243.23231423, /* decimalPlace= */ 0);
+      let expected = "14,243";
+      assert.strictEqual(result, expected);
+    });
+
+    it('thousands with cents', function () {
+      let result = FormattingUtils.commafyNumberToString(14243.23, /* decimalPlace= */ 0);
+      let expected = "14,243";
+      assert.strictEqual(result, expected);
+    });
+
+    it('thousands', function () {
+      let result = FormattingUtils.commafyNumberToString(14243, /* decimalPlace= */ 0);
+      let expected = "14,243";
+      assert.strictEqual(result, expected);
+    });
+
+    it('millions with cents', function () {
+      let result = FormattingUtils.commafyNumberToString(2447243.23, /* decimalPlace= */ 0);
+      let expected = "2,447,243";
+      assert.strictEqual(result, expected);
+    });
+
+    it('millions', function () {
+      let result = FormattingUtils.commafyNumberToString(2447243, /* decimalPlace= */ 0);
+      let expected = "2,447,243";
+      assert.strictEqual(result, expected);
+    });
+
+    it('billions with long floating point', function () {
+      let result = FormattingUtils.commafyNumberToString(9722447243.23231423, /* decimalPlace= */ 0);
+      let expected = "9,722,447,243";
+      assert.strictEqual(result, expected);
+    });
+
+    it('billions with cents', function () {
+      let result = FormattingUtils.commafyNumberToString(9722447243.23, /* decimalPlace= */ 0);
+      let expected = "9,722,447,243";
+      assert.strictEqual(result, expected);
+    });
+
+    it('billions', function () {
+      let result = FormattingUtils.commafyNumberToString(9722447243, /* decimalPlace= */ 0);
+      let expected = "9,722,447,243";
+      assert.strictEqual(result, expected);
+    });
+
+    it('numberVar not number: null', function () {
+      let result = FormattingUtils.commafyNumberToString("9432.45", /* decimalPlace= */ 0);
+      let expected = null;
+      assert.strictEqual(result, expected);
+    });
+  });
+
   describe('#convertNumberQaToDecimalString()', function () {
 
     it('qa 10^4 dec 4', function () {
@@ -116,4 +359,5 @@ describe('FormattingUtils', function () {
       assert.strictEqual(result, expected);
     });
   });
+
 });

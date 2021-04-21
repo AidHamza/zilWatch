@@ -227,20 +227,6 @@ function shortBech32Address(bech32Address) {
     return firstFive.concat("...", lastFive);
 }
 
-const currencyFractionDigits = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-}).resolvedOptions().maximumFractionDigits;
-
-/**
- * Given a float of USD value, return USD formatted string. e.g. "123,543.43".
- */
-function formatUsd(usdValue) {
-    return usdValue.toLocaleString('en-US', {
-        maximumFractionDigits: currencyFractionDigits
-    });
-}
-
 async function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }

@@ -15,6 +15,29 @@ function parseFloatFromUsdString(usdString) {
 }
 
 /**
+ * Converts a number into a user-friendly string format. (e.g., 1553424.34 => 1,553,424.34)
+ * 
+ * Returns null if the given parameter is not a number.
+ * 
+ * @param {number} numberVar required The number representation of the value
+ * @param {number=} decimalPlace optional The number of decimal point to retain. Defaults to 2.
+ * @returns {?string} The user-friendly string representation.
+ */
+function commafyNumberToString(numberVar, decimalPlace = 2) {
+    if (typeof numberVar !== 'number' && typeof numberVar !== 'bigint') {
+        return null;
+    }
+    if (decimalPlace < 0) {
+        return null;
+    }
+    let stringVar = numberVar.toFixed(decimalPlace);
+    if (numberVar >= 1000) {
+        return stringVar.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+    return stringVar;
+}
+
+/**
  * Converts number in Qa unit into user-friendly string representation.
  * It will have more decimal point if the number is smaller, and less
  * decimal point if the value is larger.
@@ -23,7 +46,7 @@ function parseFloatFromUsdString(usdString) {
  * 
  * @param {number} numberQa required The number representation in Qa unit
  * @param {number} decimals required The decimals property to convert the numberQa
- * @returns {?string} The user friendly string representation or null if the number is smaller than 10^6.
+ * @returns {?string} The user-friendly string representation or null if the number is smaller than 10^6.
  */
 function convertNumberQaToDecimalString(numberQa, decimals) {
     if (typeof numberQa !== 'number' && typeof numberQa !== 'bigint') {
@@ -54,5 +77,6 @@ function convertNumberQaToDecimalString(numberQa, decimals) {
 
 if (typeof exports !== 'undefined') {
     exports.parseFloatFromUsdString = parseFloatFromUsdString;
+    exports.commafyNumberToString = commafyNumberToString;
     exports.convertNumberQaToDecimalString = convertNumberQaToDecimalString;
 }
