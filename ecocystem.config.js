@@ -4,6 +4,7 @@ module.exports = {
             name: "zilwatch",
             script: "bin/www",
             watch: true,
+            // Remember to run 'npm run uglifyjs' before running any of these pm2 scripts.
             env: {
                 "PORT": 3000,
                 "NODE_ENV": "development"

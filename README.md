@@ -9,6 +9,7 @@
 ### Production
 
 - Run `npm ci`
+- Run `npm run uglifyjs`
 - Run `pm2 start ecocystem.config.js --env production`
 - It will serve `localhost:3001`
 
