@@ -1,12 +1,16 @@
-
 /**
  * Converts USD in the form of user-friendly string, into number data type by removing
  * the 3-digit comma separator.
  * 
+ * Returns null if parameter is not string.
+ * 
  * @param {string} usdString required The USD representation in string (e.g., "1,543,423.43")
  * @returns {number} The USD representation in number.
  */
-function parseFloatFromUsd(usdString) {
+function parseFloatFromUsdString(usdString) {
+    if (typeof usdString !== 'string') {
+        return null;
+    }
     return parseFloat(usdString.replace(/,/g, ''));
 }
 
@@ -49,6 +53,6 @@ function convertNumberQaToDecimalString(numberQa, decimals) {
 }
 
 if (typeof exports !== 'undefined') {
-    exports.parseFloatFromUsd = parseFloatFromUsd;
+    exports.parseFloatFromUsdString = parseFloatFromUsdString;
     exports.convertNumberQaToDecimalString = convertNumberQaToDecimalString;
 }
