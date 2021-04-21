@@ -41,7 +41,7 @@ describe('FormattingUtils', function () {
       assert.strictEqual(result, expected);
     });
 
-    it('usdString not string: returns null', function () {
+    it('usdString not string: null', function () {
       let result = FormattingUtils.parseFloatFromUsdString(9432.45);
       let expected = null;
       assert.strictEqual(result, expected);
@@ -51,67 +51,95 @@ describe('FormattingUtils', function () {
   describe('#convertNumberQaToDecimalString()', function () {
 
     it('qa 10^4 dec 4', function () {
-      let result = FormattingUtils.convertNumberQaToDecimalString(/* numberQa= */ 14243.23, /* decimals= */ 4);
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 14243.23, /* decimals= */ 4);
       let expected = "1.424";
       assert.strictEqual(result, expected);
     });
 
-    it('qa 10^4 dec 8: returns 3 SF', function () {
-      let result = FormattingUtils.convertNumberQaToDecimalString(/* numberQa= */ 14243.23, /* decimals= */ 8);
+    it('qa 10^4 dec 8: 3 SF', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 14243.23, /* decimals= */ 8);
       let expected = "0.000142";
       assert.strictEqual(result, expected);
     });
 
-    it('qa 10^4 dec 14: returns null', function () {
-      let result = FormattingUtils.convertNumberQaToDecimalString(/* numberQa= */ 14243.23, /* decimals= */ 14);
+    it('qa 10^4 dec 14: null', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 14243.23, /* decimals= */ 14);
       let expected = null;
       assert.strictEqual(result, expected);
     });
 
     it('qa 10^12 dec 0', function () {
-      let result = FormattingUtils.convertNumberQaToDecimalString(/* numberQa= */ 5156711544243.23, /* decimals= */ 0);
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 5156711544243.23, /* decimals= */ 0);
       let expected = "5156711544243";
       assert.strictEqual(result, expected);
     });
 
     it('qa 10^12 dec 4', function () {
-      let result = FormattingUtils.convertNumberQaToDecimalString(/* numberQa= */ 5156711544243.23, /* decimals= */ 4);
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 5156711544243.23, /* decimals= */ 4);
       let expected = "515671154";
       assert.strictEqual(result, expected);
     });
 
     it('qa 10^12 dec 12', function () {
-      let result = FormattingUtils.convertNumberQaToDecimalString(/* numberQa= */ 5156711544243.23, /* decimals= */ 12);
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 5156711544243.23, /* decimals= */ 12);
       let expected = "5.157";
       assert.strictEqual(result, expected);
     });
 
     it('qa 10^30 dec 15', function () {
-      let result = FormattingUtils.convertNumberQaToDecimalString(/* numberQa= */ 5156711544243247894578451234785.23, /* decimals= */ 15);
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 5156711544243247894578451234785.23, /* decimals= */ 15);
       let expected = "5156711544243248";
       assert.strictEqual(result, expected);
     });
 
     it('qa 10^30 dec 20', function () {
-      let result = FormattingUtils.convertNumberQaToDecimalString(/* numberQa= */ 5156711544243247894578451234785.23, /* decimals= */ 20);
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 5156711544243247894578451234785.23, /* decimals= */ 20);
       let expected = "51567115442";
       assert.strictEqual(result, expected);
     });
 
-    it('numberQa not number: returns null', function () {
-      let result = FormattingUtils.convertNumberQaToDecimalString(/* numberQa= */ "GSDF", /* decimals= */ 20);
+    it('numberQa not number: null', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ "GSDF", /* decimals= */ 20);
       let expected = null;
       assert.strictEqual(result, expected);
     });
 
-    it('decimals not number: returns null', function () {
-      let result = FormattingUtils.convertNumberQaToDecimalString(/* numberQa= */ 5156711544243, /* decimals= */ "432");
+    it('decimals not number: null', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 5156711544243, /* decimals= */ "432");
       let expected = null;
       assert.strictEqual(result, expected);
     });
 
-    it('both not number: returns null', function () {
-      let result = FormattingUtils.convertNumberQaToDecimalString(/* numberQa= */ null, /* decimals= */ "432");
+    it('both not number: null', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ null, /* decimals= */ "432");
+      let expected = null;
+      assert.strictEqual(result, expected);
+    });
+  });
+
+
+  describe('#isAllZeroesInString()', function () {
+
+    it('many zeroes: true', function () {
+      let result = FormattingUtils.isAllZeroesInString("000000000");
+      let expected = true;
+      assert.strictEqual(result, expected);
+    });
+
+    it('one zero: true', function () {
+      let result = FormattingUtils.isAllZeroesInString("0");
+      let expected = true;
+      assert.strictEqual(result, expected);
+    });
+
+    it('contains non-zero: false', function () {
+      let result = FormattingUtils.isAllZeroesInString("000.0");
+      let expected = false;
+      assert.strictEqual(result, expected);
+    });
+
+    it('stringVar not string: null', function () {
+      let result = FormattingUtils.isAllZeroesInString(12353.34);
       let expected = null;
       assert.strictEqual(result, expected);
     });

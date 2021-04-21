@@ -52,7 +52,26 @@ function convertNumberQaToDecimalString(numberQa, decimals) {
     return null;
 }
 
+/**
+ * Returns true if the string given only contains zero characters and non-empty.
+ * 
+ * Returns null if parameter is not string.
+ * 
+ * @param {string} stringVar required The string variable.
+ * @returns {boolean} Returns true if the string only contains zeroes and non-empty.
+ */
+function isAllZeroesInString(stringVar) {
+    if (typeof stringVar !== 'string') {
+        return null;
+    }
+    if (stringVar.match(/^0+$/)) {
+        return true;
+    }
+    return false;
+}
+
 if (typeof exports !== 'undefined') {
     exports.parseFloatFromUsdString = parseFloatFromUsdString;
     exports.convertNumberQaToDecimalString = convertNumberQaToDecimalString;
+    exports.isAllZeroesInString = isAllZeroesInString;
 }

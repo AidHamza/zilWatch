@@ -1,5 +1,11 @@
 const ZilSwapDexAddress = "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w";
-const ZilpayStatus = Object.freeze({ "not_installed": 1, "locked": 2, "not_connected": 3, "not_mainnet": 4, 'connected': 5 });
+const ZilpayStatus = Object.freeze({
+    "not_installed": 1,
+    "locked": 2,
+    "not_connected": 3,
+    "not_mainnet": 4,
+    'connected': 5
+});
 const MAX_RETRY = 5;
 const RETRY_INTERVAL_MS = 1500;
 
@@ -57,8 +63,7 @@ async function computeZrcTokensPrice(zrcTokensPropertiesMap, onCompleteCallback)
 
                             retryCounterLocal = 0; // Successful
                             onCompleteCallback(zrcTokenPriceInZil, zrcTokenProperties.ticker);
-                        }
-                        catch (err) {
+                        } catch (err) {
                             console.log("computeZrcTokensPrice(%s) failed! %s", key, err);
                         }
                     }
@@ -91,7 +96,7 @@ async function computeZrcTokenBalance(zrcTokenProperties, walletAddressBase16, o
         window.zilPay.blockchain.getSmartContractSubState(zrcTokenProperties.address, "balances", [walletAddressBase16])
             .then(function (data) {
                 retryCounter = 0; // Successful
-                
+
                 let zrcTokenBalance = null;
                 if (data.result && data.result.balances) {
                     const zrcTokenBalanceQa = data.result.balances[walletAddressBase16];
@@ -131,7 +136,7 @@ async function computeZrcTokensZilSwapLpBalance(account, zrcTokensPropertiesMap,
 
                             // If we don't have liqudity in this LP, skip and go to the next one.
                             if (!ourLiqudity) {
-                                onCompleteCallback(/* ourShareRatio= */ null, 0, 0, zrcTokenProperties.ticker);
+                                onCompleteCallback( /* ourShareRatio= */ null, 0, 0, zrcTokenProperties.ticker);
                                 continue;
                             }
                             let zilPoolReserveQa = data.result.pools[zrcTokenAddress].arguments[0];
@@ -145,8 +150,7 @@ async function computeZrcTokensZilSwapLpBalance(account, zrcTokensPropertiesMap,
 
                             retryCounterLocal = 0; // Successful
                             onCompleteCallback(ourShareRatio, ourZilShare, ourTokenShare, zrcTokenProperties.ticker);
-                        }
-                        catch (err) {
+                        } catch (err) {
                             console.log("computeZrcTokensZilSwapLpBalance(%s) failed! %s", key, err);
                         }
                     }
@@ -288,19 +292,11 @@ function convertQaToDecimalString(balanceQa, decimals) {
 
     // If exponent has no value and mantissa is undefined, return.
     if (exponent === "0" || exponent === "") {
-        if (mantissa === "" || isAllZeroes(mantissa)) {
+        if (mantissa === "" || isAllZeroesInString(mantissa)) {
             return null;
         }
     }
     return exponent.concat('.').concat(mantissa);
-}
-
-/** Returns true if the string given only contains zeroes. */
-function isAllZeroes(stringVar) {
-    if (stringVar.match(/^0+$/)) {
-        return true;
-    }
-    return false;
 }
 
 const currencyFractionDigits = new Intl.NumberFormat('en-US', {
@@ -312,7 +308,9 @@ const currencyFractionDigits = new Intl.NumberFormat('en-US', {
  * Given a float of USD value, return USD formatted string. e.g. "123,543.43".
  */
 function formatUsd(usdValue) {
-    return usdValue.toLocaleString('en-US', { maximumFractionDigits: currencyFractionDigits });
+    return usdValue.toLocaleString('en-US', {
+        maximumFractionDigits: currencyFractionDigits
+    });
 }
 
 async function sleep(ms) {
