@@ -220,13 +220,6 @@ function getZilpayStatus() {
     return ZilpayStatus.connected;
 }
 
-/* Returns string. */
-function shortBech32Address(bech32Address) {
-    var lastFive = bech32Address.substr(bech32Address.length - 5);
-    var firstFive = bech32Address.substr(0, 5);
-    return firstFive.concat("...", lastFive);
-}
-
 async function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }

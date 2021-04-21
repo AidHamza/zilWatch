@@ -396,4 +396,37 @@ describe('FormattingUtils', function () {
     });
   });
 
+  describe('#censorBech32Address()', function () {
+
+    it('ZilSwap DEX address', function () {
+      let result = FormattingUtils.censorBech32Address("zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w");
+      let expected = "zil1h...zpv2w";
+      assert.strictEqual(result, expected);
+    });
+
+    it('ZilSwap Governance TOken', function () {
+      let result = FormattingUtils.censorBech32Address("zil1p5suryq6q647usxczale29cu3336hhp376c627");
+      let expected = "zil1p...6c627";
+      assert.strictEqual(result, expected);
+    });
+
+    it('Random whale wallet address', function () {
+      let result = FormattingUtils.censorBech32Address("zil1f68jl32af8zdrkhwt3rem6ueqvrqn5zvwwaxmq");
+      let expected = "zil1f...waxmq";
+      assert.strictEqual(result, expected);
+    });
+
+    it('Shorter than 11 chars: null', function () {
+      let result = FormattingUtils.censorBech32Address("zil134d627");
+      let expected = null;
+      assert.strictEqual(result, expected);
+    });
+
+    it('bech32Address not string: null', function () {
+      let result = FormattingUtils.censorBech32Address(12445234);
+      let expected = null;
+      assert.strictEqual(result, expected);
+    });
+  });
+
 });

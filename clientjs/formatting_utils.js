@@ -78,8 +78,33 @@ function convertNumberQaToDecimalString(numberQa, decimals) {
     return null;
 }
 
+/**
+ * Converts a bech32 Zilliqa address into a censored version with the first 5 and last 5 character,
+ * connected by a "..." in the middle.
+ * 
+ * For example, "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w" => "zil1h...zpv2w"
+ * 
+ * Returns null if parameter is not string, or string length is shorter than 11.
+ * 
+ * @param {string} bech32Address required The string representation of bech32 zilliqa address
+ * @returns {number} The floating point number representation.
+ */
+function censorBech32Address(bech32Address) {
+    if (typeof bech32Address !== 'string') {
+        return null;
+    }
+    let addressLength = bech32Address.length;
+    if (addressLength < 11) {
+        return null;
+    }
+    let lastFive = bech32Address.substr(addressLength - 5);
+    let firstFive = bech32Address.substr(0, 5);
+    return firstFive + "..." + lastFive;
+}
+
 if (typeof exports !== 'undefined') {
     exports.parseFloatFromCommafiedNumberString = parseFloatFromCommafiedNumberString;
     exports.commafyNumberToString = commafyNumberToString;
     exports.convertNumberQaToDecimalString = convertNumberQaToDecimalString;
+    exports.censorBech32Address = censorBech32Address;
 }
