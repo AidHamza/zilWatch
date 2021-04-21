@@ -116,32 +116,4 @@ describe('FormattingUtils', function () {
       assert.strictEqual(result, expected);
     });
   });
-
-
-  describe('#isAllZeroesInString()', function () {
-
-    it('many zeroes: true', function () {
-      let result = FormattingUtils.isAllZeroesInString("000000000");
-      let expected = true;
-      assert.strictEqual(result, expected);
-    });
-
-    it('one zero: true', function () {
-      let result = FormattingUtils.isAllZeroesInString("0");
-      let expected = true;
-      assert.strictEqual(result, expected);
-    });
-
-    it('contains non-zero: false', function () {
-      let result = FormattingUtils.isAllZeroesInString("000.0");
-      let expected = false;
-      assert.strictEqual(result, expected);
-    });
-
-    it('stringVar not string: null', function () {
-      let result = FormattingUtils.isAllZeroesInString(12353.34);
-      let expected = null;
-      assert.strictEqual(result, expected);
-    });
-  });
 });

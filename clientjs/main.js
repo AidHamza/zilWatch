@@ -23,7 +23,7 @@ async function computeZilBalance(account, onCompleteCallback) {
         window.zilPay.blockchain.getBalance(account.bech32)
             .then(function (data) {
                 retryCounter = 0; // Successful
-                var userFriendlyZilBalance = convertQaToDecimalString(data.result.balance, /* decimals= */ 12);
+                var userFriendlyZilBalance = convertNumberQaToDecimalString(parseInt(data.result.balance), /* decimals= */ 12);
                 onCompleteCallback(userFriendlyZilBalance);
             })
             .catch(function () {
@@ -101,7 +101,7 @@ async function computeZrcTokenBalance(zrcTokenProperties, walletAddressBase16, o
                 if (data.result && data.result.balances) {
                     const zrcTokenBalanceQa = data.result.balances[walletAddressBase16];
                     if (zrcTokenBalanceQa) {
-                        zrcTokenBalance = convertQaToDecimalString(zrcTokenBalanceQa, zrcTokenProperties.decimals);
+                        zrcTokenBalance = convertNumberQaToDecimalString(parseInt(zrcTokenBalanceQa), zrcTokenProperties.decimals);
                     }
                 }
                 onCompleteCallback(zrcTokenBalance, zrcTokenProperties.ticker);
@@ -193,7 +193,7 @@ async function computeTotalLpRewardNextEpoch(account, onCompleteCallback) {
             for (let addressKey in contractAddressToRewardMap) {
                 totalRewardQa += parseInt(contractAddressToRewardMap[addressKey]);
             }
-            let totalRewardZwap = convertQaToDecimalString(totalRewardQa, /* decimals= */ 12)
+            let totalRewardZwap = convertNumberQaToDecimalString(totalRewardQa, /* decimals= */ 12)
             onCompleteCallback(totalRewardZwap);
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -225,78 +225,6 @@ function shortBech32Address(bech32Address) {
     var lastFive = bech32Address.substr(bech32Address.length - 5);
     var firstFive = bech32Address.substr(0, 5);
     return firstFive.concat("...", lastFive);
-}
-
-/**
- * Returns string. decimals is 6 for li (gas), 12 for ZIL, variable decimals on ZRC tokens.
- * 
- * balanceQa = 123456789
- * len = 9
- * decimals = 5
- * decimalIndex =  9 - 5 = 4
- * exponent = substring(0, 4)= 1234
- * mantissa = substring(4, 4+3) = 567
- * result = "1234.567"
- * 
- * balanceQa = 12345
- * len = 5
- * decimals = 5
- * decimalIndex = 5 - 5 = 0
- * exponent = 0
- * mantissa = substring(0, 0+3) = 123
- * result = "0.123"
- * 
- * balanceQa = 12345
- * len = 5
- * decimals = 6
- * decimalIndex = 5 - 6 = -1
- * exponent = 0
- * mantissa = substring(0, 0+3) = 123 // Need to append "0", decimalIndex times, "0123"
- * result = "0.0123"
- */
-function convertQaToDecimalString(balanceQa, decimals) {
-    let stringBalanceQa = balanceQa.toString();
-    let stringBalanceQaLength = stringBalanceQa.length;
-    if (stringBalanceQaLength === 0) {
-        return null;
-    }
-
-    let decimalIndex = stringBalanceQaLength - decimals;
-    // Compute exponent (the number before the decimal '.')
-    let exponent = "0";
-    if (decimalIndex > 0) {
-        exponent = stringBalanceQa.substring(0, decimalIndex);
-    }
-
-    // Adjust decimal place based on exponent
-    let decimalPlace = Math.max(4 - exponent.length, 0);
-    if (exponent === "0") {
-        decimalPlace = 4;
-    }
-    if (decimalPlace == 0) {
-        return exponent;
-    }
-
-    // Compute mantissa (the number after the decimal '.')
-    let mantissa = "";
-    if (decimalIndex >= 0) {
-        mantissa = stringBalanceQa.substring(decimalIndex, decimalIndex + decimalPlace);
-    } else {
-        mantissa = stringBalanceQa.substring(0, decimalPlace);
-        // decimalIndex is negative;
-        let i;
-        for (i = decimalIndex; i < 0; i++) {
-            mantissa = "0".concat(mantissa);
-        }
-    }
-
-    // If exponent has no value and mantissa is undefined, return.
-    if (exponent === "0" || exponent === "") {
-        if (mantissa === "" || isAllZeroesInString(mantissa)) {
-            return null;
-        }
-    }
-    return exponent.concat('.').concat(mantissa);
 }
 
 const currencyFractionDigits = new Intl.NumberFormat('en-US', {
