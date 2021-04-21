@@ -14,4 +14,5 @@
 
 ### Testing
 
-Coming soon.
+- Run `npm install`
+- Run `npm test`

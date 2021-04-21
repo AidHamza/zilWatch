@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "test": "mocha tests/**/*.js"
+    "start": "npm run uglify && node ./bin/www",
+    "test": "mocha tests/**/*.js",
+    "uglify": "uglifyjs clientjs/*.js --compress --mangle --output public/javascripts/main.min.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -15,6 +16,7 @@
     "pug": "~3.0.2"
   },
   "devDependencies": {
-    "mocha": "^8.3.2"
+    "mocha": "^8.3.2",
+    "uglify-js": "^3.13.4"
   }
 }

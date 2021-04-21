@@ -1,6 +1,9 @@
 # Scripts
 *.sh
 
+# Minified JS
+*.min.js
+
 # Logs
 logs
 *.log

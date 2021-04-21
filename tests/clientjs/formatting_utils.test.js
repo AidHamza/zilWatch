@@ -1,5 +1,5 @@
 var assert = require('assert');
-var FormattingUtils = require('../../../public/javascripts/formatting_utils.js');
+var FormattingUtils = require('../../clientjs/formatting_utils.js');
 
 describe('FormattingUtils', function () {
 
