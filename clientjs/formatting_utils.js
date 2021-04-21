@@ -1,17 +1,17 @@
 /**
- * Converts USD in the form of user-friendly string, into number data type by removing
+ * Converts user-friendly commafied number string, into number data type by removing
  * the 3-digit comma separator.
  * 
  * Returns null if parameter is not string.
  * 
- * @param {string} usdString required The USD representation in string (e.g., "1,543,423.43")
- * @returns {number} The USD representation in floating point number.
+ * @param {string} commafiedNumberStringVar required The commafied number representation in string (e.g., "1,543,423.43")
+ * @returns {number} The floating point number representation.
  */
-function parseFloatFromUsdString(usdString) {
-    if (typeof usdString !== 'string') {
+function parseFloatFromCommafiedNumberString(commafiedNumberStringVar) {
+    if (typeof commafiedNumberStringVar !== 'string') {
         return null;
     }
-    return parseFloat(usdString.replace(/,/g, ''));
+    return parseFloat(commafiedNumberStringVar.replace(/,/g, ''));
 }
 
 /**
@@ -25,6 +25,9 @@ function parseFloatFromUsdString(usdString) {
  */
 function commafyNumberToString(numberVar, decimalPlace = 2) {
     if (typeof numberVar !== 'number' && typeof numberVar !== 'bigint') {
+        return null;
+    }
+    if (typeof decimalPlace !== 'number' && typeof decimalPlace !== 'bigint') {
         return null;
     }
     if (decimalPlace < 0) {
@@ -76,7 +79,7 @@ function convertNumberQaToDecimalString(numberQa, decimals) {
 }
 
 if (typeof exports !== 'undefined') {
-    exports.parseFloatFromUsdString = parseFloatFromUsdString;
+    exports.parseFloatFromCommafiedNumberString = parseFloatFromCommafiedNumberString;
     exports.commafyNumberToString = commafyNumberToString;
     exports.convertNumberQaToDecimalString = convertNumberQaToDecimalString;
 }

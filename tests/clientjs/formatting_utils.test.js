@@ -3,46 +3,76 @@ var FormattingUtils = require('../../clientjs/formatting_utils.js');
 
 describe('FormattingUtils', function () {
 
-  describe('#parseFloatFromUsdString()', function () {
+  describe('#parseFloatFromCommafiedNumberString()', function () {
+
+    it('floating point only', function () {
+      let result = FormattingUtils.parseFloatFromCommafiedNumberString("0.023231423");
+      let expected = 0.023231423;
+      assert.strictEqual(result, expected);
+    });
+
+    it('hundreds with long floating point', function () {
+      let result = FormattingUtils.parseFloatFromCommafiedNumberString("143.23231423");
+      let expected = 143.23231423;
+      assert.strictEqual(result, expected);
+    });
+
+    it('hundreds with cents', function () {
+      let result = FormattingUtils.parseFloatFromCommafiedNumberString("143.23");
+      let expected = 143.23;
+      assert.strictEqual(result, expected);
+    });
+
+    it('thousands with long floating point', function () {
+      let result = FormattingUtils.parseFloatFromCommafiedNumberString("14,243.23231423");
+      let expected = 14243.23231423;
+      assert.strictEqual(result, expected);
+    });
 
     it('thousands with cents', function () {
-      let result = FormattingUtils.parseFloatFromUsdString("14,243.23");
+      let result = FormattingUtils.parseFloatFromCommafiedNumberString("14,243.23");
       let expected = 14243.23;
       assert.strictEqual(result, expected);
     });
 
     it('thousands', function () {
-      let result = FormattingUtils.parseFloatFromUsdString("14,243");
+      let result = FormattingUtils.parseFloatFromCommafiedNumberString("14,243");
       let expected = 14243;
       assert.strictEqual(result, expected);
     });
 
     it('millions with cents', function () {
-      let result = FormattingUtils.parseFloatFromUsdString("2,447,243.23");
+      let result = FormattingUtils.parseFloatFromCommafiedNumberString("2,447,243.23");
       let expected = 2447243.23;
       assert.strictEqual(result, expected);
     });
 
     it('millions', function () {
-      let result = FormattingUtils.parseFloatFromUsdString("2,447,243");
+      let result = FormattingUtils.parseFloatFromCommafiedNumberString("2,447,243");
       let expected = 2447243;
       assert.strictEqual(result, expected);
     });
 
+    it('billions with long floating point', function () {
+      let result = FormattingUtils.parseFloatFromCommafiedNumberString("9,722,447,243.23231423");
+      let expected = 9722447243.23231423;
+      assert.strictEqual(result, expected);
+    });
+
     it('billions with cents', function () {
-      let result = FormattingUtils.parseFloatFromUsdString("9,722,447,243.23");
+      let result = FormattingUtils.parseFloatFromCommafiedNumberString("9,722,447,243.23");
       let expected = 9722447243.23;
       assert.strictEqual(result, expected);
     });
 
     it('billions', function () {
-      let result = FormattingUtils.parseFloatFromUsdString("9,722,447,243");
+      let result = FormattingUtils.parseFloatFromCommafiedNumberString("9,722,447,243");
       let expected = 9722447243;
       assert.strictEqual(result, expected);
     });
 
     it('usdString not string: null', function () {
-      let result = FormattingUtils.parseFloatFromUsdString(9432.45);
+      let result = FormattingUtils.parseFloatFromCommafiedNumberString(9432.45);
       let expected = null;
       assert.strictEqual(result, expected);
     });
@@ -124,6 +154,12 @@ describe('FormattingUtils', function () {
 
     it('numberVar not number: null', function () {
       let result = FormattingUtils.commafyNumberToString("9432.45");
+      let expected = null;
+      assert.strictEqual(result, expected);
+    });
+
+    it('decimalPlace less than 0: null', function () {
+      let result = FormattingUtils.commafyNumberToString(2543432, /* decimalPlace= */ -1);
       let expected = null;
       assert.strictEqual(result, expected);
     });
