@@ -65,8 +65,6 @@ function refreshMainContentData(account) {
 
 function refreshLoginButtonState(account) {
     $('#wallet_connect').hide();
-    $('#wallet_address_anchor').attr("target", "_blank");
-    $('#wallet_address_anchor').attr("href", "https://viewblock.io/zilliqa/address/".concat(account.bech32));
     $('#wallet_address').html(censorBech32Address(account.bech32));
     $('#wallet_address').show();
     $('#wallet_refresh').show();
