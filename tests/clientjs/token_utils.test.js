@@ -1,4 +1,5 @@
 var assert = require('assert');
+var fs = require('fs')
 var TokenUtils = require('../../clientjs/token_utils.js');
 
 describe('TokenUtils', function () {
@@ -56,7 +57,7 @@ describe('TokenUtils', function () {
         });
 
         it('dataObject not object: null', function () {
-            let dataObject =  "hehe";
+            let dataObject = "hehe";
             let walletAddressBase16 = "0x278598f13a4cb142e44dde38aba8d8c0190bcb85";
 
             let result = TokenUtils.parseZrcTokenBalanceNumberQaFromGetSmartContractSubState(dataObject, walletAddressBase16);
@@ -71,6 +72,70 @@ describe('TokenUtils', function () {
             let zrcTokenDecimals = 12;
 
             let result = TokenUtils.parseZrcTokenBalanceNumberQaFromGetSmartContractSubState(dataObject, walletAddressBase16);
+            let expected = null;
+            assert.strictEqual(result, expected);
+        });
+    });
+
+
+    describe('#getZrcTokenPriceInZilFromZilswapDexState()', function () {
+
+        it('gZil', function () {
+            let dataString = fs.readFileSync('./tests/clientjs/token_utils_zilswapdex_contractstate_20210422.txt', 'utf8')
+
+            let dataObject = JSON.parse(dataString);
+            let zrcTokenAddressBase16 = "0xa845C1034CD077bD8D32be0447239c7E4be6cb21";
+
+            let result = TokenUtils.getZrcTokenPriceInZilFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 15);
+            let expected = 1727.5817248410563;
+            assert.strictEqual(result, expected);
+        });
+
+        it('ZWAP', function () {
+            let dataString = fs.readFileSync('./tests/clientjs/token_utils_zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataObject = JSON.parse(dataString);
+            let zrcTokenAddressBase16 = "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31";
+
+            let result = TokenUtils.getZrcTokenPriceInZilFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 12);
+            let expected = 3799.198264240309;
+            assert.strictEqual(result, expected);
+        });
+
+        it('zrc token contract address not found: null', function () {
+            let dataString = fs.readFileSync('./tests/clientjs/token_utils_zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataObject = JSON.parse(dataString);
+            let zrcTokenAddressBase16 = "0x123412341A06aBEE40d8177F95171c8c63AbdC31";
+
+            let result = TokenUtils.getZrcTokenPriceInZilFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 12);
+            let expected = null;
+            assert.strictEqual(result, expected);
+        });
+
+        it('dataObject not object: null', function () {
+            let dataObject = "hehe";
+            let zrcTokenAddressBase16 = "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31";
+
+            let result = TokenUtils.getZrcTokenPriceInZilFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 12);
+            let expected = null;
+            assert.strictEqual(result, expected);
+        });
+
+        it('zrcTokenAddressBase16 not string: null', function () {
+            let dataString = fs.readFileSync('./tests/clientjs/token_utils_zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataObject = JSON.parse(dataString);
+            let zrcTokenAddressBase16 = 1234;
+
+            let result = TokenUtils.getZrcTokenPriceInZilFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 12);
+            let expected = null;
+            assert.strictEqual(result, expected);
+        });
+
+        it('zrcTokenDecimals not nubmer: null', function () {
+            let dataString = fs.readFileSync('./tests/clientjs/token_utils_zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataObject = JSON.parse(dataString);
+            let zrcTokenAddressBase16 = "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31";
+
+            let result = TokenUtils.getZrcTokenPriceInZilFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ "12");
             let expected = null;
             assert.strictEqual(result, expected);
         });

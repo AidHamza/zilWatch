@@ -50,16 +50,10 @@ async function computeZrcTokensPrice(zrcTokensPropertiesMap, onCompleteCallback)
                     while (retryCounterLocal--) {
                         try {
                             let zrcTokenProperties = zrcTokensPropertiesMap[key];
-                            let zrcTokenAddress = window.zilPay.crypto.fromBech32Address(zrcTokenProperties.address).toLowerCase();
-
-                            let zilPoolReserveQa = data.result.pools[zrcTokenAddress].arguments[0];
-                            let tokenPoolReserveQa = data.result.pools[zrcTokenAddress].arguments[1];
-
-                            let zilAmount = zilPoolReserveQa / Math.pow(10, 12);
-                            let zrcTokenAmount = tokenPoolReserveQa / Math.pow(10, zrcTokenProperties.decimals);
-
-                            // ZIL amount per 1 ZRC-2 token
-                            let zrcTokenPriceInZil = convertNumberQaToDecimalString(zilAmount / zrcTokenAmount, /* decimals= */ 0);
+                            let zrcTokenAddressBase16 = window.zilPay.crypto.fromBech32Address(zrcTokenProperties.address).toLowerCase();
+                            
+                            let zrcTokenPriceInZilNumber = getZrcTokenPriceInZilFromZilswapDexState(data, zrcTokenAddressBase16, zrcTokenProperties.decimals);
+                            let zrcTokenPriceInZil = convertNumberQaToDecimalString(zrcTokenPriceInZilNumber, /* decimals= */ 0);
 
                             retryCounterLocal = 0; // Successful
                             onCompleteCallback(zrcTokenPriceInZil, zrcTokenProperties.ticker);
@@ -187,7 +181,7 @@ async function computeTotalLpRewardNextEpoch(account, onCompleteCallback) {
             for (let addressKey in contractAddressToRewardMap) {
                 totalRewardQa += parseInt(contractAddressToRewardMap[addressKey]);
             }
-            let totalRewardZwap = convertNumberQaToDecimalString(totalRewardQa, /* decimals= */ 12)
+            let totalRewardZwap = convertNumberQaToDecimalString(totalRewardQa, zrcTokensPropertiesMap['ZWAP'].decimals)
             onCompleteCallback(totalRewardZwap);
         },
         error: function (xhr, textStatus, errorThrown) {
