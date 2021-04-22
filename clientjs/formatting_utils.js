@@ -1,3 +1,6 @@
+// formatting_utils.js
+// No dependencies
+
 /**
  * Converts user-friendly commafied number string, into number data type by removing
  * the 3-digit comma separator.

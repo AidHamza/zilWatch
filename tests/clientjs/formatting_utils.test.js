@@ -404,7 +404,7 @@ describe('FormattingUtils', function () {
       assert.strictEqual(result, expected);
     });
 
-    it('ZilSwap Governance TOken', function () {
+    it('ZilSwap Governance Token', function () {
       let result = FormattingUtils.censorBech32Address("zil1p5suryq6q647usxczale29cu3336hhp376c627");
       let expected = "zil1p...6c627";
       assert.strictEqual(result, expected);

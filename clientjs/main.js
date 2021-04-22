@@ -96,15 +96,9 @@ async function computeZrcTokenBalance(zrcTokenProperties, walletAddressBase16, o
         window.zilPay.blockchain.getSmartContractSubState(zrcTokenProperties.address, "balances", [walletAddressBase16])
             .then(function (data) {
                 retryCounter = 0; // Successful
-
-                let zrcTokenBalance = null;
-                if (data.result && data.result.balances) {
-                    const zrcTokenBalanceQa = data.result.balances[walletAddressBase16];
-                    if (zrcTokenBalanceQa) {
-                        zrcTokenBalance = convertNumberQaToDecimalString(parseInt(zrcTokenBalanceQa), zrcTokenProperties.decimals);
-                    }
-                }
-                onCompleteCallback(zrcTokenBalance, zrcTokenProperties.ticker);
+                let zrcTokenBalanceNumberQa = parseZrcTokenBalanceNumberQaFromGetSmartContractSubState(data, walletAddressBase16);
+                let zrcTokenBalanceString = convertNumberQaToDecimalString(zrcTokenBalanceNumberQa, zrcTokenProperties.decimals);
+                onCompleteCallback(zrcTokenBalanceString, zrcTokenProperties.ticker);
             })
             .catch(function () {
                 console.log("computeZrcTokensBalance(%s) failed!", zrcTokenProperties.ticker);
