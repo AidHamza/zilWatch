@@ -7,7 +7,6 @@ const ZilpayStatus = Object.freeze({
     'connected': 5
 });
 const MAX_RETRY = 5;
-const RETRY_INTERVAL_MS = 1500;
 
 /** Returns a Promise. */
 function connectZilpayService() {
@@ -16,59 +15,54 @@ function connectZilpayService() {
 
 /** Void function. invokes onCompleteCallback(string balance) function after computation is done. */
 async function computeZilBalance(account, onCompleteCallback) {
-
-    let retryCounter = MAX_RETRY;
-    while (retryCounter--) {
-
-        window.zilPay.blockchain.getBalance(account.bech32)
-            .then(function (data) {
-                retryCounter = 0; // Successful
-                var userFriendlyZilBalance = convertNumberQaToDecimalString(parseInt(data.result.balance), /* decimals= */ 12);
-                onCompleteCallback(userFriendlyZilBalance);
-            })
-            .catch(function () {
-                console.log("computeZilBalance failed!");
-            });
-
-        await sleep(RETRY_INTERVAL_MS);
-    }
+    computeZilBalanceWithRetry(account, onCompleteCallback, MAX_RETRY);
 }
 
+function computeZilBalanceWithRetry(account, onCompleteCallback, retryRemaining) {
+    if (retryRemaining <= 0) {
+        console.log("computeZilBalanceWithRetry failed! Out of retries!");
+        return;
+    }
+    window.zilPay.blockchain.getBalance(account.bech32)
+        .then(function (data) {
+            retryCounter = 0; // Successful
+            var userFriendlyZilBalance = convertNumberQaToDecimalString(parseInt(data.result.balance), /* decimals= */ 12);
+            onCompleteCallback(userFriendlyZilBalance);
+        })
+        .catch(function () {
+            console.log("computeZilBalanceWithRetry failed!");
+            computeZilBalanceWithRetry(account, onCompleteCallback, retryRemaining - 1)
+        });
+}
 
 /** Void function. invokes onCompleteCallback(string balance, string ticker) function after computation is done. */
 async function computeZrcTokensPrice(zrcTokensPropertiesMap, onCompleteCallback) {
+    computeZrcTokensPriceWithRetry(zrcTokensPropertiesMap, onCompleteCallback, MAX_RETRY);
+}
 
-    let retryCounter = MAX_RETRY;
-    while (retryCounter--) {
-
-        window.zilPay.blockchain.getSmartContractState(ZilSwapDexAddress)
-            .then(function (data) {
-                retryCounter = 0; // Successful
-
-                for (const key in zrcTokensPropertiesMap) {
-                    let retryCounterLocal = MAX_RETRY;
-                    while (retryCounterLocal--) {
-                        try {
-                            let zrcTokenProperties = zrcTokensPropertiesMap[key];
-                            let zrcTokenAddressBase16 = window.zilPay.crypto.fromBech32Address(zrcTokenProperties.address).toLowerCase();
-
-                            let zrcTokenPriceInZilNumber = getZrcTokenPriceInZilFromZilswapDexState(data, zrcTokenAddressBase16, zrcTokenProperties.decimals);
-                            let zrcTokenPriceInZil = convertNumberQaToDecimalString(zrcTokenPriceInZilNumber, /* decimals= */ 0);
-
-                            retryCounterLocal = 0; // Successful
-                            onCompleteCallback(zrcTokenPriceInZil, zrcTokenProperties.ticker);
-                        } catch (err) {
-                            console.log("computeZrcTokensPrice(%s) failed! %s", key, err);
-                        }
-                    }
-                }
-            })
-            .catch(function () {
-                console.log("computeZrcTokensPrice failed!");
-            });
-
-        await sleep(RETRY_INTERVAL_MS);
+function computeZrcTokensPriceWithRetry(zrcTokensPropertiesMap, onCompleteCallback, retryRemaining) {
+    if (retryRemaining <= 0) {
+        console.log("computeZrcTokensPriceWithRetry failed! Out of retries!");
+        return;
     }
+    window.zilPay.blockchain.getSmartContractState(ZilSwapDexAddress)
+        .then(function (data) {
+            retryCounter = 0; // Successful
+            for (const key in zrcTokensPropertiesMap) {
+                let zrcTokenProperties = zrcTokensPropertiesMap[key];
+                let zrcTokenAddressBase16 = window.zilPay.crypto.fromBech32Address(zrcTokenProperties.address).toLowerCase();
+
+                let zrcTokenPriceInZilNumber = getZrcTokenPriceInZilFromZilswapDexState(data, zrcTokenAddressBase16, zrcTokenProperties.decimals);
+                let zrcTokenPriceInZil = convertNumberQaToDecimalString(zrcTokenPriceInZilNumber, /* decimals= */ 0);
+
+                retryCounterLocal = 0; // Successful
+                onCompleteCallback(zrcTokenPriceInZil, zrcTokenProperties.ticker);
+            }
+        })
+        .catch(function () {
+            console.log("computeZrcTokensPriceWithRetry failed!");
+            computeZrcTokensPriceWithRetry(zrcTokensPropertiesMap, onCompleteCallback, retryRemaining - 1)
+        });
 }
 
 /** Void function. invokes onCompleteCallback(string balance, string ticker) function after computation is done. */
@@ -78,68 +72,65 @@ async function computeZrcTokensBalance(account, zrcTokensPropertiesMap, onComple
         let walletAddressBase16 = account.base16.toLowerCase();
 
         // Ignore Promise result, not important.
-        computeZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onCompleteCallback);
+        computeSingleZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onCompleteCallback);
     }
 }
 
 /** Private async function, to compute a single zrcToken. */
-async function computeZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onCompleteCallback) {
-    let retryCounter = MAX_RETRY;
-    while (retryCounter--) {
+async function computeSingleZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onCompleteCallback) {
+    computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddressBase16, onCompleteCallback, MAX_RETRY);
+}
 
-        window.zilPay.blockchain.getSmartContractSubState(zrcTokenProperties.address, "balances", [walletAddressBase16])
-            .then(function (data) {
-                retryCounter = 0; // Successful
-                let zrcTokenBalanceNumberQa = parseZrcTokenBalanceNumberQaFromGetSmartContractSubState(data, walletAddressBase16);
-                let zrcTokenBalanceString = convertNumberQaToDecimalString(zrcTokenBalanceNumberQa, zrcTokenProperties.decimals);
-                onCompleteCallback(zrcTokenBalanceString, zrcTokenProperties.ticker);
-            })
-            .catch(function () {
-                console.log("computeZrcTokensBalance(%s) failed!", zrcTokenProperties.ticker);
-            });
-
-        await sleep(RETRY_INTERVAL_MS);
+function computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddressBase16, onCompleteCallback, retryRemaining) {
+    if (retryRemaining <= 0) {
+        console.log("computeSingleZrcTokenBalanceWithRetry failed! Out of retries!");
+        return;
     }
+    window.zilPay.blockchain.getSmartContractSubState(zrcTokenProperties.address, "balances", [walletAddressBase16])
+        .then(function (data) {
+            retryCounter = 0; // Successful
+            let zrcTokenBalanceNumberQa = parseZrcTokenBalanceNumberQaFromGetSmartContractSubState(data, walletAddressBase16);
+            let zrcTokenBalanceString = convertNumberQaToDecimalString(zrcTokenBalanceNumberQa, zrcTokenProperties.decimals);
+            onCompleteCallback(zrcTokenBalanceString, zrcTokenProperties.ticker);
+        })
+        .catch(function () {
+            console.log("computeSingleZrcTokenBalanceWithRetry(%s) failed!", zrcTokenProperties.ticker);
+            computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddressBase16, onCompleteCallback, retryRemaining - 1)
+        });
 }
 
 /** Void function. invokes onCompleteCallback(string balance, string ticker) function after computation is done. */
 async function computeZrcTokensZilSwapLpBalance(account, zrcTokensPropertiesMap, onCompleteCallback) {
+    computeZrcTokensZilSwapLpBalanceWithRetry(account, zrcTokensPropertiesMap, onCompleteCallback, MAX_RETRY);
+}
 
-    let retryCounter = MAX_RETRY;
-    while (retryCounter--) {
-
-        window.zilPay.blockchain.getSmartContractState(ZilSwapDexAddress)
-            .then(function (data) {
-                retryCounter = 0; // Successful
-
-                for (const key in zrcTokensPropertiesMap) {
-
-                    let retryCounterLocal = MAX_RETRY;
-                    while (retryCounterLocal--) {
-                        try {
-                            let zrcTokenProperties = zrcTokensPropertiesMap[key];
-                            let zrcTokenAddressBase16 = window.zilPay.crypto.fromBech32Address(zrcTokenProperties.address).toLowerCase();
-
-                            let walletPoolStatus = getSingleTokenLpStatusFromZilswapDexState(data, zrcTokenAddressBase16, zrcTokenProperties.decimals, account.base16.toLowerCase());
-
-                            if (walletPoolStatus) {
-                                let poolSharePercent = parseFloat((walletPoolStatus.shareRatio) * 100).toPrecision(3);
-                                let ourZilShare = convertNumberQaToDecimalString(walletPoolStatus.zilAmount, /* decimals= */ 0);
-                                let ourTokenShare = convertNumberQaToDecimalString(walletPoolStatus.zrcTokenAmount, /* decimals= */ 0);
-                                onCompleteCallback(poolSharePercent, ourZilShare, ourTokenShare, zrcTokenProperties.ticker);
-                            }
-                        } catch (err) {
-                            console.log("computeZrcTokensZilSwapLpBalance(%s) failed! %s", key, err);
-                        }
-                    }
-                }
-            })
-            .catch(function () {
-                console.log("computeZrcTokensZilSwapLpBalance failed!");
-            });
-
-        await sleep(RETRY_INTERVAL_MS);
+function computeZrcTokensZilSwapLpBalanceWithRetry(account, zrcTokensPropertiesMap, onCompleteCallback, retryRemaining) {
+    if (retryRemaining <= 0) {
+        console.log("computeZrcTokensZilSwapLpBalanceWithRetry failed! Out of retries!");
+        return;
     }
+    window.zilPay.blockchain.getSmartContractState(ZilSwapDexAddress)
+        .then(function (data) {
+            retryCounter = 0; // Successful
+
+            for (const key in zrcTokensPropertiesMap) {
+                let zrcTokenProperties = zrcTokensPropertiesMap[key];
+                let zrcTokenAddressBase16 = window.zilPay.crypto.fromBech32Address(zrcTokenProperties.address).toLowerCase();
+
+                let walletPoolStatus = getSingleTokenLpStatusFromZilswapDexState(data, zrcTokenAddressBase16, zrcTokenProperties.decimals, account.base16.toLowerCase());
+
+                if (walletPoolStatus) {
+                    let poolSharePercent = parseFloat((walletPoolStatus.shareRatio) * 100).toPrecision(3);
+                    let ourZilShare = convertNumberQaToDecimalString(walletPoolStatus.zilAmount, /* decimals= */ 0);
+                    let ourTokenShare = convertNumberQaToDecimalString(walletPoolStatus.zrcTokenAmount, /* decimals= */ 0);
+                    onCompleteCallback(poolSharePercent, ourZilShare, ourTokenShare, zrcTokenProperties.ticker);
+                }
+            }
+        })
+        .catch(function () {
+            console.log("computeZrcTokensZilSwapLpBalanceWithRetry failed!");
+            computeZrcTokensZilSwapLpBalanceWithRetry(account, zrcTokensPropertiesMap, onCompleteCallback, retryRemaining - 1);
+        });
 }
 
 async function computeZilPriceInUsd(onCompleteCallback) {
