@@ -3,7 +3,7 @@
 window.addEventListener("load", async () => {
     computeZilPriceInUsd(showZilPriceInUsd);
 
-    if (!refreshMainContentVisibility(getZilpayStatus())) {
+    if (!refreshMainContentVisibility(checkZilpayStatus())) {
         return;
     }
 
@@ -14,7 +14,7 @@ window.addEventListener("load", async () => {
 
     // Subscribe if there are changes with network
     window.zilPay.wallet.observableNetwork().subscribe(() => {
-        refreshMainContentVisibility(getZilpayStatus());
+        refreshMainContentVisibility(checkZilpayStatus());
     });
 
     if (window.zilPay.wallet.isConnect) {
@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 });
 
 $("#wallet_connect").click(function () {
-    connectZilpayService().then(
+    window.zilPay.wallet.connect().then(
         function (isUnlockSuccessful) {
             console.log("Wallet connect unlock successful: " + isUnlockSuccessful);
             if (isUnlockSuccessful) {
@@ -50,16 +50,14 @@ function refreshMainContentData(account) {
     // (3) Get ZIL balance, async.
     computeZilBalance(account, showZilWalletBalance);
 
-    // (4) Get ZRC-2 tokens price, async.
-    computeZrcTokensPrice(zrcTokensPropertiesMap, showZrcTokenPriceInZil);
+    // (4) Get ZRC-2 tokens price & ZRC-2 tokens LP balances in Zilswap, async.
+    // Do this together because they are one API call, using the same data.
+    computeZrcTokensPriceAndZilswapLpBalance(zrcTokensPropertiesMap, showZrcTokenPriceInZil, account, showZrcTokenLpBalance);
 
     // (5) Get ZRC-2 tokens balances, async.
     computeZrcTokensBalance(account, zrcTokensPropertiesMap, showZrcTokenWalletBalance);
 
-    // (6) Get ZRC-2 tokens LP balances in Zilswap, async.
-    computeZrcTokensZilSwapLpBalance(account, zrcTokensPropertiesMap, showZrcTokenLpBalance);
-
-    // (7) Get Potential LP reward next epoch.
+    // (6) Get Potential LP reward next epoch.
     computeTotalLpRewardNextEpoch(account, showTotalLpRewardNextEpoch);
 }
 
