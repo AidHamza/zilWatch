@@ -130,12 +130,104 @@ describe('TokenUtils', function () {
             assert.strictEqual(result, expected);
         });
 
-        it('zrcTokenDecimals not nubmer: null', function () {
+        it('zrcTokenDecimals not number: null', function () {
             let dataString = fs.readFileSync('./tests/clientjs/token_utils_zilswapdex_contractstate_20210422.txt', 'utf8')
             let dataObject = JSON.parse(dataString);
             let zrcTokenAddressBase16 = "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31";
 
             let result = TokenUtils.getZrcTokenPriceInZilFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ "12");
+            let expected = null;
+            assert.strictEqual(result, expected);
+        });
+    });
+
+
+    describe('#getSingleTokenLpStatusFromZilswapDexState()', function () {
+
+        it('gZil', function () {
+            let dataString = fs.readFileSync('./tests/clientjs/token_utils_zilswapdex_contractstate_20210422.txt', 'utf8')
+
+            let dataObject = JSON.parse(dataString);
+            let zrcTokenAddressBase16 = "0xa845C1034CD077bD8D32be0447239c7E4be6cb21";
+            let walletAddressBase16 = "0x278598f13a4cb142e44dde38aba8d8c0190bcb85";
+
+            let result = TokenUtils.getSingleTokenLpStatusFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 15, walletAddressBase16);
+            let expected = new TokenUtils.ZilswapSingleTokenLpStatus( /* shareRatio= */ 0.000008920285612975195, /* zilAmount= */ 1221.7136013601405, /* zrcTokenAmount= */ 0.7071813644431453);
+            assert.notStrictEqual(result, expected);
+        });
+
+        it('ZWAP', function () {
+            let dataString = fs.readFileSync('./tests/clientjs/token_utils_zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataObject = JSON.parse(dataString);
+            let zrcTokenAddressBase16 = "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31";
+            let walletAddressBase16 = "0x278598f13a4cb142e44dde38aba8d8c0190bcb85";
+
+            let result = TokenUtils.getSingleTokenLpStatusFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 12, walletAddressBase16);
+            let expected = new TokenUtils.ZilswapSingleTokenLpStatus( /* shareRatio= */ 0.000006507178204554463, /* zilAmount= */ 1359.7898185973693, /* zrcTokenAmount= */ 0.35791493994832985);
+            assert.notStrictEqual(result, expected);
+        });
+
+        it('zrc token contract address not found: null', function () {
+            let dataString = fs.readFileSync('./tests/clientjs/token_utils_zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataObject = JSON.parse(dataString);
+            let zrcTokenAddressBase16 = "0x123451901A06aBEE40d8177F95171c8c63AbdC31";
+            let walletAddressBase16 = "0x278598f13a4cb142e44dde38aba8d8c0190bcb85";
+
+            let result = TokenUtils.getSingleTokenLpStatusFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 12, walletAddressBase16);
+            let expected = null;
+            assert.strictEqual(result, expected);
+        });
+
+        it('wallet address not found: null', function () {
+            let dataString = fs.readFileSync('./tests/clientjs/token_utils_zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataObject = JSON.parse(dataString);
+            let zrcTokenAddressBase16 = "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31";
+            let walletAddressBase16 = "0x123458f13a4cb142e44dde38aba8d8c0190bcb85";
+
+            let result = TokenUtils.getSingleTokenLpStatusFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 12, walletAddressBase16);
+            let expected = null;
+            assert.strictEqual(result, expected);
+        });
+
+        it('dataObject not object: null', function () {
+            let dataObject = "hehe";
+            let zrcTokenAddressBase16 = "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31";
+            let walletAddressBase16 = "0x278598f13a4cb142e44dde38aba8d8c0190bcb85";
+
+            let result = TokenUtils.getSingleTokenLpStatusFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 12, walletAddressBase16);
+            let expected = null;
+            assert.strictEqual(result, expected);
+        });
+
+        it('zrcTokenAddressBase16 not string: null', function () {
+            let dataString = fs.readFileSync('./tests/clientjs/token_utils_zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataObject = JSON.parse(dataString);
+            let zrcTokenAddressBase16 = 1234;
+            let walletAddressBase16 = "0x278598f13a4cb142e44dde38aba8d8c0190bcb85";
+
+            let result = TokenUtils.getSingleTokenLpStatusFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 12, walletAddressBase16);
+            let expected = null;
+            assert.strictEqual(result, expected);
+        });
+
+        it('zrcTokenDecimals not number: null', function () {
+            let dataString = fs.readFileSync('./tests/clientjs/token_utils_zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataObject = JSON.parse(dataString);
+            let zrcTokenAddressBase16 = "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31";
+            let walletAddressBase16 = "0x278598f13a4cb142e44dde38aba8d8c0190bcb85";
+
+            let result = TokenUtils.getSingleTokenLpStatusFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ "12", walletAddressBase16);
+            let expected = null;
+            assert.strictEqual(result, expected);
+        });
+
+        it('walletAddressBase16 not string: null', function () {
+            let dataString = fs.readFileSync('./tests/clientjs/token_utils_zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataObject = JSON.parse(dataString);
+            let zrcTokenAddressBase16 = "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31";
+            let walletAddressBase16 = 1234;
+
+            let result = TokenUtils.getSingleTokenLpStatusFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 12, walletAddressBase16);
             let expected = null;
             assert.strictEqual(result, expected);
         });

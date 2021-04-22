@@ -108,7 +108,7 @@ function showZilWalletBalance(balance) {
     onZilWalletBalanceLoaded();
 }
 
-function showZrcTokenPriceInZil(/* nullable */ zrcTokenPriceInZil, ticker) {
+function showZrcTokenPriceInZil( /* nullable */ zrcTokenPriceInZil, ticker) {
     if (zrcTokenPriceInZil) {
         $('#' + ticker + '_price').text(zrcTokenPriceInZil);
 
@@ -118,7 +118,7 @@ function showZrcTokenPriceInZil(/* nullable */ zrcTokenPriceInZil, ticker) {
     }
 }
 
-function showZrcTokenWalletBalance(/* nullable */ balance, ticker) {
+function showZrcTokenWalletBalance( /* nullable */ balance, ticker) {
     if (balance) {
         $('#' + ticker + '_balance').text(balance);
         $('#' + ticker + '_container').show();
@@ -129,13 +129,11 @@ function showZrcTokenWalletBalance(/* nullable */ balance, ticker) {
     }
 }
 
-function showZrcTokenLpBalance(/* nullable */ shareRatio, /* nullable */ zilBalance, /* nullable */ zrcBalance, ticker) {
-    if (shareRatio && zilBalance && zrcBalance) {
+function showZrcTokenLpBalance( /* nullable */ poolSharePercent, /* nullable */ zilBalance, /* nullable */ zrcBalance, ticker) {
+    if (poolSharePercent && zilBalance && zrcBalance) {
+        $('#' + ticker + '_lp_pool_share_percent').text(poolSharePercent);
         $('#' + ticker + '_lp_token_balance').text(zrcBalance);
         $('#' + ticker + '_lp_zil_balance').text(zilBalance);
-
-        let poolSharePercent = parseFloat(shareRatio * 100).toPrecision(3)
-        $('#' + ticker + '_lp_pool_share_percent').text(poolSharePercent);
         $('#' + ticker + '_lp_container').show();
 
         onZrcTokenLpBalanceLoaded(ticker);

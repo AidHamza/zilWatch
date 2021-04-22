@@ -51,7 +51,7 @@ async function computeZrcTokensPrice(zrcTokensPropertiesMap, onCompleteCallback)
                         try {
                             let zrcTokenProperties = zrcTokensPropertiesMap[key];
                             let zrcTokenAddressBase16 = window.zilPay.crypto.fromBech32Address(zrcTokenProperties.address).toLowerCase();
-                            
+
                             let zrcTokenPriceInZilNumber = getZrcTokenPriceInZilFromZilswapDexState(data, zrcTokenAddressBase16, zrcTokenProperties.decimals);
                             let zrcTokenPriceInZil = convertNumberQaToDecimalString(zrcTokenPriceInZilNumber, /* decimals= */ 0);
 
@@ -118,26 +118,16 @@ async function computeZrcTokensZilSwapLpBalance(account, zrcTokensPropertiesMap,
                     while (retryCounterLocal--) {
                         try {
                             let zrcTokenProperties = zrcTokensPropertiesMap[key];
-                            let zrcTokenAddress = window.zilPay.crypto.fromBech32Address(zrcTokenProperties.address).toLowerCase();
+                            let zrcTokenAddressBase16 = window.zilPay.crypto.fromBech32Address(zrcTokenProperties.address).toLowerCase();
 
-                            let ourLiqudity = data.result.balances[zrcTokenAddress][account.base16.toLowerCase()];
+                            let walletPoolStatus = getSingleTokenLpStatusFromZilswapDexState(data, zrcTokenAddressBase16, zrcTokenProperties.decimals, account.base16.toLowerCase());
 
-                            // If we don't have liqudity in this LP, skip and go to the next one.
-                            if (!ourLiqudity) {
-                                onCompleteCallback( /* ourShareRatio= */ null, 0, 0, zrcTokenProperties.ticker);
-                                continue;
+                            if (walletPoolStatus) {
+                                let poolSharePercent = parseFloat((walletPoolStatus.shareRatio) * 100).toPrecision(3);
+                                let ourZilShare = convertNumberQaToDecimalString(walletPoolStatus.zilAmount, /* decimals= */ 0);
+                                let ourTokenShare = convertNumberQaToDecimalString(walletPoolStatus.zrcTokenAmount, /* decimals= */ 0);
+                                onCompleteCallback(poolSharePercent, ourZilShare, ourTokenShare, zrcTokenProperties.ticker);
                             }
-                            let zilPoolReserveQa = data.result.pools[zrcTokenAddress].arguments[0];
-                            let tokenPoolReserveQa = data.result.pools[zrcTokenAddress].arguments[1];
-                            let poolLiquidity = data.result.total_contributions[zrcTokenAddress];
-
-                            let ourShareRatio = ourLiqudity / poolLiquidity;
-
-                            let ourZilShare = convertNumberQaToDecimalString(ourShareRatio * zilPoolReserveQa, /* decimals= */ 12);
-                            let ourTokenShare = convertNumberQaToDecimalString(ourShareRatio * tokenPoolReserveQa, zrcTokenProperties.decimals);
-
-                            retryCounterLocal = 0; // Successful
-                            onCompleteCallback(ourShareRatio, ourZilShare, ourTokenShare, zrcTokenProperties.ticker);
                         } catch (err) {
                             console.log("computeZrcTokensZilSwapLpBalance(%s) failed! %s", key, err);
                         }
