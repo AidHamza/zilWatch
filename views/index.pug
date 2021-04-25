@@ -26,20 +26,25 @@ block content
     hr
 
     div(class='row container')
-      div(class='balance-box col-md-4')
+      div(class='balance-box col-md-6')
         h3(class='font-weight-bold')= 'Net Worth'
         span(class='h4 mr-1')= '$'
-        span(id='net_worth_usd' class='h4')
+        span(id='net_worth_usd' class='h4')= 'Loading...'
 
-      div(class='balance-box col-md-4')
+      div(class='balance-box col-md-6')
         h3(class='font-weight-bold')= 'Wallet Balance'
         span(class='h4 mr-1')= '$'
-        span(id='wallet_balance_usd' class='h4')
+        span(id='wallet_balance_usd' class='h4')= 'Loading...'
 
-      div(class='balance-box col-md-4')
+      div(class='balance-box col-md-6')
         h3(class='font-weight-bold')= 'LP Balance'
         span(class='h4 mr-1')= '$'
-        span(id='lp_balance_usd' class='h4')
+        span(id='lp_balance_usd' class='h4')= 'Loading...'
+
+      div(class='balance-box col-md-6')
+        h3(class='font-weight-bold')= 'Staking Balance'
+        span(class='h4 mr-1')= '$'
+        span(id='zil_staking_balance_usd' class='h4')= 'Loading...'
 
     hr
 
@@ -120,7 +125,7 @@ block content
                     span(id='lp_reward_next_epoch_zwap_unit' class='ml-1')= zrcTokenPropertiesMap['ZWAP'].ticker
                   td(style='text-align: right; white-space: nowrap; width: 49%;' )
                     span(class='mr-1')= '$'
-                    span(id='lp_reward_next_epoch_usd')
+                    span(id='lp_reward_next_epoch_usd')= 'Loading...'
 
         each tokenProperties, key in zrcTokenPropertiesMap
 
@@ -145,7 +150,34 @@ block content
                       span(id=tokenProperties.ticker+'_lp_zil_balance_unit' class='ml-1')= 'ZIL'
                     td(style='text-align: right; white-space: nowrap; width: 49%;' )
                       span(class='mr-1')= '$'
-                      span(id=tokenProperties.ticker+'_lp_balance_usd')
+                      span(id=tokenProperties.ticker+'_lp_balance_usd')= 'Loading...'
+    hr
+
+    div(class='container title-box' style='display:table-cell; vertical-align: middle;')
+      img(class='mr-3' height='36' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
+      span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'ZIL Staking Balance'
+
+    // ZIL Staking Balance
+    div(id='zil_staking_balance' class='container')
+
+      div(class='row')
+
+        each ssnProperties, ssnAddress in ssnListMap
+
+          div(id=ssnAddress+'_zil_staking_container' class='col-lg-6' style='padding: 0; display: none')
+            div(class='box')
+              table(class='table table-sm table-borderless')
+                tbody
+                  tr
+                    td(colspan='2')
+                      span(class='font-weight-bold')= ssnProperties.arguments[3]
+                  tr
+                    td(style='text-align: left; white-space: nowrap; width: 49%;' )
+                      span(id=ssnAddress+'_zil_staking_balance')= 'Loading...'
+                      span(id=ssnAddress+'_zil_staking_balance_unit' class='ml-1')= 'ZIL'
+                    td(style='text-align: right; white-space: nowrap; width: 49%;' )
+                      span(class='mr-1')= '$'
+                      span(id=ssnAddress+'_zil_staking_balance_usd')= 'Loading...'
     hr
 
 block script
@@ -153,3 +185,4 @@ block script
 
   script.
     var zrcTokensPropertiesMap = !{JSON.stringify(zrcTokenPropertiesMap)};
+    var ssnListMap = !{JSON.stringify(ssnListMap)};

@@ -59,6 +59,9 @@ function refreshMainContentData(account) {
 
     // (6) Get Potential LP reward next epoch.
     computeTotalLpRewardNextEpoch(account, showTotalLpRewardNextEpoch);
+
+    // (7) Get ZIL staking balance
+    computeZilStakingBalance(account, showZilStakingBalance);
 }
 
 function refreshLoginButtonState(account) {
@@ -149,6 +152,17 @@ function showTotalLpRewardNextEpoch(zwapReward) {
     }
 }
 
+function showZilStakingBalance(balance, ssnAddress) {
+    if (balance) {
+        $('#' + ssnAddress + '_zil_staking_balance').text(balance);
+        $('#' + ssnAddress + '_zil_staking_container').show();
+
+        onZilStakingBalanceLoaded(ssnAddress);
+    } else {
+        $('#' + ssnAddress + '_zil_staking_container').hide();
+    }
+}
+
 function onZilUsdPriceLoaded() {
     // Wallet Balance
     refreshZilWalletBalanceUsd();
@@ -165,6 +179,12 @@ function onZilUsdPriceLoaded() {
 
     // Lp reward
     refreshTotalLpRewardUsd();
+
+    // ZIL staking
+    for (let ssnAddress in ssnListMap) {
+        refreshZilStakingUsd(ssnAddress);
+    }
+    refreshTotalZilStakingUsd();
 
     // Net worth
     refreshNetWorthUsd();
@@ -214,6 +234,15 @@ function onZrcTokenLpBalanceLoaded(ticker) {
     // Lp balance
     refreshZrcTokenLpBalanceUsd(ticker)
     refreshTotalLpBalanceUsd();
+
+    // Net worth
+    refreshNetWorthUsd();
+}
+
+function onZilStakingBalanceLoaded(ssnAddress) {
+    // ZIL Staking balance
+    refreshZilStakingUsd(ssnAddress)
+    refreshTotalZilStakingUsd();
 
     // Net worth
     refreshNetWorthUsd();
@@ -318,6 +347,35 @@ function refreshTotalLpBalanceUsd() {
     $('#lp_balance_usd').text(commafyNumberToString(totalUsd));
 }
 
+function refreshZilStakingUsd(ssnAddress) {
+    let usdPrice = $('#zil_price').text();
+    usdPrice = parseFloatFromCommafiedNumberString(usdPrice);
+    if (!usdPrice) {
+        return;
+    }
+
+    let zilStakingBalance = $('#' + ssnAddress + '_zil_staking_balance').text();
+    zilStakingBalance = parseFloat(zilStakingBalance);
+    if (!zilStakingBalance) {
+        return;
+    }
+
+    let zilStakingBalanceUsd = (usdPrice * zilStakingBalance);
+    $('#' + ssnAddress + '_zil_staking_balance_usd').text(commafyNumberToString(zilStakingBalanceUsd));
+}
+
+function refreshTotalZilStakingUsd() {
+    let totalUsd = 0;
+    for (let ssnAddress in ssnListMap) {
+        let stakingUsd = $('#' + ssnAddress + '_zil_staking_balance_usd').text();
+        stakingUsd = parseFloatFromCommafiedNumberString(stakingUsd);
+        if (stakingUsd) {
+            totalUsd += stakingUsd;
+        }
+    }
+    $('#zil_staking_balance_usd').text(commafyNumberToString(totalUsd));
+}
+
 function refreshNetWorthUsd() {
     let totalUsd = 0;
 
@@ -331,6 +389,12 @@ function refreshNetWorthUsd() {
     lpBalanceUsd = parseFloatFromCommafiedNumberString(lpBalanceUsd);
     if (lpBalanceUsd) {
         totalUsd += lpBalanceUsd;
+    }
+
+    let zilStakingBalanceUsd = $('#zil_staking_balance_usd').text();
+    zilStakingBalanceUsd = parseFloatFromCommafiedNumberString(zilStakingBalanceUsd);
+    if (zilStakingBalanceUsd) {
+        totalUsd += zilStakingBalanceUsd;
     }
 
     $('#net_worth_usd').text(commafyNumberToString(totalUsd));

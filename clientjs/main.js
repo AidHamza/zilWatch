@@ -1,4 +1,5 @@
 const ZilSwapDexAddress = "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w";
+const ZilSeedNodeStakingImplementationAddress = "zil1k7qwsz2m3w595u29je0dvv4nka62c5wwrp8r8p";
 const ZilpayStatus = Object.freeze({
     "not_installed": 1,
     "locked": 2,
@@ -129,6 +130,40 @@ function computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddress
         .catch(function () {
             console.log("computeSingleZrcTokenBalanceWithRetry(%s) failed! %s", zrcTokenProperties.ticker, retryRemaining);
             computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddressBase16, onCompleteCallback, retryRemaining - 1);
+        });
+}
+
+/**
+ * --------------------------------------------------------------------------------
+ */
+
+/** Private async function, to compute ZIL staking balance */
+async function computeZilStakingBalance(account, onCompleteCallback) {
+    computeZilStakingBalanceWithRetry(account, onCompleteCallback, MAX_RETRY);
+}
+
+function computeZilStakingBalanceWithRetry(account, onCompleteCallback, retryRemaining) {
+    if (retryRemaining <= 0) {
+        console.log("computeZilStakingBalanceWithRetry failed! Out of retries!");
+        return;
+    }
+    let walletAddressBase16 = account.base16.toLowerCase();
+
+    window.zilPay.blockchain.getSmartContractSubState(ZilSeedNodeStakingImplementationAddress, "deposit_amt_deleg", [walletAddressBase16])
+        .then(function (data) {
+            if (data.result && data.result.deposit_amt_deleg) {
+                let ssnToBalanceMap = data.result.deposit_amt_deleg[walletAddressBase16];
+                if (ssnToBalanceMap) {
+                    for (let ssnAddress in ssnToBalanceMap) {
+                        let zilStakingBalanceString = convertNumberQaToDecimalString(parseInt(ssnToBalanceMap[ssnAddress]), /* decimals= */ 12);
+                        onCompleteCallback(zilStakingBalanceString, ssnAddress);
+                    }
+                }
+            }
+        })
+        .catch(function () {
+            console.log("computeZilStakingBalanceWithRetry failed! %s",retryRemaining);
+            computeZilStakingBalanceWithRetry(account, onCompleteCallback, retryRemaining - 1);
         });
 }
 

@@ -9,7 +9,7 @@
  * 
  * If the balance for the address is not found or there are any other illegal states, return null.
  *
- * @param {Object} dataObject required The data object returned by the getSmartContractSubState() Zilliqa API call
+ * @param {Object} dataObject required The data object returned by the getSmartContractSubState(zrcAddress, "balances", walletAddressBase16)
  * @param {string} walletAddressBase16 required The wallet address to obtain the balance from
  * @returns {number} The number representation of the balance owned by the wallet address in QA unit
  */
@@ -38,7 +38,7 @@ function parseZrcTokenBalanceNumberQaFromGetSmartContractSubState(dataObject, wa
  * 
  * If the pool is found and there are no error state, return the price in ZIL in number type, else return null.
  *
- * @param {Object} dataObject required The data object returned by the getSmartContractState() Zilliqa API call for Zilswap DEX
+ * @param {Object} dataObject required The data object returned by the getSmartContractState(ZilswapDexAddress)
  * @param {string} zrcTokenAddressBase16 required The ZRC token contract address in base16
  * @param {number} zrcTokenDecimals required The decimals of the ZRC token
  *
