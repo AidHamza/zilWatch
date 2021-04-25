@@ -327,7 +327,7 @@ describe('FormattingUtils', function () {
     });
   });
 
-  describe('#convertNumberQaToDecimalString()', function () {
+  describe('#convertNumberQaToDecimalString(isCommafied=default=false)', function () {
 
     it('qa 10^4 dec 4', function () {
       let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 14243.23, /* decimals= */ 4);
@@ -391,6 +391,75 @@ describe('FormattingUtils', function () {
 
     it('both not number: null', function () {
       let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ null, /* decimals= */ "432");
+      let expected = null;
+      assert.strictEqual(result, expected);
+    });
+  });
+
+  describe('#convertNumberQaToDecimalString(isCommafied=true)', function () {
+
+    it('qa 10^4 dec 4', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 14243.23, /* decimals= */ 4, /* isCommafied= */ true);
+      let expected = "1.424";
+      assert.strictEqual(result, expected);
+    });
+
+    it('qa 10^4 dec 8: 3 SF', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 14243.23, /* decimals= */ 8, /* isCommafied= */ true);
+      let expected = "0.000142";
+      assert.strictEqual(result, expected);
+    });
+
+    it('qa 10^4 dec 14: null', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 14243.23, /* decimals= */ 14, /* isCommafied= */ true);
+      let expected = null;
+      assert.strictEqual(result, expected);
+    });
+
+    it('qa 10^12 dec 0', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 5156711544243.23, /* decimals= */ 0, /* isCommafied= */ true);
+      let expected = "5,156,711,544,243";
+      assert.strictEqual(result, expected);
+    });
+
+    it('qa 10^12 dec 4', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 5156711544243.23, /* decimals= */ 4, /* isCommafied= */ true);
+      let expected = "515,671,154";
+      assert.strictEqual(result, expected);
+    });
+
+    it('qa 10^12 dec 12', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 5156711544243.23, /* decimals= */ 12, /* isCommafied= */ true);
+      let expected = "5.157";
+      assert.strictEqual(result, expected);
+    });
+
+    it('qa 10^30 dec 15', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 5156711544243247894578451234785.23, /* decimals= */ 15, /* isCommafied= */ true);
+      let expected = "5,156,711,544,243,248";
+      assert.strictEqual(result, expected);
+    });
+
+    it('qa 10^30 dec 20', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 5156711544243247894578451234785.23, /* decimals= */ 20, /* isCommafied= */ true);
+      let expected = "51,567,115,442";
+      assert.strictEqual(result, expected);
+    });
+
+    it('numberQa not number: null', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ "GSDF", /* decimals= */ 20, /* isCommafied= */ true);
+      let expected = null;
+      assert.strictEqual(result, expected);
+    });
+
+    it('decimals not number: null', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ 5156711544243, /* decimals= */ "432", /* isCommafied= */ true);
+      let expected = null;
+      assert.strictEqual(result, expected);
+    });
+
+    it('both not number: null', function () {
+      let result = FormattingUtils.convertNumberQaToDecimalString( /* numberQa= */ null, /* decimals= */ "432", /* isCommafied= */ true);
       let expected = null;
       assert.strictEqual(result, expected);
     });

@@ -52,9 +52,10 @@ function commafyNumberToString(numberVar, decimalPlace = 2) {
  * 
  * @param {number} numberQa required The number representation in Qa unit
  * @param {number} decimals required The decimals property to convert the numberQa
+ * @param {boolean=} isCommafied optional Commafy the exponents if this is true. Defaults to false.
  * @returns {?string} The user-friendly string representation or null if the number is smaller than 10^6.
  */
-function convertNumberQaToDecimalString(numberQa, decimals) {
+function convertNumberQaToDecimalString(numberQa, decimals, isCommafied = false) {
     if (typeof numberQa !== 'number' && typeof numberQa !== 'bigint') {
         return null;
     }
@@ -64,6 +65,9 @@ function convertNumberQaToDecimalString(numberQa, decimals) {
 
     let numberDecimal = (1.0 * numberQa / Math.pow(10, decimals));
     if (numberDecimal > 1000) {
+        if (isCommafied) {
+            return commafyNumberToString(numberDecimal, /* decimalPlace= */ 0);
+        }
         return numberDecimal.toFixed(0);
     } else if (numberDecimal > 100) {
         return numberDecimal.toFixed(1);
