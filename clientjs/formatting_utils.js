@@ -55,7 +55,7 @@ function commafyNumberToString(numberVar, decimalPlace = 2) {
  * @param {boolean=} isCommafied optional Commafy the exponents if this is true. Defaults to false.
  * @returns {?string} The user-friendly string representation or null if the number is smaller than 10^6.
  */
-function convertNumberQaToDecimalString(numberQa, decimals, isCommafied = false) {
+function convertNumberQaToDecimalString(numberQa, decimals, isCommafied = true) {
     if (typeof numberQa !== 'number' && typeof numberQa !== 'bigint') {
         return null;
     }

@@ -255,7 +255,7 @@ function refreshZilWalletBalanceUsd() {
         return;
     }
     let zilBalance = $('#zil_balance').text();
-    zilBalance = parseFloat(zilBalance);
+    zilBalance = parseFloatFromCommafiedNumberString(zilBalance);
     if (!zilBalance) {
         return;
     }
@@ -272,14 +272,14 @@ function refreshZrcTokenWalletBalanceUsd(ticker) {
     }
 
     let zrcTokenPriceInZil = $('#' + ticker + '_price').text();
-    zrcTokenPriceInZil = parseFloat(zrcTokenPriceInZil);
+    zrcTokenPriceInZil = parseFloatFromCommafiedNumberString(zrcTokenPriceInZil);
     if (!zrcTokenPriceInZil) {
 
         return;
     }
 
     let zrcTokenBalance = $('#' + ticker + '_balance').text();
-    zrcTokenBalance = parseFloat(zrcTokenBalance);
+    zrcTokenBalance = parseFloatFromCommafiedNumberString(zrcTokenBalance);
     if (!zrcTokenBalance) {
         return;
     }
@@ -314,19 +314,19 @@ function refreshZrcTokenLpBalanceUsd(ticker) {
     }
 
     let zrcTokenPriceInZil = $('#' + ticker + '_price').text();
-    zrcTokenPriceInZil = parseFloat(zrcTokenPriceInZil);
+    zrcTokenPriceInZil = parseFloatFromCommafiedNumberString(zrcTokenPriceInZil);
     if (!zrcTokenPriceInZil) {
         return;
     }
 
     let zrcLpTokenBalance = $('#' + ticker + '_lp_token_balance').text();
-    zrcLpTokenBalance = parseFloat(zrcLpTokenBalance);
+    zrcLpTokenBalance = parseFloatFromCommafiedNumberString(zrcLpTokenBalance);
     if (!zrcLpTokenBalance) {
         return;
     }
 
     let zilLpBalance = $('#' + ticker + '_lp_zil_balance').text();
-    zilLpBalance = parseFloat(zilLpBalance);
+    zilLpBalance = parseFloatFromCommafiedNumberString(zilLpBalance);
     if (!zilLpBalance) {
         return;
     }
@@ -355,7 +355,7 @@ function refreshZilStakingUsd(ssnAddress) {
     }
 
     let zilStakingBalance = $('#' + ssnAddress + '_zil_staking_balance').text();
-    zilStakingBalance = parseFloat(zilStakingBalance);
+    zilStakingBalance = parseFloatFromCommafiedNumberString(zilStakingBalance);
     if (!zilStakingBalance) {
         return;
     }
