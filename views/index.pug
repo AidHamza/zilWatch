@@ -28,23 +28,39 @@ block content
     div(class='row container')
       div(class='balance-box col-md-6')
         h3(class='font-weight-bold')= 'Net Worth'
-        span(class='h4 mr-1')= '$'
-        span(id='net_worth_usd' class='h4')= 'Loading...'
+        span(class='h4')
+          span(class='mr-1')= '$'
+          span(id='net_worth_usd')= 'Loading...'
+        span(class='h6 ml-4')
+          span(id='net_worth_zil')= 'Loading...'
+          span(class='ml-1')= 'ZIL'
 
       div(class='balance-box col-md-6')
         h3(class='font-weight-bold')= 'Wallet Balance'
-        span(class='h4 mr-1')= '$'
-        span(id='wallet_balance_usd' class='h4')= 'Loading...'
+        span(class='h4')
+          span(class='mr-1')= '$'
+          span(id='wallet_balance_usd')= 'Loading...'
+        span(class='h6 ml-4')
+          span(id='wallet_balance_zil')= 'Loading...'
+          span(class='ml-1')= 'ZIL'
 
       div(class='balance-box col-md-6')
         h3(class='font-weight-bold')= 'LP Balance'
-        span(class='h4 mr-1')= '$'
-        span(id='lp_balance_usd' class='h4')= 'Loading...'
+        span(class='h4')
+          span(class='mr-1')= '$'
+          span(id='lp_balance_usd')= 'Loading...'
+        span(class='h6 ml-4')
+          span(id='lp_balance_zil')= 'Loading...'
+          span(class='ml-1')= 'ZIL'
 
       div(class='balance-box col-md-6')
         h3(class='font-weight-bold')= 'Staking Balance'
-        span(class='h4 mr-1')= '$'
-        span(id='zil_staking_balance_usd' class='h4')= 'Loading...'
+        span(class='h4')
+          span(class='mr-1')= '$'
+          span(id='zil_staking_balance_usd')= 'Loading...'
+        span(class='h6 ml-4')
+          span(id='zil_staking_balance_zil')= 'Loading...'
+          span(class='ml-1')= 'ZIL'
 
     hr
 
@@ -86,8 +102,11 @@ block content
                   tr
                     td(scope='row' rowspan='2' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
                       img(height='36' src=tokenProperties.logo_url loading='lazy')
-                    td(colspan='3')
+                    td(colspan='2')
                       span(class='font-weight-bold')= tokenProperties.name
+                    td(style='text-align: right; white-space: nowrap; width: 33%;' )
+                      span(id=tokenProperties.ticker+'_balance_zil')
+                      span(class='ml-1')= 'ZIL'
                   tr
                     td(scope='row' class='font-weight-normal text-secondary' style='white-space: nowrap; width: 33%;' )
                       span(id=tokenProperties.ticker+'_price')= 'Loading...'
@@ -119,7 +138,7 @@ block content
                     img(height='36' src=zrcTokenPropertiesMap['ZWAP'].logo_url loading='lazy')
                   td(colspan='2')
                     span(class='font-weight-bold')= 'Potential reward next epoch'
-                tr
+                tr(class='text-secondary')
                   td(style='text-align: left; white-space: nowrap; width: 49%;' )
                     span(id='lp_reward_next_epoch_zwap' class='ml-1')
                     span(id='lp_reward_next_epoch_zwap_unit' class='ml-1')= zrcTokenPropertiesMap['ZWAP'].ticker

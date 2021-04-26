@@ -167,15 +167,15 @@ function onZilUsdPriceLoaded() {
     // Wallet Balance
     refreshZilWalletBalanceUsd();
     for (let ticker in zrcTokensPropertiesMap) {
-        refreshZrcTokenWalletBalanceUsd(ticker);
+        refreshZrcTokenWalletBalanceZilUsd(ticker);
     }
-    refreshTotalWalletBalanceUsd();
+    refreshTotalWalletBalanceZilUsd();
 
     // Lp balance
     for (let ticker in zrcTokensPropertiesMap) {
         refreshZrcTokenLpBalanceUsd(ticker)
     }
-    refreshTotalLpBalanceUsd();
+    refreshTotalLpBalanceZilUsd();
 
     // Lp reward
     refreshTotalLpRewardUsd();
@@ -184,29 +184,29 @@ function onZilUsdPriceLoaded() {
     for (let ssnAddress in ssnListMap) {
         refreshZilStakingUsd(ssnAddress);
     }
-    refreshTotalZilStakingUsd();
+    refreshTotalZilStakingZilUsd();
 
     // Net worth
-    refreshNetWorthUsd();
+    refreshNetWorthZilUsd();
 }
 
 function onZilWalletBalanceLoaded() {
     // Wallet Balance
     refreshZilWalletBalanceUsd();
-    refreshTotalWalletBalanceUsd();
+    refreshTotalWalletBalanceZilUsd();
 
     // Net worth
-    refreshNetWorthUsd();
+    refreshNetWorthZilUsd();
 }
 
 function onZrcTokenPriceInZilLoaded(ticker) {
     // Wallet Balance
-    refreshZrcTokenWalletBalanceUsd(ticker);
-    refreshTotalWalletBalanceUsd();
+    refreshZrcTokenWalletBalanceZilUsd(ticker);
+    refreshTotalWalletBalanceZilUsd();
 
     // Lp balance
     refreshZrcTokenLpBalanceUsd(ticker)
-    refreshTotalLpBalanceUsd();
+    refreshTotalLpBalanceZilUsd();
 
     // Lp reward
     if (ticker === 'ZWAP') {
@@ -214,16 +214,16 @@ function onZrcTokenPriceInZilLoaded(ticker) {
     }
 
     // Net worth
-    refreshNetWorthUsd();
+    refreshNetWorthZilUsd();
 }
 
 function onZrcTokenWalletBalanceLoaded(ticker) {
     // Wallet Balance
-    refreshZrcTokenWalletBalanceUsd(ticker);
-    refreshTotalWalletBalanceUsd();
+    refreshZrcTokenWalletBalanceZilUsd(ticker);
+    refreshTotalWalletBalanceZilUsd();
 
     // Net worth
-    refreshNetWorthUsd();
+    refreshNetWorthZilUsd();
 }
 
 function onTotalLpRewardNextEpochLoaded() {
@@ -233,27 +233,41 @@ function onTotalLpRewardNextEpochLoaded() {
 function onZrcTokenLpBalanceLoaded(ticker) {
     // Lp balance
     refreshZrcTokenLpBalanceUsd(ticker)
-    refreshTotalLpBalanceUsd();
+    refreshTotalLpBalanceZilUsd();
 
     // Net worth
-    refreshNetWorthUsd();
+    refreshNetWorthZilUsd();
 }
 
 function onZilStakingBalanceLoaded(ssnAddress) {
     // ZIL Staking balance
     refreshZilStakingUsd(ssnAddress)
-    refreshTotalZilStakingUsd();
+    refreshTotalZilStakingZilUsd();
 
     // Net worth
-    refreshNetWorthUsd();
+    refreshNetWorthZilUsd();
 }
 
-function refreshZilWalletBalanceUsd() {
+/**
+ * Obtain Zil price in USD if data has been loaded.
+ * 
+ * @returns {?number} The number reprentation of USD amount per ZIL, otherwise null.
+ */
+function getZilPriceInUsdIfLoaded() {
     let usdPrice = $('#zil_price').text();
     usdPrice = parseFloatFromCommafiedNumberString(usdPrice);
     if (!usdPrice) {
+        return null;
+    }
+    return usdPrice;
+}
+
+function refreshZilWalletBalanceUsd() {
+    let usdPrice = getZilPriceInUsdIfLoaded();
+    if (!usdPrice) {
         return;
     }
+
     let zilBalance = $('#zil_balance').text();
     zilBalance = parseFloatFromCommafiedNumberString(zilBalance);
     if (!zilBalance) {
@@ -263,18 +277,11 @@ function refreshZilWalletBalanceUsd() {
     $('#zil_balance_usd').text(commafyNumberToString(zilBalanceUsd));
 }
 
-function refreshZrcTokenWalletBalanceUsd(ticker) {
-
-    let usdPrice = $('#zil_price').text();
-    usdPrice = parseFloatFromCommafiedNumberString(usdPrice);
-    if (!usdPrice) {
-        return;
-    }
+function refreshZrcTokenWalletBalanceZilUsd(ticker) {
 
     let zrcTokenPriceInZil = $('#' + ticker + '_price').text();
     zrcTokenPriceInZil = parseFloatFromCommafiedNumberString(zrcTokenPriceInZil);
     if (!zrcTokenPriceInZil) {
-
         return;
     }
 
@@ -284,44 +291,49 @@ function refreshZrcTokenWalletBalanceUsd(ticker) {
         return;
     }
 
-    let zrcTokenBalanceUsd = (usdPrice * zrcTokenPriceInZil * zrcTokenBalance);
+    let zrcTokenBalanceZil = 1.0 * zrcTokenPriceInZil * zrcTokenBalance;
+    $('#' + ticker + '_balance_zil').text(convertNumberQaToDecimalString(zrcTokenBalanceZil, /* decimals= */ 0));
+
+    let usdPrice = getZilPriceInUsdIfLoaded();
+    if (!usdPrice) {
+        return;
+    }
+
+    let zrcTokenBalanceUsd = 1.0 * usdPrice * zrcTokenBalanceZil;
     $('#' + ticker + '_balance_usd').text(commafyNumberToString(zrcTokenBalanceUsd));
 }
 
-function refreshTotalWalletBalanceUsd() {
-    let totalUsd = 0;
-    let zilUsd = $('#zil_balance_usd').text()
-    zilUsd = parseFloatFromCommafiedNumberString(zilUsd);
-    if (zilUsd) {
-        totalUsd += zilUsd;
+function refreshTotalWalletBalanceZilUsd() {
+    // Sum balance in ZIL.
+    let totalZil = 0;
+    let zil = $('#zil_balance').text()
+    zil = parseFloatFromCommafiedNumberString(zil);
+    if (zil) {
+        totalZil += zil;
     }
     for (let ticker in zrcTokensPropertiesMap) {
-        let zrcUsd = $('#' + ticker + '_balance_usd').text();
-        zrcUsd = parseFloatFromCommafiedNumberString(zrcUsd);
-        if (zrcUsd) {
-            totalUsd += zrcUsd;
+        let zrcZil = $('#' + ticker + '_balance_zil').text();
+        zrcZil = parseFloatFromCommafiedNumberString(zrcZil);
+        if (zrcZil) {
+            totalZil += zrcZil;
         }
     }
+    $('#wallet_balance_zil').text(convertNumberQaToDecimalString(totalZil, /* decimals= */ 0));
+
+    let usdPrice = getZilPriceInUsdIfLoaded();
+    if (!usdPrice) {
+        return;
+    }
+
+    // Sum balance in USD
+    let totalUsd = 1.0 * totalZil * usdPrice;
     $('#wallet_balance_usd').text(commafyNumberToString(totalUsd));
 }
 
 function refreshZrcTokenLpBalanceUsd(ticker) {
 
-    let usdPrice = $('#zil_price').text();
-    usdPrice = parseFloatFromCommafiedNumberString(usdPrice);
+    let usdPrice = getZilPriceInUsdIfLoaded();
     if (!usdPrice) {
-        return;
-    }
-
-    let zrcTokenPriceInZil = $('#' + ticker + '_price').text();
-    zrcTokenPriceInZil = parseFloatFromCommafiedNumberString(zrcTokenPriceInZil);
-    if (!zrcTokenPriceInZil) {
-        return;
-    }
-
-    let zrcLpTokenBalance = $('#' + ticker + '_lp_token_balance').text();
-    zrcLpTokenBalance = parseFloatFromCommafiedNumberString(zrcLpTokenBalance);
-    if (!zrcLpTokenBalance) {
         return;
     }
 
@@ -331,25 +343,37 @@ function refreshZrcTokenLpBalanceUsd(ticker) {
         return;
     }
 
-    let lpTokenBalanceUsd = (usdPrice * (zilLpBalance + (zrcTokenPriceInZil * zrcLpTokenBalance)));
+    // total worth is always times 2 (e.g., ZRC2-ZIL pair always have 50:50 value).
+    // For now ZilSwap only support 50-50 weight pair.
+    let lpTokenBalanceUsd = 1.0 * usdPrice * (zilLpBalance * 2.0);
     $('#' + ticker + '_lp_balance_usd').text(commafyNumberToString(lpTokenBalanceUsd));
 }
 
-function refreshTotalLpBalanceUsd() {
-    let totalUsd = 0;
+function refreshTotalLpBalanceZilUsd() {
+    // Sum balance in ZIL.
+    let totalZil = 0;
     for (let ticker in zrcTokensPropertiesMap) {
-        let lpUsd = $('#' + ticker + '_lp_balance_usd').text();
-        lpUsd = parseFloatFromCommafiedNumberString(lpUsd);
-        if (lpUsd) {
-            totalUsd += lpUsd;
+        let lpZil = $('#' + ticker + '_lp_zil_balance').text();
+        lpZil = parseFloatFromCommafiedNumberString(lpZil);
+        if (lpZil) {
+            // total worth is always times 2 (e.g., ZRC2-ZIL pair always have 50:50 value)
+            // For now ZilSwap only support 50-50 weight pair.
+            totalZil += (lpZil * 2.0);
         }
     }
+    $('#lp_balance_zil').text(convertNumberQaToDecimalString(totalZil, /* decimals= */ 0));
+
+    // Sum balance in USD.
+    let usdPrice = getZilPriceInUsdIfLoaded();
+    if (!usdPrice) {
+        return;
+    }
+    let totalUsd = 1.0 * totalZil * usdPrice;
     $('#lp_balance_usd').text(commafyNumberToString(totalUsd));
 }
 
 function refreshZilStakingUsd(ssnAddress) {
-    let usdPrice = $('#zil_price').text();
-    usdPrice = parseFloatFromCommafiedNumberString(usdPrice);
+    let usdPrice = getZilPriceInUsdIfLoaded();
     if (!usdPrice) {
         return;
     }
@@ -360,51 +384,67 @@ function refreshZilStakingUsd(ssnAddress) {
         return;
     }
 
-    let zilStakingBalanceUsd = (usdPrice * zilStakingBalance);
+    let zilStakingBalanceUsd = 1.0 * usdPrice * zilStakingBalance;
     $('#' + ssnAddress + '_zil_staking_balance_usd').text(commafyNumberToString(zilStakingBalanceUsd));
 }
 
-function refreshTotalZilStakingUsd() {
-    let totalUsd = 0;
+function refreshTotalZilStakingZilUsd() {
+    // Sum balance in ZIL.
+    let totalZil = 0;
     for (let ssnAddress in ssnListMap) {
-        let stakingUsd = $('#' + ssnAddress + '_zil_staking_balance_usd').text();
-        stakingUsd = parseFloatFromCommafiedNumberString(stakingUsd);
-        if (stakingUsd) {
-            totalUsd += stakingUsd;
+        let stakingZil = $('#' + ssnAddress + '_zil_staking_balance').text();
+        stakingZil = parseFloatFromCommafiedNumberString(stakingZil);
+        if (stakingZil) {
+            totalZil += stakingZil;
         }
     }
+    $('#zil_staking_balance_zil').text(convertNumberQaToDecimalString(totalZil, /* decimals= */ 0));
+
+    // Sum balance in USD.
+    let usdPrice = getZilPriceInUsdIfLoaded();
+    if (!usdPrice) {
+        return;
+    }
+    let totalUsd = 1.0 * totalZil * usdPrice;
     $('#zil_staking_balance_usd').text(commafyNumberToString(totalUsd));
 }
 
-function refreshNetWorthUsd() {
-    let totalUsd = 0;
+function refreshNetWorthZilUsd() {
+    // Sum balance in ZIL.
+    let totalZil = 0;
 
-    let walletBalanceUsd = $('#wallet_balance_usd').text();
-    walletBalanceUsd = parseFloatFromCommafiedNumberString(walletBalanceUsd);
-    if (walletBalanceUsd) {
-        totalUsd += walletBalanceUsd;
+    let walletBalanceZil = $('#wallet_balance_zil').text();
+    walletBalanceZil = parseFloatFromCommafiedNumberString(walletBalanceZil);
+    if (walletBalanceZil) {
+        totalZil += walletBalanceZil;
     }
 
-    let lpBalanceUsd = $('#lp_balance_usd').text();
-    lpBalanceUsd = parseFloatFromCommafiedNumberString(lpBalanceUsd);
-    if (lpBalanceUsd) {
-        totalUsd += lpBalanceUsd;
+    let lpBalanceZil = $('#lp_balance_zil').text();
+    lpBalanceZil = parseFloatFromCommafiedNumberString(lpBalanceZil);
+    if (lpBalanceZil) {
+        totalZil += lpBalanceZil;
     }
 
-    let zilStakingBalanceUsd = $('#zil_staking_balance_usd').text();
-    zilStakingBalanceUsd = parseFloatFromCommafiedNumberString(zilStakingBalanceUsd);
-    if (zilStakingBalanceUsd) {
-        totalUsd += zilStakingBalanceUsd;
+    let zilStakingBalanceZil = $('#zil_staking_balance_zil').text();
+    zilStakingBalanceZil = parseFloatFromCommafiedNumberString(zilStakingBalanceZil);
+    if (zilStakingBalanceZil) {
+        totalZil += zilStakingBalanceZil;
     }
+    $('#net_worth_zil').text(convertNumberQaToDecimalString(totalZil, /* decimals= */ 0));
 
+    // Sum balance in USD.
+    let usdPrice = getZilPriceInUsdIfLoaded();
+    if (!usdPrice) {
+        return;
+    }
+    let totalUsd = 1.0 * totalZil * usdPrice;
     $('#net_worth_usd').text(commafyNumberToString(totalUsd));
 }
 
 function refreshTotalLpRewardUsd() {
     let ticker = 'ZWAP';
 
-    let usdPrice = $('#zil_price').text();
-    usdPrice = parseFloatFromCommafiedNumberString(usdPrice.replace(',', ''));
+    let usdPrice = getZilPriceInUsdIfLoaded();
     if (!usdPrice) {
         return;
     }
