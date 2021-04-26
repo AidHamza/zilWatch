@@ -136,8 +136,10 @@ block content
                 tr
                   td(scope='row' rowspan='2' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
                     img(height='36' src=zrcTokenPropertiesMap['ZWAP'].logo_url loading='lazy')
-                  td(colspan='2')
-                    span(class='font-weight-bold')= 'Potential reward next epoch'
+                  td(style='text-align: left; white-space: nowrap; width: 49%;' )
+                    span(class='font-weight-bold')= 'est. reward next epoch'
+                  td(style='text-align: right; white-space: nowrap; width: 49%;' )
+                    span(id='next_epoch_duration_counter' class='font-weight-normal')
                 tr(class='text-secondary')
                   td(style='text-align: left; white-space: nowrap; width: 49%;' )
                     span(id='lp_reward_next_epoch_zwap' class='ml-1')

@@ -57,8 +57,9 @@ function refreshMainContentData(account) {
     // (5) Get ZRC-2 tokens balances, async.
     computeZrcTokensBalance(account, zrcTokensPropertiesMap, showZrcTokenWalletBalance);
 
-    // (6) Get Potential LP reward next epoch.
+    // (6) Get Potential LP reward next epoch and time duration counter to the next epoch
     computeTotalLpRewardNextEpoch(account, showTotalLpRewardNextEpoch);
+    computeLpNextEpochStart(showLpNextEpochCounter);
 
     // (7) Get ZIL staking balance
     computeZilStakingBalance(account, showZilStakingBalance);
@@ -97,6 +98,10 @@ function possiblyShowErrorState(zilpayStatus) {
         $('#error_message_container').show();
     }
 }
+
+/**
+ * --------------------------------------------------------------------------------
+ */
 
 function showZilPriceInUsd(zilPriceInUsd) {
     $("#zil_price").text(zilPriceInUsd.toFixed(4));
@@ -143,15 +148,6 @@ function showZrcTokenLpBalance( /* nullable */ poolSharePercent, /* nullable */ 
     }
 }
 
-function showTotalLpRewardNextEpoch(zwapReward) {
-    if (zwapReward) {
-        $('#lp_reward_next_epoch_zwap').text(zwapReward);
-        $('#lp_reward_next_epoch_container').show();
-    } else {
-        $('#lp_reward_next_epoch_container').hide();
-    }
-}
-
 function showZilStakingBalance(balance, ssnAddress) {
     if (balance) {
         $('#' + ssnAddress + '_zil_staking_balance').text(balance);
@@ -162,6 +158,32 @@ function showZilStakingBalance(balance, ssnAddress) {
         $('#' + ssnAddress + '_zil_staking_container').hide();
     }
 }
+
+/**
+ * --------------------------------------------------------------------------------
+ */
+
+function showTotalLpRewardNextEpoch(zwapReward) {
+    if (zwapReward) {
+        $('#lp_reward_next_epoch_zwap').text(zwapReward);
+        $('#lp_reward_next_epoch_container').show();
+    } else {
+        $('#lp_reward_next_epoch_container').hide();
+    }
+}
+
+function showLpNextEpochCounter(nextEpochStartSeconds) {
+    let currentDate = new Date();
+    let currentTimeSeconds = currentDate.getTime() / 1000;
+    let timeDiffSeconds = Math.max(0, nextEpochStartSeconds - currentTimeSeconds);
+    let timeDiffDuration = new Duration(timeDiffSeconds);
+
+    $('#next_epoch_duration_counter').html(timeDiffDuration.getUserFriendlyString());
+}
+
+/**
+ * --------------------------------------------------------------------------------
+ */
 
 function onZilUsdPriceLoaded() {
     // Wallet Balance
@@ -247,6 +269,10 @@ function onZilStakingBalanceLoaded(ssnAddress) {
     // Net worth
     refreshNetWorthZilUsd();
 }
+
+/**
+ * --------------------------------------------------------------------------------
+ */
 
 /**
  * Obtain Zil price in USD if data has been loaded.
@@ -440,6 +466,10 @@ function refreshNetWorthZilUsd() {
     let totalUsd = 1.0 * totalZil * usdPrice;
     $('#net_worth_usd').text(commafyNumberToString(totalUsd));
 }
+
+/**
+ * --------------------------------------------------------------------------------
+ */
 
 function refreshTotalLpRewardUsd() {
     let ticker = 'ZWAP';
