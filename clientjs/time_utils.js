@@ -30,10 +30,22 @@ class Duration {
     }
 
     getUserFriendlyString() {
-        if (!this.getDays() || !this.getHours() || !this.getMinutes()) {
+        let days = this.getDays();
+        if (isNaN(days)) {
             return null;
         }
-        return this.getDays() + 'd ' + this.getHours() + 'h ' + this.getMinutes() + 'm';
+
+        let hours = this.getHours();
+        if (isNaN(hours)) {
+            return null;
+        }
+
+        let mins = this.getMinutes();
+        if (isNaN(mins)) {
+            return null;
+        }
+
+        return days + 'd ' + hours + 'h ' + mins + 'm';
     }
 }
 
