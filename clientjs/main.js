@@ -195,13 +195,7 @@ async function computeTotalLpRewardNextEpoch(account, onCompleteCallback) {
         url: "https://stats.zilswap.org/distribution/current/" + account.bech32,
         retryLimit: MAX_RETRY,
         success: function (contractAddressToRewardMap) {
-            // Sum all the rewards from all pools
-            let totalRewardQa = 0;
-            for (let addressKey in contractAddressToRewardMap) {
-                totalRewardQa += parseInt(contractAddressToRewardMap[addressKey]);
-            }
-            let totalRewardZwap = convertNumberQaToDecimalString(totalRewardQa, zrcTokensPropertiesMap['ZWAP'].decimals)
-            onCompleteCallback(totalRewardZwap);
+            onCompleteCallback(contractAddressToRewardMap);
         },
         error: function (xhr, textStatus, errorThrown) {
             if (this.retryLimit--) {

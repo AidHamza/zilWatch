@@ -157,19 +157,22 @@ block content
                   tr
                     td(scope='row' rowspan='2' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
                       img(height='36' src=tokenProperties.logo_url loading='lazy')
-                    td
+                    td(style='text-align: left; white-space: nowrap; width: 33%;' )
                       span(class='font-weight-bold')= tokenProperties.ticker + '-ZIL LP'
-                    td(class='font-weight-normal' style='text-align: right; white-space: nowrap;' )
+                    td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 33%;' )
+                      span(id=tokenProperties.ticker+'_lp_pool_reward_zwap')
+                      span(id=tokenProperties.ticker+'_lp_pool_reward_zwap_unit' class='ml-1')
+                    td(style='text-align: right; white-space: nowrap; width: 33%;' )
                       span(id=tokenProperties.ticker+'_lp_pool_share_percent')= 'Loading...'
                       span(class='ml-1')= '%'
                   tr
-                    td(style='text-align: left; white-space: nowrap; width: 49%;' )
+                    td(colspan='2' style='text-align: left; white-space: nowrap; width: 66%;' )
                       span(id=tokenProperties.ticker+'_lp_token_balance')
                       span(id=tokenProperties.ticker+'_lp_token_balance_unit' class='ml-1')= tokenProperties.ticker
                       span(class='ml-1')= '-'
                       span(id=tokenProperties.ticker+'_lp_zil_balance' class='ml-1')
                       span(id=tokenProperties.ticker+'_lp_zil_balance_unit' class='ml-1')= 'ZIL'
-                    td(style='text-align: right; white-space: nowrap; width: 49%;' )
+                    td(style='text-align: right; white-space: nowrap; width: 33%;' )
                       span(class='mr-1')= '$'
                       span(id=tokenProperties.ticker+'_lp_balance_usd')= 'Loading...'
     hr

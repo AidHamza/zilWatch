@@ -58,7 +58,7 @@ function refreshMainContentData(account) {
     computeZrcTokensBalance(account, zrcTokensPropertiesMap, showZrcTokenWalletBalance);
 
     // (6) Get Potential LP reward next epoch and time duration counter to the next epoch
-    computeTotalLpRewardNextEpoch(account, showTotalLpRewardNextEpoch);
+    computeTotalLpRewardNextEpoch(account, showLpRewardNextEpoch);
     computeLpNextEpochStart(showLpNextEpochCounter);
 
     // (7) Get ZIL staking balance
@@ -163,9 +163,30 @@ function showZilStakingBalance(balance, ssnAddress) {
  * --------------------------------------------------------------------------------
  */
 
-function showTotalLpRewardNextEpoch(zwapReward) {
-    if (zwapReward) {
-        $('#lp_reward_next_epoch_zwap').text(zwapReward);
+function showLpRewardNextEpoch(contractAddressToRewardMap) {
+    if (contractAddressToRewardMap) {
+        // Sum of the rewards from all pools.
+        let totalZwapRewardQa = 0;
+
+        // Loop all individuals ZRC token LP and show ZWAP reward per ZRC LP.
+        for (let ticker in zrcTokensPropertiesMap) {
+            let zrcTokenAddress = zrcTokensPropertiesMap[ticker].address;
+            
+            if (contractAddressToRewardMap[zrcTokenAddress]) {
+                let zwapRewardQa = parseInt(contractAddressToRewardMap[zrcTokenAddress]);
+                if (zwapRewardQa) {
+                    totalZwapRewardQa += zwapRewardQa;
+
+                    let zwapRewardString = convertNumberQaToDecimalString(zwapRewardQa, zrcTokensPropertiesMap['ZWAP'].decimals);
+                    $('#' + ticker + '_lp_pool_reward_zwap').text(zwapRewardString);
+                    $('#' + ticker + '_lp_pool_reward_zwap_unit').text('ZWAP');
+                }
+            }
+        }
+
+        // Total reward from all pools
+        let totalRewardZwapString = convertNumberQaToDecimalString(totalZwapRewardQa, zrcTokensPropertiesMap['ZWAP'].decimals)
+        $('#lp_reward_next_epoch_zwap').text(totalRewardZwapString);
         $('#lp_reward_next_epoch_container').show();
     } else {
         $('#lp_reward_next_epoch_container').hide();
@@ -173,12 +194,14 @@ function showTotalLpRewardNextEpoch(zwapReward) {
 }
 
 function showLpNextEpochCounter(nextEpochStartSeconds) {
-    let currentDate = new Date();
-    let currentTimeSeconds = currentDate.getTime() / 1000;
-    let timeDiffSeconds = Math.max(0, nextEpochStartSeconds - currentTimeSeconds);
-    let timeDiffDuration = new Duration(timeDiffSeconds);
+    if (nextEpochStartSeconds) {
+        let currentDate = new Date();
+        let currentTimeSeconds = currentDate.getTime() / 1000;
+        let timeDiffSeconds = Math.max(0, nextEpochStartSeconds - currentTimeSeconds);
+        let timeDiffDuration = new Duration(timeDiffSeconds);
 
-    $('#next_epoch_duration_counter').html(timeDiffDuration.getUserFriendlyString());
+        $('#next_epoch_duration_counter').html(timeDiffDuration.getUserFriendlyString());
+    }
 }
 
 /**
