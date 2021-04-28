@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "npm run uglifyjs && node ./bin/www",
-    "test": "mocha tests/**/*.js",
+    "test": "nyc mocha tests/**/*.js",
     "uglifyjs": "uglifyjs clientjs/*.js --compress --mangle --output public/javascripts/main.min.js"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "jquery": "^3.6.0",
     "jsdom": "^16.5.3",
     "mocha": "^8.3.2",
+    "nyc": "^15.1.0",
     "uglify-js": "^3.13.4"
   }
 }
