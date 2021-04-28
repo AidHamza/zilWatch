@@ -1,31 +1,6 @@
 const ZilSwapDexAddress = "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w";
 const ZilSeedNodeStakingImplementationAddress = "zil1k7qwsz2m3w595u29je0dvv4nka62c5wwrp8r8p";
-const ZilpayStatus = Object.freeze({
-    "not_installed": 1,
-    "locked": 2,
-    "not_connected": 3,
-    "not_mainnet": 4,
-    'connected': 5
-});
 const MAX_RETRY = 5;
-
-/**
- * ===============================================================================
- */
-
-/** Returns an enum. */
-function checkZilpayStatus() {
-    if (!window.zilPay) {
-        return ZilpayStatus.not_installed;
-    } else if (!window.zilPay.wallet.isEnable) {
-        return ZilpayStatus.locked;
-    } else if (!window.zilPay.wallet.isConnect) {
-        return ZilpayStatus.not_connected;
-    } else if (window.zilPay.wallet.net !== 'mainnet') {
-        return ZilpayStatus.not_mainnet;
-    }
-    return ZilpayStatus.connected;
-}
 
 /**
  * ===============================================================================

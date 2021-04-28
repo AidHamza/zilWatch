@@ -1,9 +1,12 @@
 // Assumes zrcTokensPropertiesMap is declared
+// Assumes ssnListMap is declared
 
 window.addEventListener("load", async () => {
     computeZilPriceInUsd(showZilPriceInUsd);
 
-    if (!refreshMainContentVisibility(checkZilpayStatus())) {
+    let zilpayStatus = checkZilpayStatus();
+    bindViewMainContainer(zilpayStatus);
+    if (ZilpayStatus.connected !== zilpayStatus) {
         return;
     }
 
@@ -14,7 +17,7 @@ window.addEventListener("load", async () => {
 
     // Subscribe if there are changes with network
     window.zilPay.wallet.observableNetwork().subscribe(() => {
-        refreshMainContentVisibility(checkZilpayStatus());
+        bindViewMainContainer(checkZilpayStatus());
     });
 
     if (window.zilPay.wallet.isConnect) {
@@ -42,7 +45,7 @@ $("#wallet_refresh").click(function () {
 
 function refreshMainContentData(account) {
     // (1) show main screen
-    refreshMainContentVisibility(ZilpayStatus.connected);
+    bindViewMainContainer(ZilpayStatus.connected);
 
     // (2) Refresh login button state
     bindViewLoggedInButton(censorBech32Address(account.bech32));
@@ -63,33 +66,6 @@ function refreshMainContentData(account) {
 
     // (7) Get ZIL staking balance
     computeZilStakingBalance(account, showZilStakingBalance);
-}
-
-function refreshMainContentVisibility(zilpayStatus) {
-    if (ZilpayStatus.connected === zilpayStatus) {
-        $('#main_content_container').show();
-        $('#error_message_container').hide();
-        return true;
-    } else {
-        possiblyShowErrorState(zilpayStatus);
-        return false;
-    }
-}
-
-function possiblyShowErrorState(zilpayStatus) {
-    if (ZilpayStatus.not_installed === zilpayStatus) {
-        $('#main_content_container').hide();
-        $('#error_message').html('ZilPay not installed! <a href="https://zilpay.io">Download here</a>');
-        $('#error_message_container').show();
-    } else if (ZilpayStatus.locked === zilpayStatus || ZilpayStatus.not_connected === zilpayStatus) {
-        $('#main_content_container').hide();
-        $('#error_message').html('Please connect to ZilPay! (top right button)');
-        $('#error_message_container').show();
-    } else if (ZilpayStatus.not_mainnet === zilpayStatus) {
-        $('#main_content_container').hide();
-        $('#error_message').html('Please switch to mainnet!');
-        $('#error_message_container').show();
-    }
 }
 
 /**
@@ -164,7 +140,7 @@ function showLpRewardNextEpoch(contractAddressToRewardMap) {
         // Loop all individuals ZRC token LP and show ZWAP reward per ZRC LP.
         for (let ticker in zrcTokensPropertiesMap) {
             let zrcTokenAddress = zrcTokensPropertiesMap[ticker].address;
-            
+
             if (contractAddressToRewardMap[zrcTokenAddress]) {
                 let zwapRewardQa = parseInt(contractAddressToRewardMap[zrcTokenAddress]);
                 if (zwapRewardQa) {
