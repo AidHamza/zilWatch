@@ -1,5 +1,5 @@
 // formatting_utils.js
-// dep = ['formatting_utils.js']
+// No dependencies
 
 /**
  * Parse data returned by Zilliqa API call getSmartContractSubState() and return the ZRC token balance

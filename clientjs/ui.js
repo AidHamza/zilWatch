@@ -45,7 +45,7 @@ function refreshMainContentData(account) {
     refreshMainContentVisibility(ZilpayStatus.connected);
 
     // (2) Refresh login button state
-    refreshLoginButtonState(account);
+    bindViewLoggedInButton(censorBech32Address(account.bech32));
 
     // (3) Get ZIL balance, async.
     computeZilBalance(account, showZilWalletBalance);
@@ -63,13 +63,6 @@ function refreshMainContentData(account) {
 
     // (7) Get ZIL staking balance
     computeZilStakingBalance(account, showZilStakingBalance);
-}
-
-function refreshLoginButtonState(account) {
-    $('#wallet_connect').hide();
-    $('#wallet_address').html(censorBech32Address(account.bech32));
-    $('#wallet_address').show();
-    $('#wallet_refresh').show();
 }
 
 function refreshMainContentVisibility(zilpayStatus) {
