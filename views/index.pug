@@ -87,7 +87,7 @@ block content
                     span(class='mr-1')= '$'
                     span(id='zil_price')= 'Loading...'
                   td(style='text-align: right; white-space: nowrap; width: 33%;' )
-                    span(id='zil_balance')
+                    span(id='zil_balance')= 'Loading...'
                     span(id='zil_balance_unit' class='ml-1')= 'ZIL'
                   td(style='text-align: right; white-space: nowrap; width: 33%;' )
                     span(class='mr-1')= '$'
@@ -112,7 +112,7 @@ block content
                       span(id=tokenProperties.ticker+'_price')= 'Loading...'
                       span(id=tokenProperties.ticker+'_price_unit' class='ml-1')= "ZIL"
                     td(style='text-align: right; white-space: nowrap; width: 33%;' )
-                      span(id=tokenProperties.ticker+'_balance')
+                      span(id=tokenProperties.ticker+'_balance')= 'Loading...'
                       span(id=tokenProperties.ticker+'_balance_unit' class='ml-1')= tokenProperties.ticker
                     td(style='text-align: right; white-space: nowrap; width: 33%;' )
                       span(class='mr-1')= '$'
@@ -129,7 +129,7 @@ block content
 
       div(class='row')
 
-        div(id='lp_reward_next_epoch_container' class='col-lg-6' style='padding: 0; display: none')
+        div(id='total_all_lp_reward_next_epoch_container' class='col-lg-6' style='padding: 0; display: none')
           div(class='highlight-box')
             table(class='table table-sm table-borderless')
               tbody
@@ -139,14 +139,14 @@ block content
                   td(style='text-align: left; white-space: nowrap; width: 49%;' )
                     span(class='font-weight-bold')= 'est. reward next epoch'
                   td(style='text-align: right; white-space: nowrap; width: 49%;' )
-                    span(id='next_epoch_duration_counter' class='font-weight-normal')
+                    span(id='lp_reward_next_epoch_duration_counter' class='font-weight-normal')
                 tr(class='text-secondary')
                   td(style='text-align: left; white-space: nowrap; width: 49%;' )
-                    span(id='lp_reward_next_epoch_zwap' class='ml-1')
-                    span(id='lp_reward_next_epoch_zwap_unit' class='ml-1')= zrcTokenPropertiesMap['ZWAP'].ticker
+                    span(id='total_all_lp_reward_next_epoch_zwap' class='ml-1')= 'Loading...'
+                    span(id='total_all_lp_reward_next_epoch_zwap_unit' class='ml-1')= zrcTokenPropertiesMap['ZWAP'].ticker
                   td(style='text-align: right; white-space: nowrap; width: 49%;' )
                     span(class='mr-1')= '$'
-                    span(id='lp_reward_next_epoch_usd')= 'Loading...'
+                    span(id='total_all_lp_reward_next_epoch_usd')= 'Loading...'
 
         each tokenProperties, key in zrcTokenPropertiesMap
 

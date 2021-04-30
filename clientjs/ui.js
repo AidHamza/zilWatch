@@ -2,7 +2,7 @@
 // Assumes ssnListMap is declared
 
 window.addEventListener("load", async () => {
-    computeZilPriceInUsd(showZilPriceInUsd);
+    computeZilPriceInUsd(onZilUsdPriceLoaded);
 
     let zilpayStatus = checkZilpayStatus();
     bindViewMainContainer(zilpayStatus);
@@ -51,81 +51,21 @@ function refreshMainContentData(account) {
     bindViewLoggedInButton(censorBech32Address(account.bech32));
 
     // (3) Get ZIL balance, async.
-    computeZilBalance(account, showZilWalletBalance);
+    computeZilBalance(account, onZilWalletBalanceLoaded);
 
     // (4) Get ZRC-2 tokens price & ZRC-2 tokens LP balances in Zilswap, async.
     // Do this together because they are one API call, using the same data.
-    computeZrcTokensPriceAndZilswapLpBalance(zrcTokensPropertiesMap, showZrcTokenPriceInZil, account, showZrcTokenLpBalance);
+    computeZrcTokensPriceAndZilswapLpBalance(zrcTokensPropertiesMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded);
 
     // (5) Get ZRC-2 tokens balances, async.
-    computeZrcTokensBalance(account, zrcTokensPropertiesMap, showZrcTokenWalletBalance);
+    computeZrcTokensBalance(account, zrcTokensPropertiesMap, onZrcTokenWalletBalanceLoaded);
 
     // (6) Get Potential LP reward next epoch and time duration counter to the next epoch
     computeTotalLpRewardNextEpoch(account, showLpRewardNextEpoch);
     computeLpNextEpochStart(showLpNextEpochCounter);
 
     // (7) Get ZIL staking balance
-    computeZilStakingBalance(account, showZilStakingBalance);
-}
-
-/**
- * --------------------------------------------------------------------------------
- */
-
-function showZilPriceInUsd(zilPriceInUsd) {
-    $("#zil_price").text(zilPriceInUsd.toFixed(4));
-    onZilUsdPriceLoaded();
-}
-
-function showZilWalletBalance(balance) {
-    $('#zil_balance').text(balance);
-
-    onZilWalletBalanceLoaded();
-}
-
-function showZrcTokenPriceInZil( /* nullable */ zrcTokenPriceInZil, ticker) {
-    if (zrcTokenPriceInZil) {
-        $('#' + ticker + '_price').text(zrcTokenPriceInZil);
-
-        onZrcTokenPriceInZilLoaded(ticker);
-    } else {
-        $('#' + ticker + '_price').hide();
-    }
-}
-
-function showZrcTokenWalletBalance( /* nullable */ balance, ticker) {
-    if (balance) {
-        $('#' + ticker + '_balance').text(balance);
-        $('#' + ticker + '_container').show();
-
-        onZrcTokenWalletBalanceLoaded(ticker);
-    } else {
-        $('#' + ticker + '_container').hide();
-    }
-}
-
-function showZrcTokenLpBalance( /* nullable */ poolSharePercent, /* nullable */ zilBalance, /* nullable */ zrcBalance, ticker) {
-    if (poolSharePercent && zilBalance && zrcBalance) {
-        $('#' + ticker + '_lp_pool_share_percent').text(poolSharePercent);
-        $('#' + ticker + '_lp_token_balance').text(zrcBalance);
-        $('#' + ticker + '_lp_zil_balance').text(zilBalance);
-        $('#' + ticker + '_lp_container').show();
-
-        onZrcTokenLpBalanceLoaded(ticker);
-    } else {
-        $('#' + ticker + '_lp_container').hide();
-    }
-}
-
-function showZilStakingBalance(balance, ssnAddress) {
-    if (balance) {
-        $('#' + ssnAddress + '_zil_staking_balance').text(balance);
-        $('#' + ssnAddress + '_zil_staking_container').show();
-
-        onZilStakingBalanceLoaded(ssnAddress);
-    } else {
-        $('#' + ssnAddress + '_zil_staking_container').hide();
-    }
+    computeZilStakingBalance(account, onZilStakingBalanceLoaded);
 }
 
 /**
@@ -133,33 +73,30 @@ function showZilStakingBalance(balance, ssnAddress) {
  */
 
 function showLpRewardNextEpoch(contractAddressToRewardMap) {
-    if (contractAddressToRewardMap) {
-        // Sum of the rewards from all pools.
-        let totalZwapRewardQa = 0;
+    if (!contractAddressToRewardMap) {
+        return;
+    }
+    // Sum of the rewards from all pools.
+    let totalZwapRewardQa = 0;
 
-        // Loop all individuals ZRC token LP and show ZWAP reward per ZRC LP.
-        for (let ticker in zrcTokensPropertiesMap) {
-            let zrcTokenAddress = zrcTokensPropertiesMap[ticker].address;
+    // Loop all individuals ZRC token LP and show ZWAP reward per ZRC LP.
+    for (let ticker in zrcTokensPropertiesMap) {
+        let zrcTokenAddress = zrcTokensPropertiesMap[ticker].address;
 
-            if (contractAddressToRewardMap[zrcTokenAddress]) {
-                let zwapRewardQa = parseInt(contractAddressToRewardMap[zrcTokenAddress]);
-                if (zwapRewardQa) {
-                    totalZwapRewardQa += zwapRewardQa;
+        if (contractAddressToRewardMap[zrcTokenAddress]) {
+            let zwapRewardQa = parseInt(contractAddressToRewardMap[zrcTokenAddress]);
+            if (zwapRewardQa) {
+                totalZwapRewardQa += zwapRewardQa;
 
-                    let zwapRewardString = convertNumberQaToDecimalString(zwapRewardQa, zrcTokensPropertiesMap['ZWAP'].decimals);
-                    $('#' + ticker + '_lp_pool_reward_zwap').text(zwapRewardString);
-                    $('#' + ticker + '_lp_pool_reward_zwap_unit').text('ZWAP');
-                }
+                let zwapRewardString = convertNumberQaToDecimalString(zwapRewardQa, zrcTokensPropertiesMap['ZWAP'].decimals);
+                bindViewZwapRewardLp(zwapRewardString, ticker);
             }
         }
-
-        // Total reward from all pools
-        let totalRewardZwapString = convertNumberQaToDecimalString(totalZwapRewardQa, zrcTokensPropertiesMap['ZWAP'].decimals)
-        $('#lp_reward_next_epoch_zwap').text(totalRewardZwapString);
-        $('#lp_reward_next_epoch_container').show();
-    } else {
-        $('#lp_reward_next_epoch_container').hide();
     }
+
+    // Total reward from all pools
+    let totalRewardZwapString = convertNumberQaToDecimalString(totalZwapRewardQa, zrcTokensPropertiesMap['ZWAP'].decimals)
+    bindViewTotalZwapRewardAllLp(totalRewardZwapString);
 }
 
 function showLpNextEpochCounter(nextEpochStartSeconds) {
@@ -169,7 +106,7 @@ function showLpNextEpochCounter(nextEpochStartSeconds) {
         let timeDiffSeconds = Math.max(0, nextEpochStartSeconds - currentTimeSeconds);
         let timeDiffDuration = new Duration(timeDiffSeconds);
 
-        $('#next_epoch_duration_counter').html(timeDiffDuration.getUserFriendlyString());
+        bindViewLpNextEpochCounter(timeDiffDuration.getUserFriendlyString());
     }
 }
 
@@ -177,7 +114,13 @@ function showLpNextEpochCounter(nextEpochStartSeconds) {
  * --------------------------------------------------------------------------------
  */
 
-function onZilUsdPriceLoaded() {
+function onZilUsdPriceLoaded(zilPriceInUsd) {
+    let zilPriceInUsdFloat = parseFloat(zilPriceInUsd);
+    if (!zilPriceInUsdFloat) {
+        return;
+    }
+    bindViewZilPriceInUsd(zilPriceInUsdFloat.toFixed(4));
+
     // Wallet Balance
     refreshZilWalletBalanceUsd();
     for (let ticker in zrcTokensPropertiesMap) {
@@ -204,7 +147,13 @@ function onZilUsdPriceLoaded() {
     refreshNetWorthZilUsd();
 }
 
-function onZilWalletBalanceLoaded() {
+function onZilWalletBalanceLoaded(zilBalanceQa) {
+    var userFriendlyZilBalance = convertNumberQaToDecimalString(parseInt(zilBalanceQa), /* decimals= */ 12);
+    if (!userFriendlyZilBalance) {
+        return;
+    }
+    bindViewZilBalance(userFriendlyZilBalance);
+
     // Wallet Balance
     refreshZilWalletBalanceUsd();
     refreshTotalWalletBalanceZilUsd();
@@ -213,7 +162,13 @@ function onZilWalletBalanceLoaded() {
     refreshNetWorthZilUsd();
 }
 
-function onZrcTokenPriceInZilLoaded(ticker) {
+function onZrcTokenPriceInZilLoaded(zrcTokenPriceInZilNumber, ticker) {
+    let userFriendlyZrcTokenPriceInZil = convertNumberQaToDecimalString(zrcTokenPriceInZilNumber, /* decimals= */ 0);
+    if (!userFriendlyZrcTokenPriceInZil) {
+        return;
+    }
+    bindViewZrcTokenPriceInZil(userFriendlyZrcTokenPriceInZil, ticker)
+
     // Wallet Balance
     refreshZrcTokenWalletBalanceZilUsd(ticker);
     refreshTotalWalletBalanceZilUsd();
@@ -231,9 +186,15 @@ function onZrcTokenPriceInZilLoaded(ticker) {
     refreshNetWorthZilUsd();
 }
 
-function onZrcTokenWalletBalanceLoaded(ticker) {
+function onZrcTokenWalletBalanceLoaded(zrcTokenBalanceNumberQa, zrcTokenProperties) {
+    let userFriendlyZrcTokenBalanceString = convertNumberQaToDecimalString(zrcTokenBalanceNumberQa, zrcTokenProperties.decimals);
+    if (!userFriendlyZrcTokenBalanceString) {
+        return;
+    }
+    bindViewZrcTokenWalletBalance(userFriendlyZrcTokenBalanceString, zrcTokenProperties.ticker);
+
     // Wallet Balance
-    refreshZrcTokenWalletBalanceZilUsd(ticker);
+    refreshZrcTokenWalletBalanceZilUsd(zrcTokenProperties.ticker);
     refreshTotalWalletBalanceZilUsd();
 
     // Net worth
@@ -244,7 +205,19 @@ function onTotalLpRewardNextEpochLoaded() {
     refreshTotalLpRewardUsd();
 }
 
-function onZrcTokenLpBalanceLoaded(ticker) {
+function onZrcTokenLpBalanceLoaded(walletZilswapSingleTokenLpStatus, ticker) {
+    if (!walletZilswapSingleTokenLpStatus) {
+        return;
+    }
+    let poolSharePercent = parseFloat((walletZilswapSingleTokenLpStatus.shareRatio) * 100).toPrecision(3);
+    let zilAmount = convertNumberQaToDecimalString(walletZilswapSingleTokenLpStatus.zilAmount, /* decimals= */ 0);
+    let zrcTokenAmount = convertNumberQaToDecimalString(walletZilswapSingleTokenLpStatus.zrcTokenAmount, /* decimals= */ 0);
+
+    if (!poolSharePercent || !zilAmount || !zrcTokenAmount) {
+        return;
+    }
+    bindViewZrcTokenLpBalance(poolSharePercent, zilAmount, zrcTokenAmount, ticker);
+
     // Lp balance
     refreshZrcTokenLpBalanceUsd(ticker)
     refreshTotalLpBalanceZilUsd();
@@ -253,7 +226,13 @@ function onZrcTokenLpBalanceLoaded(ticker) {
     refreshNetWorthZilUsd();
 }
 
-function onZilStakingBalanceLoaded(ssnAddress) {
+function onZilStakingBalanceLoaded(zilBalanceQa, ssnAddress) {
+    let userFriendlyZilStakingBalanceString = convertNumberQaToDecimalString(parseInt(zilBalanceQa), /* decimals= */ 12);
+    if (!userFriendlyZilStakingBalanceString) {
+        return;
+    }
+    bindViewZilStakingBalance(userFriendlyZilStakingBalanceString, ssnAddress);
+
     // ZIL Staking balance
     refreshZilStakingUsd(ssnAddress)
     refreshTotalZilStakingZilUsd();
@@ -477,12 +456,12 @@ function refreshTotalLpRewardUsd() {
         return;
     }
 
-    let rewardBalance = $('#lp_reward_next_epoch_zwap').text();
+    let rewardBalance = $('#total_all_lp_reward_next_epoch_zwap').text();
     rewardBalance = parseFloatFromCommafiedNumberString(rewardBalance);
     if (!rewardBalance) {
         return;
     }
 
     let rewardBalanceUsd = (usdPrice * zrcTokenPriceInZil * rewardBalance);
-    $('#lp_reward_next_epoch_usd').text(commafyNumberToString(rewardBalanceUsd));
+    $('#total_all_lp_reward_next_epoch_usd').text(commafyNumberToString(rewardBalanceUsd));
 }

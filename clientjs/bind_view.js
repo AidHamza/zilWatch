@@ -35,6 +35,49 @@ function bindViewMainContainer(zilpayStatus) {
     $('#error_message_container').show();
 }
 
+function bindViewZilPriceInUsd(zilPriceInUsd) {
+    $("#zil_price").text(zilPriceInUsd);
+}
+
+function bindViewZilBalance(zilBalance) {
+    $('#zil_balance').text(zilBalance);
+}
+
+function bindViewZrcTokenPriceInZil(zrcTokenPriceInZil, ticker) {
+    $('#' + ticker + '_price').text(zrcTokenPriceInZil);
+}
+
+function bindViewZrcTokenWalletBalance(zrcTokenBalance, ticker) {
+    $('#' + ticker + '_balance').text(zrcTokenBalance);
+    $('#' + ticker + '_container').show();
+}
+
+function bindViewZrcTokenLpBalance(poolSharePercent, zilBalance, zrcBalance, ticker) {
+    $('#' + ticker + '_lp_pool_share_percent').text(poolSharePercent);
+    $('#' + ticker + '_lp_zil_balance').text(zilBalance);
+    $('#' + ticker + '_lp_token_balance').text(zrcBalance);
+    $('#' + ticker + '_lp_container').show();
+}
+
+function bindViewZilStakingBalance(zilStakingBalance, ssnAddress) {
+    $('#' + ssnAddress + '_zil_staking_balance').text(zilStakingBalance);
+    $('#' + ssnAddress + '_zil_staking_container').show();
+}
+
+function bindViewZwapRewardLp(zwapRewardString, ticker) {
+    $('#' + ticker + '_lp_pool_reward_zwap').text(zwapRewardString);
+    $('#' + ticker + '_lp_pool_reward_zwap_unit').text('ZWAP');
+}
+
+function bindViewTotalZwapRewardAllLp(totalRewardZwapString) {
+    $('#total_all_lp_reward_next_epoch_zwap').text(totalRewardZwapString);
+    $('#total_all_lp_reward_next_epoch_container').show();
+}
+
+function bindViewLpNextEpochCounter(timeDurationString) {
+    $('#lp_reward_next_epoch_duration_counter').text(timeDurationString);
+}
+
 if (typeof exports !== 'undefined') {
 
     if (typeof $ === 'undefined') {
@@ -48,4 +91,14 @@ if (typeof exports !== 'undefined') {
 
     exports.bindViewLoggedInButton = bindViewLoggedInButton;
     exports.bindViewMainContainer = bindViewMainContainer;
+
+    exports.bindViewZilPriceInUsd = bindViewZilPriceInUsd;
+    exports.bindViewZilBalance = bindViewZilBalance;
+    exports.bindViewZrcTokenPriceInZil = bindViewZrcTokenPriceInZil;
+    exports.bindViewZrcTokenWalletBalance = bindViewZrcTokenWalletBalance;
+    exports.bindViewZrcTokenLpBalance = bindViewZrcTokenLpBalance;
+    exports.bindViewZilStakingBalance = bindViewZilStakingBalance;
+    exports.bindViewZwapRewardLp = bindViewZwapRewardLp;
+    exports.bindViewTotalZwapRewardAllLp = bindViewTotalZwapRewardAllLp;
+    exports.bindViewLpNextEpochCounter = bindViewLpNextEpochCounter;
 }

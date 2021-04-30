@@ -6,25 +6,23 @@ const MAX_RETRY = 5;
  * ===============================================================================
  */
 
-/** Void function. invokes onCompleteCallback(string balance) function after computation is done. */
-async function computeZilBalance(account, onCompleteCallback) {
-    computeZilBalanceWithRetry(account, onCompleteCallback, MAX_RETRY);
+/** Void function. invokes onZilWalletBalanceLoaded(string balance) function after computation is done. */
+async function computeZilBalance(account, onZilWalletBalanceLoaded) {
+    computeZilBalanceWithRetry(account, onZilWalletBalanceLoaded, MAX_RETRY);
 }
 
-function computeZilBalanceWithRetry(account, onCompleteCallback, retryRemaining) {
+function computeZilBalanceWithRetry(account, onZilWalletBalanceLoaded, retryRemaining) {
     if (retryRemaining <= 0) {
         console.log("computeZilBalanceWithRetry failed! Out of retries!");
         return;
     }
     window.zilPay.blockchain.getBalance(account.bech32)
         .then(function (data) {
-            retryCounter = 0; // Successful
-            var userFriendlyZilBalance = convertNumberQaToDecimalString(parseInt(data.result.balance), /* decimals= */ 12);
-            onCompleteCallback(userFriendlyZilBalance);
+            onZilWalletBalanceLoaded(data.result.balance);
         })
         .catch(function () {
             console.log("computeZilBalanceWithRetry failed! %s", retryRemaining);
-            computeZilBalanceWithRetry(account, onCompleteCallback, retryRemaining - 1);
+            computeZilBalanceWithRetry(account, onZilWalletBalanceLoaded, retryRemaining - 1);
         });
 }
 
@@ -32,11 +30,11 @@ function computeZilBalanceWithRetry(account, onCompleteCallback, retryRemaining)
  * --------------------------------------------------------------------------------
  */
 
-async function computeZrcTokensPriceAndZilswapLpBalance(zrcTokensPropertiesMap, onZrcTokensPriceCompleteCallback, account, onZilswapLpBalanceCompleteCallback) {
-    computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokensPropertiesMap, onZrcTokensPriceCompleteCallback, account, onZilswapLpBalanceCompleteCallback, MAX_RETRY);
+async function computeZrcTokensPriceAndZilswapLpBalance(zrcTokensPropertiesMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded) {
+    computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokensPropertiesMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded, MAX_RETRY);
 }
 
-function computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokensPropertiesMap, onZrcTokensPriceCompleteCallback, account, onZilswapLpBalanceCompleteCallback, retryRemaining) {
+function computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokensPropertiesMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded, retryRemaining) {
     if (retryRemaining <= 0) {
         console.log("computeZrcTokensPriceAndZilswapLpBalanceWithRetry failed! Out of retries!");
         return;
@@ -47,26 +45,19 @@ function computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokensPropertiesMa
                 let zrcTokenProperties = zrcTokensPropertiesMap[key];
                 let zrcTokenAddressBase16 = window.zilPay.crypto.fromBech32Address(zrcTokenProperties.address).toLowerCase();
 
-                // To get ZrcTokensPrice in ZIL.
+                // To get ZrcTokensPrice in ZIL, already in decimal.
                 let zrcTokenPriceInZilNumber = getZrcTokenPriceInZilFromZilswapDexState(data, zrcTokenAddressBase16, zrcTokenProperties.decimals);
-                let zrcTokenPriceInZil = convertNumberQaToDecimalString(zrcTokenPriceInZilNumber, /* decimals= */ 0);
 
-                onZrcTokensPriceCompleteCallback(zrcTokenPriceInZil, zrcTokenProperties.ticker);
+                onZrcTokenPriceInZilLoaded(zrcTokenPriceInZilNumber, zrcTokenProperties.ticker);
 
                 // To get ZilswapLp balance.
                 let walletPoolStatus = getSingleTokenLpStatusFromZilswapDexState(data, zrcTokenAddressBase16, zrcTokenProperties.decimals, account.base16.toLowerCase());
-
-                if (walletPoolStatus) {
-                    let poolSharePercent = parseFloat((walletPoolStatus.shareRatio) * 100).toPrecision(3);
-                    let ourZilShare = convertNumberQaToDecimalString(walletPoolStatus.zilAmount, /* decimals= */ 0);
-                    let ourTokenShare = convertNumberQaToDecimalString(walletPoolStatus.zrcTokenAmount, /* decimals= */ 0);
-                    onZilswapLpBalanceCompleteCallback(poolSharePercent, ourZilShare, ourTokenShare, zrcTokenProperties.ticker);
-                }
+                onZrcTokenLpBalanceLoaded(walletPoolStatus, zrcTokenProperties.ticker);
             }
         })
         .catch(function () {
             console.log("computeZrcTokensPriceAndZilswapLpBalanceWithRetry failed! %s", retryRemaining);
-            computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokensPropertiesMap, onZrcTokensPriceCompleteCallback, account, onZilswapLpBalanceCompleteCallback, retryRemaining - 1);
+            computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokensPropertiesMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded, retryRemaining - 1);
         });
 }
 
@@ -74,37 +65,35 @@ function computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokensPropertiesMa
  * --------------------------------------------------------------------------------
  */
 
-/** Void function. invokes onCompleteCallback(string balance, string ticker) function after computation is done. */
-async function computeZrcTokensBalance(account, zrcTokensPropertiesMap, onCompleteCallback) {
+/** Void function. invokes onZrcTokenWalletBalanceLoaded(number zrcBalanceQa, string ticker) function after computation is done. */
+async function computeZrcTokensBalance(account, zrcTokensPropertiesMap, onZrcTokenWalletBalanceLoaded) {
     for (const key in zrcTokensPropertiesMap) {
         let zrcTokenProperties = zrcTokensPropertiesMap[key];
         let walletAddressBase16 = account.base16.toLowerCase();
 
         // Ignore Promise result, not important.
-        computeSingleZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onCompleteCallback);
+        computeSingleZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded);
     }
 }
 
 /** Private async function, to compute a single zrcToken. */
-async function computeSingleZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onCompleteCallback) {
-    computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddressBase16, onCompleteCallback, MAX_RETRY);
+async function computeSingleZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded) {
+    computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded, MAX_RETRY);
 }
 
-function computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddressBase16, onCompleteCallback, retryRemaining) {
+function computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded, retryRemaining) {
     if (retryRemaining <= 0) {
         console.log("computeSingleZrcTokenBalanceWithRetry failed! Out of retries!");
         return;
     }
     window.zilPay.blockchain.getSmartContractSubState(zrcTokenProperties.address, "balances", [walletAddressBase16])
         .then(function (data) {
-            retryCounter = 0; // Successful
             let zrcTokenBalanceNumberQa = parseZrcTokenBalanceNumberQaFromGetSmartContractSubState(data, walletAddressBase16);
-            let zrcTokenBalanceString = convertNumberQaToDecimalString(zrcTokenBalanceNumberQa, zrcTokenProperties.decimals);
-            onCompleteCallback(zrcTokenBalanceString, zrcTokenProperties.ticker);
+            onZrcTokenWalletBalanceLoaded(zrcTokenBalanceNumberQa, zrcTokenProperties);
         })
         .catch(function () {
             console.log("computeSingleZrcTokenBalanceWithRetry(%s) failed! %s", zrcTokenProperties.ticker, retryRemaining);
-            computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddressBase16, onCompleteCallback, retryRemaining - 1);
+            computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded, retryRemaining - 1);
         });
 }
 
@@ -130,8 +119,7 @@ function computeZilStakingBalanceWithRetry(account, onCompleteCallback, retryRem
                 let ssnToBalanceMap = data.result.deposit_amt_deleg[walletAddressBase16];
                 if (ssnToBalanceMap) {
                     for (let ssnAddress in ssnToBalanceMap) {
-                        let zilStakingBalanceString = convertNumberQaToDecimalString(parseInt(ssnToBalanceMap[ssnAddress]), /* decimals= */ 12);
-                        onCompleteCallback(zilStakingBalanceString, ssnAddress);
+                        onCompleteCallback(ssnToBalanceMap[ssnAddress], ssnAddress);
                     }
                 }
             }
