@@ -105,7 +105,7 @@ block content
                     td(colspan='2')
                       span(class='font-weight-bold')= tokenProperties.name
                     td(style='text-align: right; white-space: nowrap; width: 33%;' )
-                      span(id=tokenProperties.ticker+'_balance_zil')
+                      span(id=tokenProperties.ticker+'_balance_zil')= 'Loading...'
                       span(class='ml-1')= 'ZIL'
                   tr
                     td(scope='row' class='font-weight-normal text-secondary' style='white-space: nowrap; width: 33%;' )
@@ -116,7 +116,7 @@ block content
                       span(id=tokenProperties.ticker+'_balance_unit' class='ml-1')= tokenProperties.ticker
                     td(style='text-align: right; white-space: nowrap; width: 33%;' )
                       span(class='mr-1')= '$'
-                      span(id=tokenProperties.ticker+'_balance_usd')
+                      span(id=tokenProperties.ticker+'_balance_usd')= 'Loading...'
 
     hr
 

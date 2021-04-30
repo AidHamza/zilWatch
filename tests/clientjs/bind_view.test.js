@@ -444,14 +444,14 @@ describe('BindView', function () {
     });
 
 
-    describe('#bindViewTotalZwapRewardAllLp()', function () {
+    describe('#bindViewTotalRewardAllLpZwap()', function () {
 
         it('bind view legit balance', function () {
             assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), 'Loading...');
             assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'none');
 
             // Act
-            BindView.bindViewTotalZwapRewardAllLp('1234.4');
+            BindView.bindViewTotalRewardAllLpZwap('1234.4');
 
             // Assert
             assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), '1234.4');
@@ -463,7 +463,7 @@ describe('BindView', function () {
             assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'none');
 
             // Act
-            BindView.bindViewTotalZwapRewardAllLp('asdf');
+            BindView.bindViewTotalRewardAllLpZwap('asdf');
 
             // Assert
             assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), 'asdf');
@@ -475,7 +475,7 @@ describe('BindView', function () {
             assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'none');
 
             // Act
-            BindView.bindViewTotalZwapRewardAllLp('');
+            BindView.bindViewTotalRewardAllLpZwap('');
 
             // Assert
             assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), '');
@@ -516,4 +516,489 @@ describe('BindView', function () {
         });
     });
 
+    describe('#bindViewZilBalanceUsd()', function () {
+
+        it('bind view happy case', function () {
+            assert.strictEqual($('#zil_balance_usd').text(), '');
+
+            // Act
+            BindView.bindViewZilBalanceUsd('1234.52');
+
+            // Assert
+            assert.strictEqual($('#zil_balance_usd').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            assert.strictEqual($('#zil_balance_usd').text(), '');
+
+            // Act
+            BindView.bindViewZilBalanceUsd('asdf');
+
+            // Assert
+            assert.strictEqual($('#zil_balance_usd').text(), 'asdf');
+        });
+
+        it('bind view empty string', function () {
+            assert.strictEqual($('#zil_balance_usd').text(), '');
+
+            // Act
+            BindView.bindViewZilBalanceUsd('');
+
+            // Assert
+            assert.strictEqual($('#zil_balance_usd').text(), '');
+        });
+    });
+
+    describe('#bindViewZrcTokenWalletBalanceZil()', function () {
+
+        it('bind view happy case', function () {
+            for (let ticker in constants.zrcTokenPropertiesMap) {
+                assert.strictEqual($('#' + ticker + '_balance_zil').text(), 'Loading...');
+
+                // Act
+                BindView.bindViewZrcTokenWalletBalanceZil('1234.4', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_balance_zil').text(), '1234.4');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ticker in constants.zrcTokenPropertiesMap) {
+                assert.strictEqual($('#' + ticker + '_balance_zil').text(), 'Loading...');
+
+                // Act
+                BindView.bindViewZrcTokenWalletBalanceZil('asdf', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_balance_zil').text(), 'asdf');
+            }
+        });
+
+        it('bind view empty string', function () {
+            for (let ticker in constants.zrcTokenPropertiesMap) {
+                assert.strictEqual($('#' + ticker + '_balance_zil').text(), 'Loading...');
+
+                // Act
+                BindView.bindViewZrcTokenWalletBalanceZil('', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_balance_zil').text(), '');
+            }
+        });
+    });
+
+    describe('#bindViewZrcTokenWalletBalanceUsd()', function () {
+
+        it('bind view happy case', function () {
+            for (let ticker in constants.zrcTokenPropertiesMap) {
+                assert.strictEqual($('#' + ticker + '_balance_usd').text(), 'Loading...');
+
+                // Act
+                BindView.bindViewZrcTokenWalletBalanceUsd('1234.4', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_balance_usd').text(), '1234.4');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ticker in constants.zrcTokenPropertiesMap) {
+                assert.strictEqual($('#' + ticker + '_balance_usd').text(), 'Loading...');
+
+                // Act
+                BindView.bindViewZrcTokenWalletBalanceUsd('asdf', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_balance_usd').text(), 'asdf');
+            }
+        });
+
+        it('bind view empty string', function () {
+            for (let ticker in constants.zrcTokenPropertiesMap) {
+                assert.strictEqual($('#' + ticker + '_balance_usd').text(), 'Loading...');
+
+                // Act
+                BindView.bindViewZrcTokenWalletBalanceUsd('', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_balance_usd').text(), '');
+            }
+        });
+    });
+
+    describe('#bindViewTotalWalletBalanceZil()', function () {
+
+        it('bind view happy case', function () {
+            assert.strictEqual($('#wallet_balance_zil').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalWalletBalanceZil('1234.52');
+
+            // Assert
+            assert.strictEqual($('#wallet_balance_zil').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            assert.strictEqual($('#wallet_balance_zil').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalWalletBalanceZil('asdf');
+
+            // Assert
+            assert.strictEqual($('#wallet_balance_zil').text(), 'asdf');
+        });
+
+        it('bind view empty string', function () {
+            assert.strictEqual($('#wallet_balance_zil').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalWalletBalanceZil('');
+
+            // Assert
+            assert.strictEqual($('#wallet_balance_zil').text(), '');
+        });
+    });
+
+    describe('#bindViewTotalWalletBalanceUsd()', function () {
+
+        it('bind view happy case', function () {
+            assert.strictEqual($('#wallet_balance_usd').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalWalletBalanceUsd('1234.52');
+
+            // Assert
+            assert.strictEqual($('#wallet_balance_usd').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            assert.strictEqual($('#wallet_balance_usd').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalWalletBalanceUsd('asdf');
+
+            // Assert
+            assert.strictEqual($('#wallet_balance_usd').text(), 'asdf');
+        });
+
+        it('bind view empty string', function () {
+            assert.strictEqual($('#wallet_balance_usd').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalWalletBalanceUsd('');
+
+            // Assert
+            assert.strictEqual($('#wallet_balance_usd').text(), '');
+        });
+    });
+
+    describe('#bindViewZrcTokenLpBalanceUsd()', function () {
+
+        it('bind view happy case', function () {
+            for (let ticker in constants.zrcTokenPropertiesMap) {
+                assert.strictEqual($('#' + ticker + '_lp_balance_usd').text(), 'Loading...');
+
+                // Act
+                BindView.bindViewZrcTokenLpBalanceUsd('1234.4', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_balance_usd').text(), '1234.4');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ticker in constants.zrcTokenPropertiesMap) {
+                assert.strictEqual($('#' + ticker + '_lp_balance_usd').text(), 'Loading...');
+
+                // Act
+                BindView.bindViewZrcTokenLpBalanceUsd('asdf', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_balance_usd').text(), 'asdf');
+            }
+        });
+
+        it('bind view empty string', function () {
+            for (let ticker in constants.zrcTokenPropertiesMap) {
+                assert.strictEqual($('#' + ticker + '_lp_balance_usd').text(), 'Loading...');
+
+                // Act
+                BindView.bindViewZrcTokenLpBalanceUsd('', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_balance_usd').text(), '');
+            }
+        });
+    });
+
+    describe('#bindViewTotalLpBalanceZil()', function () {
+
+        it('bind view happy case', function () {
+            assert.strictEqual($('#lp_balance_zil').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalLpBalanceZil('1234.52');
+
+            // Assert
+            assert.strictEqual($('#lp_balance_zil').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            assert.strictEqual($('#lp_balance_zil').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalLpBalanceZil('asdf');
+
+            // Assert
+            assert.strictEqual($('#lp_balance_zil').text(), 'asdf');
+        });
+
+        it('bind view empty string', function () {
+            assert.strictEqual($('#lp_balance_zil').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalLpBalanceZil('');
+
+            // Assert
+            assert.strictEqual($('#lp_balance_zil').text(), '');
+        });
+    });
+
+    describe('#bindViewTotalLpBalanceUsd()', function () {
+
+        it('bind view happy case', function () {
+            assert.strictEqual($('#lp_balance_usd').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalLpBalanceUsd('1234.52');
+
+            // Assert
+            assert.strictEqual($('#lp_balance_usd').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            assert.strictEqual($('#lp_balance_usd').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalLpBalanceUsd('asdf');
+
+            // Assert
+            assert.strictEqual($('#lp_balance_usd').text(), 'asdf');
+        });
+
+        it('bind view empty string', function () {
+            assert.strictEqual($('#lp_balance_usd').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalLpBalanceUsd('');
+
+            // Assert
+            assert.strictEqual($('#lp_balance_usd').text(), '');
+        });
+    });
+
+    describe('#bindViewZilStakingBalanceUsd()', function () {
+
+        it('bind view happy case', function () {
+            for (let ssnAddress in constants.ssnListMap) {
+                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_usd').text(), 'Loading...');
+
+                // Act
+                BindView.bindViewZilStakingBalanceUsd('1234.4', ssnAddress);
+
+                // Assert
+                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_usd').text(), '1234.4');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ssnAddress in constants.ssnListMap) {
+                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_usd').text(), 'Loading...');
+
+                // Act
+                BindView.bindViewZilStakingBalanceUsd('asdf', ssnAddress);
+
+                // Assert
+                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_usd').text(), 'asdf');
+            }
+        });
+
+        it('bind view empty string', function () {
+            for (let ssnAddress in constants.ssnListMap) {
+                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_usd').text(), 'Loading...');
+
+                // Act
+                BindView.bindViewZilStakingBalanceUsd('', ssnAddress);
+
+                // Assert
+                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_usd').text(), '');
+            }
+        });
+    });
+
+    describe('#bindViewTotalStakingBalanceZil()', function () {
+
+        it('bind view happy case', function () {
+            assert.strictEqual($('#zil_staking_balance_zil').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalStakingBalanceZil('1234.52');
+
+            // Assert
+            assert.strictEqual($('#zil_staking_balance_zil').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            assert.strictEqual($('#zil_staking_balance_zil').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalStakingBalanceZil('asdf');
+
+            // Assert
+            assert.strictEqual($('#zil_staking_balance_zil').text(), 'asdf');
+        });
+
+        it('bind view empty string', function () {
+            assert.strictEqual($('#zil_staking_balance_zil').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalStakingBalanceZil('');
+
+            // Assert
+            assert.strictEqual($('#zil_staking_balance_zil').text(), '');
+        });
+    });
+
+    describe('#bindViewTotalStakingBalanceUsd()', function () {
+
+        it('bind view happy case', function () {
+            assert.strictEqual($('#zil_staking_balance_usd').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalStakingBalanceUsd('1234.52');
+
+            // Assert
+            assert.strictEqual($('#zil_staking_balance_usd').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            assert.strictEqual($('#zil_staking_balance_usd').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalStakingBalanceUsd('asdf');
+
+            // Assert
+            assert.strictEqual($('#zil_staking_balance_usd').text(), 'asdf');
+        });
+
+        it('bind view empty string', function () {
+            assert.strictEqual($('#zil_staking_balance_usd').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalStakingBalanceUsd('');
+
+            // Assert
+            assert.strictEqual($('#zil_staking_balance_usd').text(), '');
+        });
+    });
+
+    describe('#bindViewTotalNetWorthZil()', function () {
+
+        it('bind view happy case', function () {
+            assert.strictEqual($('#net_worth_zil').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalNetWorthZil('1234.52');
+
+            // Assert
+            assert.strictEqual($('#net_worth_zil').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            assert.strictEqual($('#net_worth_zil').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalNetWorthZil('asdf');
+
+            // Assert
+            assert.strictEqual($('#net_worth_zil').text(), 'asdf');
+        });
+
+        it('bind view empty string', function () {
+            assert.strictEqual($('#net_worth_zil').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalNetWorthZil('');
+
+            // Assert
+            assert.strictEqual($('#net_worth_zil').text(), '');
+        });
+    });
+
+    describe('#bindViewTotalNetWorthUsd()', function () {
+
+        it('bind view happy case', function () {
+            assert.strictEqual($('#net_worth_usd').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalNetWorthUsd('1234.52');
+
+            // Assert
+            assert.strictEqual($('#net_worth_usd').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            assert.strictEqual($('#net_worth_usd').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalNetWorthUsd('asdf');
+
+            // Assert
+            assert.strictEqual($('#net_worth_usd').text(), 'asdf');
+        });
+
+        it('bind view empty string', function () {
+            assert.strictEqual($('#net_worth_usd').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalNetWorthUsd('');
+
+            // Assert
+            assert.strictEqual($('#net_worth_usd').text(), '');
+        });
+    });
+
+    describe('#bindViewTotalRewardAllLpUsd()', function () {
+
+        it('bind view happy case', function () {
+            assert.strictEqual($('#total_all_lp_reward_next_epoch_usd').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalRewardAllLpUsd('1234.52');
+
+            // Assert
+            assert.strictEqual($('#total_all_lp_reward_next_epoch_usd').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            assert.strictEqual($('#total_all_lp_reward_next_epoch_usd').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalRewardAllLpUsd('asdf');
+
+            // Assert
+            assert.strictEqual($('#total_all_lp_reward_next_epoch_usd').text(), 'asdf');
+        });
+
+        it('bind view empty string', function () {
+            assert.strictEqual($('#total_all_lp_reward_next_epoch_usd').text(), 'Loading...');
+
+            // Act
+            BindView.bindViewTotalRewardAllLpUsd('');
+
+            // Assert
+            assert.strictEqual($('#total_all_lp_reward_next_epoch_usd').text(), '');
+        });
+    });
 });

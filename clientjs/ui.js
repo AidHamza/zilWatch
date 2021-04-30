@@ -96,7 +96,7 @@ function showLpRewardNextEpoch(contractAddressToRewardMap) {
 
     // Total reward from all pools
     let totalRewardZwapString = convertNumberQaToDecimalString(totalZwapRewardQa, zrcTokensPropertiesMap['ZWAP'].decimals)
-    bindViewTotalZwapRewardAllLp(totalRewardZwapString);
+    bindViewTotalRewardAllLpZwap(totalRewardZwapString);
 }
 
 function showLpNextEpochCounter(nextEpochStartSeconds) {
@@ -246,196 +246,202 @@ function onZilStakingBalanceLoaded(zilBalanceQa, ssnAddress) {
  */
 
 /**
- * Obtain Zil price in USD if data has been loaded.
+ * Obtain the contents of a view, parse it into a number, and return the number.
  * 
- * @returns {?number} The number reprentation of USD amount per ZIL, otherwise null.
+ * If the view is not parseable as a number, return null.
+ * 
+ * @returns {?number} The number reprentation of the view content, otherwise null.
  */
-function getZilPriceInUsdIfLoaded() {
-    let usdPrice = $('#zil_price').text();
-    usdPrice = parseFloatFromCommafiedNumberString(usdPrice);
-    if (!usdPrice) {
+function getNumberFromView(viewId) {
+    let viewContent = $(viewId).text();
+    let contentInNumber = parseFloatFromCommafiedNumberString(viewContent);
+    if (!contentInNumber) {
         return null;
     }
-    return usdPrice;
+    return contentInNumber;
 }
 
 function refreshZilWalletBalanceUsd() {
-    let usdPrice = getZilPriceInUsdIfLoaded();
+    let usdPrice = getNumberFromView('#zil_price');
     if (!usdPrice) {
         return;
     }
 
-    let zilBalance = $('#zil_balance').text();
-    zilBalance = parseFloatFromCommafiedNumberString(zilBalance);
+    let zilBalance = getNumberFromView('#zil_balance');
     if (!zilBalance) {
         return;
     }
+
     let zilBalanceUsd = (usdPrice * zilBalance);
-    $('#zil_balance_usd').text(commafyNumberToString(zilBalanceUsd));
+    bindViewZilBalanceUsd(commafyNumberToString(zilBalanceUsd));
 }
 
 function refreshZrcTokenWalletBalanceZilUsd(ticker) {
 
-    let zrcTokenPriceInZil = $('#' + ticker + '_price').text();
-    zrcTokenPriceInZil = parseFloatFromCommafiedNumberString(zrcTokenPriceInZil);
+    let zrcTokenPriceInZil = getNumberFromView('#' + ticker + '_price');
     if (!zrcTokenPriceInZil) {
         return;
     }
 
-    let zrcTokenBalance = $('#' + ticker + '_balance').text();
-    zrcTokenBalance = parseFloatFromCommafiedNumberString(zrcTokenBalance);
+    let zrcTokenBalance = getNumberFromView('#' + ticker + '_balance');
     if (!zrcTokenBalance) {
         return;
     }
 
     let zrcTokenBalanceZil = 1.0 * zrcTokenPriceInZil * zrcTokenBalance;
-    $('#' + ticker + '_balance_zil').text(convertNumberQaToDecimalString(zrcTokenBalanceZil, /* decimals= */ 0));
+    let zrcTokenBalanceZilString = convertNumberQaToDecimalString(zrcTokenBalanceZil, /* decimals= */ 0);
+    bindViewZrcTokenWalletBalanceZil(zrcTokenBalanceZilString, ticker);
 
-    let usdPrice = getZilPriceInUsdIfLoaded();
+    let usdPrice = getNumberFromView('#zil_price');
     if (!usdPrice) {
         return;
     }
 
     let zrcTokenBalanceUsd = 1.0 * usdPrice * zrcTokenBalanceZil;
-    $('#' + ticker + '_balance_usd').text(commafyNumberToString(zrcTokenBalanceUsd));
+    let zrcTokenBalanceUsdString = commafyNumberToString(zrcTokenBalanceUsd);
+    bindViewZrcTokenWalletBalanceUsd(zrcTokenBalanceUsdString, ticker);
 }
 
 function refreshTotalWalletBalanceZilUsd() {
     // Sum balance in ZIL.
     let totalZil = 0;
-    let zil = $('#zil_balance').text()
-    zil = parseFloatFromCommafiedNumberString(zil);
+
+    let zil = getNumberFromView('#zil_balance');
     if (zil) {
         totalZil += zil;
     }
+
     for (let ticker in zrcTokensPropertiesMap) {
-        let zrcZil = $('#' + ticker + '_balance_zil').text();
-        zrcZil = parseFloatFromCommafiedNumberString(zrcZil);
+        let zrcZil = getNumberFromView('#' + ticker + '_balance_zil');
         if (zrcZil) {
             totalZil += zrcZil;
         }
     }
-    $('#wallet_balance_zil').text(convertNumberQaToDecimalString(totalZil, /* decimals= */ 0));
 
-    let usdPrice = getZilPriceInUsdIfLoaded();
+    let totalWalletBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
+    bindViewTotalWalletBalanceZil(totalWalletBalanceZil);
+
+    let usdPrice = getNumberFromView('#zil_price');
     if (!usdPrice) {
         return;
     }
 
     // Sum balance in USD
     let totalUsd = 1.0 * totalZil * usdPrice;
-    $('#wallet_balance_usd').text(commafyNumberToString(totalUsd));
+    let totalWalletBalanceUsd = commafyNumberToString(totalUsd);
+    bindViewTotalWalletBalanceUsd(totalWalletBalanceUsd);
 }
 
 function refreshZrcTokenLpBalanceUsd(ticker) {
 
-    let usdPrice = getZilPriceInUsdIfLoaded();
+    let usdPrice = getNumberFromView('#zil_price');
     if (!usdPrice) {
         return;
     }
 
-    let zilLpBalance = $('#' + ticker + '_lp_zil_balance').text();
-    zilLpBalance = parseFloatFromCommafiedNumberString(zilLpBalance);
+    let zilLpBalance = getNumberFromView('#' + ticker + '_lp_zil_balance');
     if (!zilLpBalance) {
         return;
     }
 
     // total worth is always times 2 (e.g., ZRC2-ZIL pair always have 50:50 value).
     // For now ZilSwap only support 50-50 weight pair.
-    let lpTokenBalanceUsd = 1.0 * usdPrice * (zilLpBalance * 2.0);
-    $('#' + ticker + '_lp_balance_usd').text(commafyNumberToString(lpTokenBalanceUsd));
+    let lpBalanceUsd = 1.0 * usdPrice * (zilLpBalance * 2.0);
+    let lpBalanceUsdString = commafyNumberToString(lpBalanceUsd);
+    bindViewZrcTokenLpBalanceUsd(lpBalanceUsdString, ticker);
 }
 
 function refreshTotalLpBalanceZilUsd() {
     // Sum balance in ZIL.
     let totalZil = 0;
     for (let ticker in zrcTokensPropertiesMap) {
-        let lpZil = $('#' + ticker + '_lp_zil_balance').text();
-        lpZil = parseFloatFromCommafiedNumberString(lpZil);
+        let lpZil = getNumberFromView('#' + ticker + '_lp_zil_balance');
         if (lpZil) {
             // total worth is always times 2 (e.g., ZRC2-ZIL pair always have 50:50 value)
             // For now ZilSwap only support 50-50 weight pair.
             totalZil += (lpZil * 2.0);
         }
     }
-    $('#lp_balance_zil').text(convertNumberQaToDecimalString(totalZil, /* decimals= */ 0));
+    let totalLpBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
+    bindViewTotalLpBalanceZil(totalLpBalanceZil);
 
     // Sum balance in USD.
-    let usdPrice = getZilPriceInUsdIfLoaded();
+    let usdPrice = getNumberFromView('#zil_price');
     if (!usdPrice) {
         return;
     }
     let totalUsd = 1.0 * totalZil * usdPrice;
-    $('#lp_balance_usd').text(commafyNumberToString(totalUsd));
+    let totalLpBalanceUsd = commafyNumberToString(totalUsd);
+    bindViewTotalLpBalanceUsd(totalLpBalanceUsd);
 }
 
 function refreshZilStakingUsd(ssnAddress) {
-    let usdPrice = getZilPriceInUsdIfLoaded();
+    let usdPrice = getNumberFromView('#zil_price');
     if (!usdPrice) {
         return;
     }
 
-    let zilStakingBalance = $('#' + ssnAddress + '_zil_staking_balance').text();
-    zilStakingBalance = parseFloatFromCommafiedNumberString(zilStakingBalance);
+    let zilStakingBalance = getNumberFromView('#' + ssnAddress + '_zil_staking_balance');
     if (!zilStakingBalance) {
         return;
     }
 
     let zilStakingBalanceUsd = 1.0 * usdPrice * zilStakingBalance;
-    $('#' + ssnAddress + '_zil_staking_balance_usd').text(commafyNumberToString(zilStakingBalanceUsd));
+    let zilStakingBalanceUsdString = commafyNumberToString(zilStakingBalanceUsd);
+    bindViewZilStakingBalanceUsd(zilStakingBalanceUsdString, ssnAddress);
 }
 
 function refreshTotalZilStakingZilUsd() {
     // Sum balance in ZIL.
     let totalZil = 0;
     for (let ssnAddress in ssnListMap) {
-        let stakingZil = $('#' + ssnAddress + '_zil_staking_balance').text();
-        stakingZil = parseFloatFromCommafiedNumberString(stakingZil);
+        let stakingZil = getNumberFromView('#' + ssnAddress + '_zil_staking_balance');
         if (stakingZil) {
             totalZil += stakingZil;
         }
     }
-    $('#zil_staking_balance_zil').text(convertNumberQaToDecimalString(totalZil, /* decimals= */ 0));
+    let totalStakingBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
+    bindViewTotalStakingBalanceZil(totalStakingBalanceZil);
 
     // Sum balance in USD.
-    let usdPrice = getZilPriceInUsdIfLoaded();
+    let usdPrice = getNumberFromView('#zil_price');
     if (!usdPrice) {
         return;
     }
     let totalUsd = 1.0 * totalZil * usdPrice;
-    $('#zil_staking_balance_usd').text(commafyNumberToString(totalUsd));
+    let totalStakingBalanceUsd = commafyNumberToString(totalUsd);
+    bindViewTotalStakingBalanceUsd(totalStakingBalanceUsd);
 }
 
 function refreshNetWorthZilUsd() {
     // Sum balance in ZIL.
     let totalZil = 0;
 
-    let walletBalanceZil = $('#wallet_balance_zil').text();
-    walletBalanceZil = parseFloatFromCommafiedNumberString(walletBalanceZil);
+    let walletBalanceZil = getNumberFromView('#wallet_balance_zil');
     if (walletBalanceZil) {
         totalZil += walletBalanceZil;
     }
 
-    let lpBalanceZil = $('#lp_balance_zil').text();
-    lpBalanceZil = parseFloatFromCommafiedNumberString(lpBalanceZil);
+    let lpBalanceZil = getNumberFromView('#lp_balance_zil');
     if (lpBalanceZil) {
         totalZil += lpBalanceZil;
     }
 
-    let zilStakingBalanceZil = $('#zil_staking_balance_zil').text();
-    zilStakingBalanceZil = parseFloatFromCommafiedNumberString(zilStakingBalanceZil);
+    let zilStakingBalanceZil = getNumberFromView('#zil_staking_balance_zil');
     if (zilStakingBalanceZil) {
         totalZil += zilStakingBalanceZil;
     }
-    $('#net_worth_zil').text(convertNumberQaToDecimalString(totalZil, /* decimals= */ 0));
+    let totalNetWorthZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
+    bindViewTotalNetWorthZil(totalNetWorthZil);
 
     // Sum balance in USD.
-    let usdPrice = getZilPriceInUsdIfLoaded();
+    let usdPrice = getNumberFromView('#zil_price');
     if (!usdPrice) {
         return;
     }
     let totalUsd = 1.0 * totalZil * usdPrice;
-    $('#net_worth_usd').text(commafyNumberToString(totalUsd));
+    let totalNetWorthUsd = commafyNumberToString(totalUsd);
+    bindViewTotalNetWorthUsd(totalNetWorthUsd);
 }
 
 /**
@@ -445,23 +451,22 @@ function refreshNetWorthZilUsd() {
 function refreshTotalLpRewardUsd() {
     let ticker = 'ZWAP';
 
-    let usdPrice = getZilPriceInUsdIfLoaded();
+    let usdPrice = getNumberFromView('#zil_price');
     if (!usdPrice) {
         return;
     }
 
-    let zrcTokenPriceInZil = $('#' + ticker + '_price').text();
-    zrcTokenPriceInZil = parseFloatFromCommafiedNumberString(zrcTokenPriceInZil);
+    let zrcTokenPriceInZil = getNumberFromView('#' + ticker + '_price');
     if (!zrcTokenPriceInZil) {
         return;
     }
 
-    let rewardBalance = $('#total_all_lp_reward_next_epoch_zwap').text();
-    rewardBalance = parseFloatFromCommafiedNumberString(rewardBalance);
+    let rewardBalance = getNumberFromView('#total_all_lp_reward_next_epoch_zwap');
     if (!rewardBalance) {
         return;
     }
 
     let rewardBalanceUsd = (usdPrice * zrcTokenPriceInZil * rewardBalance);
-    $('#total_all_lp_reward_next_epoch_usd').text(commafyNumberToString(rewardBalanceUsd));
+    let totalAllLpRewardUsd = commafyNumberToString(rewardBalanceUsd);
+    bindViewTotalRewardAllLpUsd(totalAllLpRewardUsd);
 }
