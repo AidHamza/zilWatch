@@ -32,7 +32,7 @@ body {
   margin: 0.3rem;
   /* this is a hack to keep the table inside the box */
   padding-right: 0.6rem;
-  background-color: rgba(136, 213, 129, 0.20);
+  background-color: rgba(136, 213, 129, 0.15);
   border: 1px solid rgba(104, 104, 104, 0.15);
 }
 

@@ -1,6 +1,6 @@
 const ZilSwapDexAddress = "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w";
 const ZilSeedNodeStakingImplementationAddress = "zil1k7qwsz2m3w595u29je0dvv4nka62c5wwrp8r8p";
-const MAX_RETRY = 5;
+const MAX_RETRY = 10;
 
 /**
  * ===============================================================================
