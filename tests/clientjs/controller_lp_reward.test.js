@@ -10,16 +10,18 @@ describe('ControllerLpReward', function () {
 
     beforeEach(function (done) {
         indexJsdom.resetHtmlView(done);
-
-        for (let ticker in Constants.zrcTokenPropertiesListMap) {
-            assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
-            assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
-        }
-        assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), 'Loading...');
-        assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'none');
     });
 
     describe('#onLpRewardNextEpochLoaded()', function () {
+
+        beforeEach(function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
+            }
+            assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), 'Loading...');
+            assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'none');
+        });
 
         it('LP reward loaded happy case', function () {
             // Arrange
@@ -63,7 +65,7 @@ describe('ControllerLpReward', function () {
                 "zil14pzuzq6v6pmmmrfjhczywguu0e97djepxt8g3e": "1287",
                 "zil1l0g8u6f9g0fsvjuu74ctyla2hltefrdyt7k5f4": "124"
             };
-          
+
             // Act
             ControllerLpReward.onLpRewardNextEpochLoaded(contractAddressToRewardMap);
 
