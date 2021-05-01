@@ -6,7 +6,7 @@
 // ```
 // And all the $ jQuery methods will work
 
-var constants = require('../constants.js');
+var Constants = require('../constants.js');
 
 var indexHtml = null;
 
@@ -16,10 +16,10 @@ var app = express();
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'pug');
 app.render('index', {
-    title: constants.title,
-    description: constants.description,
-    zrcTokenPropertiesListMap: constants.zrcTokenPropertiesListMap,
-    ssnListMap: constants.ssnListMap
+    title: Constants.title,
+    description: Constants.description,
+    zrcTokenPropertiesListMap: Constants.zrcTokenPropertiesListMap,
+    ssnListMap: Constants.ssnListMap
 }, function (err, html) {
     // Deep copy and keep html result;
     indexHtml = html.slice();
