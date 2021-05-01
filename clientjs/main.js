@@ -61,8 +61,8 @@ function refreshMainContentData(account) {
     computeZrcTokensBalance(account, zrcTokensPropertiesMap, onZrcTokenWalletBalanceLoaded);
 
     // (6) Get Potential LP reward next epoch and time duration counter to the next epoch
-    computeTotalLpRewardNextEpoch(account, showLpRewardNextEpoch);
-    computeLpNextEpochStart(showLpNextEpochCounter);
+    computeTotalLpRewardNextEpoch(account, onLpRewardNextEpochLoaded);
+    computeLpEpochInfo(onLpCurrentEpochInfoLoaded);
 
     // (7) Get ZIL staking balance
     computeZilStakingBalance(account, onZilStakingBalanceLoaded);

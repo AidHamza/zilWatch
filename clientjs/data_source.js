@@ -170,7 +170,7 @@ async function computeTotalLpRewardNextEpoch(account, onCompleteCallback) {
     });
 }
 
-async function computeLpNextEpochStart(onCompleteCallback) {
+async function computeLpEpochInfo(onCompleteCallback) {
     $.ajax({
         type: "GET",
         url: "https://stats.zilswap.org/epoch/info",

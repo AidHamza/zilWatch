@@ -1,46 +1,4 @@
-// controller.js
-
-/**
- * --------------------------------------------------------------------------------
- */
-
- function showLpRewardNextEpoch(contractAddressToRewardMap) {
-    if (!contractAddressToRewardMap) {
-        return;
-    }
-    // Sum of the rewards from all pools.
-    let totalZwapRewardQa = 0;
-
-    // Loop all individuals ZRC token LP and show ZWAP reward per ZRC LP.
-    for (let ticker in zrcTokensPropertiesMap) {
-        let zrcTokenAddress = zrcTokensPropertiesMap[ticker].address;
-
-        if (contractAddressToRewardMap[zrcTokenAddress]) {
-            let zwapRewardQa = parseInt(contractAddressToRewardMap[zrcTokenAddress]);
-            if (zwapRewardQa) {
-                totalZwapRewardQa += zwapRewardQa;
-
-                let zwapRewardString = convertNumberQaToDecimalString(zwapRewardQa, zrcTokensPropertiesMap['ZWAP'].decimals);
-                bindViewZwapRewardLp(zwapRewardString, ticker);
-            }
-        }
-    }
-
-    // Total reward from all pools
-    let totalRewardZwapString = convertNumberQaToDecimalString(totalZwapRewardQa, zrcTokensPropertiesMap['ZWAP'].decimals)
-    bindViewTotalRewardAllLpZwap(totalRewardZwapString);
-}
-
-function showLpNextEpochCounter(nextEpochStartSeconds) {
-    if (nextEpochStartSeconds) {
-        let currentDate = new Date();
-        let currentTimeSeconds = currentDate.getTime() / 1000;
-        let timeDiffSeconds = Math.max(0, nextEpochStartSeconds - currentTimeSeconds);
-        let timeDiffDuration = new Duration(timeDiffSeconds);
-
-        bindViewLpNextEpochCounter(timeDiffDuration.getUserFriendlyString());
-    }
-}
+// controller_main.js
 
 /**
  * --------------------------------------------------------------------------------
