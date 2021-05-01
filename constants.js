@@ -116,7 +116,7 @@ const ssnListMap = {
     },
   }
   
-  const zrcTokenPropertiesMap = {
+  const zrcTokenPropertiesListMap = {
     'gZIL': {
       "ticker": "gZIL",
       "name": "Governance ZIL",
@@ -270,5 +270,5 @@ module.exports = {
     title: title,
     description: description,
     ssnListMap: ssnListMap,
-    zrcTokenPropertiesMap: zrcTokenPropertiesMap,
+    zrcTokenPropertiesListMap: zrcTokenPropertiesListMap,
 };

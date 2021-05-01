@@ -1,4 +1,4 @@
-// Assumes zrcTokensPropertiesMap is declared
+// Assumes zrcTokenPropertiesListMap is declared
 // Assumes ssnListMap is declared
 
 window.addEventListener("load", async () => {
@@ -55,10 +55,10 @@ function refreshMainContentData(account) {
 
     // (4) Get ZRC-2 tokens price & ZRC-2 tokens LP balances in Zilswap, async.
     // Do this together because they are one API call, using the same data.
-    computeZrcTokensPriceAndZilswapLpBalance(zrcTokensPropertiesMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded);
+    computeZrcTokensPriceAndZilswapLpBalance(zrcTokenPropertiesListMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded);
 
     // (5) Get ZRC-2 tokens balances, async.
-    computeZrcTokensBalance(account, zrcTokensPropertiesMap, onZrcTokenWalletBalanceLoaded);
+    computeZrcTokensBalance(account, zrcTokenPropertiesListMap, onZrcTokenWalletBalanceLoaded);
 
     // (6) Get Potential LP reward next epoch and time duration counter to the next epoch
     computeTotalLpRewardNextEpoch(account, onLpRewardNextEpochLoaded);

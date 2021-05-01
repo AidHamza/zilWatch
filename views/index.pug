@@ -66,7 +66,7 @@ block content
 
     // Wallet Balance
     div(class='container title-box' style='display:table-cell; vertical-align: middle;')
-      img(class='mr-3' height='36' src=zrcTokenPropertiesMap['ZLP'].logo_url loading='lazy')
+      img(class='mr-3' height='36' src=zrcTokenPropertiesListMap['ZLP'].logo_url loading='lazy')
       span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Wallet Balance'
 
     div(id='wallet_balance' class='container')
@@ -93,7 +93,7 @@ block content
                     span(class='mr-1')= '$'
                     span(id='zil_balance_usd')
 
-        each tokenProperties, key in zrcTokenPropertiesMap
+        each tokenProperties, key in zrcTokenPropertiesListMap
 
           div(id=tokenProperties.ticker+'_container' class='col-lg-6' style='padding: 0; display: none')
             div(class='box')
@@ -135,7 +135,7 @@ block content
               tbody
                 tr
                   td(scope='row' rowspan='2' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                    img(height='36' src=zrcTokenPropertiesMap['ZWAP'].logo_url loading='lazy')
+                    img(height='36' src=zrcTokenPropertiesListMap['ZWAP'].logo_url loading='lazy')
                   td(style='text-align: left; white-space: nowrap; width: 49%;' )
                     span(class='font-weight-bold')= 'est. reward next epoch'
                   td(style='text-align: right; white-space: nowrap; width: 49%;' )
@@ -143,12 +143,12 @@ block content
                 tr(class='text-secondary')
                   td(style='text-align: left; white-space: nowrap; width: 49%;' )
                     span(id='total_all_lp_reward_next_epoch_zwap' class='ml-1')= 'Loading...'
-                    span(id='total_all_lp_reward_next_epoch_zwap_unit' class='ml-1')= zrcTokenPropertiesMap['ZWAP'].ticker
+                    span(id='total_all_lp_reward_next_epoch_zwap_unit' class='ml-1')= zrcTokenPropertiesListMap['ZWAP'].ticker
                   td(style='text-align: right; white-space: nowrap; width: 49%;' )
                     span(class='mr-1')= '$'
                     span(id='total_all_lp_reward_next_epoch_usd')= 'Loading...'
 
-        each tokenProperties, key in zrcTokenPropertiesMap
+        each tokenProperties, key in zrcTokenPropertiesListMap
 
           div(id=tokenProperties.ticker+'_lp_container' class='col-lg-6' style='padding: 0; display: none')
             div(class='box')
@@ -208,5 +208,5 @@ block script
   script(src='/javascripts/main.min.js')
 
   script.
-    var zrcTokensPropertiesMap = !{JSON.stringify(zrcTokenPropertiesMap)};
+    var zrcTokenPropertiesListMap = !{JSON.stringify(zrcTokenPropertiesListMap)};
     var ssnListMap = !{JSON.stringify(ssnListMap)};

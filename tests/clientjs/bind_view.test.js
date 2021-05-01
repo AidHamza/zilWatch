@@ -213,7 +213,7 @@ describe('BindView', function () {
     describe('#bindViewZrcTokenPriceInZil()', function () {
 
         it('bind view happy case', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_price').text(), 'Loading...');
 
                 // Act
@@ -225,7 +225,7 @@ describe('BindView', function () {
         });
 
         it('bind view random string', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_price').text(), 'Loading...');
 
                 // Act
@@ -237,7 +237,7 @@ describe('BindView', function () {
         });
 
         it('bind view empty string', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_price').text(), 'Loading...');
 
                 // Act
@@ -252,7 +252,7 @@ describe('BindView', function () {
     describe('#bindViewZrcTokenWalletBalance()', function () {
 
         it('bind view happy case', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_balance').text(), 'Loading...');
                 assert.strictEqual($('#' + ticker + '_container').css('display'), 'none');
 
@@ -266,7 +266,7 @@ describe('BindView', function () {
         });
 
         it('bind view random string', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_balance').text(), 'Loading...');
                 assert.strictEqual($('#' + ticker + '_container').css('display'), 'none');
 
@@ -280,7 +280,7 @@ describe('BindView', function () {
         });
 
         it('bind view empty string', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_balance').text(), 'Loading...');
                 assert.strictEqual($('#' + ticker + '_container').css('display'), 'none');
 
@@ -297,7 +297,7 @@ describe('BindView', function () {
     describe('#bindViewZrcTokenLpBalance()', function () {
 
         it('bind view happy case', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
                 assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
@@ -315,7 +315,7 @@ describe('BindView', function () {
         });
 
         it('bind view random string', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
                 assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
@@ -333,7 +333,7 @@ describe('BindView', function () {
         });
 
         it('bind view empty string', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
                 assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
@@ -401,7 +401,7 @@ describe('BindView', function () {
     describe('#bindViewZwapRewardLp()', function () {
 
         it('bind view happy case', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
 
@@ -415,7 +415,7 @@ describe('BindView', function () {
         });
 
         it('bind view random string', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
 
@@ -429,7 +429,7 @@ describe('BindView', function () {
         });
 
         it('bind view empty string', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
 
@@ -552,7 +552,7 @@ describe('BindView', function () {
     describe('#bindViewZrcTokenWalletBalanceZil()', function () {
 
         it('bind view happy case', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_balance_zil').text(), 'Loading...');
 
                 // Act
@@ -564,7 +564,7 @@ describe('BindView', function () {
         });
 
         it('bind view random string', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_balance_zil').text(), 'Loading...');
 
                 // Act
@@ -576,7 +576,7 @@ describe('BindView', function () {
         });
 
         it('bind view empty string', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_balance_zil').text(), 'Loading...');
 
                 // Act
@@ -591,7 +591,7 @@ describe('BindView', function () {
     describe('#bindViewZrcTokenWalletBalanceUsd()', function () {
 
         it('bind view happy case', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_balance_usd').text(), 'Loading...');
 
                 // Act
@@ -603,7 +603,7 @@ describe('BindView', function () {
         });
 
         it('bind view random string', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_balance_usd').text(), 'Loading...');
 
                 // Act
@@ -615,7 +615,7 @@ describe('BindView', function () {
         });
 
         it('bind view empty string', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_balance_usd').text(), 'Loading...');
 
                 // Act
@@ -696,7 +696,7 @@ describe('BindView', function () {
     describe('#bindViewZrcTokenLpBalanceUsd()', function () {
 
         it('bind view happy case', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_balance_usd').text(), 'Loading...');
 
                 // Act
@@ -708,7 +708,7 @@ describe('BindView', function () {
         });
 
         it('bind view random string', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_balance_usd').text(), 'Loading...');
 
                 // Act
@@ -720,7 +720,7 @@ describe('BindView', function () {
         });
 
         it('bind view empty string', function () {
-            for (let ticker in constants.zrcTokenPropertiesMap) {
+            for (let ticker in constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_balance_usd').text(), 'Loading...');
 
                 // Act

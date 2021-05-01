@@ -26,7 +26,7 @@ describe('Controller', function () {
                 "zil14pzuzq6v6pmmmrfjhczywguu0e97djepxt8g3e": "0.01255",
                 "zil1l0g8u6f9g0fsvjuu74ctyla2hltefrdyt7k5f4": "0.01578"
             };
-            for (let ticker in Constants.zrcTokenPropertiesMap) {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
             }
@@ -35,8 +35,8 @@ describe('Controller', function () {
             ControllerLpReward.onLpRewardNextEpochLoaded(contractAddressToRewardMap);
 
             // Assert
-            for (let ticker in Constants.zrcTokenPropertiesMap) {
-                let currAddress = Constants.zrcTokenPropertiesMap[ticker].address;
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                let currAddress = Constants.zrcTokenPropertiesListMap[ticker].address;
                 if (!contractAddressToRewardMap[currAddress]) {
                     assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
                     assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
@@ -55,7 +55,7 @@ describe('Controller', function () {
                 "zil14pzuzq6v6pmmmrfjhczywguu0e97djepxt8g3e": "1287",
                 "zil1l0g8u6f9g0fsvjuu74ctyla2hltefrdyt7k5f4": "124"
             };
-            for (let ticker in Constants.zrcTokenPropertiesMap) {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
             }
@@ -64,7 +64,7 @@ describe('Controller', function () {
             ControllerLpReward.onLpRewardNextEpochLoaded(contractAddressToRewardMap);
 
             // Assert
-            for (let ticker in Constants.zrcTokenPropertiesMap) {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
             }
@@ -76,7 +76,7 @@ describe('Controller', function () {
                 "zil1zu72vac254htqpg3mtywdcfm84l3dfd9qzww8t": "asdf",
                 "zil14pzuzq6v6pmmmrfjhczywguu0e97djepxt8g3e": "fds",
             };
-            for (let ticker in Constants.zrcTokenPropertiesMap) {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
             }
@@ -85,7 +85,7 @@ describe('Controller', function () {
             ControllerLpReward.onLpRewardNextEpochLoaded(contractAddressToRewardMap);
 
             // Assert
-            for (let ticker in Constants.zrcTokenPropertiesMap) {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
             }
@@ -93,7 +93,7 @@ describe('Controller', function () {
 
         it('LP reward data not a map', function () {
             let contractAddressToRewardMap = "asdffds";
-            for (let ticker in Constants.zrcTokenPropertiesMap) {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
             }
@@ -102,7 +102,7 @@ describe('Controller', function () {
             ControllerLpReward.onLpRewardNextEpochLoaded(contractAddressToRewardMap);
 
             // Assert
-            for (let ticker in Constants.zrcTokenPropertiesMap) {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
             }

@@ -18,7 +18,7 @@ app.set('view engine', 'pug');
 app.render('index', {
     title: constants.title,
     description: constants.description,
-    zrcTokenPropertiesMap: constants.zrcTokenPropertiesMap,
+    zrcTokenPropertiesListMap: constants.zrcTokenPropertiesListMap,
     ssnListMap: constants.ssnListMap
 }, function (err, html) {
     // Deep copy and keep html result;

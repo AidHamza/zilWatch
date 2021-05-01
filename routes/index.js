@@ -7,7 +7,7 @@ router.get('/', function (req, res, next) {
   res.render('index', {
     title: constants.title,
     description: constants.description,
-    zrcTokenPropertiesMap: constants.zrcTokenPropertiesMap,
+    zrcTokenPropertiesListMap: constants.zrcTokenPropertiesListMap,
     ssnListMap: constants.ssnListMap
   });
 });

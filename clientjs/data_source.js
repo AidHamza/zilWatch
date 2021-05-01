@@ -30,19 +30,19 @@ function computeZilBalanceWithRetry(account, onZilWalletBalanceLoaded, retryRema
  * --------------------------------------------------------------------------------
  */
 
-async function computeZrcTokensPriceAndZilswapLpBalance(zrcTokensPropertiesMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded) {
-    computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokensPropertiesMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded, MAX_RETRY);
+async function computeZrcTokensPriceAndZilswapLpBalance(zrcTokenPropertiesListMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded) {
+    computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokenPropertiesListMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded, MAX_RETRY);
 }
 
-function computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokensPropertiesMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded, retryRemaining) {
+function computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokenPropertiesListMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded, retryRemaining) {
     if (retryRemaining <= 0) {
         console.log("computeZrcTokensPriceAndZilswapLpBalanceWithRetry failed! Out of retries!");
         return;
     }
     window.zilPay.blockchain.getSmartContractState(ZilSwapDexAddress)
         .then(function (data) {
-            for (const key in zrcTokensPropertiesMap) {
-                let zrcTokenProperties = zrcTokensPropertiesMap[key];
+            for (const key in zrcTokenPropertiesListMap) {
+                let zrcTokenProperties = zrcTokenPropertiesListMap[key];
                 let zrcTokenAddressBase16 = window.zilPay.crypto.fromBech32Address(zrcTokenProperties.address).toLowerCase();
 
                 // To get ZrcTokensPrice in ZIL, already in decimal.
@@ -57,7 +57,7 @@ function computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokensPropertiesMa
         })
         .catch(function () {
             console.log("computeZrcTokensPriceAndZilswapLpBalanceWithRetry failed! %s", retryRemaining);
-            computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokensPropertiesMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded, retryRemaining - 1);
+            computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokenPropertiesListMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded, retryRemaining - 1);
         });
 }
 
@@ -66,9 +66,9 @@ function computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokensPropertiesMa
  */
 
 /** Void function. invokes onZrcTokenWalletBalanceLoaded(number zrcBalanceQa, string ticker) function after computation is done. */
-async function computeZrcTokensBalance(account, zrcTokensPropertiesMap, onZrcTokenWalletBalanceLoaded) {
-    for (const key in zrcTokensPropertiesMap) {
-        let zrcTokenProperties = zrcTokensPropertiesMap[key];
+async function computeZrcTokensBalance(account, zrcTokenPropertiesListMap, onZrcTokenWalletBalanceLoaded) {
+    for (const key in zrcTokenPropertiesListMap) {
+        let zrcTokenProperties = zrcTokenPropertiesListMap[key];
         let walletAddressBase16 = account.base16.toLowerCase();
 
         // Ignore Promise result, not important.

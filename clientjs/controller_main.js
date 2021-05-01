@@ -13,13 +13,13 @@ function onZilUsdPriceLoaded(zilPriceInUsd) {
 
     // Wallet Balance
     refreshZilWalletBalanceUsd();
-    for (let ticker in zrcTokensPropertiesMap) {
+    for (let ticker in zrcTokenPropertiesListMap) {
         refreshZrcTokenWalletBalanceZilUsd(ticker);
     }
     refreshTotalWalletBalanceZilUsd();
 
     // Lp balance
-    for (let ticker in zrcTokensPropertiesMap) {
+    for (let ticker in zrcTokenPropertiesListMap) {
         refreshZrcTokenLpBalanceUsd(ticker)
     }
     refreshTotalLpBalanceZilUsd();
@@ -201,7 +201,7 @@ function refreshTotalWalletBalanceZilUsd() {
         totalZil += zil;
     }
 
-    for (let ticker in zrcTokensPropertiesMap) {
+    for (let ticker in zrcTokenPropertiesListMap) {
         let zrcZil = getNumberFromView('#' + ticker + '_balance_zil');
         if (zrcZil) {
             totalZil += zrcZil;
@@ -244,7 +244,7 @@ function refreshZrcTokenLpBalanceUsd(ticker) {
 function refreshTotalLpBalanceZilUsd() {
     // Sum balance in ZIL.
     let totalZil = 0;
-    for (let ticker in zrcTokensPropertiesMap) {
+    for (let ticker in zrcTokenPropertiesListMap) {
         let lpZil = getNumberFromView('#' + ticker + '_lp_zil_balance');
         if (lpZil) {
             // total worth is always times 2 (e.g., ZRC2-ZIL pair always have 50:50 value)

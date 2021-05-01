@@ -13,15 +13,15 @@
     let totalZwapRewardQa = 0;
 
     // Loop all individuals ZRC token LP and show ZWAP reward per ZRC LP.
-    for (let ticker in zrcTokensPropertiesMap) {
-        let zrcTokenAddress = zrcTokensPropertiesMap[ticker].address;
+    for (let ticker in zrcTokenPropertiesListMap) {
+        let zrcTokenAddress = zrcTokenPropertiesListMap[ticker].address;
 
         if (contractAddressToRewardMap[zrcTokenAddress]) {
             let zwapRewardQa = parseInt(contractAddressToRewardMap[zrcTokenAddress]);
             if (zwapRewardQa) {
                 totalZwapRewardQa += zwapRewardQa;
 
-                let zwapRewardString = convertNumberQaToDecimalString(zwapRewardQa, zrcTokensPropertiesMap['ZWAP'].decimals);
+                let zwapRewardString = convertNumberQaToDecimalString(zwapRewardQa, zrcTokenPropertiesListMap['ZWAP'].decimals);
                 if (zwapRewardString) {
                     bindViewZwapRewardLp(zwapRewardString, ticker);
                 }
@@ -30,7 +30,7 @@
     }
 
     // Total reward from all pools
-    let totalRewardZwapString = convertNumberQaToDecimalString(totalZwapRewardQa, zrcTokensPropertiesMap['ZWAP'].decimals)
+    let totalRewardZwapString = convertNumberQaToDecimalString(totalZwapRewardQa, zrcTokenPropertiesListMap['ZWAP'].decimals)
     bindViewTotalRewardAllLpZwap(totalRewardZwapString);
 }
 
@@ -57,9 +57,9 @@ if (typeof exports !== 'undefined') {
         convertNumberQaToDecimalString = FormattingUtils.convertNumberQaToDecimalString;
     }
 
-    if (typeof zrcTokensPropertiesMap === 'undefined') {
+    if (typeof zrcTokenPropertiesListMap === 'undefined') {
         Constants = require('../constants.js');
-        zrcTokensPropertiesMap = Constants.zrcTokenPropertiesMap;
+        zrcTokenPropertiesListMap = Constants.zrcTokenPropertiesListMap;
     }
 
     exports.onLpRewardNextEpochLoaded = onLpRewardNextEpochLoaded;
