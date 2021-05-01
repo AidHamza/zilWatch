@@ -31,18 +31,22 @@
 
     // Total reward from all pools
     let totalRewardZwapString = convertNumberQaToDecimalString(totalZwapRewardQa, zrcTokenPropertiesListMap['ZWAP'].decimals)
-    bindViewTotalRewardAllLpZwap(totalRewardZwapString);
+    if (totalRewardZwapString) {
+        bindViewTotalRewardAllLpZwap(totalRewardZwapString);
+    }
 }
 
-function onLpCurrentEpochInfoLoaded(nextEpochStartSeconds) {
-    if (nextEpochStartSeconds) {
-        let currentDate = new Date();
-        let currentTimeSeconds = currentDate.getTime() / 1000;
-        let timeDiffSeconds = Math.max(0, nextEpochStartSeconds - currentTimeSeconds);
-        let timeDiffDuration = new Duration(timeDiffSeconds);
-
-        bindViewLpNextEpochCounter(timeDiffDuration.getUserFriendlyString());
+function onLpCurrentEpochInfoLoaded(epochInfoData) {
+    let nextEpochStartSeconds = parseInt(epochInfoData.next_epoch_start);
+    if (!nextEpochStartSeconds) {
+        return;
     }
+    let currentDate = new Date();
+    let currentTimeSeconds = currentDate.getTime() / 1000;
+    let timeDiffSeconds = Math.max(0, nextEpochStartSeconds - currentTimeSeconds);
+    let timeDiffDuration = new Duration(timeDiffSeconds);
+
+    bindViewLpNextEpochCounter(timeDiffDuration.getUserFriendlyString());
 }
 
 if (typeof exports !== 'undefined') {
@@ -50,6 +54,7 @@ if (typeof exports !== 'undefined') {
         BindView = require('./bind_view.js');
         bindViewZwapRewardLp = BindView.bindViewZwapRewardLp;
         bindViewTotalRewardAllLpZwap = BindView.bindViewTotalRewardAllLpZwap;
+        bindViewLpNextEpochCounter = BindView.bindViewLpNextEpochCounter;
     }
 
     if (typeof convertNumberQaToDecimalString === 'undefined') {
@@ -62,5 +67,11 @@ if (typeof exports !== 'undefined') {
         zrcTokenPropertiesListMap = Constants.zrcTokenPropertiesListMap;
     }
 
+    if (typeof Duration === 'undefined') {
+        TimeUtils = require('./time_utils.js');
+        Duration = TimeUtils.Duration;
+    }
+
     exports.onLpRewardNextEpochLoaded = onLpRewardNextEpochLoaded;
+    exports.onLpCurrentEpochInfoLoaded = onLpCurrentEpochInfoLoaded;
 }

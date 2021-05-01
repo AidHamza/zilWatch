@@ -170,15 +170,13 @@ async function computeTotalLpRewardNextEpoch(account, onCompleteCallback) {
     });
 }
 
-async function computeLpEpochInfo(onCompleteCallback) {
+async function computeLpEpochInfo(onLpCurrentEpochInfoLoaded) {
     $.ajax({
         type: "GET",
         url: "https://stats.zilswap.org/epoch/info",
         retryLimit: MAX_RETRY,
         success: function (epochInfoData) {
-            if (epochInfoData.next_epoch_start) {
-                onCompleteCallback(epochInfoData.next_epoch_start);
-            }
+            onLpCurrentEpochInfoLoaded(epochInfoData);
         },
         error: function (xhr, textStatus, errorThrown) {
             if (this.retryLimit--) {
