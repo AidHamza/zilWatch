@@ -1,3 +1,8 @@
+
+.bg-dynamic-1 {
+  background-color: var(--bg-dynamic-1)!important
+}
+
 /*  Extra small devices (portrait phones, less than 576px) */
 
 @media (max-width: 575.98px) {
@@ -24,8 +29,9 @@ body {
   margin: 0.3rem;
   /* this is a hack to keep the table inside the box */
   padding-right: 0.6rem;
-  background-color: rgba(221, 221, 221, 0.15);
-  border: 1px solid rgba(104, 104, 104, 0.15);
+  background-color: var(--bg-dynamic-2);
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-radius: 10px;
 }
 
 .highlight-box {
@@ -33,7 +39,8 @@ body {
   /* this is a hack to keep the table inside the box */
   padding-right: 0.6rem;
   background-color: rgba(136, 213, 129, 0.15);
-  border: 1px solid rgba(104, 104, 104, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-radius: 10px;
 }
 
 .balance-box {
@@ -56,8 +63,7 @@ body {
 
 .footer {
   padding: 2.5rem 0;
-  color: #999;
+  color: var(--text-color);
   text-align: center;
-  background-color: #f9f9f9;
-  border-top: .05rem solid #e5e5e5;
+  border-top: .05rem solid rgba(0, 0, 0, 0);
 }

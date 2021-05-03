@@ -2,12 +2,15 @@ extends layout
 
 block content
 
-  nav(class='navbar navbar-light bg-light justify-content-between')
+  nav(class='navbar navbar-light bg-dynamic-1 justify-content-between')
     a(class='navbar-brand zilwatch-navbar-brand')
       img(src='/images/zilWatch-02.svg' width='30' height='30' class='d-inline-block align-top mr-2' alt='zilWatch')
       = 'zilWatch'
 
-    button(id='wallet_refresh' class='btn btn-info my-2 my-sm-0 ml-auto mr-2' style='display: none;')
+    button(id='theme_toggle' class='btn btn-info my-2 my-sm-0 ml-auto mr-2')
+      i(id='theme_toggle_icon' class='fa fa-sun-o')
+    
+    button(id='wallet_refresh' class='btn btn-info my-2 my-sm-0 mr-2' style='display: none;')
       i(class='fa fa-refresh mr-2')
       = 'Refresh'
     button(id='wallet_address' class='btn btn-outline-info my-2 my-sm-0' style='display: none;')

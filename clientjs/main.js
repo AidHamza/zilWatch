@@ -2,6 +2,14 @@
 // Assumes ssnListMap is declared
 
 window.addEventListener("load", async () => {
+    // Get the user's theme preference from local storage, if it's available
+    let currentTheme = localStorage.getItem("theme");
+    if (currentTheme === "light") {
+        setLightMode();
+    } else if (currentTheme === "dark") {
+        setDarkMode();
+    }
+
     computeZilPriceInUsd(onZilUsdPriceLoaded);
 
     let zilpayStatus = checkZilpayStatus();
@@ -66,4 +74,30 @@ function refreshMainContentData(account) {
 
     // (7) Get ZIL staking balance
     computeZilStakingBalance(account, onZilStakingBalanceLoaded);
+}
+
+$("#theme_toggle").click(function() {
+    let isCurrentDark = $("html").hasClass("dark-mode");
+    let theme;
+    if (isCurrentDark) {
+        theme = "light";
+        setLightMode();
+    } else {
+        theme = "dark";
+        setDarkMode();
+    }
+    // Finally, let's save the current preference to localStorage to keep using it
+    localStorage.setItem("theme", theme);
+});
+
+function setLightMode() {
+    $("html").removeClass("dark-mode");
+    $("#theme_toggle_icon").removeClass("fa-sun-o");
+    $("#theme_toggle_icon").addClass("fa-moon-o");
+}
+
+function setDarkMode() {
+    $("html").addClass("dark-mode");
+    $("#theme_toggle_icon").removeClass("fa-moon-o");
+    $("#theme_toggle_icon").addClass("fa-sun-o");
 }
