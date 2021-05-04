@@ -3,9 +3,10 @@
   "version": "0.0.2",
   "private": true,
   "scripts": {
-    "start": "npm run uglifyjs && node ./bin/www",
+    "start": "npm run uglifyjs && npm run uglifycss && node ./bin/www",
     "test": "nyc mocha tests/**/*.js",
-    "uglifyjs": "uglifyjs clientjs/*.js --compress --mangle --output public/javascripts/main.min.js"
+    "uglifyjs": "uglifyjs clientjs/*.js --compress --mangle --output public/javascripts/main.min.js",
+    "uglifycss": "uglifycss clientcss/*.css --ugly-comments --output public/stylesheets/main.min.css"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -14,7 +15,8 @@
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
     "pug": "~3.0.2",
-    "uglify-js": "^3.13.4"
+    "uglify-js": "^3.13.4",
+    "uglifycss": "^0.0.29"
   },
   "devDependencies": {
     "jquery": "^3.6.0",

@@ -4,6 +4,9 @@
 # Minified JS
 *.min.js
 
+# Minified CSS
+*.min.css
+
 # Logs
 logs
 *.log
