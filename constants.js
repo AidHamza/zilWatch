@@ -264,6 +264,13 @@ const ssnListMap = {
       "logo_url": "https://meta.viewblock.io/ZIL.zil17tsmlqgnzlfxsq4evm6n26txm2xlp5hele0kew/logo",
       "decimals": 6,
     },
+    'SCO': {
+      "ticker": "SCO",
+      "name": "Score",
+      "address": "zil1kwfu3x9n6fsuxc4ynp72uk5rxge25enw7zsf9z",
+      "logo_url": "https://meta.viewblock.io/ZIL.zil1kwfu3x9n6fsuxc4ynp72uk5rxge25enw7zsf9z/logo",
+      "decimals": 4,
+    },
   }
   
 module.exports = {
