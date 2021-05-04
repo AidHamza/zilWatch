@@ -48,9 +48,9 @@
     --white-950: #f2f2f2;
     --white-940: #f0f0f0;
     --white-900: #e6e6e6;
-    --black-800: #2e3438;
-    --black-850: #22272a;
-    --black-900: #171a1c;
+    --black-910: #141819;
+    --black-930: #101314;
+    --black-950: #0b0d0e;
 
     /* Mainly for navbar */
     --black-alpha-90: rgba(0, 0, 0, .9);
@@ -149,9 +149,9 @@
     --dark-alpha-30: var(--black-alpha-30);
     --dark-alpha-10: var(--black-alpha-10);
 
-    --bg-dynamic: var(--black-900);
-    --bg-dynamic-1: var(--black-850);
-    --bg-dynamic-2: var(--black-800);
+    --bg-dynamic: var(--black-950);
+    --bg-dynamic-1: var(--black-930);
+    --bg-dynamic-2: var(--black-910);
 
     --text-color: var(--text-primary-white);
     --text-color-secondary: var(--text-secondary-white);
