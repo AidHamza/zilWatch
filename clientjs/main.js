@@ -94,10 +94,29 @@ function setLightMode() {
     $("html").removeClass("dark-mode");
     $("#theme_toggle_icon").removeClass("fa-sun-o");
     $("#theme_toggle_icon").addClass("fa-moon-o");
+    $("img").each(function() {  
+        let imgSrc = this.src;
+        if (imgSrc.toLowerCase().indexOf("meta.viewblock.io") !== -1) {
+            let darkQueryIndex = imgSrc.indexOf("?t=dark");
+            if (darkQueryIndex !== -1) {
+                this.src = imgSrc.substr(0, darkQueryIndex);
+            }
+        } else if (imgSrc.indexOf("dark") !== -1) {
+            this.src = imgSrc.replace("dark", "light");
+        }
+       }); 
 }
 
 function setDarkMode() {
     $("html").addClass("dark-mode");
     $("#theme_toggle_icon").removeClass("fa-moon-o");
     $("#theme_toggle_icon").addClass("fa-sun-o");
+    $("img").each(function() {  
+        let imgSrc = this.src;
+        if (imgSrc.toLowerCase().indexOf("meta.viewblock.io") !== -1) {
+            this.src = imgSrc + "?t=dark";
+        } else if (imgSrc.indexOf("light") !== -1) {
+            this.src = imgSrc.replace("light", "dark");
+        }
+       }); 
 }
