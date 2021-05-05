@@ -76,7 +76,7 @@ function refreshMainContentData(account) {
     computeZilStakingBalance(account, onZilStakingBalanceLoaded);
 }
 
-$("#theme_toggle").click(function() {
+$("#toggle_theme_btn").click(function() {
     let isCurrentDark = $("html").hasClass("dark-mode");
     let theme;
     if (isCurrentDark) {
@@ -92,8 +92,8 @@ $("#theme_toggle").click(function() {
 
 function setLightMode() {
     $("html").removeClass("dark-mode");
-    $("#theme_toggle_icon").removeClass("fa-sun-o");
-    $("#theme_toggle_icon").addClass("fa-moon-o");
+    $("#toggle_theme_icon").removeClass("fa-sun-o");
+    $("#toggle_theme_icon").addClass("fa-moon-o");
     $("img").each(function() {  
         let imgSrc = this.src;
         if (imgSrc.toLowerCase().indexOf("meta.viewblock.io") !== -1) {
@@ -109,8 +109,8 @@ function setLightMode() {
 
 function setDarkMode() {
     $("html").addClass("dark-mode");
-    $("#theme_toggle_icon").removeClass("fa-moon-o");
-    $("#theme_toggle_icon").addClass("fa-sun-o");
+    $("#toggle_theme_icon").removeClass("fa-moon-o");
+    $("#toggle_theme_icon").addClass("fa-sun-o");
     $("img").each(function() {  
         let imgSrc = this.src;
         if (imgSrc.toLowerCase().indexOf("meta.viewblock.io") !== -1) {

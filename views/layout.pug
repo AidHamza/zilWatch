@@ -2,6 +2,14 @@ doctype html
 html(lang='en' class='dark-mode')
 
   head
+    //- Global site tag (gtag.js) - Google Analytics
+    script.
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-MJ3SBZC');
+
     meta(charset='utf-8')
     meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
 
@@ -14,15 +22,6 @@ html(lang='en' class='dark-mode')
 
     title= title
 
-    //- Global site tag (gtag.js) - Google Analytics
-    script(async src='https://www.googletagmanager.com/gtag/js?id=G-MYV81CQF1N')
-    script.
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-MYV81CQF1N');
-
     link(rel='apple-touch-icon' sizes='180x180' href='/images/favicon/apple-touch-icon.png')
     link(rel='icon' type='image/png' sizes='32x32' href='/images/favicon/favicon-32x32.png')
     link(rel='icon' type='image/png' sizes='16x16' href='/images/favicon/favicon-16x16.png')
@@ -33,7 +32,11 @@ html(lang='en' class='dark-mode')
 
     link(rel='stylesheet' href='/stylesheets/main.min.css')
     link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+
   body
+    noscript
+      iframe(src='https://www.googletagmanager.com/ns.html?id=GTM-MJ3SBZC' height='0' width='0' style='display:none;visibility:hidden')
+
     block content
 
     // jQuery first, then Popper.js, then Bootstrap JS
@@ -61,7 +64,7 @@ html(lang='en' class='dark-mode')
           href='https://twitter.com/zilwatch_io'
           role='button')
             i(class='fa fa-twitter')
-    
+
     p()= '© 2021 zilWatch.io'
     p= '―'
 
