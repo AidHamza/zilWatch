@@ -123,62 +123,64 @@ block content
 
     hr
 
-    div(class='container title-box' style='display:table-cell; vertical-align: middle;')
-      img(class='mr-3' height='36' src='/images/zilswap_long_logo.svg' loading='lazy')
-      span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Liquidity Pool Balance'
+    div(id='lp_container' style='display: none')
 
-    // LP Balance
-    div(id='lp_balance' class='container')
+      div(class='container title-box' style='display:table-cell; vertical-align: middle;')
+        img(class='mr-3' height='36' src='/images/zilswap_long_logo.svg' loading='lazy')
+        span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Liquidity Pool Balance'
 
-      div(class='row')
+      // LP Balance
+      div(id='lp_balance' class='container')
 
-        div(id='total_all_lp_reward_next_epoch_container' class='col-lg-6' style='padding: 0; display: none')
-          div(class='highlight-box')
-            table(class='table table-sm table-borderless')
-              tbody
-                tr
-                  td(scope='row' rowspan='2' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                    img(height='36' src=zrcTokenPropertiesListMap['ZWAP'].logo_url loading='lazy')
-                  td(style='text-align: left; white-space: nowrap; width: 49%;' )
-                    span(class='font-weight-bold')= 'est. reward next epoch'
-                  td(style='text-align: right; white-space: nowrap; width: 49%;' )
-                    span(id='lp_reward_next_epoch_duration_counter' class='font-weight-normal')
-                tr(class='text-secondary')
-                  td(style='text-align: left; white-space: nowrap; width: 49%;' )
-                    span(id='total_all_lp_reward_next_epoch_zwap' class='ml-1')= 'Loading...'
-                    span(id='total_all_lp_reward_next_epoch_zwap_unit' class='ml-1')= zrcTokenPropertiesListMap['ZWAP'].ticker
-                  td(style='text-align: right; white-space: nowrap; width: 49%;' )
-                    span(class='mr-1')= '$'
-                    span(id='total_all_lp_reward_next_epoch_usd')= 'Loading...'
+        div(class='row')
 
-        each tokenProperties, key in zrcTokenPropertiesListMap
-
-          div(id=tokenProperties.ticker+'_lp_container' class='col-lg-6' style='padding: 0; display: none')
-            div(class='box')
+          div(id='total_all_lp_reward_next_epoch_container' class='col-lg-6' style='padding: 0; display: none')
+            div(class='highlight-box')
               table(class='table table-sm table-borderless')
                 tbody
                   tr
                     td(scope='row' rowspan='2' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                      img(height='36' src=tokenProperties.logo_url loading='lazy')
-                    td(style='text-align: left; white-space: nowrap; width: 33%;' )
-                      span(class='font-weight-bold')= tokenProperties.ticker + '-ZIL LP'
-                    td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 33%;' )
-                      span(id=tokenProperties.ticker+'_lp_pool_reward_zwap')
-                      span(id=tokenProperties.ticker+'_lp_pool_reward_zwap_unit' class='ml-1')
-                    td(style='text-align: right; white-space: nowrap; width: 33%;' )
-                      span(id=tokenProperties.ticker+'_lp_pool_share_percent')= 'Loading...'
-                      span(class='ml-1')= '%'
-                  tr
-                    td(colspan='2' style='text-align: left; white-space: nowrap; width: 66%;' )
-                      span(id=tokenProperties.ticker+'_lp_token_balance')
-                      span(id=tokenProperties.ticker+'_lp_token_balance_unit' class='ml-1')= tokenProperties.ticker
-                      span(class='ml-1')= '-'
-                      span(id=tokenProperties.ticker+'_lp_zil_balance' class='ml-1')
-                      span(id=tokenProperties.ticker+'_lp_zil_balance_unit' class='ml-1')= 'ZIL'
-                    td(style='text-align: right; white-space: nowrap; width: 33%;' )
+                      img(height='36' src=zrcTokenPropertiesListMap['ZWAP'].logo_url loading='lazy')
+                    td(style='text-align: left; white-space: nowrap; width: 49%;' )
+                      span(class='font-weight-bold')= 'est. reward next epoch'
+                    td(style='text-align: right; white-space: nowrap; width: 49%;' )
+                      span(id='lp_reward_next_epoch_duration_counter' class='font-weight-normal')
+                  tr(class='text-secondary')
+                    td(style='text-align: left; white-space: nowrap; width: 49%;' )
+                      span(id='total_all_lp_reward_next_epoch_zwap' class='ml-1')= 'Loading...'
+                      span(id='total_all_lp_reward_next_epoch_zwap_unit' class='ml-1')= zrcTokenPropertiesListMap['ZWAP'].ticker
+                    td(style='text-align: right; white-space: nowrap; width: 49%;' )
                       span(class='mr-1')= '$'
-                      span(id=tokenProperties.ticker+'_lp_balance_usd')= 'Loading...'
-    hr
+                      span(id='total_all_lp_reward_next_epoch_usd')= 'Loading...'
+
+          each tokenProperties, key in zrcTokenPropertiesListMap
+
+            div(id=tokenProperties.ticker+'_lp_container' class='col-lg-6' style='padding: 0; display: none')
+              div(class='box')
+                table(class='table table-sm table-borderless')
+                  tbody
+                    tr
+                      td(scope='row' rowspan='2' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                        img(height='36' src=tokenProperties.logo_url loading='lazy')
+                      td(style='text-align: left; white-space: nowrap; width: 33%;' )
+                        span(class='font-weight-bold')= tokenProperties.ticker + '-ZIL LP'
+                      td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 33%;' )
+                        span(id=tokenProperties.ticker+'_lp_pool_reward_zwap')
+                        span(id=tokenProperties.ticker+'_lp_pool_reward_zwap_unit' class='ml-1')
+                      td(style='text-align: right; white-space: nowrap; width: 33%;' )
+                        span(id=tokenProperties.ticker+'_lp_pool_share_percent')= 'Loading...'
+                        span(class='ml-1')= '%'
+                    tr
+                      td(colspan='2' style='text-align: left; white-space: nowrap; width: 66%;' )
+                        span(id=tokenProperties.ticker+'_lp_token_balance')
+                        span(id=tokenProperties.ticker+'_lp_token_balance_unit' class='ml-1')= tokenProperties.ticker
+                        span(class='ml-1')= '-'
+                        span(id=tokenProperties.ticker+'_lp_zil_balance' class='ml-1')
+                        span(id=tokenProperties.ticker+'_lp_zil_balance_unit' class='ml-1')= 'ZIL'
+                      td(style='text-align: right; white-space: nowrap; width: 33%;' )
+                        span(class='mr-1')= '$'
+                        span(id=tokenProperties.ticker+'_lp_balance_usd')= 'Loading...'
+      hr
 
     div(class='container title-box' style='display:table-cell; vertical-align: middle;')
       img(class='mr-3' height='36' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')

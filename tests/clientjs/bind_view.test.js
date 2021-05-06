@@ -378,6 +378,7 @@ describe('BindView', function () {
                 assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
             }
+            assert.strictEqual($('#lp_container').css('display'), 'none');
         });
 
         it('bind view happy case', function () {
@@ -390,6 +391,7 @@ describe('BindView', function () {
                 assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '1234.4');
                 assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '54.43');
                 assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'block');
+                assert.strictEqual($('#lp_container').css('display'), 'block');
             }
         });
 
@@ -403,6 +405,7 @@ describe('BindView', function () {
                 assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), 'hjkl');
                 assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), 'qwer');
                 assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'block');
+                assert.strictEqual($('#lp_container').css('display'), 'block');
             }
         });
 
@@ -416,6 +419,7 @@ describe('BindView', function () {
                 assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'block');
+                assert.strictEqual($('#lp_container').css('display'), 'block');
             }
         });
     });
@@ -514,6 +518,7 @@ describe('BindView', function () {
         beforeEach(function () {
             assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), 'Loading...');
             assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'none');
+            assert.strictEqual($('#lp_container').css('display'), 'none');
         });
 
         it('bind view legit balance', function () {
@@ -523,6 +528,7 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), '1234.4');
             assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'block');
+            assert.strictEqual($('#lp_container').css('display'), 'block');
         });
 
         it('bind view random string', function () {
@@ -532,6 +538,7 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), 'asdf');
             assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'block');
+            assert.strictEqual($('#lp_container').css('display'), 'block');
         });
 
         it('bind view empty string', function () {
@@ -541,6 +548,7 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), '');
             assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'block');
+            assert.strictEqual($('#lp_container').css('display'), 'block');
         });
     });
 

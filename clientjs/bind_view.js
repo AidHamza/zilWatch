@@ -96,6 +96,7 @@ function bindViewZrcTokenLpBalance(poolSharePercent, zilBalance, zrcBalance, tic
     $('#' + ticker + '_lp_zil_balance').text(zilBalance);
     $('#' + ticker + '_lp_token_balance').text(zrcBalance);
     $('#' + ticker + '_lp_container').show();
+    $('#lp_container').show();
 }
 
 function bindViewZilStakingBalance(zilStakingBalance, ssnAddress) {
@@ -111,6 +112,7 @@ function bindViewZwapRewardLp(zwapRewardString, ticker) {
 function bindViewTotalRewardAllLpZwap(totalRewardZwapString) {
     $('#total_all_lp_reward_next_epoch_zwap').text(totalRewardZwapString);
     $('#total_all_lp_reward_next_epoch_container').show();
+    $('#lp_container').show();
 }
 
 function bindViewLpNextEpochCounter(timeDurationString) {
