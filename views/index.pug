@@ -60,9 +60,9 @@ block content
         h3(class='font-weight-bold')= 'Staking Balance'
         span(class='h4')
           span(class='mr-1')= '$'
-          span(id='zil_staking_balance_usd')= 'Loading...'
+          span(id='staking_balance_usd')= 'Loading...'
         span(class='h6 ml-4')
-          span(id='zil_staking_balance_zil')= 'Loading...'
+          span(id='staking_balance_zil')= 'Loading...'
           span(class='ml-1')= 'ZIL'
 
     hr
@@ -182,11 +182,10 @@ block content
                         span(id=tokenProperties.ticker+'_lp_balance_usd')= 'Loading...'
       hr
 
-    div(id='zil_staking_container' style='display: none')
+    div(id='staking_container' style='display: none')
 
       div(class='container title-box' style='display:table-cell; vertical-align: middle;')
-        img(class='mr-3' height='36' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
-        span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'ZIL Staking Balance'
+        span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Staking Balance'
 
       // ZIL Staking Balance
       div(id='zil_staking_balance' class='container')
@@ -200,10 +199,12 @@ block content
                 table(class='table table-sm table-borderless')
                   tbody
                     tr
+                      td(scope='row' rowspan='2' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                        img(height='36' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
                       td(colspan='2')
-                        span(class='font-weight-bold')= ssnProperties.arguments[3]
+                        span(class='font-weight-bold')= ssnProperties.arguments[3] + ' seed node'
                     tr
-                      td(style='text-align: left; white-space: nowrap; width: 49%;' )
+                      td(colspan='2' style='text-align: left; white-space: nowrap; width: 49%;' )
                         span(id=ssnAddress+'_zil_staking_balance')= 'Loading...'
                         span(id=ssnAddress+'_zil_staking_balance_unit' class='ml-1')= 'ZIL'
                       td(style='text-align: right; white-space: nowrap; width: 49%;' )

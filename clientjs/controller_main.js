@@ -317,7 +317,7 @@ function refreshNetWorthZilUsd() {
         totalZil += lpBalanceZil;
     }
 
-    let zilStakingBalanceZil = getNumberFromView('#zil_staking_balance_zil');
+    let zilStakingBalanceZil = getNumberFromView('#staking_balance_zil');
     if (zilStakingBalanceZil) {
         totalZil += zilStakingBalanceZil;
     }

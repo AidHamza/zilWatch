@@ -72,7 +72,7 @@ function bindViewMainContainer(zilpayStatus) {
 
 function resetMainContainerContent() {
     $('#lp_container').hide();
-    $('#zil_staking_container').hide();
+    $('#staking_container').hide();
     $('#total_all_lp_reward_next_epoch_container').hide();
 
     $('#zil_price').text('Loading...');
@@ -110,8 +110,8 @@ function resetMainContainerContent() {
     $('#lp_balance_zil').text('Loading...');
     $('#lp_balance_usd').text('Loading...');
     
-    $('#zil_staking_balance_zil').text('Loading...');
-    $('#zil_staking_balance_usd').text('Loading...');
+    $('#staking_balance_zil').text('Loading...');
+    $('#staking_balance_usd').text('Loading...');
 
     $('#net_worth_zil').text('Loading...');
     $('#net_worth_usd').text('Loading...');
@@ -149,7 +149,7 @@ function bindViewZrcTokenLpBalance(poolSharePercent, zilBalance, zrcBalance, tic
 function bindViewZilStakingBalance(zilStakingBalance, ssnAddress) {
     $('#' + ssnAddress + '_zil_staking_balance').text(zilStakingBalance);
     $('#' + ssnAddress + '_zil_staking_container').show();
-    $('#zil_staking_container').show();
+    $('#staking_container').show();
 }
 
 function bindViewZwapRewardLp(zwapRewardString, ticker) {
@@ -208,11 +208,11 @@ function bindViewZilStakingBalanceUsd(zilStakingBalanceUsd, ssnAddress) {
 }
 
 function bindViewTotalStakingBalanceZil(totalStakingBalanceZil) {
-    $('#zil_staking_balance_zil').text(totalStakingBalanceZil);
+    $('#staking_balance_zil').text(totalStakingBalanceZil);
 }
 
 function bindViewTotalStakingBalanceUsd(totalStakingBalanceUsd) {
-    $('#zil_staking_balance_usd').text(totalStakingBalanceUsd);
+    $('#staking_balance_usd').text(totalStakingBalanceUsd);
 }
 
 function bindViewTotalNetWorthZil(totalNetWorthZil) {

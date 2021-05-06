@@ -437,7 +437,7 @@ describe('BindView', function () {
                 assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance').text(), 'Loading...');
                 assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'none');
             }
-            assert.strictEqual($('#zil_staking_container').css('display'), 'none');
+            assert.strictEqual($('#staking_container').css('display'), 'none');
         });
 
         it('bind view happy case', function () {
@@ -449,7 +449,7 @@ describe('BindView', function () {
 
                 assert.strictEqual($($('#' + ssnAddress + '_zil_staking_balance')).text(), '1234.4');
                 assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'block');
-                assert.strictEqual($('#zil_staking_container').css('display'), 'block');
+                assert.strictEqual($('#staking_container').css('display'), 'block');
             }
         });
 
@@ -461,7 +461,7 @@ describe('BindView', function () {
                 // Assert
                 assert.strictEqual($($('#' + ssnAddress + '_zil_staking_balance')).text(), 'asdf');
                 assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'block');
-                assert.strictEqual($('#zil_staking_container').css('display'), 'block');
+                assert.strictEqual($('#staking_container').css('display'), 'block');
             }
         });
 
@@ -473,7 +473,7 @@ describe('BindView', function () {
                 // Assert
                 assert.strictEqual($($('#' + ssnAddress + '_zil_staking_balance')).text(), '');
                 assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'block');
-                assert.strictEqual($('#zil_staking_container').css('display'), 'block');
+                assert.strictEqual($('#staking_container').css('display'), 'block');
             }
         });
     });
@@ -909,7 +909,7 @@ describe('BindView', function () {
     describe('#bindViewTotalStakingBalanceZil()', function () {
 
         beforeEach(function () {
-            assert.strictEqual($('#zil_staking_balance_zil').text(), 'Loading...');
+            assert.strictEqual($('#staking_balance_zil').text(), 'Loading...');
         });
 
         it('bind view happy case', function () {
@@ -917,7 +917,7 @@ describe('BindView', function () {
             BindView.bindViewTotalStakingBalanceZil('1234.52');
 
             // Assert
-            assert.strictEqual($('#zil_staking_balance_zil').text(), '1234.52');
+            assert.strictEqual($('#staking_balance_zil').text(), '1234.52');
         });
 
         it('bind view random string', function () {
@@ -925,7 +925,7 @@ describe('BindView', function () {
             BindView.bindViewTotalStakingBalanceZil('asdf');
 
             // Assert
-            assert.strictEqual($('#zil_staking_balance_zil').text(), 'asdf');
+            assert.strictEqual($('#staking_balance_zil').text(), 'asdf');
         });
 
         it('bind view empty string', function () {
@@ -933,14 +933,14 @@ describe('BindView', function () {
             BindView.bindViewTotalStakingBalanceZil('');
 
             // Assert
-            assert.strictEqual($('#zil_staking_balance_zil').text(), '');
+            assert.strictEqual($('#staking_balance_zil').text(), '');
         });
     });
 
     describe('#bindViewTotalStakingBalanceUsd()', function () {
 
         beforeEach(function () {
-            assert.strictEqual($('#zil_staking_balance_usd').text(), 'Loading...');
+            assert.strictEqual($('#staking_balance_usd').text(), 'Loading...');
         });
 
         it('bind view happy case', function () {
@@ -948,7 +948,7 @@ describe('BindView', function () {
             BindView.bindViewTotalStakingBalanceUsd('1234.52');
 
             // Assert
-            assert.strictEqual($('#zil_staking_balance_usd').text(), '1234.52');
+            assert.strictEqual($('#staking_balance_usd').text(), '1234.52');
         });
 
         it('bind view random string', function () {
@@ -956,7 +956,7 @@ describe('BindView', function () {
             BindView.bindViewTotalStakingBalanceUsd('asdf');
 
             // Assert
-            assert.strictEqual($('#zil_staking_balance_usd').text(), 'asdf');
+            assert.strictEqual($('#staking_balance_usd').text(), 'asdf');
         });
 
         it('bind view empty string', function () {
@@ -964,7 +964,7 @@ describe('BindView', function () {
             BindView.bindViewTotalStakingBalanceUsd('');
 
             // Assert
-            assert.strictEqual($('#zil_staking_balance_usd').text(), '');
+            assert.strictEqual($('#staking_balance_usd').text(), '');
         });
     });
 
@@ -1094,7 +1094,7 @@ function assertDefaultStateMainContent() {
         assert.strictEqual($($('#' + ssnAddress + '_zil_staking_balance')).text(), 'Loading...');
         assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'none');
     }
-    assert.strictEqual($('#zil_staking_container').css('display'), 'none');
+    assert.strictEqual($('#staking_container').css('display'), 'none');
 
     // bindViewZwapRewardLp()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {
@@ -1146,10 +1146,10 @@ function assertDefaultStateMainContent() {
     }
 
     // bindViewTotalStakingBalanceZil()
-    assert.strictEqual($('#zil_staking_balance_zil').text(), 'Loading...');
+    assert.strictEqual($('#staking_balance_zil').text(), 'Loading...');
 
     // bindViewTotalStakingBalanceUsd()
-    assert.strictEqual($('#zil_staking_balance_usd').text(), 'Loading...');
+    assert.strictEqual($('#staking_balance_usd').text(), 'Loading...');
 
     // bindViewTotalNetWorthZil()
     assert.strictEqual($('#net_worth_zil').text(), 'Loading...');
