@@ -70,6 +70,53 @@ function bindViewMainContainer(zilpayStatus) {
     $('#error_message_container').show();
 }
 
+function resetMainContainerContent() {
+    $('#lp_container').hide();
+    $('#zil_staking_container').hide();
+    $('#total_all_lp_reward_next_epoch_container').hide();
+
+    $('#zil_price').text('Loading...');
+    $('#zil_balance').text('Loading...');
+    $('#zil_balance_usd').text('');
+
+    for (let ticker in zrcTokenPropertiesListMap) {
+        $('#' + ticker + '_container').hide();
+        $('#' + ticker + '_price').text('Loading...');
+        $('#' + ticker + '_balance').text('Loading...');
+
+        $('#' + ticker + '_lp_container').hide();
+        $('#' + ticker + '_lp_pool_share_percent').text('Loading...');
+        $('#' + ticker + '_lp_zil_balance').text('');
+        $('#' + ticker + '_lp_token_balance').text('');
+        $('#' + ticker + '_lp_pool_reward_zwap').text('');
+        $('#' + ticker + '_lp_pool_reward_zwap_unit').text('');
+        $('#' + ticker + '_balance_zil').text('Loading...');
+        $('#' + ticker + '_balance_usd').text('Loading...');
+        $('#' + ticker + '_lp_balance_usd').text('Loading...');
+    }
+    
+    for (let ssnAddress in ssnListMap) {
+        $('#' + ssnAddress + '_zil_staking_container').hide();
+        $('#' + ssnAddress + '_zil_staking_balance').text('Loading...');
+        $('#' + ssnAddress + '_zil_staking_balance_usd').text('Loading...');
+    }
+    $('#lp_reward_next_epoch_duration_counter').text('');
+    $('#total_all_lp_reward_next_epoch_zwap').text('Loading...');
+    $('#total_all_lp_reward_next_epoch_usd').text('Loading...');
+
+    $('#wallet_balance_zil').text('Loading...');
+    $('#wallet_balance_usd').text('Loading...');
+    
+    $('#lp_balance_zil').text('Loading...');
+    $('#lp_balance_usd').text('Loading...');
+    
+    $('#zil_staking_balance_zil').text('Loading...');
+    $('#zil_staking_balance_usd').text('Loading...');
+
+    $('#net_worth_zil').text('Loading...');
+    $('#net_worth_usd').text('Loading...');
+}
+
 /**
  * --------------------------------------------------------------------------------
  */
@@ -195,11 +242,22 @@ if (typeof exports !== 'undefined') {
         ZilpayStatus = ZilpayUtils.ZilpayStatus;
     }
 
+    if (typeof zrcTokenPropertiesListMap === 'undefined') {
+        Constants = require('../constants.js');
+        zrcTokenPropertiesListMap = Constants.zrcTokenPropertiesListMap;
+    }
+
+    if (typeof ssnListMap === 'undefined') {
+        Constants = require('../constants.js');
+        ssnListMap = Constants.ssnListMap;
+    }
+
     exports.setThemeLightMode = setThemeLightMode;
     exports.setThemeDarkMode = setThemeDarkMode;
 
     exports.bindViewLoggedInButton = bindViewLoggedInButton;
     exports.bindViewMainContainer = bindViewMainContainer;
+    exports.resetMainContainerContent = resetMainContainerContent;
 
     exports.bindViewZilPriceInUsd = bindViewZilPriceInUsd;
     exports.bindViewZilBalance = bindViewZilBalance;

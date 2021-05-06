@@ -10,6 +10,12 @@ describe('BindView', function () {
 
     beforeEach(function (done) {
         indexJsdom.resetHtmlView(done);
+        assertDefaultStateMainContent();
+    });
+
+    afterEach(function () {
+        BindView.resetMainContainerContent();
+        assertDefaultStateMainContent();
     });
 
     describe('#setTheme()', function () {
@@ -428,7 +434,7 @@ describe('BindView', function () {
 
         beforeEach(function () {
             for (let ssnAddress in Constants.ssnListMap) {
-                assert.strictEqual($($('#' + ssnAddress + '_zil_staking_balance')).text(), 'Loading...');
+                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance').text(), 'Loading...');
                 assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'none');
             }
             assert.strictEqual($('#zil_staking_container').css('display'), 'none');
@@ -1055,3 +1061,102 @@ describe('BindView', function () {
         });
     });
 });
+
+function assertDefaultStateMainContent() {
+    // bindViewZilPriceInUsd()
+    assert.strictEqual($('#zil_price').text(), 'Loading...');
+
+    // bindViewZilBalance()
+    assert.strictEqual($('#zil_balance').text(), 'Loading...');
+
+    // bindViewZrcTokenPriceInZil()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_price').text(), 'Loading...');
+    }
+
+    // bindViewZrcTokenWalletBalance()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_balance').text(), 'Loading...');
+        assert.strictEqual($('#' + ticker + '_container').css('display'), 'none');
+    }
+
+    // bindViewZrcTokenLpBalance()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
+        assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
+        assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
+        assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
+    }
+    assert.strictEqual($('#lp_container').css('display'), 'none');
+
+    // bindViewZilStakingBalance()
+    for (let ssnAddress in Constants.ssnListMap) {
+        assert.strictEqual($($('#' + ssnAddress + '_zil_staking_balance')).text(), 'Loading...');
+        assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'none');
+    }
+    assert.strictEqual($('#zil_staking_container').css('display'), 'none');
+
+    // bindViewZwapRewardLp()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
+        assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
+    }
+
+    // bindViewTotalRewardAllLpZwap()
+    assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), 'Loading...');
+    assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'none');
+    assert.strictEqual($('#lp_container').css('display'), 'none');
+
+    // bindViewLpNextEpochCounter()
+    assert.strictEqual($('#lp_reward_next_epoch_duration_counter').text(), '');
+
+    // bindViewZilBalanceUsd()
+    assert.strictEqual($('#zil_balance_usd').text(), '');
+
+    // bindViewZrcTokenWalletBalanceZil()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_balance_zil').text(), 'Loading...');
+    }
+
+    // bindViewZrcTokenWalletBalanceUsd()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_balance_usd').text(), 'Loading...');
+    }
+
+    // bindViewTotalWalletBalanceZil()
+    assert.strictEqual($('#wallet_balance_zil').text(), 'Loading...');
+
+    // bindViewTotalWalletBalanceUsd()
+    assert.strictEqual($('#wallet_balance_usd').text(), 'Loading...');
+
+    // bindViewZrcTokenLpBalanceUsd()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_lp_balance_usd').text(), 'Loading...');
+    }
+
+    // bindViewTotalLpBalanceZil()
+    assert.strictEqual($('#lp_balance_zil').text(), 'Loading...');
+
+    // bindViewTotalLpBalanceUsd()
+    assert.strictEqual($('#lp_balance_usd').text(), 'Loading...');
+
+    // bindViewZilStakingBalanceUsd()
+    for (let ssnAddress in Constants.ssnListMap) {
+        assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_usd').text(), 'Loading...');
+    }
+
+    // bindViewTotalStakingBalanceZil()
+    assert.strictEqual($('#zil_staking_balance_zil').text(), 'Loading...');
+
+    // bindViewTotalStakingBalanceUsd()
+    assert.strictEqual($('#zil_staking_balance_usd').text(), 'Loading...');
+
+    // bindViewTotalNetWorthZil()
+    assert.strictEqual($('#net_worth_zil').text(), 'Loading...');
+
+    // bindViewTotalNetWorthUsd()
+    assert.strictEqual($('#net_worth_usd').text(), 'Loading...');
+
+    // bindViewTotalRewardAllLpUsd()
+    assert.strictEqual($('#total_all_lp_reward_next_epoch_usd').text(), 'Loading...');
+}

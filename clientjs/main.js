@@ -10,8 +10,6 @@ window.addEventListener("load", async () => {
         setThemeDarkMode();
     }
 
-    computeZilPriceInUsd(onZilUsdPriceLoaded);
-
     let zilpayStatus = checkZilpayStatus();
     bindViewMainContainer(zilpayStatus);
     if (ZilpayStatus.connected !== zilpayStatus) {
@@ -66,26 +64,32 @@ $("#toggle_theme_btn").click(function() {
 });
 
 function refreshMainContentData(account) {
-    // (1) show main screen
-    bindViewMainContainer(ZilpayStatus.connected);
-
-    // (2) Refresh login button state
+    // (1) Refresh login button state
     bindViewLoggedInButton(censorBech32Address(account.bech32));
 
-    // (3) Get ZIL balance, async.
+    // (2) show main screen
+    bindViewMainContainer(ZilpayStatus.connected);
+
+    // (3) Reset main content
+    resetMainContainerContent();
+
+    // (4) Get ZIL price in USD
+    computeZilPriceInUsd(onZilUsdPriceLoaded);
+
+    // (5) Get ZIL balance, async.
     computeZilBalance(account, onZilWalletBalanceLoaded);
 
-    // (4) Get ZRC-2 tokens price & ZRC-2 tokens LP balances in Zilswap, async.
+    // (6) Get ZRC-2 tokens price & ZRC-2 tokens LP balances in Zilswap, async.
     // Do this together because they are one API call, using the same data.
     computeZrcTokensPriceAndZilswapLpBalance(zrcTokenPropertiesListMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded);
 
-    // (5) Get ZRC-2 tokens balances, async.
+    // (7) Get ZRC-2 tokens balances, async.
     computeZrcTokensBalance(account, zrcTokenPropertiesListMap, onZrcTokenWalletBalanceLoaded);
 
-    // (6) Get Potential LP reward next epoch and time duration counter to the next epoch
+    // (8) Get Potential LP reward next epoch and time duration counter to the next epoch
     computeTotalLpRewardNextEpoch(account, onLpRewardNextEpochLoaded);
     computeLpEpochInfo(onLpCurrentEpochInfoLoaded);
 
-    // (7) Get ZIL staking balance
+    // (9) Get ZIL staking balance
     computeZilStakingBalance(account, onZilStakingBalanceLoaded);
 }
