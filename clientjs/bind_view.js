@@ -102,6 +102,7 @@ function bindViewZrcTokenLpBalance(poolSharePercent, zilBalance, zrcBalance, tic
 function bindViewZilStakingBalance(zilStakingBalance, ssnAddress) {
     $('#' + ssnAddress + '_zil_staking_balance').text(zilStakingBalance);
     $('#' + ssnAddress + '_zil_staking_container').show();
+    $('#zil_staking_container').show();
 }
 
 function bindViewZwapRewardLp(zwapRewardString, ticker) {

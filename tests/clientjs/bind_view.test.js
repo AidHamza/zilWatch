@@ -431,6 +431,7 @@ describe('BindView', function () {
                 assert.strictEqual($($('#' + ssnAddress + '_zil_staking_balance')).text(), 'Loading...');
                 assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'none');
             }
+            assert.strictEqual($('#zil_staking_container').css('display'), 'none');
         });
 
         it('bind view happy case', function () {
@@ -442,6 +443,7 @@ describe('BindView', function () {
 
                 assert.strictEqual($($('#' + ssnAddress + '_zil_staking_balance')).text(), '1234.4');
                 assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'block');
+                assert.strictEqual($('#zil_staking_container').css('display'), 'block');
             }
         });
 
@@ -453,6 +455,7 @@ describe('BindView', function () {
                 // Assert
                 assert.strictEqual($($('#' + ssnAddress + '_zil_staking_balance')).text(), 'asdf');
                 assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'block');
+                assert.strictEqual($('#zil_staking_container').css('display'), 'block');
             }
         });
 
@@ -464,6 +467,7 @@ describe('BindView', function () {
                 // Assert
                 assert.strictEqual($($('#' + ssnAddress + '_zil_staking_balance')).text(), '');
                 assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'block');
+                assert.strictEqual($('#zil_staking_container').css('display'), 'block');
             }
         });
     });
