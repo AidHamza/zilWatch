@@ -210,6 +210,26 @@ block content
                       td(style='text-align: right; white-space: nowrap; width: 49%;' )
                         span(class='mr-1')= '$'
                         span(id=ssnAddress+'_zil_staking_balance_usd')= 'Loading...'
+
+          div(id='carbon_staking_container' class='col-lg-6' style='padding: 0; display: none')
+            div(class='box')
+              table(class='table table-sm table-borderless')
+                tbody
+                  tr
+                    td(scope='row' rowspan='2' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                      img(height='36' src=zrcTokenPropertiesListMap['CARB'].logo_url loading='lazy')
+                    td
+                      span(class='font-weight-bold')= zrcTokenPropertiesListMap['CARB'].name + " staking"
+                    td(style='text-align: right; white-space: nowrap; width: 49%;' )
+                      span(id='carbon_staking_balance_zil')= 'Loading...'
+                      span(class='ml-1')= 'ZIL'
+                  tr
+                    td(style='text-align: left; white-space: nowrap; width: 49%;' )
+                      span(id='carbon_staking_balance')= 'Loading...'
+                      span(id='carbon_zil_staking_balance_unit' class='ml-1')= zrcTokenPropertiesListMap['CARB'].ticker
+                    td(style='text-align: right; white-space: nowrap; width: 49%;' )
+                      span(class='mr-1')= '$'
+                      span(id='carbon_staking_balance_usd')= 'Loading...'
       hr
 
 block script

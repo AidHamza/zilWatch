@@ -73,7 +73,7 @@ function refreshMainContentData(account) {
     // (3) Reset main content
     resetMainContainerContent();
 
-    // (4) Get ZIL price in USD
+    // (4) Get ZIL price in USD, async.
     computeZilPriceInUsd(onZilUsdPriceLoaded);
 
     // (5) Get ZIL balance, async.
@@ -86,10 +86,13 @@ function refreshMainContentData(account) {
     // (7) Get ZRC-2 tokens balances, async.
     computeZrcTokensBalance(account, zrcTokenPropertiesListMap, onZrcTokenWalletBalanceLoaded);
 
-    // (8) Get Potential LP reward next epoch and time duration counter to the next epoch
+    // (8) Get Potential LP reward next epoch and time duration counter to the next epoch, async
     computeTotalLpRewardNextEpoch(account, onLpRewardNextEpochLoaded);
     computeLpEpochInfo(onLpCurrentEpochInfoLoaded);
 
-    // (9) Get ZIL staking balance
+    // (9) Get ZIL staking balance, async
     computeZilStakingBalance(account, onZilStakingBalanceLoaded);
+
+    // (10) Get CARBON stakin balance, async
+    computeCarbonStakingBalance(account, onCarbonStakingBalanceLoaded);
 }

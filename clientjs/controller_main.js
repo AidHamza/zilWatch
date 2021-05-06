@@ -31,7 +31,8 @@ function onZilUsdPriceLoaded(zilPriceInUsd) {
     for (let ssnAddress in ssnListMap) {
         refreshZilStakingUsd(ssnAddress);
     }
-    refreshTotalZilStakingZilUsd();
+    refreshCarbonStakingZilUsd();
+    refreshTotalStakingZilUsd();
 
     // Net worth
     refreshNetWorthZilUsd();
@@ -70,6 +71,10 @@ function onZrcTokenPriceInZilLoaded(zrcTokenPriceInZilNumber, ticker) {
     // Lp reward
     if (ticker === 'ZWAP') {
         refreshTotalLpRewardUsd();
+    } else if (ticker === 'CARB') {
+        // Staking Balance
+        refreshCarbonStakingZilUsd();
+        refreshTotalStakingZilUsd();
     }
 
     // Net worth
@@ -123,9 +128,24 @@ function onZilStakingBalanceLoaded(zilBalanceQa, ssnAddress) {
     }
     bindViewZilStakingBalance(userFriendlyZilStakingBalanceString, ssnAddress);
 
-    // ZIL Staking balance
+    // Staking balance
     refreshZilStakingUsd(ssnAddress)
-    refreshTotalZilStakingZilUsd();
+    refreshTotalStakingZilUsd();
+
+    // Net worth
+    refreshNetWorthZilUsd();
+}
+
+function onCarbonStakingBalanceLoaded(carbonBalanceQa) {
+    let userFriendlyCarbonStakingBalanceString = convertNumberQaToDecimalString(parseInt(carbonBalanceQa),zrcTokenPropertiesListMap['CARB'].decimals);
+    if (!userFriendlyCarbonStakingBalanceString) {
+        return;
+    }
+    bindViewCarbonStakingBalance(userFriendlyCarbonStakingBalanceString);
+
+    // Staking balance
+    refreshCarbonStakingZilUsd();
+    refreshTotalStakingZilUsd();
 
     // Net worth
     refreshNetWorthZilUsd();
@@ -281,8 +301,34 @@ function refreshZilStakingUsd(ssnAddress) {
     bindViewZilStakingBalanceUsd(zilStakingBalanceUsdString, ssnAddress);
 }
 
-function refreshTotalZilStakingZilUsd() {
-    // Sum balance in ZIL.
+function refreshCarbonStakingZilUsd() {
+
+    let carbonPriceInZil = getNumberFromView('#' + zrcTokenPropertiesListMap['CARB'].ticker + '_price');
+    if (!carbonPriceInZil) {
+        return;
+    }
+
+    let carbonStakingBalance = getNumberFromView('#carbon_staking_balance');
+    if (!carbonStakingBalance) {
+        return;
+    }
+
+    let carbonStakingBalanceZil = 1.0 * carbonPriceInZil * carbonStakingBalance;
+    let carbonStakingBalanceZilString = convertNumberQaToDecimalString(carbonStakingBalanceZil, /* decimals= */ 0);
+    bindViewCarbonStakingBalanceZil(carbonStakingBalanceZilString);
+
+    let usdPrice = getNumberFromView('#zil_price');
+    if (!usdPrice) {
+        return;
+    }
+
+    let carbonStakingBalanceUsd = 1.0 * usdPrice * carbonStakingBalanceZil;
+    let carbonStakingBalanceUsdString = commafyNumberToString(carbonStakingBalanceUsd);
+    bindViewCarbonStakingBalanceUsd(carbonStakingBalanceUsdString);
+}
+
+function refreshTotalStakingZilUsd() {
+    // ZIL staking sum
     let totalZil = 0;
     for (let ssnAddress in ssnListMap) {
         let stakingZil = getNumberFromView('#' + ssnAddress + '_zil_staking_balance');
@@ -290,6 +336,13 @@ function refreshTotalZilStakingZilUsd() {
             totalZil += stakingZil;
         }
     }
+
+    // Carbon staking
+    let carbonStakingBalanceZil = getNumberFromView('#carbon_staking_balance_zil');
+    if (carbonStakingBalanceZil) {
+        totalZil += carbonStakingBalanceZil
+    }
+
     let totalStakingBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
     bindViewTotalStakingBalanceZil(totalStakingBalanceZil);
 

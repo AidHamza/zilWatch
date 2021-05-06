@@ -5,7 +5,7 @@ function setThemeLightMode() {
     $("html").removeClass("dark-mode");
     $("#toggle_theme_icon").removeClass("fa-sun-o");
     $("#toggle_theme_icon").addClass("fa-moon-o");
-    $("img").each(function() {  
+    $("img").each(function () {
         let imgSrc = this.src;
         if (imgSrc.toLowerCase().indexOf("meta.viewblock.io") !== -1) {
             let darkQueryIndex = imgSrc.indexOf("?t=dark");
@@ -15,21 +15,21 @@ function setThemeLightMode() {
         } else if (imgSrc.indexOf("viewblock-dark") !== -1) {
             this.src = imgSrc.replace("viewblock-dark.png", "viewblock-light.png");
         }
-       }); 
+    });
 }
 
 function setThemeDarkMode() {
     $("html").addClass("dark-mode");
     $("#toggle_theme_icon").removeClass("fa-moon-o");
     $("#toggle_theme_icon").addClass("fa-sun-o");
-    $("img").each(function() {  
+    $("img").each(function () {
         let imgSrc = this.src;
         if (imgSrc.toLowerCase().indexOf("meta.viewblock.io") !== -1) {
             this.src = imgSrc + "?t=dark";
         } else if (imgSrc.indexOf("viewblock-light.png") !== -1) {
             this.src = imgSrc.replace("viewblock-light.png", "viewblock-dark.png");
         }
-       }); 
+    });
 }
 
 /**
@@ -94,22 +94,27 @@ function resetMainContainerContent() {
         $('#' + ticker + '_balance_usd').text('Loading...');
         $('#' + ticker + '_lp_balance_usd').text('Loading...');
     }
-    
+
+    $('#carbon_staking_container').hide();
     for (let ssnAddress in ssnListMap) {
         $('#' + ssnAddress + '_zil_staking_container').hide();
         $('#' + ssnAddress + '_zil_staking_balance').text('Loading...');
         $('#' + ssnAddress + '_zil_staking_balance_usd').text('Loading...');
     }
+    $('#carbon_staking_balance').text('Loading...');
+    $('#carbon_staking_balance_zil').text('Loading...');
+    $('#carbon_staking_balance_usd').text('Loading...');
+
     $('#lp_reward_next_epoch_duration_counter').text('');
     $('#total_all_lp_reward_next_epoch_zwap').text('Loading...');
     $('#total_all_lp_reward_next_epoch_usd').text('Loading...');
 
     $('#wallet_balance_zil').text('Loading...');
     $('#wallet_balance_usd').text('Loading...');
-    
+
     $('#lp_balance_zil').text('Loading...');
     $('#lp_balance_usd').text('Loading...');
-    
+
     $('#staking_balance_zil').text('Loading...');
     $('#staking_balance_usd').text('Loading...');
 
@@ -149,6 +154,12 @@ function bindViewZrcTokenLpBalance(poolSharePercent, zilBalance, zrcBalance, tic
 function bindViewZilStakingBalance(zilStakingBalance, ssnAddress) {
     $('#' + ssnAddress + '_zil_staking_balance').text(zilStakingBalance);
     $('#' + ssnAddress + '_zil_staking_container').show();
+    $('#staking_container').show();
+}
+
+function bindViewCarbonStakingBalance(carbonStakingBalance) {
+    $('#carbon_staking_balance').text(carbonStakingBalance);
+    $('#carbon_staking_container').show();
     $('#staking_container').show();
 }
 
@@ -205,6 +216,14 @@ function bindViewTotalLpBalanceUsd(totalLpBalanceUsd) {
 
 function bindViewZilStakingBalanceUsd(zilStakingBalanceUsd, ssnAddress) {
     $('#' + ssnAddress + '_zil_staking_balance_usd').text(zilStakingBalanceUsd);
+}
+
+function bindViewCarbonStakingBalanceZil(carbonStakingBalanceZil) {
+    $('#carbon_staking_balance_zil').text(carbonStakingBalanceZil);
+}
+
+function bindViewCarbonStakingBalanceUsd(carbonStakingBalanceUsd) {
+    $('#carbon_staking_balance_usd').text(carbonStakingBalanceUsd);
 }
 
 function bindViewTotalStakingBalanceZil(totalStakingBalanceZil) {
@@ -265,6 +284,7 @@ if (typeof exports !== 'undefined') {
     exports.bindViewZrcTokenWalletBalance = bindViewZrcTokenWalletBalance;
     exports.bindViewZrcTokenLpBalance = bindViewZrcTokenLpBalance;
     exports.bindViewZilStakingBalance = bindViewZilStakingBalance;
+    exports.bindViewCarbonStakingBalance = bindViewCarbonStakingBalance;
     exports.bindViewZwapRewardLp = bindViewZwapRewardLp;
     exports.bindViewTotalRewardAllLpZwap = bindViewTotalRewardAllLpZwap;
     exports.bindViewLpNextEpochCounter = bindViewLpNextEpochCounter;
@@ -279,6 +299,8 @@ if (typeof exports !== 'undefined') {
     exports.bindViewTotalLpBalanceZil = bindViewTotalLpBalanceZil;
     exports.bindViewTotalLpBalanceUsd = bindViewTotalLpBalanceUsd;
     exports.bindViewZilStakingBalanceUsd = bindViewZilStakingBalanceUsd;
+    exports.bindViewCarbonStakingBalanceZil = bindViewCarbonStakingBalanceZil;
+    exports.bindViewCarbonStakingBalanceUsd = bindViewCarbonStakingBalanceUsd;
     exports.bindViewTotalStakingBalanceZil = bindViewTotalStakingBalanceZil;
     exports.bindViewTotalStakingBalanceUsd = bindViewTotalStakingBalanceUsd;
     exports.bindViewTotalNetWorthZil = bindViewTotalNetWorthZil;

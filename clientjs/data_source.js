@@ -102,11 +102,11 @@ function computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddress
  */
 
 /** Private async function, to compute ZIL staking balance */
-async function computeZilStakingBalance(account, onCompleteCallback) {
-    computeZilStakingBalanceWithRetry(account, onCompleteCallback, MAX_RETRY);
+async function computeZilStakingBalance(account, onZilStakingBalanceLoaded) {
+    computeZilStakingBalanceWithRetry(account, onZilStakingBalanceLoaded, MAX_RETRY);
 }
 
-function computeZilStakingBalanceWithRetry(account, onCompleteCallback, retryRemaining) {
+function computeZilStakingBalanceWithRetry(account, onZilStakingBalanceLoaded, retryRemaining) {
     if (retryRemaining <= 0) {
         console.log("computeZilStakingBalanceWithRetry failed! Out of retries!");
         return;
@@ -119,14 +119,14 @@ function computeZilStakingBalanceWithRetry(account, onCompleteCallback, retryRem
                 let ssnToBalanceMap = data.result.deposit_amt_deleg[walletAddressBase16];
                 if (ssnToBalanceMap) {
                     for (let ssnAddress in ssnToBalanceMap) {
-                        onCompleteCallback(ssnToBalanceMap[ssnAddress], ssnAddress);
+                        onZilStakingBalanceLoaded(ssnToBalanceMap[ssnAddress], ssnAddress);
                     }
                 }
             }
         })
         .catch(function () {
             console.log("computeZilStakingBalanceWithRetry failed! %s",retryRemaining);
-            computeZilStakingBalanceWithRetry(account, onCompleteCallback, retryRemaining - 1);
+            computeZilStakingBalanceWithRetry(account, onZilStakingBalanceLoaded, retryRemaining - 1);
         });
 }
 
@@ -134,13 +134,13 @@ function computeZilStakingBalanceWithRetry(account, onCompleteCallback, retryRem
  * ===============================================================================
  */
 
-async function computeZilPriceInUsd(onCompleteCallback) {
+async function computeZilPriceInUsd(onZilUsdPriceLoaded) {
     $.ajax({
         type: "GET",
         url: "https://api.coingecko.com/api/v3/simple/price?ids=zilliqa&vs_currencies=usd",
         retryLimit: MAX_RETRY,
         success: function (data) {
-            onCompleteCallback(data.zilliqa.usd);
+            onZilUsdPriceLoaded(data.zilliqa.usd);
         },
         error: function (xhr, textStatus, errorThrown) {
             if (this.retryLimit--) {
@@ -152,13 +152,13 @@ async function computeZilPriceInUsd(onCompleteCallback) {
     });
 }
 
-async function computeTotalLpRewardNextEpoch(account, onCompleteCallback) {
+async function computeTotalLpRewardNextEpoch(account, onLpRewardNextEpochLoaded) {
     $.ajax({
         type: "GET",
         url: "https://stats.zilswap.org/distribution/current/" + account.bech32,
         retryLimit: MAX_RETRY,
         success: function (contractAddressToRewardMap) {
-            onCompleteCallback(contractAddressToRewardMap);
+            onLpRewardNextEpochLoaded(contractAddressToRewardMap);
         },
         error: function (xhr, textStatus, errorThrown) {
             if (this.retryLimit--) {

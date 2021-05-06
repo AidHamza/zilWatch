@@ -23,7 +23,7 @@ describe('BindView', function () {
         beforeEach(function () {
             assert.strictEqual($('html').hasClass('dark-mode'), true);
             assert.strictEqual($('#toggle_theme_icon').hasClass('fa-sun-o'), true);
-            assert.strictEqual($('#toggle_theme_icon').hasClass('fa-moon-o'), false); 
+            assert.strictEqual($('#toggle_theme_icon').hasClass('fa-moon-o'), false);
         });
 
         it('default dark, set light', function () {
@@ -34,7 +34,7 @@ describe('BindView', function () {
             assert.strictEqual($('html').hasClass('dark-mode'), false);
             assert.strictEqual($('#toggle_theme_icon').hasClass('fa-sun-o'), false);
             assert.strictEqual($('#toggle_theme_icon').hasClass('fa-moon-o'), true);
-            $("img").each(function() {  
+            $("img").each(function () {
                 let imgSrc = this.src;
                 if (imgSrc.toLowerCase().indexOf("meta.viewblock.io") !== -1) {
                     assert.strictEqual(imgSrc.indexOf("?t=dark"), -1);
@@ -42,7 +42,7 @@ describe('BindView', function () {
                     assert.notStrictEqual(imgSrc.indexOf("viewblock-light.png"), -1);
                     assert.strictEqual(imgSrc.indexOf("viewblock-dark.png"), -1);
                 }
-               }); 
+            });
         });
 
         it('default dark, set light 2x', function () {
@@ -54,7 +54,7 @@ describe('BindView', function () {
             assert.strictEqual($('html').hasClass('dark-mode'), false);
             assert.strictEqual($('#toggle_theme_icon').hasClass('fa-sun-o'), false);
             assert.strictEqual($('#toggle_theme_icon').hasClass('fa-moon-o'), true);
-            $("img").each(function() {  
+            $("img").each(function () {
                 let imgSrc = this.src;
                 if (imgSrc.toLowerCase().indexOf("meta.viewblock.io") !== -1) {
                     assert.strictEqual(imgSrc.indexOf("?t=dark"), -1);
@@ -62,7 +62,7 @@ describe('BindView', function () {
                     assert.notStrictEqual(imgSrc.indexOf("viewblock-light.png"), -1);
                     assert.strictEqual(imgSrc.indexOf("viewblock-dark.png"), -1);
                 }
-               }); 
+            });
         });
 
         it('default dark, set dark', function () {
@@ -73,7 +73,7 @@ describe('BindView', function () {
             assert.strictEqual($('html').hasClass('dark-mode'), true);
             assert.strictEqual($('#toggle_theme_icon').hasClass('fa-sun-o'), true);
             assert.strictEqual($('#toggle_theme_icon').hasClass('fa-moon-o'), false);
-            $("img").each(function() {  
+            $("img").each(function () {
                 let imgSrc = this.src;
                 if (imgSrc.toLowerCase().indexOf("meta.viewblock.io") !== -1) {
                     assert.notStrictEqual(imgSrc.indexOf("?t=dark"), -1);
@@ -81,26 +81,26 @@ describe('BindView', function () {
                     assert.strictEqual(imgSrc.indexOf("viewblock-light.png"), -1);
                     assert.notStrictEqual(imgSrc.indexOf("viewblock-dark.png"), -1);
                 }
-               }); 
+            });
         });
 
         it('default dark, set light, set dark', function () {
             // Act
             BindView.setThemeLightMode();
 
-             // Assert
-             assert.strictEqual($('html').hasClass('dark-mode'), false);
-             assert.strictEqual($('#toggle_theme_icon').hasClass('fa-sun-o'), false);
-             assert.strictEqual($('#toggle_theme_icon').hasClass('fa-moon-o'), true);
-             $("img").each(function() {  
-                 let imgSrc = this.src;
-                 if (imgSrc.toLowerCase().indexOf("meta.viewblock.io") !== -1) {
-                     assert.strictEqual(imgSrc.indexOf("?t=dark"), -1);
-                 } else if (imgSrc.toLowerCase().indexOf("cdn.viewblock.io") !== -1) {
-                     assert.notStrictEqual(imgSrc.indexOf("viewblock-light.png"), -1);
-                     assert.strictEqual(imgSrc.indexOf("viewblock-dark.png"), -1);
-                 }
-                }); 
+            // Assert
+            assert.strictEqual($('html').hasClass('dark-mode'), false);
+            assert.strictEqual($('#toggle_theme_icon').hasClass('fa-sun-o'), false);
+            assert.strictEqual($('#toggle_theme_icon').hasClass('fa-moon-o'), true);
+            $("img").each(function () {
+                let imgSrc = this.src;
+                if (imgSrc.toLowerCase().indexOf("meta.viewblock.io") !== -1) {
+                    assert.strictEqual(imgSrc.indexOf("?t=dark"), -1);
+                } else if (imgSrc.toLowerCase().indexOf("cdn.viewblock.io") !== -1) {
+                    assert.notStrictEqual(imgSrc.indexOf("viewblock-light.png"), -1);
+                    assert.strictEqual(imgSrc.indexOf("viewblock-dark.png"), -1);
+                }
+            });
 
             // Act
             BindView.setThemeDarkMode();
@@ -109,7 +109,7 @@ describe('BindView', function () {
             assert.strictEqual($('html').hasClass('dark-mode'), true);
             assert.strictEqual($('#toggle_theme_icon').hasClass('fa-sun-o'), true);
             assert.strictEqual($('#toggle_theme_icon').hasClass('fa-moon-o'), false);
-            $("img").each(function() {  
+            $("img").each(function () {
                 let imgSrc = this.src;
                 if (imgSrc.toLowerCase().indexOf("meta.viewblock.io") !== -1) {
                     assert.notStrictEqual(imgSrc.indexOf("?t=dark"), -1);
@@ -117,7 +117,7 @@ describe('BindView', function () {
                     assert.strictEqual(imgSrc.indexOf("viewblock-light.png"), -1);
                     assert.notStrictEqual(imgSrc.indexOf("viewblock-dark.png"), -1);
                 }
-               }); 
+            });
         });
     });
 
@@ -429,6 +429,46 @@ describe('BindView', function () {
             }
         });
     });
+
+    describe('#bindViewCarbonStakingBalance()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#carbon_staking_balance').text(), 'Loading...');
+            assert.strictEqual($('#carbon_staking_container').css('display'), 'none');
+            assert.strictEqual($('#staking_container').css('display'), 'none');
+        });
+
+        it('bind view happy case', function () {
+            // Act
+            BindView.bindViewCarbonStakingBalance('1234.4');
+
+            // Assert
+            assert.strictEqual($($('#carbon_staking_balance')).text(), '1234.4');
+            assert.strictEqual($('#carbon_staking_container').css('display'), 'block');
+            assert.strictEqual($('#staking_container').css('display'), 'block');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewCarbonStakingBalance('asdf');
+
+            // Assert
+            assert.strictEqual($($('#carbon_staking_balance')).text(), 'asdf');
+            assert.strictEqual($('#carbon_staking_container').css('display'), 'block');
+            assert.strictEqual($('#staking_container').css('display'), 'block');
+        });
+
+        it('bind view empty string', function () {
+            // Act
+            BindView.bindViewCarbonStakingBalance('');
+
+            // Assert
+            assert.strictEqual($($('#carbon_staking_balance')).text(), '');
+            assert.strictEqual($('#carbon_staking_container').css('display'), 'block');
+            assert.strictEqual($('#staking_container').css('display'), 'block');
+        });
+    });
+
 
     describe('#bindViewZilStakingBalance()', function () {
 
@@ -906,6 +946,68 @@ describe('BindView', function () {
         });
     });
 
+    describe('#bindViewCarbonStakingBalanceZil()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#carbon_staking_balance_zil').text(), 'Loading...');
+        });
+
+        it('bind view happy case', function () {
+            // Act
+            BindView.bindViewCarbonStakingBalanceZil('1234.4');
+
+            // Assert
+            assert.strictEqual($('#carbon_staking_balance_zil').text(), '1234.4');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewCarbonStakingBalanceZil('asdf');
+
+            // Assert
+            assert.strictEqual($('#carbon_staking_balance_zil').text(), 'asdf');
+        });
+
+        it('bind view empty string', function () {
+            // Act
+            BindView.bindViewCarbonStakingBalanceZil('');
+
+            // Assert
+            assert.strictEqual($('#carbon_staking_balance_zil').text(), '');
+        });
+    });
+
+    describe('#bindViewCarbonStakingBalanceUsd()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#carbon_staking_balance_usd').text(), 'Loading...');
+        });
+
+        it('bind view happy case', function () {
+            // Act
+            BindView.bindViewCarbonStakingBalanceUsd('1234.4');
+
+            // Assert
+            assert.strictEqual($('#carbon_staking_balance_usd').text(), '1234.4');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewCarbonStakingBalanceUsd('asdf');
+
+            // Assert
+            assert.strictEqual($('#carbon_staking_balance_usd').text(), 'asdf');
+        });
+
+        it('bind view empty string', function () {
+            // Act
+            BindView.bindViewCarbonStakingBalanceUsd('');
+
+            // Assert
+            assert.strictEqual($('#carbon_staking_balance_usd').text(), '');
+        });
+    });
+
     describe('#bindViewTotalStakingBalanceZil()', function () {
 
         beforeEach(function () {
@@ -1094,6 +1196,11 @@ function assertDefaultStateMainContent() {
         assert.strictEqual($($('#' + ssnAddress + '_zil_staking_balance')).text(), 'Loading...');
         assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'none');
     }
+    assert.strictEqual($('#staking_container').css('display'), 'none');
+
+    // bindViewCarbonStakingBalance()
+    assert.strictEqual($('#carbon_staking_balance').text(), 'Loading...');
+    assert.strictEqual($('#carbon_staking_container').css('display'), 'none');
     assert.strictEqual($('#staking_container').css('display'), 'none');
 
     // bindViewZwapRewardLp()
