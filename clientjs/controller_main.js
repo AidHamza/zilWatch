@@ -31,6 +31,7 @@ function onZilUsdPriceLoaded(zilPriceInUsd) {
     for (let ssnAddress in ssnListMap) {
         refreshZilStakingUsd(ssnAddress);
     }
+    refreshZilStakingWithdrawalPendingUsd();
     refreshCarbonStakingZilUsd();
     refreshTotalStakingZilUsd();
 
@@ -130,6 +131,26 @@ function onZilStakingBalanceLoaded(zilBalanceQa, ssnAddress) {
 
     // Staking balance
     refreshZilStakingUsd(ssnAddress)
+    refreshTotalStakingZilUsd();
+
+    // Net worth
+    refreshNetWorthZilUsd();
+}
+
+function onZilStakingWithdrawalPendingBalanceLoaded(blockNumberToBalanceMap) {
+    let totalZilQa = 0;
+    for (let blockNumber in blockNumberToBalanceMap) {
+        let zilBalanceQa = parseInt(blockNumberToBalanceMap[blockNumber]);
+        if (zilBalanceQa) {
+            totalZilQa += zilBalanceQa;
+        }
+    }
+
+    let userFriendlyZilWithdrawalString = convertNumberQaToDecimalString(totalZilQa, /* decimals= */ 12);
+    bindViewZilStakingWithdrawalPendingBalance(userFriendlyZilWithdrawalString);
+
+    // Staking balance
+    refreshZilStakingWithdrawalPendingUsd();
     refreshTotalStakingZilUsd();
 
     // Net worth
@@ -301,6 +322,22 @@ function refreshZilStakingUsd(ssnAddress) {
     bindViewZilStakingBalanceUsd(zilStakingBalanceUsdString, ssnAddress);
 }
 
+function refreshZilStakingWithdrawalPendingUsd() {
+    let usdPrice = getNumberFromView('#zil_price');
+    if (!usdPrice) {
+        return;
+    }
+
+    let zilStakingWithdrawalBalance = getNumberFromView('#zil_staking_withdrawal_pending_balance');
+    if (!zilStakingWithdrawalBalance) {
+        return;
+    }
+
+    let zilStakingWithdrawalBalanceUsd = 1.0 * usdPrice * zilStakingWithdrawalBalance;
+    let zilStakingWithdrawalBalanceUsdString = commafyNumberToString(zilStakingWithdrawalBalanceUsd);
+    bindViewZilStakingWithdrawalPendingBalanceUsd(zilStakingWithdrawalBalanceUsdString);
+}
+
 function refreshCarbonStakingZilUsd() {
 
     let carbonPriceInZil = getNumberFromView('#' + zrcTokenPropertiesListMap['CARB'].ticker + '_price');
@@ -335,6 +372,12 @@ function refreshTotalStakingZilUsd() {
         if (stakingZil) {
             totalZil += stakingZil;
         }
+    }
+
+    // ZIL staking withdrawal pending sum
+    let zilWithdrawalBalance = getNumberFromView('#zil_staking_withdrawal_pending_balance');
+    if (zilWithdrawalBalance) {
+        totalZil += zilWithdrawalBalance
     }
 
     // Carbon staking

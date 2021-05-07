@@ -92,6 +92,7 @@ function refreshMainContentData(account) {
 
     // (9) Get ZIL staking balance, async
     computeZilStakingBalance(account, onZilStakingBalanceLoaded);
+    computeZilStakingWithdrawalPendingBalance(account, onZilStakingWithdrawalPendingBalanceLoaded);
 
     // (10) Get CARBON stakin balance, async
     computeCarbonStakingBalance(account, onCarbonStakingBalanceLoaded);

@@ -204,12 +204,29 @@ block content
                       td(colspan='2')
                         span(class='font-weight-bold')= ssnProperties.arguments[3] + ' seed node'
                     tr
-                      td(colspan='2' style='text-align: left; white-space: nowrap; width: 49%;' )
+                      td(style='text-align: left; white-space: nowrap; width: 49%;' )
                         span(id=ssnAddress+'_zil_staking_balance')= 'Loading...'
                         span(id=ssnAddress+'_zil_staking_balance_unit' class='ml-1')= 'ZIL'
                       td(style='text-align: right; white-space: nowrap; width: 49%;' )
                         span(class='mr-1')= '$'
                         span(id=ssnAddress+'_zil_staking_balance_usd')= 'Loading...'
+
+          div(id='zil_staking_withdrawal_pending_container' class='col-lg-6' style='padding: 0; display: none')
+              div(class='box')
+                table(class='table table-sm table-borderless')
+                  tbody
+                    tr
+                      td(scope='row' rowspan='2' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                        img(height='36' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
+                      td(colspan='2')
+                        span(class='font-weight-bold')= 'Withdrawal pending'
+                    tr
+                      td(style='text-align: left; white-space: nowrap; width: 49%;' )
+                        span(id='zil_staking_withdrawal_pending_balance')= 'Loading...'
+                        span(id='zil_staking_withdrawal_pending_balance_unit' class='ml-1')= 'ZIL'
+                      td(style='text-align: right; white-space: nowrap; width: 49%;' )
+                        span(class='mr-1')= '$'
+                        span(id='zil_staking_withdrawal_pending_balance_usd')= 'Loading...'
 
           div(id='carbon_staking_container' class='col-lg-6' style='padding: 0; display: none')
             div(class='box')

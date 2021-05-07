@@ -130,6 +130,33 @@ function computeZilStakingBalanceWithRetry(account, onZilStakingBalanceLoaded, r
         });
 }
 
+/** Private async function, to compute ZIL pending withdrawal balance */
+async function computeZilStakingWithdrawalPendingBalance(account, onZilStakingWithdrawalPendingBalanceLoaded) {
+    computeZilStakingWithdrawalPendingBalanceWithRetry(account, onZilStakingWithdrawalPendingBalanceLoaded, MAX_RETRY);
+}
+
+function computeZilStakingWithdrawalPendingBalanceWithRetry(account, onZilStakingWithdrawalPendingBalanceLoaded, retryRemaining) {
+    if (retryRemaining <= 0) {
+        console.log("computeZilStakingWithdrawalPendingBalanceWithRetry failed! Out of retries!");
+        return;
+    }
+    let walletAddressBase16 = account.base16.toLowerCase();
+
+    window.zilPay.blockchain.getSmartContractSubState(ZilSeedNodeStakingImplementationAddress, "withdrawal_pending", [walletAddressBase16])
+        .then(function (data) {
+            if (data.result && data.result.withdrawal_pending) {
+                let blockNumberToBalanceMap = data.result.withdrawal_pending[walletAddressBase16];
+                if (blockNumberToBalanceMap) {
+                    onZilStakingWithdrawalPendingBalanceLoaded(blockNumberToBalanceMap);
+                }
+            }
+        })
+        .catch(function () {
+            console.log("computeZilStakingWithdrawalPendingBalanceWithRetry failed! %s",retryRemaining);
+            computeZilStakingWithdrawalPendingBalanceWithRetry(account, onZilStakingWithdrawalPendingBalanceLoaded, retryRemaining - 1);
+        });
+}
+
 /**
  * ===============================================================================
  */

@@ -95,12 +95,15 @@ function resetMainContainerContent() {
         $('#' + ticker + '_lp_balance_usd').text('Loading...');
     }
 
+    $('#zil_staking_withdrawal_pending_container').hide();
     $('#carbon_staking_container').hide();
     for (let ssnAddress in ssnListMap) {
         $('#' + ssnAddress + '_zil_staking_container').hide();
         $('#' + ssnAddress + '_zil_staking_balance').text('Loading...');
         $('#' + ssnAddress + '_zil_staking_balance_usd').text('Loading...');
     }
+    $('#zil_staking_withdrawal_pending_balance').text('Loading...');
+    $('#zil_staking_withdrawal_pending_balance_usd').text('Loading...');
     $('#carbon_staking_balance').text('Loading...');
     $('#carbon_staking_balance_zil').text('Loading...');
     $('#carbon_staking_balance_usd').text('Loading...');
@@ -154,6 +157,12 @@ function bindViewZrcTokenLpBalance(poolSharePercent, zilBalance, zrcBalance, tic
 function bindViewZilStakingBalance(zilStakingBalance, ssnAddress) {
     $('#' + ssnAddress + '_zil_staking_balance').text(zilStakingBalance);
     $('#' + ssnAddress + '_zil_staking_container').show();
+    $('#staking_container').show();
+}
+
+function bindViewZilStakingWithdrawalPendingBalance(zilStakingWithdrawalBalance) {
+    $('#zil_staking_withdrawal_pending_balance').text(zilStakingWithdrawalBalance);
+    $('#zil_staking_withdrawal_pending_container').show();
     $('#staking_container').show();
 }
 
@@ -216,6 +225,10 @@ function bindViewTotalLpBalanceUsd(totalLpBalanceUsd) {
 
 function bindViewZilStakingBalanceUsd(zilStakingBalanceUsd, ssnAddress) {
     $('#' + ssnAddress + '_zil_staking_balance_usd').text(zilStakingBalanceUsd);
+}
+
+function bindViewZilStakingWithdrawalPendingBalanceUsd(zilStakingWithdrawalBalanceUsd) {
+    $('#zil_staking_withdrawal_pending_balance_usd').text(zilStakingWithdrawalBalanceUsd);
 }
 
 function bindViewCarbonStakingBalanceZil(carbonStakingBalanceZil) {
@@ -284,6 +297,7 @@ if (typeof exports !== 'undefined') {
     exports.bindViewZrcTokenWalletBalance = bindViewZrcTokenWalletBalance;
     exports.bindViewZrcTokenLpBalance = bindViewZrcTokenLpBalance;
     exports.bindViewZilStakingBalance = bindViewZilStakingBalance;
+    exports.bindViewZilStakingWithdrawalPendingBalance = bindViewZilStakingWithdrawalPendingBalance;
     exports.bindViewCarbonStakingBalance = bindViewCarbonStakingBalance;
     exports.bindViewZwapRewardLp = bindViewZwapRewardLp;
     exports.bindViewTotalRewardAllLpZwap = bindViewTotalRewardAllLpZwap;
@@ -299,6 +313,7 @@ if (typeof exports !== 'undefined') {
     exports.bindViewTotalLpBalanceZil = bindViewTotalLpBalanceZil;
     exports.bindViewTotalLpBalanceUsd = bindViewTotalLpBalanceUsd;
     exports.bindViewZilStakingBalanceUsd = bindViewZilStakingBalanceUsd;
+    exports.bindViewZilStakingWithdrawalPendingBalanceUsd = bindViewZilStakingWithdrawalPendingBalanceUsd;
     exports.bindViewCarbonStakingBalanceZil = bindViewCarbonStakingBalanceZil;
     exports.bindViewCarbonStakingBalanceUsd = bindViewCarbonStakingBalanceUsd;
     exports.bindViewTotalStakingBalanceZil = bindViewTotalStakingBalanceZil;

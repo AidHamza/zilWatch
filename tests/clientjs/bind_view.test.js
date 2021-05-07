@@ -487,7 +487,7 @@ describe('BindView', function () {
 
                 // Assert
 
-                assert.strictEqual($($('#' + ssnAddress + '_zil_staking_balance')).text(), '1234.4');
+                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance').text(), '1234.4');
                 assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'block');
                 assert.strictEqual($('#staking_container').css('display'), 'block');
             }
@@ -499,7 +499,7 @@ describe('BindView', function () {
                 BindView.bindViewZilStakingBalance('asdf', ssnAddress);
 
                 // Assert
-                assert.strictEqual($($('#' + ssnAddress + '_zil_staking_balance')).text(), 'asdf');
+                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance').text(), 'asdf');
                 assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'block');
                 assert.strictEqual($('#staking_container').css('display'), 'block');
             }
@@ -511,10 +511,50 @@ describe('BindView', function () {
                 BindView.bindViewZilStakingBalance('', ssnAddress);
 
                 // Assert
-                assert.strictEqual($($('#' + ssnAddress + '_zil_staking_balance')).text(), '');
+                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance').text(), '');
                 assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'block');
                 assert.strictEqual($('#staking_container').css('display'), 'block');
             }
+        });
+    });
+
+
+    describe('#bindViewZilStakingWithdrawalPendingBalance()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance').text(), 'Loading...');
+            assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'none');
+            assert.strictEqual($('#staking_container').css('display'), 'none');
+        });
+
+        it('bind view happy case', function () {
+            // Act
+            BindView.bindViewZilStakingWithdrawalPendingBalance('1234.4');
+
+            // Assert
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance').text(), '1234.4');
+            assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'block');
+            assert.strictEqual($('#staking_container').css('display'), 'block');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewZilStakingWithdrawalPendingBalance('asdf');
+
+            // Assert
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance').text(), 'asdf');
+            assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'block');
+            assert.strictEqual($('#staking_container').css('display'), 'block');
+        });
+
+        it('bind view empty string', function () {
+            // Act
+            BindView.bindViewZilStakingWithdrawalPendingBalance('');
+
+            // Assert
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance').text(), '');
+            assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'block');
+            assert.strictEqual($('#staking_container').css('display'), 'block');
         });
     });
 
@@ -946,6 +986,39 @@ describe('BindView', function () {
         });
     });
 
+
+    describe('#bindViewZilStakingWithdrawalPendingBalanceUsd()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_usd').text(), 'Loading...');
+        });
+
+        it('bind view happy case', function () {
+            // Act
+            BindView.bindViewZilStakingWithdrawalPendingBalanceUsd('1234.4');
+
+            // Assert
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_usd').text(), '1234.4');
+            
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewZilStakingWithdrawalPendingBalanceUsd('asdf');
+
+            // Assert
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_usd').text(), 'asdf');
+        });
+
+        it('bind view empty string', function () {
+            // Act
+            BindView.bindViewZilStakingWithdrawalPendingBalanceUsd('');
+
+            // Assert
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_usd').text(), '');
+        });
+    });
+
     describe('#bindViewCarbonStakingBalanceZil()', function () {
 
         beforeEach(function () {
@@ -1193,9 +1266,14 @@ function assertDefaultStateMainContent() {
 
     // bindViewZilStakingBalance()
     for (let ssnAddress in Constants.ssnListMap) {
-        assert.strictEqual($($('#' + ssnAddress + '_zil_staking_balance')).text(), 'Loading...');
+        assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance').text(), 'Loading...');
         assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'none');
     }
+    assert.strictEqual($('#staking_container').css('display'), 'none');
+
+    // bindViewZilStakingWithdrawalPendingBalance()
+    assert.strictEqual($('#zil_staking_withdrawal_pending_balance').text(), 'Loading...');
+    assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'none');
     assert.strictEqual($('#staking_container').css('display'), 'none');
 
     // bindViewCarbonStakingBalance()
@@ -1251,6 +1329,9 @@ function assertDefaultStateMainContent() {
     for (let ssnAddress in Constants.ssnListMap) {
         assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_usd').text(), 'Loading...');
     }
+
+    // bindViewZilStakingWithdrawalPendingBalanceUsd()
+    assert.strictEqual($('#zil_staking_withdrawal_pending_balance_usd').text(), 'Loading...');
 
     // bindViewTotalStakingBalanceZil()
     assert.strictEqual($('#staking_balance_zil').text(), 'Loading...');
