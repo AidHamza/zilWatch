@@ -10,6 +10,9 @@ window.addEventListener("load", async () => {
         setThemeDarkMode();
     }
 
+    computeZrcTokensPriceInZil(onZrcTokenPriceInZilLoaded);
+    computeZilPriceInUsd(onZilUsdPriceLoaded);
+
     let zilpayStatus = checkZilpayStatus();
     bindViewMainContainer(zilpayStatus);
     if (ZilpayStatus.connected !== zilpayStatus) {

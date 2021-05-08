@@ -75,13 +75,15 @@ function resetMainContainerContent() {
     $('#staking_container').hide();
     $('#total_all_lp_reward_next_epoch_container').hide();
 
-    $('#zil_price').text('Loading...');
+    $('.zil_price_usd').text('Loading...');
     $('#zil_balance').text('Loading...');
     $('#zil_balance_usd').text('');
 
     for (let ticker in zrcTokenPropertiesListMap) {
         $('#' + ticker + '_container').hide();
-        $('#' + ticker + '_price').text('Loading...');
+        $('#' + ticker + '_price_zil').text('Loading...');
+        $('#' + ticker + '_price_usd').text('Loading...');
+        $('#public_' + ticker + '_price_zil').text('Loading...');
         $('#' + ticker + '_balance').text('Loading...');
 
         $('#' + ticker + '_lp_container').hide();
@@ -130,15 +132,20 @@ function resetMainContainerContent() {
  */
 
 function bindViewZilPriceInUsd(zilPriceInUsd) {
-    $("#zil_price").text(zilPriceInUsd);
+    $(".zil_price_usd").text(zilPriceInUsd);
 }
 
 function bindViewZilBalance(zilBalance) {
     $('#zil_balance').text(zilBalance);
 }
 
-function bindViewZrcTokenPriceInZil(zrcTokenPriceInZil, ticker) {
-    $('#' + ticker + '_price').text(zrcTokenPriceInZil);
+function bindViewZrcTokenPriceInZil(publicZrcTokenPriceInZil, zrcTokenPriceInZil, ticker) {
+    $('#public_' + ticker + '_price_zil').text(publicZrcTokenPriceInZil);
+    $('#' + ticker + '_price_zil').text(zrcTokenPriceInZil);
+}
+
+function bindViewZrcTokenPriceInUsd(zrcTokenPriceInUsd, ticker) {
+    $('#' + ticker + '_price_usd').text(zrcTokenPriceInUsd);
 }
 
 function bindViewZrcTokenWalletBalance(zrcTokenBalance, ticker) {
@@ -294,6 +301,7 @@ if (typeof exports !== 'undefined') {
     exports.bindViewZilPriceInUsd = bindViewZilPriceInUsd;
     exports.bindViewZilBalance = bindViewZilBalance;
     exports.bindViewZrcTokenPriceInZil = bindViewZrcTokenPriceInZil;
+    exports.bindViewZrcTokenPriceInUsd = bindViewZrcTokenPriceInUsd;
     exports.bindViewZrcTokenWalletBalance = bindViewZrcTokenWalletBalance;
     exports.bindViewZrcTokenLpBalance = bindViewZrcTokenLpBalance;
     exports.bindViewZilStakingBalance = bindViewZilStakingBalance;

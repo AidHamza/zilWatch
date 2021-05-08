@@ -36,6 +36,15 @@ function commafyNumberToString(numberVar, decimalPlace = 2) {
     if (decimalPlace < 0) {
         return null;
     }
+
+    if (numberVar < 0.0001) {
+        decimalPlace = Math.max(decimalPlace, 5);
+    } else if (numberVar < 0.001) {
+        decimalPlace = Math.max(decimalPlace, 4);
+    } else if (numberVar < 0.01) {
+        decimalPlace = Math.max(decimalPlace, 3);
+    }
+
     let stringVar = numberVar.toFixed(decimalPlace);
     if (numberVar >= 1000) {
         return stringVar.replace(/\B(?=(\d{3})+(?!\d))/g, ',');

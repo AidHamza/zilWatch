@@ -234,7 +234,9 @@ describe('BindView', function () {
     describe('#bindViewZilPriceInUsd()', function () {
 
         beforeEach(function () {
-            assert.strictEqual($('#zil_price').text(), 'Loading...');
+            $('.zil_price_usd').each(function () {
+                assert.strictEqual($(this).text(), 'Loading...');
+            });
         });
 
         it('bind view price in usd', function () {
@@ -242,7 +244,9 @@ describe('BindView', function () {
             BindView.bindViewZilPriceInUsd('0.123');
 
             // Assert
-            assert.strictEqual($('#zil_price').text(), '0.123');
+            $('.zil_price_usd').each(function () {
+                assert.strictEqual($(this).text(), '0.123');
+            });
         });
 
         it('bind view random string', function () {
@@ -250,7 +254,9 @@ describe('BindView', function () {
             BindView.bindViewZilPriceInUsd('asdf');
 
             // Assert
-            assert.strictEqual($('#zil_price').text(), 'asdf');
+            $('.zil_price_usd').each(function () {
+                assert.strictEqual($(this).text(), 'asdf');
+            });
         });
 
         it('bind view empty string', function () {
@@ -258,7 +264,9 @@ describe('BindView', function () {
             BindView.bindViewZilPriceInUsd('');
 
             // Assert
-            assert.strictEqual($('#zil_price').text(), '');
+            $('.zil_price_usd').each(function () {
+                assert.strictEqual($(this).text(), '');
+            });
         });
     });
 
@@ -297,37 +305,80 @@ describe('BindView', function () {
 
         beforeEach(function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_price').text(), 'Loading...');
+                assert.strictEqual($('#public_' + ticker + '_price_zil').text(), 'Loading...');
+                assert.strictEqual($('#' + ticker + '_price_zil').text(), 'Loading...');
             }
         });
 
         it('bind view happy case', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 // Act
-                BindView.bindViewZrcTokenPriceInZil('1234.4', ticker);
+                BindView.bindViewZrcTokenPriceInZil('12345.5', '1234.4', ticker);
 
                 // Assert
-                assert.strictEqual($('#' + ticker + '_price').text(), '1234.4');
+                assert.strictEqual($('#public_' + ticker + '_price_zil').text(), '12345.5');
+                assert.strictEqual($('#' + ticker + '_price_zil').text(), '1234.4');
             }
         });
 
         it('bind view random string', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 // Act
-                BindView.bindViewZrcTokenPriceInZil('asdf', ticker);
+                BindView.bindViewZrcTokenPriceInZil('qwer', 'asdf', ticker);
 
                 // Assert
-                assert.strictEqual($('#' + ticker + '_price').text(), 'asdf');
+                assert.strictEqual($('#public_' + ticker + '_price_zil').text(), 'qwer');
+                assert.strictEqual($('#' + ticker + '_price_zil').text(), 'asdf');
             }
         });
 
         it('bind view empty string', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 // Act
-                BindView.bindViewZrcTokenPriceInZil('', ticker);
+                BindView.bindViewZrcTokenPriceInZil('', '', ticker);
 
                 // Assert
-                assert.strictEqual($('#' + ticker + '_price').text(), '');
+                assert.strictEqual($('#public_' + ticker + '_price_zil').text(), '');
+                assert.strictEqual($('#' + ticker + '_price_zil').text(), '');
+            }
+        });
+    });
+
+    describe('#bindViewZrcTokenPriceInUsd()', function () {
+
+        beforeEach(function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#' + ticker + '_price_usd').text(), 'Loading...');
+            }
+        });
+
+        it('bind view happy case', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenPriceInUsd('1234.4', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_price_usd').text(), '1234.4');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenPriceInUsd('asdf', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_price_usd').text(), 'asdf');
+            }
+        });
+
+        it('bind view empty string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenPriceInUsd('', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_price_usd').text(), '');
             }
         });
     });
@@ -1239,14 +1290,22 @@ describe('BindView', function () {
 
 function assertDefaultStateMainContent() {
     // bindViewZilPriceInUsd()
-    assert.strictEqual($('#zil_price').text(), 'Loading...');
+    $('.zil_price_usd').each(function () {
+        assert.strictEqual($(this).text(), 'Loading...');
+    });
 
     // bindViewZilBalance()
     assert.strictEqual($('#zil_balance').text(), 'Loading...');
 
     // bindViewZrcTokenPriceInZil()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_price').text(), 'Loading...');
+        assert.strictEqual($('#public_' + ticker + '_price_zil').text(), 'Loading...');
+        assert.strictEqual($('#' + ticker + '_price_zil').text(), 'Loading...');
+    }
+
+    // bindViewZrcTokenPriceInUsd()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_price_usd').text(), 'Loading...');
     }
 
     // bindViewZrcTokenWalletBalance()

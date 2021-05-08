@@ -11,6 +11,8 @@ function onZilUsdPriceLoaded(zilPriceInUsd) {
     }
     bindViewZilPriceInUsd(zilPriceInUsdFloat.toFixed(4));
 
+    refreshZrcTokenPriceUsd();
+
     // Wallet Balance
     refreshZilWalletBalanceUsd();
     for (let ticker in zrcTokenPropertiesListMap) {
@@ -55,11 +57,14 @@ function onZilWalletBalanceLoaded(zilBalanceQa) {
 }
 
 function onZrcTokenPriceInZilLoaded(zrcTokenPriceInZilNumber, ticker) {
+    let publicUserFriendlyZrcTokenPriceInZil = commafyNumberToString(zrcTokenPriceInZilNumber, 2);
     let userFriendlyZrcTokenPriceInZil = convertNumberQaToDecimalString(zrcTokenPriceInZilNumber, /* decimals= */ 0);
-    if (!userFriendlyZrcTokenPriceInZil) {
+    if (!publicUserFriendlyZrcTokenPriceInZil && !userFriendlyZrcTokenPriceInZil) {
         return;
     }
-    bindViewZrcTokenPriceInZil(userFriendlyZrcTokenPriceInZil, ticker)
+    bindViewZrcTokenPriceInZil(publicUserFriendlyZrcTokenPriceInZil, userFriendlyZrcTokenPriceInZil, ticker)
+
+    refreshZrcTokenPriceUsd()
 
     // Wallet Balance
     refreshZrcTokenWalletBalanceZilUsd(ticker);
@@ -184,7 +189,7 @@ function onCarbonStakingBalanceLoaded(carbonBalanceQa) {
  * @returns {?number} The number reprentation of the view content, otherwise null.
  */
 function getNumberFromView(viewId) {
-    let viewContent = $(viewId).text();
+    let viewContent = $(viewId + ":first").text();
     let contentInNumber = parseFloatFromCommafiedNumberString(viewContent);
     if (!contentInNumber) {
         return null;
@@ -193,7 +198,7 @@ function getNumberFromView(viewId) {
 }
 
 function refreshZilWalletBalanceUsd() {
-    let usdPrice = getNumberFromView('#zil_price');
+    let usdPrice = getNumberFromView('.zil_price_usd');
     if (!usdPrice) {
         return;
     }
@@ -207,9 +212,26 @@ function refreshZilWalletBalanceUsd() {
     bindViewZilBalanceUsd(commafyNumberToString(zilBalanceUsd));
 }
 
+function refreshZrcTokenPriceUsd() {
+    let usdPrice = getNumberFromView('.zil_price_usd');
+    if (!usdPrice) {
+        return;
+    }
+
+    for (let ticker in zrcTokenPropertiesListMap) {
+        let zrcTokenPriceInZil = getNumberFromView('#' + ticker + '_price_zil');
+        if (!zrcTokenPriceInZil) {
+            return;
+        }
+        let zrcTokenPriceInUsd = 1.0 * usdPrice * zrcTokenPriceInZil;
+        let zrcTokenPriceInUsdString = commafyNumberToString(zrcTokenPriceInUsd, /* decimals= */ 2);
+        bindViewZrcTokenPriceInUsd(zrcTokenPriceInUsdString, ticker);
+    }
+}
+
 function refreshZrcTokenWalletBalanceZilUsd(ticker) {
 
-    let zrcTokenPriceInZil = getNumberFromView('#' + ticker + '_price');
+    let zrcTokenPriceInZil = getNumberFromView('#' + ticker + '_price_zil');
     if (!zrcTokenPriceInZil) {
         return;
     }
@@ -223,7 +245,7 @@ function refreshZrcTokenWalletBalanceZilUsd(ticker) {
     let zrcTokenBalanceZilString = convertNumberQaToDecimalString(zrcTokenBalanceZil, /* decimals= */ 0);
     bindViewZrcTokenWalletBalanceZil(zrcTokenBalanceZilString, ticker);
 
-    let usdPrice = getNumberFromView('#zil_price');
+    let usdPrice = getNumberFromView('.zil_price_usd');
     if (!usdPrice) {
         return;
     }
@@ -252,7 +274,7 @@ function refreshTotalWalletBalanceZilUsd() {
     let totalWalletBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
     bindViewTotalWalletBalanceZil(totalWalletBalanceZil);
 
-    let usdPrice = getNumberFromView('#zil_price');
+    let usdPrice = getNumberFromView('.zil_price_usd');
     if (!usdPrice) {
         return;
     }
@@ -265,7 +287,7 @@ function refreshTotalWalletBalanceZilUsd() {
 
 function refreshZrcTokenLpBalanceUsd(ticker) {
 
-    let usdPrice = getNumberFromView('#zil_price');
+    let usdPrice = getNumberFromView('.zil_price_usd');
     if (!usdPrice) {
         return;
     }
@@ -297,7 +319,7 @@ function refreshTotalLpBalanceZilUsd() {
     bindViewTotalLpBalanceZil(totalLpBalanceZil);
 
     // Sum balance in USD.
-    let usdPrice = getNumberFromView('#zil_price');
+    let usdPrice = getNumberFromView('.zil_price_usd');
     if (!usdPrice) {
         return;
     }
@@ -307,7 +329,7 @@ function refreshTotalLpBalanceZilUsd() {
 }
 
 function refreshZilStakingUsd(ssnAddress) {
-    let usdPrice = getNumberFromView('#zil_price');
+    let usdPrice = getNumberFromView('.zil_price_usd');
     if (!usdPrice) {
         return;
     }
@@ -323,7 +345,7 @@ function refreshZilStakingUsd(ssnAddress) {
 }
 
 function refreshZilStakingWithdrawalPendingUsd() {
-    let usdPrice = getNumberFromView('#zil_price');
+    let usdPrice = getNumberFromView('.zil_price_usd');
     if (!usdPrice) {
         return;
     }
@@ -340,7 +362,7 @@ function refreshZilStakingWithdrawalPendingUsd() {
 
 function refreshCarbonStakingZilUsd() {
 
-    let carbonPriceInZil = getNumberFromView('#' + zrcTokenPropertiesListMap['CARB'].ticker + '_price');
+    let carbonPriceInZil = getNumberFromView('#' + zrcTokenPropertiesListMap['CARB'].ticker + '_price_zil');
     if (!carbonPriceInZil) {
         return;
     }
@@ -354,7 +376,7 @@ function refreshCarbonStakingZilUsd() {
     let carbonStakingBalanceZilString = convertNumberQaToDecimalString(carbonStakingBalanceZil, /* decimals= */ 0);
     bindViewCarbonStakingBalanceZil(carbonStakingBalanceZilString);
 
-    let usdPrice = getNumberFromView('#zil_price');
+    let usdPrice = getNumberFromView('.zil_price_usd');
     if (!usdPrice) {
         return;
     }
@@ -390,7 +412,7 @@ function refreshTotalStakingZilUsd() {
     bindViewTotalStakingBalanceZil(totalStakingBalanceZil);
 
     // Sum balance in USD.
-    let usdPrice = getNumberFromView('#zil_price');
+    let usdPrice = getNumberFromView('.zil_price_usd');
     if (!usdPrice) {
         return;
     }
@@ -421,7 +443,7 @@ function refreshNetWorthZilUsd() {
     bindViewTotalNetWorthZil(totalNetWorthZil);
 
     // Sum balance in USD.
-    let usdPrice = getNumberFromView('#zil_price');
+    let usdPrice = getNumberFromView('.zil_price_usd');
     if (!usdPrice) {
         return;
     }
@@ -437,12 +459,12 @@ function refreshNetWorthZilUsd() {
 function refreshTotalLpRewardUsd() {
     let ticker = 'ZWAP';
 
-    let usdPrice = getNumberFromView('#zil_price');
+    let usdPrice = getNumberFromView('.zil_price_usd');
     if (!usdPrice) {
         return;
     }
 
-    let zrcTokenPriceInZil = getNumberFromView('#' + ticker + '_price');
+    let zrcTokenPriceInZil = getNumberFromView('#' + ticker + '_price_zil');
     if (!zrcTokenPriceInZil) {
         return;
     }

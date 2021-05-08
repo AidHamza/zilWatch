@@ -163,6 +163,24 @@ describe('FormattingUtils', function () {
       let expected = null;
       assert.strictEqual(result, expected);
     });
+
+    it('floating point < 0.0001', function () {
+      let result = FormattingUtils.commafyNumberToString(0.000023231423);
+      let expected = "0.00002";
+      assert.strictEqual(result, expected);
+    });
+
+    it('floating point < 0.001', function () {
+      let result = FormattingUtils.commafyNumberToString(0.00023231423);
+      let expected = "0.0002";
+      assert.strictEqual(result, expected);
+    });
+
+    it('floating point < 0.01', function () {
+      let result = FormattingUtils.commafyNumberToString(0.0023231423);
+      let expected = "0.002";
+      assert.strictEqual(result, expected);
+    });
   });
 
   describe('#commafyNumberToString(decimalPlace=1)', function () {
@@ -244,6 +262,24 @@ describe('FormattingUtils', function () {
       let expected = null;
       assert.strictEqual(result, expected);
     });
+
+    it('floating point < 0.0001', function () {
+      let result = FormattingUtils.commafyNumberToString(0.000023231423, /* decimalPlace= */ 1);
+      let expected = "0.00002";
+      assert.strictEqual(result, expected);
+    });
+
+    it('floating point < 0.001', function () {
+      let result = FormattingUtils.commafyNumberToString(0.00023231423, /* decimalPlace= */ 1);
+      let expected = "0.0002";
+      assert.strictEqual(result, expected);
+    });
+
+    it('floating point < 0.01', function () {
+      let result = FormattingUtils.commafyNumberToString(0.0023231423, /* decimalPlace= */ 1);
+      let expected = "0.002";
+      assert.strictEqual(result, expected);
+    });
   });
 
   describe('#commafyNumberToString(decimalPlace=0)', function () {
@@ -323,6 +359,24 @@ describe('FormattingUtils', function () {
     it('numberVar not number: null', function () {
       let result = FormattingUtils.commafyNumberToString("9432.45", /* decimalPlace= */ 0);
       let expected = null;
+      assert.strictEqual(result, expected);
+    });
+
+    it('floating point < 0.0001', function () {
+      let result = FormattingUtils.commafyNumberToString(0.000023231423, /* decimalPlace= */ 0);
+      let expected = "0.00002";
+      assert.strictEqual(result, expected);
+    });
+
+    it('floating point < 0.001', function () {
+      let result = FormattingUtils.commafyNumberToString(0.00023231423, /* decimalPlace= */ 0);
+      let expected = "0.0002";
+      assert.strictEqual(result, expected);
+    });
+
+    it('floating point < 0.01', function () {
+      let result = FormattingUtils.commafyNumberToString(0.0023231423, /* decimalPlace= */ 0);
+      let expected = "0.002";
       assert.strictEqual(result, expected);
     });
   });

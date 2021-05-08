@@ -1,4 +1,5 @@
 const ZilSwapDexAddress = "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w";
+const ZilSwapDexAddressBase16 = "Ba11eB7bCc0a02e947ACF03Cc651Bfaf19C9EC00";
 const ZilSeedNodeStakingImplementationAddress = "zil1k7qwsz2m3w595u29je0dvv4nka62c5wwrp8r8p";
 const MAX_RETRY = 10;
 
@@ -43,7 +44,7 @@ function computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokenPropertiesLis
         .then(function (data) {
             for (const key in zrcTokenPropertiesListMap) {
                 let zrcTokenProperties = zrcTokenPropertiesListMap[key];
-                let zrcTokenAddressBase16 = window.zilPay.crypto.fromBech32Address(zrcTokenProperties.address).toLowerCase();
+                let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();
 
                 // To get ZrcTokensPrice in ZIL, already in decimal.
                 let zrcTokenPriceInZilNumber = getZrcTokenPriceInZilFromZilswapDexState(data, zrcTokenAddressBase16, zrcTokenProperties.decimals);
@@ -204,6 +205,40 @@ async function computeLpEpochInfo(onLpCurrentEpochInfoLoaded) {
         retryLimit: MAX_RETRY,
         success: function (epochInfoData) {
             onLpCurrentEpochInfoLoaded(epochInfoData);
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            if (this.retryLimit--) {
+                // Try again
+                $.ajax(this);
+                return;
+            }
+        }
+    });
+}
+
+async function computeZrcTokensPriceInZil(onZrcTokenPriceInZilLoaded) {
+    $.ajax({
+        type: "POST",
+        url: "https://api.zilliqa.com/",
+        data: JSON.stringify({
+            "id": "1",
+            "jsonrpc": "2.0",
+            "method": "GetSmartContractState",
+            "params": [ZilSwapDexAddressBase16]
+        }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        retryLimit: MAX_RETRY,
+        success: function (data) {
+            for (const key in zrcTokenPropertiesListMap) {
+            let zrcTokenProperties = zrcTokenPropertiesListMap[key];
+                let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();
+
+                // To get ZrcTokensPrice in ZIL, already in decimal.
+                let zrcTokenPriceInZilNumber = getZrcTokenPriceInZilFromZilswapDexState(data, zrcTokenAddressBase16, zrcTokenProperties.decimals);
+
+                onZrcTokenPriceInZilLoaded(zrcTokenPriceInZilNumber, zrcTokenProperties.ticker);
+            }
         },
         error: function (xhr, textStatus, errorThrown) {
             if (this.retryLimit--) {
