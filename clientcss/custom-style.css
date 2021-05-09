@@ -67,3 +67,54 @@ body {
   text-align: center;
   border-top: .05rem solid rgba(0, 0, 0, 0);
 }
+
+/*  For public cards (on top) */
+
+.box-public {
+  margin: 0.3rem;
+  background-color: var(--bg-dynamic-2);
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-radius: 10px;
+}
+
+.box-public > .card-body {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-right: 0.6rem;
+}
+
+.card-header {
+  border-radius: 10px 10px 0 0;
+  background-color: var(--bg-dynamic-2);
+  border-bottom: 1px solid var(--light-alpha-10);
+}
+
+.card-header:first-child {
+  border-radius: 10px 10px 0 0;
+}
+
+.card-header.collapsed {
+  border: 0;
+  border-radius: 10px;
+}
+
+.card-header.collapsed:first-child {
+  border-radius: 10px;
+}
+
+.card-header:hover {
+  background-color: var(--light-alpha-10);
+  cursor: pointer;
+  transition: .15s linear;
+}
+
+.accordion .card-header:after {
+  font-family: 'FontAwesome';  
+  content: "\f068";
+  float: right; 
+}
+.accordion .card-header.collapsed:after {
+  /* symbol for "collapsed" panels */
+  content: "\f067"; 
+}

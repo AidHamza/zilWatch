@@ -20,80 +20,87 @@ block content
   div(id='error_message_container' class='container')
     hr
     div(class='balance-box row container')
-      span(id='error_message' class='h3')= 'Loading...'
-    hr
+      span(id='error_message' class='h5')= 'Loading...'
 
   // Public Content Container
   div(id='public_content_container' class='container')
-    a(id='token_price_toggle' data-toggle="collapse" href="#price_content_container" class='btn btn-info my-2 my-sm-0')= 'Token Price'
-    a(id='lp_status_toggle' data-toggle="collapse" href="#lp_status_content_container" class='btn btn-info my-2 my-sm-0')= 'LP Status'
+   
+    hr
 
-    div(class='row container')
+    div(class='row accordion')
     
-      div(id='price_content_container' class='collapse show col-lg-6' style='padding: 0;')
-        div(class='box')
-          table(class='table table-sm table-borderless' width='100%')
-            tbody
-              tr
-                th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Token Name'
-                th(style='text-align: right; white-space: nowrap; width: 15%;')= 'Symbol'
-                th(style='text-align: right; white-space: nowrap; width: 25%;' )= 'Price (ZIL)'
-                th(style='text-align: right; white-space: nowrap; width: 25%;' )= 'Price (USD)'
-              tr
-                td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                  img(height='18' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
-                td(colspan=3 style='text-align: left; white-space: nowrap; width: 75%;' )
-                  span(class='font-weight-bold')= 'Zilliqa'
-                td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                  span(class='mr-1')= '$'
-                  span(class='zil_price_usd')= 'Loading...'
-              each tokenProperties, key in zrcTokenPropertiesListMap
-                tr
-                  td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                    img(height='18' src=tokenProperties.logo_url loading='lazy')
-                  td(style='text-align: left; white-space: nowrap; width: 35%;' )
-                    span= tokenProperties.name
-                  td(style='text-align: right; white-space: nowrap; width: 15%;' )
-                    span= tokenProperties.ticker
-                  td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                    span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
-                    span(class='ml-1')= 'ZIL'
-                  td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                    span(class='mr-1')= '$'
-                    span(id=tokenProperties.ticker+'_price_usd')= 'Loading...'
+      div(class='col-lg-6' style='padding: 0;')
+        div(class='box-public')
 
-      div(id='lp_status_content_container' class='collapse show col-lg-6' style='padding: 0;')
-        div(class='box')
-          table(class='table table-sm table-borderless' width='100%')
-            tbody
-              tr
-                th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Liquidity Pair'
-                th(style='text-align: right; white-space: nowrap; width: 25%;')= '24h Volume (USD)'
-                th(style='text-align: right; white-space: nowrap; width: 25%;')= 'Total Pool (USD)'
-              each tokenProperties, key in zrcTokenPropertiesListMap
+          div(class='card-header collapsed' data-toggle='collapse' href='#price_content_container')
+            a(class='card-title font-weight-bold')= 'Token Price'
+          div(id='price_content_container' class='card-body collapse')
+            table(class='table table-sm table-borderless' width='100%')
+              tbody
+                tr
+                  th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Token Name'
+                  th(style='text-align: right; white-space: nowrap; width: 15%;')= 'Symbol'
+                  th(style='text-align: right; white-space: nowrap; width: 25%;' )= 'Price (ZIL)'
+                  th(style='text-align: right; white-space: nowrap; width: 25%;' )= 'Price (USD)'
                 tr
                   td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                    img(height='18' src=tokenProperties.logo_url loading='lazy')
-                  td(style='text-align: left; white-space: nowrap; width: 25%;' )
-                    span= tokenProperties.ticker + '-ZIL LP'
-                  //- Just a placeholder
-                  td(style='display: none;' )
-                    span(id=tokenProperties.ticker+'_lp_total_volume_zil')= '0'
+                    img(height='18' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
+                  td(colspan=3 style='text-align: left; white-space: nowrap; width: 75%;' )
+                    span(class='font-weight-bold')= 'Zilliqa'
                   td(style='text-align: right; white-space: nowrap; width: 25%;' )
                     span(class='mr-1')= '$'
-                    span(id=tokenProperties.ticker+'_lp_total_volume_usd')= '0.00'
-                  //- Just a placeholder
-                  td(style='display: none;' )
-                    span(id=tokenProperties.ticker+'_lp_total_pool_zil')= 'Loading...'
-                    span(id=tokenProperties.ticker+'_lp_total_pool_zrc')= 'Loading...'
-                  td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                    span(class='mr-1')= '$'
-                    span(id=tokenProperties.ticker+'_lp_total_pool_usd')= 'Loading...'
+                    span(class='zil_price_usd')= 'Loading...'
+                each tokenProperties, key in zrcTokenPropertiesListMap
+                  tr
+                    td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                      img(height='18' src=tokenProperties.logo_url loading='lazy')
+                    td(style='text-align: left; white-space: nowrap; width: 35%;' )
+                      span= tokenProperties.name
+                    td(style='text-align: right; white-space: nowrap; width: 15%;' )
+                      span= tokenProperties.ticker
+                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                      span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
+                      span(class='ml-1')= 'ZIL'
+                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                      span(class='mr-1')= '$'
+                      span(id=tokenProperties.ticker+'_price_usd')= 'Loading...'
+
+      div(class='col-lg-6' style='padding: 0;')
+
+        div(class='box-public')
+          div(class='card-header collapsed' data-toggle='collapse' href='#lp_status_content_container')
+            a(class='card-title font-weight-bold')= 'Liquidity Pool Status'
+          div(id='lp_status_content_container' class='card-body collapse')
+            table(class='table table-sm table-borderless' width='100%')
+              tbody
+                tr
+                  th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Liquidity Pair'
+                  th(style='text-align: right; white-space: nowrap; width: 25%;')= '24h Volume (USD)'
+                  th(style='text-align: right; white-space: nowrap; width: 25%;')= 'Total Pool (USD)'
+                each tokenProperties, key in zrcTokenPropertiesListMap
+                  tr
+                    td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                      img(height='18' src=tokenProperties.logo_url loading='lazy')
+                    td(style='text-align: left; white-space: nowrap; width: 25%;' )
+                      span= tokenProperties.ticker + '-ZIL LP'
+                    //- Just a placeholder
+                    td(style='display: none;' )
+                      span(id=tokenProperties.ticker+'_lp_total_volume_zil')= '0'
+                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                      span(class='mr-1')= '$'
+                      span(id=tokenProperties.ticker+'_lp_total_volume_usd')= '0.00'
+                    //- Just a placeholder
+                    td(style='display: none;' )
+                      span(id=tokenProperties.ticker+'_lp_total_pool_zil')= 'Loading...'
+                      span(id=tokenProperties.ticker+'_lp_total_pool_zrc')= 'Loading...'
+                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                      span(class='mr-1')= '$'
+                      span(id=tokenProperties.ticker+'_lp_total_pool_usd')= 'Loading...'
+    
+    hr
 
   // Main Content Container
   div(id='main_content_container' class='container' style='display: none;')
-
-    hr
 
     div(class='row container')
       div(class='balance-box col-md-6')
