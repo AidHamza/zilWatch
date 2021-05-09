@@ -83,8 +83,12 @@ function resetMainContainerContent() {
         $('#' + ticker + '_container').hide();
         $('#' + ticker + '_price_zil').text('Loading...');
         $('#' + ticker + '_price_usd').text('Loading...');
-        $('#public_' + ticker + '_price_zil').text('Loading...');
         $('#' + ticker + '_balance').text('Loading...');
+
+        $('#public_' + ticker + '_price_zil').text('Loading...');
+        $('#' + ticker + '_lp_total_pool_zil').text('Loading...');
+        $('#' + ticker + '_lp_total_pool_zrc').text('Loading...');
+        $('#' + ticker + '_lp_total_pool_usd').text('Loading...');
 
         $('#' + ticker + '_lp_container').hide();
         $('#' + ticker + '_lp_pool_share_percent').text('Loading...');
@@ -153,6 +157,11 @@ function bindViewZrcTokenWalletBalance(zrcTokenBalance, ticker) {
     $('#' + ticker + '_container').show();
 }
 
+function bindViewZrcTokenLpTotalPoolBalance(totalPoolZilBalance, totalPoolZrcBalance, ticker) {
+    $('#' + ticker + '_lp_total_pool_zil').text(totalPoolZilBalance);
+    $('#' + ticker + '_lp_total_pool_zrc').text(totalPoolZrcBalance);
+}
+
 function bindViewZrcTokenLpBalance(poolSharePercent, zilBalance, zrcBalance, ticker) {
     $('#' + ticker + '_lp_pool_share_percent').text(poolSharePercent);
     $('#' + ticker + '_lp_zil_balance').text(zilBalance);
@@ -216,6 +225,10 @@ function bindViewTotalWalletBalanceZil(totalWalletBalanceZil) {
 
 function bindViewTotalWalletBalanceUsd(totalWalletBalanceUsd) {
     $('#wallet_balance_usd').text(totalWalletBalanceUsd);
+}
+
+function bindViewZrcTokenLpTotalPoolBalanceUsd(lpTotalPoolBalanceUsd, ticker) {
+    $('#' + ticker + '_lp_total_pool_usd').text(lpTotalPoolBalanceUsd);
 }
 
 function bindViewZrcTokenLpBalanceUsd(lpBalanceUsd, ticker) {
@@ -303,6 +316,7 @@ if (typeof exports !== 'undefined') {
     exports.bindViewZrcTokenPriceInZil = bindViewZrcTokenPriceInZil;
     exports.bindViewZrcTokenPriceInUsd = bindViewZrcTokenPriceInUsd;
     exports.bindViewZrcTokenWalletBalance = bindViewZrcTokenWalletBalance;
+    exports.bindViewZrcTokenLpTotalPoolBalance = bindViewZrcTokenLpTotalPoolBalance;
     exports.bindViewZrcTokenLpBalance = bindViewZrcTokenLpBalance;
     exports.bindViewZilStakingBalance = bindViewZilStakingBalance;
     exports.bindViewZilStakingWithdrawalPendingBalance = bindViewZilStakingWithdrawalPendingBalance;
@@ -317,6 +331,7 @@ if (typeof exports !== 'undefined') {
     exports.bindViewZrcTokenWalletBalanceUsd = bindViewZrcTokenWalletBalanceUsd;
     exports.bindViewTotalWalletBalanceZil = bindViewTotalWalletBalanceZil;
     exports.bindViewTotalWalletBalanceUsd = bindViewTotalWalletBalanceUsd;
+    exports.bindViewZrcTokenLpTotalPoolBalanceUsd = bindViewZrcTokenLpTotalPoolBalanceUsd;
     exports.bindViewZrcTokenLpBalanceUsd = bindViewZrcTokenLpBalanceUsd;
     exports.bindViewTotalLpBalanceZil = bindViewTotalLpBalanceZil;
     exports.bindViewTotalLpBalanceUsd = bindViewTotalLpBalanceUsd;

@@ -10,7 +10,7 @@ window.addEventListener("load", async () => {
         setThemeDarkMode();
     }
 
-    computeZrcTokensPriceInZil(onZrcTokenPriceInZilLoaded);
+    computeZrcTokensPriceInZil(onZilswapDexStatusLoaded);
     computeZilPriceInUsd(onZilUsdPriceLoaded);
 
     let zilpayStatus = checkZilpayStatus();
@@ -84,7 +84,7 @@ function refreshMainContentData(account) {
 
     // (6) Get ZRC-2 tokens price & ZRC-2 tokens LP balances in Zilswap, async.
     // Do this together because they are one API call, using the same data.
-    computeZrcTokensPriceAndZilswapLpBalance(zrcTokenPropertiesListMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded);
+    computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded, account);
 
     // (7) Get ZRC-2 tokens balances, async.
     computeZrcTokensBalance(account, zrcTokenPropertiesListMap, onZrcTokenWalletBalanceLoaded);

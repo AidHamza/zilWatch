@@ -152,7 +152,7 @@ describe('TokenUtils', function () {
             let walletAddressBase16 = "0x278598f13a4cb142e44dde38aba8d8c0190bcb85";
 
             let result = TokenUtils.getSingleTokenLpStatusFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 15, walletAddressBase16);
-            let expected = new TokenUtils.ZilswapSingleTokenLpStatus( /* shareRatio= */ 0.000008920285612975195, /* zilAmount= */ 1221.7136013601405, /* zrcTokenAmount= */ 0.7071813644431453);
+            let expected = new TokenUtils.ZilswapSingleTokenLpStatus( /* shareRatio= */ 0.000008920285612975195, /* zilAmount= */ 1221.7136013601405, /* zrcTokenAmount= */ 0.7071813644431453, /* totalPoolZilAmount= */ 136959022.87961167, /* totalPoolZrcTokenAmount= */ 79277.88359315527);
             assert.notStrictEqual(result, expected);
         });
 
@@ -163,7 +163,7 @@ describe('TokenUtils', function () {
             let walletAddressBase16 = "0x278598f13a4cb142e44dde38aba8d8c0190bcb85";
 
             let result = TokenUtils.getSingleTokenLpStatusFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 12, walletAddressBase16);
-            let expected = new TokenUtils.ZilswapSingleTokenLpStatus( /* shareRatio= */ 0.000006507178204554463, /* zilAmount= */ 1359.7898185973693, /* zrcTokenAmount= */ 0.35791493994832985);
+            let expected = new TokenUtils.ZilswapSingleTokenLpStatus( /* shareRatio= */ 0.000006507178204554463, /* zilAmount= */ 1359.7898185973693, /* zrcTokenAmount= */ 0.35791493994832985, /* totalPoolZilAmount= */ 208967662.45707452, /* totalPoolZrcTokenAmount= */ 55003.09484344847);
             assert.notStrictEqual(result, expected);
         });
 
@@ -185,8 +185,8 @@ describe('TokenUtils', function () {
             let walletAddressBase16 = "0x123458f13a4cb142e44dde38aba8d8c0190bcb85";
 
             let result = TokenUtils.getSingleTokenLpStatusFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 12, walletAddressBase16);
-            let expected = null;
-            assert.strictEqual(result, expected);
+            let expected = new TokenUtils.ZilswapSingleTokenLpStatus( /* shareRatio= */ 0, /* zilAmount= */ 0, /* zrcTokenAmount= */ 0, /* totalPoolZilAmount= */ 208967662.45707452, /* totalPoolZrcTokenAmount= */ 55003.09484344847);
+            assert.notStrictEqual(result, expected);
         });
 
         it('dataObject not object: null', function () {
@@ -228,8 +228,8 @@ describe('TokenUtils', function () {
             let walletAddressBase16 = 1234;
 
             let result = TokenUtils.getSingleTokenLpStatusFromZilswapDexState(dataObject, zrcTokenAddressBase16, /* zrcTokenDecimals= */ 12, walletAddressBase16);
-            let expected = null;
-            assert.strictEqual(result, expected);
+            let expected = new TokenUtils.ZilswapSingleTokenLpStatus( /* shareRatio= */ 0, /* zilAmount= */ 0, /* zrcTokenAmount= */ 0, /* totalPoolZilAmount= */ 208967662.45707452, /* totalPoolZrcTokenAmount= */ 55003.09484344847);
+            assert.notStrictEqual(result, expected);
         });
     });
 });

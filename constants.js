@@ -125,6 +125,22 @@ const ssnListMap = {
       "logo_url": "https://meta.viewblock.io/ZIL.zil14pzuzq6v6pmmmrfjhczywguu0e97djepxt8g3e/logo",
       "decimals": 15
     },
+    'XSGD': {
+      "ticker": "XSGD",
+      "name": "SGD Stablecoin",
+      "address": "zil1zu72vac254htqpg3mtywdcfm84l3dfd9qzww8t",
+      "address_base16": "0x173Ca6770Aa56EB00511Dac8e6E13B3D7f16a5a5",
+      "logo_url": "https://meta.viewblock.io/ZIL.zil180v66mlw007ltdv8tq5t240y7upwgf7djklmwh/logo",
+      "decimals": 6,
+    },
+    'ZWAP': {
+      "ticker": "ZWAP",
+      "name": "Zilswap",
+      "address": "zil1p5suryq6q647usxczale29cu3336hhp376c627",
+      "address_base16": "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31",
+      "logo_url": "https://meta.viewblock.io/ZIL.zil1p5suryq6q647usxczale29cu3336hhp376c627/logo",
+      "decimals": 12,
+    },
     'PORT': {
       "ticker": "PORT",
       "name": "PackagePortal",
@@ -140,22 +156,6 @@ const ssnListMap = {
       "address_base16": "0xB85D0BAcd00Cbb695e909f993aE7c10D51D05B29",
       "logo_url": "https://meta.viewblock.io/ZIL.zil1hpwshtxspjakjh5sn7vn4e7pp4gaqkefup24h2/logo",
       "decimals": 4,
-    },
-    'ZWAP': {
-      "ticker": "ZWAP",
-      "name": "Zilswap",
-      "address": "zil1p5suryq6q647usxczale29cu3336hhp376c627",
-      "address_base16": "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31",
-      "logo_url": "https://meta.viewblock.io/ZIL.zil1p5suryq6q647usxczale29cu3336hhp376c627/logo",
-      "decimals": 12,
-    },
-    'XSGD': {
-      "ticker": "XSGD",
-      "name": "SGD Stablecoin",
-      "address": "zil1zu72vac254htqpg3mtywdcfm84l3dfd9qzww8t",
-      "address_base16": "0x173Ca6770Aa56EB00511Dac8e6E13B3D7f16a5a5",
-      "logo_url": "https://meta.viewblock.io/ZIL.zil180v66mlw007ltdv8tq5t240y7upwgf7djklmwh/logo",
-      "decimals": 6,
     },
     'ZLP': {
       "ticker": "ZLP",
@@ -180,6 +180,14 @@ const ssnListMap = {
       "address_base16": "0xbF79E16872fAd92C16810ddD2A7B9B6858C7b756",
       "logo_url": "https://meta.viewblock.io/ZIL.zil1hau7z6rjltvjc95pphwj57umdpvv0d6kh2t8zk/logo",
       "decimals": 8,
+    },
+    'SCO': {
+      "ticker": "SCO",
+      "name": "Score",
+      "address": "zil1kwfu3x9n6fsuxc4ynp72uk5rxge25enw7zsf9z",
+      "address_base16": "0xb393C898b3d261C362a4987CaE5a833232AA666E",
+      "logo_url": "https://meta.viewblock.io/ZIL.zil1kwfu3x9n6fsuxc4ynp72uk5rxge25enw7zsf9z/logo",
+      "decimals": 4,
     },
     'SRV': {
       "ticker": "SRV",
@@ -284,14 +292,6 @@ const ssnListMap = {
       "address_base16": "0xF2E1bf811317d26802b966F5356966dA8df0d2f9",
       "logo_url": "https://meta.viewblock.io/ZIL.zil17tsmlqgnzlfxsq4evm6n26txm2xlp5hele0kew/logo",
       "decimals": 6,
-    },
-    'SCO': {
-      "ticker": "SCO",
-      "name": "Score",
-      "address": "zil1kwfu3x9n6fsuxc4ynp72uk5rxge25enw7zsf9z",
-      "address_base16": "0xb393C898b3d261C362a4987CaE5a833232AA666E",
-      "logo_url": "https://meta.viewblock.io/ZIL.zil1kwfu3x9n6fsuxc4ynp72uk5rxge25enw7zsf9z/logo",
-      "decimals": 4,
     },
   }
   

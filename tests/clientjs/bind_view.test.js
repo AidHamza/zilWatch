@@ -426,6 +426,50 @@ describe('BindView', function () {
         });
     });
 
+
+    describe('#bindViewZrcTokenLpTotalPoolBalance()', function () {
+
+        beforeEach(function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#' + ticker + '_lp_total_pool_zil').text(), 'Loading...');
+                assert.strictEqual($('#' + ticker + '_lp_total_pool_zrc').text(), 'Loading...');
+            }
+        });
+
+        it('bind view happy case', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenLpTotalPoolBalance(/* zilBalance= */ '1234.4', /* zrcBalance = */ '54.43', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_total_pool_zil').text(), '1234.4');
+                assert.strictEqual($('#' + ticker + '_lp_total_pool_zrc').text(), '54.43');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenLpTotalPoolBalance(/* zilBalance= */ 'hjkl', /* zrcBalance = */ 'qwer', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_total_pool_zil').text(), 'hjkl');
+                assert.strictEqual($('#' + ticker + '_lp_total_pool_zrc').text(), 'qwer');
+            }
+        });
+
+        it('bind view empty string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenLpTotalPoolBalance( /* zilBalance= */ '', /* zrcBalance = */ '', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_total_pool_zil').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_total_pool_zrc').text(), '');
+            }
+        });
+    });
+
     describe('#bindViewZrcTokenLpBalance()', function () {
 
         beforeEach(function () {
@@ -896,6 +940,45 @@ describe('BindView', function () {
         });
     });
 
+    describe('#bindViewZrcTokenLpTotalPoolBalanceUsd()', function () {
+
+        beforeEach(function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#' + ticker + '_lp_total_pool_usd').text(), 'Loading...');
+            }
+        });
+
+        it('bind view happy case', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenLpTotalPoolBalanceUsd('1234.4', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_total_pool_usd').text(), '1234.4');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenLpTotalPoolBalanceUsd('asdf', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_total_pool_usd').text(), 'asdf');
+            }
+        });
+
+        it('bind view empty string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenLpTotalPoolBalanceUsd('', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_total_pool_usd').text(), '');
+            }
+        });
+    });
+
     describe('#bindViewZrcTokenLpBalanceUsd()', function () {
 
         beforeEach(function () {
@@ -1314,6 +1397,12 @@ function assertDefaultStateMainContent() {
         assert.strictEqual($('#' + ticker + '_container').css('display'), 'none');
     }
 
+    // bindViewZrcTokenLpTotalPoolBalance()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_lp_total_pool_zil').text(), 'Loading...');
+        assert.strictEqual($('#' + ticker + '_lp_total_pool_zrc').text(), 'Loading...');
+    }
+
     // bindViewZrcTokenLpBalance()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {
         assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
@@ -1372,6 +1461,11 @@ function assertDefaultStateMainContent() {
 
     // bindViewTotalWalletBalanceUsd()
     assert.strictEqual($('#wallet_balance_usd').text(), 'Loading...');
+
+    // bindViewZrcTokenLpTotalPoolBalanceUsd()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_lp_total_pool_usd').text(), 'Loading...');
+    }
 
     // bindViewZrcTokenLpBalanceUsd()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {

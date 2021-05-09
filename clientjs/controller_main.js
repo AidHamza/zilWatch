@@ -22,7 +22,8 @@ function onZilUsdPriceLoaded(zilPriceInUsd) {
 
     // Lp balance
     for (let ticker in zrcTokenPropertiesListMap) {
-        refreshZrcTokenLpBalanceUsd(ticker)
+        refreshZrcTokenLpTotalPoolBalanceUsd(ticker);
+        refreshZrcTokenLpBalanceUsd(ticker);
     }
     refreshTotalLpBalanceZilUsd();
 
@@ -54,6 +55,26 @@ function onZilWalletBalanceLoaded(zilBalanceQa) {
 
     // Net worth
     refreshNetWorthZilUsd();
+}
+
+function onZilswapDexStatusLoaded(dataObject, account = null) {
+    for (const key in zrcTokenPropertiesListMap) {
+        let zrcTokenProperties = zrcTokenPropertiesListMap[key];
+        let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();
+
+        // To get ZrcTokensPrice in ZIL, already in decimal.
+        let zrcTokenPriceInZilNumber = getZrcTokenPriceInZilFromZilswapDexState(dataObject, zrcTokenAddressBase16, zrcTokenProperties.decimals);
+
+        onZrcTokenPriceInZilLoaded(zrcTokenPriceInZilNumber, zrcTokenProperties.ticker);
+
+        let walletAddressBase16 = null;
+        if (account) {
+            walletAddressBase16 = account.base16.toLowerCase();
+        }
+        // To get ZilswapLp balance and Total pool status
+        let walletPoolStatus = getSingleTokenLpStatusFromZilswapDexState(dataObject, zrcTokenAddressBase16, zrcTokenProperties.decimals, walletAddressBase16);
+        onZrcTokenLpBalanceLoaded(walletPoolStatus, zrcTokenProperties.ticker);
+    }
 }
 
 function onZrcTokenPriceInZilLoaded(zrcTokenPriceInZilNumber, ticker) {
@@ -110,6 +131,15 @@ function onZrcTokenLpBalanceLoaded(walletZilswapSingleTokenLpStatus, ticker) {
     if (!walletZilswapSingleTokenLpStatus) {
         return;
     }
+
+    // public total pool container
+    let totalPoolZilAmount = convertNumberQaToDecimalString(walletZilswapSingleTokenLpStatus.totalPoolZilAmount, /* decimals= */ 0);
+    let totalPoolZrcTokenAmount = convertNumberQaToDecimalString(walletZilswapSingleTokenLpStatus.totalPoolZrcTokenAmount, /* decimals= */ 0);
+    bindViewZrcTokenLpTotalPoolBalance(totalPoolZilAmount, totalPoolZrcTokenAmount, ticker);
+
+    // Refresh USD
+    refreshZrcTokenLpTotalPoolBalanceUsd(ticker)
+
     let poolSharePercent = parseFloat((walletZilswapSingleTokenLpStatus.shareRatio) * 100).toPrecision(3);
     let zilAmount = convertNumberQaToDecimalString(walletZilswapSingleTokenLpStatus.zilAmount, /* decimals= */ 0);
     let zrcTokenAmount = convertNumberQaToDecimalString(walletZilswapSingleTokenLpStatus.zrcTokenAmount, /* decimals= */ 0);
@@ -285,6 +315,25 @@ function refreshTotalWalletBalanceZilUsd() {
     bindViewTotalWalletBalanceUsd(totalWalletBalanceUsd);
 }
 
+function refreshZrcTokenLpTotalPoolBalanceUsd(ticker) {
+
+    let usdPrice = getNumberFromView('.zil_price_usd');
+    if (!usdPrice) {
+        return;
+    }
+
+    let zilLpBalance = getNumberFromView('#' + ticker + '_lp_total_pool_zil');
+    if (!zilLpBalance) {
+        return;
+    }
+
+    // total worth is always times 2 (e.g., ZRC2-ZIL pair always have 50:50 value).
+    // For now ZilSwap only support 50-50 weight pair.
+    let lpTotalPoolBalanceUsd = 1.0 * usdPrice * (zilLpBalance * 2.0);
+    let lpTotalPoolBalanceUsdString = commafyNumberToString(lpTotalPoolBalanceUsd, /* decimals= */ 0);
+    bindViewZrcTokenLpTotalPoolBalanceUsd(lpTotalPoolBalanceUsdString, ticker);
+}
+
 function refreshZrcTokenLpBalanceUsd(ticker) {
 
     let usdPrice = getNumberFromView('.zil_price_usd');
@@ -303,6 +352,7 @@ function refreshZrcTokenLpBalanceUsd(ticker) {
     let lpBalanceUsdString = commafyNumberToString(lpBalanceUsd);
     bindViewZrcTokenLpBalanceUsd(lpBalanceUsdString, ticker);
 }
+
 
 function refreshTotalLpBalanceZilUsd() {
     // Sum balance in ZIL.

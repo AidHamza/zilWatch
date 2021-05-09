@@ -31,34 +31,22 @@ function computeZilBalanceWithRetry(account, onZilWalletBalanceLoaded, retryRema
  * --------------------------------------------------------------------------------
  */
 
-async function computeZrcTokensPriceAndZilswapLpBalance(zrcTokenPropertiesListMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded) {
-    computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokenPropertiesListMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded, MAX_RETRY);
+async function computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded, account) {
+    computeZrcTokensPriceAndZilswapLpBalanceWithRetry(onZilswapDexStatusLoaded, account, MAX_RETRY);
 }
 
-function computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokenPropertiesListMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded, retryRemaining) {
+function computeZrcTokensPriceAndZilswapLpBalanceWithRetry(onZilswapDexStatusLoaded, account, retryRemaining) {
     if (retryRemaining <= 0) {
         console.log("computeZrcTokensPriceAndZilswapLpBalanceWithRetry failed! Out of retries!");
         return;
     }
     window.zilPay.blockchain.getSmartContractState(ZilSwapDexAddress)
         .then(function (data) {
-            for (const key in zrcTokenPropertiesListMap) {
-                let zrcTokenProperties = zrcTokenPropertiesListMap[key];
-                let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();
-
-                // To get ZrcTokensPrice in ZIL, already in decimal.
-                let zrcTokenPriceInZilNumber = getZrcTokenPriceInZilFromZilswapDexState(data, zrcTokenAddressBase16, zrcTokenProperties.decimals);
-
-                onZrcTokenPriceInZilLoaded(zrcTokenPriceInZilNumber, zrcTokenProperties.ticker);
-
-                // To get ZilswapLp balance.
-                let walletPoolStatus = getSingleTokenLpStatusFromZilswapDexState(data, zrcTokenAddressBase16, zrcTokenProperties.decimals, account.base16.toLowerCase());
-                onZrcTokenLpBalanceLoaded(walletPoolStatus, zrcTokenProperties.ticker);
-            }
+            onZilswapDexStatusLoaded(data, account);
         })
         .catch(function () {
             console.log("computeZrcTokensPriceAndZilswapLpBalanceWithRetry failed! %s", retryRemaining);
-            computeZrcTokensPriceAndZilswapLpBalanceWithRetry(zrcTokenPropertiesListMap, onZrcTokenPriceInZilLoaded, account, onZrcTokenLpBalanceLoaded, retryRemaining - 1);
+            computeZrcTokensPriceAndZilswapLpBalanceWithRetry(onZilswapDexStatusLoaded, account, retryRemaining - 1);
         });
 }
 
@@ -216,7 +204,7 @@ async function computeLpEpochInfo(onLpCurrentEpochInfoLoaded) {
     });
 }
 
-async function computeZrcTokensPriceInZil(onZrcTokenPriceInZilLoaded) {
+async function computeZrcTokensPriceInZil(onZilswapDexStatusLoaded) {
     $.ajax({
         type: "POST",
         url: "https://api.zilliqa.com/",
@@ -230,15 +218,7 @@ async function computeZrcTokensPriceInZil(onZrcTokenPriceInZilLoaded) {
         dataType: "json",
         retryLimit: MAX_RETRY,
         success: function (data) {
-            for (const key in zrcTokenPropertiesListMap) {
-            let zrcTokenProperties = zrcTokenPropertiesListMap[key];
-                let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();
-
-                // To get ZrcTokensPrice in ZIL, already in decimal.
-                let zrcTokenPriceInZilNumber = getZrcTokenPriceInZilFromZilswapDexState(data, zrcTokenAddressBase16, zrcTokenProperties.decimals);
-
-                onZrcTokenPriceInZilLoaded(zrcTokenPriceInZilNumber, zrcTokenProperties.ticker);
-            }
+            onZilswapDexStatusLoaded(data);
         },
         error: function (xhr, textStatus, errorThrown) {
             if (this.retryLimit--) {
