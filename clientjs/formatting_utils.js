@@ -37,7 +37,9 @@ function commafyNumberToString(numberVar, decimalPlace = 2) {
         return null;
     }
 
-    if (numberVar < 0.0001) {
+    if (numberVar < 0.00001) {
+        // Do nothing, use default decimalPlace.
+    } else if (numberVar < 0.0001) {
         decimalPlace = Math.max(decimalPlace, 5);
     } else if (numberVar < 0.001) {
         decimalPlace = Math.max(decimalPlace, 4);

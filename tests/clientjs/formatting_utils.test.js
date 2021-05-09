@@ -164,6 +164,12 @@ describe('FormattingUtils', function () {
       assert.strictEqual(result, expected);
     });
 
+    it('floating point < 0.0001, too small, use defaultDecimals', function () {
+      let result = FormattingUtils.commafyNumberToString(0.0000023231423);
+      let expected = "0.00";
+      assert.strictEqual(result, expected);
+    });
+
     it('floating point < 0.0001', function () {
       let result = FormattingUtils.commafyNumberToString(0.000023231423);
       let expected = "0.00002";
@@ -263,6 +269,12 @@ describe('FormattingUtils', function () {
       assert.strictEqual(result, expected);
     });
 
+    it('floating point < 0.00001, too small, use defaultDecimals', function () {
+      let result = FormattingUtils.commafyNumberToString(0.0000023231423, /* decimalPlace= */ 1);
+      let expected = "0.0";
+      assert.strictEqual(result, expected);
+    });
+
     it('floating point < 0.0001', function () {
       let result = FormattingUtils.commafyNumberToString(0.000023231423, /* decimalPlace= */ 1);
       let expected = "0.00002";
@@ -359,6 +371,12 @@ describe('FormattingUtils', function () {
     it('numberVar not number: null', function () {
       let result = FormattingUtils.commafyNumberToString("9432.45", /* decimalPlace= */ 0);
       let expected = null;
+      assert.strictEqual(result, expected);
+    });
+
+    it('floating point < 0.00001, too small, use defaultDecimals', function () {
+      let result = FormattingUtils.commafyNumberToString(0.0000023231423, /* decimalPlace= */ 0);
+      let expected = "0";
       assert.strictEqual(result, expected);
     });
 
