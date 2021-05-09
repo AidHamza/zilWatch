@@ -245,14 +245,6 @@ const ssnListMap = {
       "logo_url": "https://meta.viewblock.io/ZIL.zil1r9dcsrya4ynuxnzaznu00e6hh3kpt7vhvzgva0/logo",
       "decimals": 5,
     },
-    'BARTER': {
-      "ticker": "BARTER",
-      "name": "CryptoBarter",
-      "address": "zil17zvlqn2xamqpumlm2pgul9nezzd3ydmrufxnct",
-      "address_base16": "0xF099F04D46eec01E6fFb5051cF9679109B123763",
-      "logo_url": "https://meta.viewblock.io/ZIL.zil17zvlqn2xamqpumlm2pgul9nezzd3ydmrufxnct/logo",
-      "decimals": 2,
-    },
     'GARY': {
       "ticker": "GARY",
       "name": "The Gary Token",

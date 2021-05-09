@@ -1,6 +1,26 @@
 // bind_view.js
 // No dependencies
 
+/**
+ * Obtain the contents of a view, parse it into a number, and return the number.
+ * 
+ * If the view is not parseable as a number, return null.
+ * 
+ * @returns {?number} The number reprentation of the view content, otherwise null.
+ */
+ function getNumberFromView(viewId) {
+    let viewContent = $(viewId + ":first").text();
+    let contentInNumber = parseFloatFromCommafiedNumberString(viewContent);
+    if (!contentInNumber) {
+        return null;
+    }
+    return contentInNumber;
+}
+
+/**
+ * --------------------------------------------------------------------------------
+ */
+
 function setThemeLightMode() {
     $("html").removeClass("dark-mode");
     $("#toggle_theme_icon").removeClass("fa-sun-o");
@@ -89,6 +109,9 @@ function resetMainContainerContent() {
         $('#' + ticker + '_lp_total_pool_zil').text('Loading...');
         $('#' + ticker + '_lp_total_pool_zrc').text('Loading...');
         $('#' + ticker + '_lp_total_pool_usd').text('Loading...');
+
+        $('#' + ticker + '_lp_total_volume_zil').text('0');
+        $('#' + ticker + '_lp_total_volume_usd').text('0.00');
 
         $('#' + ticker + '_lp_container').hide();
         $('#' + ticker + '_lp_pool_share_percent').text('Loading...');
@@ -186,6 +209,14 @@ function bindViewCarbonStakingBalance(carbonStakingBalance) {
     $('#carbon_staking_balance').text(carbonStakingBalance);
     $('#carbon_staking_container').show();
     $('#staking_container').show();
+}
+
+function bindViewTotalTradeVolumeZil(totalVolumeZil, ticker) {
+    $('#' + ticker + '_lp_total_volume_zil').text(totalVolumeZil);
+}
+
+function bindViewTotalTradeVolumeUsd(totalVolumeUsd, ticker) {
+    $('#' + ticker + '_lp_total_volume_usd').text(totalVolumeUsd);
 }
 
 function bindViewZwapRewardLp(zwapRewardString, ticker) {
@@ -304,6 +335,13 @@ if (typeof exports !== 'undefined') {
         ssnListMap = Constants.ssnListMap;
     }
 
+    if (typeof parseFloatFromCommafiedNumberString === 'undefined') {
+        FormattingUtils = require('./formatting_utils.js');
+        parseFloatFromCommafiedNumberString = FormattingUtils.parseFloatFromCommafiedNumberString;
+    }
+
+    exports.getNumberFromView = getNumberFromView;
+
     exports.setThemeLightMode = setThemeLightMode;
     exports.setThemeDarkMode = setThemeDarkMode;
 
@@ -321,6 +359,10 @@ if (typeof exports !== 'undefined') {
     exports.bindViewZilStakingBalance = bindViewZilStakingBalance;
     exports.bindViewZilStakingWithdrawalPendingBalance = bindViewZilStakingWithdrawalPendingBalance;
     exports.bindViewCarbonStakingBalance = bindViewCarbonStakingBalance;
+
+    exports.bindViewTotalTradeVolumeZil = bindViewTotalTradeVolumeZil;
+    exports.bindViewTotalTradeVolumeUsd = bindViewTotalTradeVolumeUsd;
+
     exports.bindViewZwapRewardLp = bindViewZwapRewardLp;
     exports.bindViewTotalRewardAllLpZwap = bindViewTotalRewardAllLpZwap;
     exports.bindViewLpNextEpochCounter = bindViewLpNextEpochCounter;

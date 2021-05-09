@@ -33,6 +33,7 @@
     let totalRewardZwapString = convertNumberQaToDecimalString(totalZwapRewardQa, zrcTokenPropertiesListMap['ZWAP'].decimals)
     if (totalRewardZwapString) {
         bindViewTotalRewardAllLpZwap(totalRewardZwapString);
+        refreshTotalLpRewardUsd();
     }
 }
 
@@ -49,17 +50,43 @@ function onLpCurrentEpochInfoLoaded(epochInfoData) {
     bindViewLpNextEpochCounter(timeDiffDuration.getUserFriendlyString());
 }
 
+function refreshTotalLpRewardUsd() {
+    let ticker = 'ZWAP';
+
+    let usdPrice = getNumberFromView('.zil_price_usd');
+    if (!usdPrice) {
+        return;
+    }
+
+    let zrcTokenPriceInZil = getNumberFromView('#' + ticker + '_price_zil');
+    if (!zrcTokenPriceInZil) {
+        return;
+    }
+
+    let rewardBalance = getNumberFromView('#total_all_lp_reward_next_epoch_zwap');
+    if (!rewardBalance) {
+        return;
+    }
+
+    let rewardBalanceUsd = (usdPrice * zrcTokenPriceInZil * rewardBalance);
+    let totalAllLpRewardUsd = commafyNumberToString(rewardBalanceUsd);
+    bindViewTotalRewardAllLpUsd(totalAllLpRewardUsd);
+}
+
 if (typeof exports !== 'undefined') {
     if (typeof bindViewZwapRewardLp === 'undefined') {
         BindView = require('./bind_view.js');
         bindViewZwapRewardLp = BindView.bindViewZwapRewardLp;
         bindViewTotalRewardAllLpZwap = BindView.bindViewTotalRewardAllLpZwap;
         bindViewLpNextEpochCounter = BindView.bindViewLpNextEpochCounter;
+        bindViewTotalRewardAllLpUsd = BindView.bindViewTotalRewardAllLpUsd
+        getNumberFromView = BindView.getNumberFromView;
     }
 
     if (typeof convertNumberQaToDecimalString === 'undefined') {
         FormattingUtils = require('./formatting_utils.js');
         convertNumberQaToDecimalString = FormattingUtils.convertNumberQaToDecimalString;
+        commafyNumberToString = FormattingUtils.commafyNumberToString;
     }
 
     if (typeof zrcTokenPropertiesListMap === 'undefined') {

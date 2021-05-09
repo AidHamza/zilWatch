@@ -22,6 +22,7 @@ function onZilUsdPriceLoaded(zilPriceInUsd) {
 
     // Lp balance
     for (let ticker in zrcTokenPropertiesListMap) {
+        refreshTotalTradeVolumeUsd(ticker);
         refreshZrcTokenLpTotalPoolBalanceUsd(ticker);
         refreshZrcTokenLpBalanceUsd(ticker);
     }
@@ -207,25 +208,35 @@ function onCarbonStakingBalanceLoaded(carbonBalanceQa) {
     refreshNetWorthZilUsd();
 }
 
+function onLpTradeVolumeLoaded(poolVolumeArray) {
+    if (!poolVolumeArray) {
+        return;
+    }
+    poolToVolumeMap = {}
+    for (let i = 0; i < poolVolumeArray.length; i++) {
+        let key = poolVolumeArray[i].pool;
+        poolToVolumeMap[key] = poolVolumeArray[i];
+    }
+
+    for (let ticker in zrcTokenPropertiesListMap) {
+        let contractAddress = zrcTokenPropertiesListMap[ticker].address;
+        let volumeList = poolToVolumeMap[contractAddress];
+        if (volumeList) {
+            let inZilAmount = parseInt(volumeList.in_zil_amount);
+            let outZilAmount = parseInt(volumeList.out_zil_amount);
+            let totalVolumeZilAmount = inZilAmount + outZilAmount;
+
+            let totalVolumeZilAmountString = convertNumberQaToDecimalString(totalVolumeZilAmount, /* decimals= */ 12);
+            bindViewTotalTradeVolumeZil(totalVolumeZilAmountString, ticker);
+
+            refreshTotalTradeVolumeUsd(ticker);
+        }
+    }
+}
+
 /**
  * --------------------------------------------------------------------------------
  */
-
-/**
- * Obtain the contents of a view, parse it into a number, and return the number.
- * 
- * If the view is not parseable as a number, return null.
- * 
- * @returns {?number} The number reprentation of the view content, otherwise null.
- */
-function getNumberFromView(viewId) {
-    let viewContent = $(viewId + ":first").text();
-    let contentInNumber = parseFloatFromCommafiedNumberString(viewContent);
-    if (!contentInNumber) {
-        return null;
-    }
-    return contentInNumber;
-}
 
 function refreshZilWalletBalanceUsd() {
     let usdPrice = getNumberFromView('.zil_price_usd');
@@ -506,25 +517,18 @@ function refreshNetWorthZilUsd() {
  * --------------------------------------------------------------------------------
  */
 
-function refreshTotalLpRewardUsd() {
-    let ticker = 'ZWAP';
-
+function refreshTotalTradeVolumeUsd(ticker) {
     let usdPrice = getNumberFromView('.zil_price_usd');
     if (!usdPrice) {
         return;
     }
 
-    let zrcTokenPriceInZil = getNumberFromView('#' + ticker + '_price_zil');
-    if (!zrcTokenPriceInZil) {
+    let totalVolumeZil = getNumberFromView('#' + ticker + '_lp_total_volume_zil');
+    if (!totalVolumeZil) {
         return;
     }
 
-    let rewardBalance = getNumberFromView('#total_all_lp_reward_next_epoch_zwap');
-    if (!rewardBalance) {
-        return;
-    }
-
-    let rewardBalanceUsd = (usdPrice * zrcTokenPriceInZil * rewardBalance);
-    let totalAllLpRewardUsd = commafyNumberToString(rewardBalanceUsd);
-    bindViewTotalRewardAllLpUsd(totalAllLpRewardUsd);
+    let totalVolumeUsd = (1.0 * usdPrice * totalVolumeZil);
+    let totalVolumeUsdString = commafyNumberToString(totalVolumeUsd, /* decimals= */ 0);
+    bindViewTotalTradeVolumeUsd(totalVolumeUsdString, ticker);
 }

@@ -204,6 +204,28 @@ async function computeLpEpochInfo(onLpCurrentEpochInfoLoaded) {
     });
 }
 
+async function compute24hLpTradeVolume(onLpTradeVolumeLoaded) {
+    let currentDate = new Date();
+    let currentTimeSeconds = currentDate.getTime() / 1000;
+    let oneDayAgoSeconds =  currentTimeSeconds - (60 * 60 * 24);
+
+    $.ajax({
+        type: "GET",
+        url: "https://stats.zilswap.org/volume?from=" + oneDayAgoSeconds.toFixed(0),
+        retryLimit: MAX_RETRY,
+        success: function (data) {
+            onLpTradeVolumeLoaded(data);
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            if (this.retryLimit--) {
+                // Try again
+                $.ajax(this);
+                return;
+            }
+        }
+    });
+}
+
 async function computeZrcTokensPriceInZil(onZilswapDexStatusLoaded) {
     $.ajax({
         type: "POST",

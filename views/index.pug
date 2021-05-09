@@ -68,14 +68,21 @@ block content
             tbody
               tr
                 th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Liquidity Pair'
+                th(style='text-align: right; white-space: nowrap; width: 25%;')= '24h Volume (USD)'
                 th(style='text-align: right; white-space: nowrap; width: 25%;')= 'Total Pool (USD)'
               each tokenProperties, key in zrcTokenPropertiesListMap
                 tr
                   td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
                     img(height='18' src=tokenProperties.logo_url loading='lazy')
-                  td(style='text-align: left; white-space: nowrap; width: 35%;' )
+                  td(style='text-align: left; white-space: nowrap; width: 25%;' )
                     span= tokenProperties.ticker + '-ZIL LP'
-                    //- Just a placeholder
+                  //- Just a placeholder
+                  td(style='display: none;' )
+                    span(id=tokenProperties.ticker+'_lp_total_volume_zil')= '0'
+                  td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                    span(class='mr-1')= '$'
+                    span(id=tokenProperties.ticker+'_lp_total_volume_usd')= '0.00'
+                  //- Just a placeholder
                   td(style='display: none;' )
                     span(id=tokenProperties.ticker+'_lp_total_pool_zil')= 'Loading...'
                     span(id=tokenProperties.ticker+'_lp_total_pool_zrc')= 'Loading...'

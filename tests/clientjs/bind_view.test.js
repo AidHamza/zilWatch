@@ -652,7 +652,84 @@ describe('BindView', function () {
             assert.strictEqual($('#staking_container').css('display'), 'block');
         });
     });
+    
+    describe('#bindViewTotalTradeVolumeZil()', function () {
 
+        beforeEach(function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#' + ticker + '_lp_total_volume_zil').text(), '0');
+            }
+        });
+
+        it('bind view happy case', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewTotalTradeVolumeZil('1234.4', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_total_volume_zil').text(), '1234.4');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewTotalTradeVolumeZil('asdf', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_total_volume_zil').text(), 'asdf');
+            }
+        });
+
+        it('bind view empty string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewTotalTradeVolumeZil('', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_total_volume_zil').text(), '');
+            }
+        });
+    });
+
+    describe('#bindViewTotalTradeVolumeUsd()', function () {
+
+        beforeEach(function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#' + ticker + '_lp_total_volume_usd').text(), '0.00');
+            }
+        });
+
+        it('bind view happy case', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewTotalTradeVolumeUsd('1234.4', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_total_volume_usd').text(), '1234.4');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewTotalTradeVolumeUsd('asdf', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_total_volume_usd').text(), 'asdf');
+            }
+        });
+
+        it('bind view empty string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewTotalTradeVolumeUsd('', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_total_volume_usd').text(), '');
+            }
+        });
+    });
 
     describe('#bindViewZwapRewardLp()', function () {
 
@@ -1428,6 +1505,16 @@ function assertDefaultStateMainContent() {
     assert.strictEqual($('#carbon_staking_balance').text(), 'Loading...');
     assert.strictEqual($('#carbon_staking_container').css('display'), 'none');
     assert.strictEqual($('#staking_container').css('display'), 'none');
+
+    // bindViewTotalTradeVolumeZil()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_lp_total_volume_zil').text(), '0');
+    }
+
+    // bindViewTotalTradeVolumeUsd()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_lp_total_volume_usd').text(), '0.00');
+    }
 
     // bindViewZwapRewardLp()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {
