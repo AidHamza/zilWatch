@@ -32,9 +32,9 @@ block content
       div(class='col-lg-6' style='padding: 0;')
         div(class='box-public')
 
-          div(class='card-header collapsed' data-toggle='collapse' href='#price_content_container')
+          div(class='card-header' data-toggle='collapse' href='#price_content_container')
             a(class='card-title font-weight-bold')= 'Token Price'
-          div(id='price_content_container' class='card-body collapse')
+          div(id='price_content_container' class='card-body collapse show')
             table(class='table table-sm table-borderless' width='100%')
               tbody
                 tr
@@ -46,7 +46,7 @@ block content
                   td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
                     img(height='18' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
                   td(colspan=3 style='text-align: left; white-space: nowrap; width: 75%;' )
-                    span(class='font-weight-bold')= 'Zilliqa'
+                    span= 'Zilliqa'
                   td(style='text-align: right; white-space: nowrap; width: 25%;' )
                     span(class='mr-1')= '$'
                     span(class='zil_price_usd')= 'Loading...'
@@ -68,9 +68,9 @@ block content
       div(class='col-lg-6' style='padding: 0;')
 
         div(class='box-public')
-          div(class='card-header collapsed' data-toggle='collapse' href='#lp_status_content_container')
+          div(class='card-header' data-toggle='collapse' href='#lp_status_content_container')
             a(class='card-title font-weight-bold')= 'Liquidity Pool Status'
-          div(id='lp_status_content_container' class='card-body collapse')
+          div(id='lp_status_content_container' class='card-body collapse show')
             table(class='table table-sm table-borderless' width='100%')
               tbody
                 tr

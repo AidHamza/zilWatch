@@ -67,7 +67,15 @@ $("#toggle_theme_btn").click(function() {
     localStorage.setItem("theme", theme);
 });
 
+function collapsePublicCards() {
+    $('.card-header').addClass('collapsed');
+    $('.card-body').removeClass('show');
+}
+
 function refreshMainContentData(account) {
+    // (0) Collapse all public cards.
+    collapsePublicCards();
+
     // (1) Refresh login button state
     bindViewLoggedInButton(censorBech32Address(account.bech32));
 
