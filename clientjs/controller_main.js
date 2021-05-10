@@ -251,6 +251,7 @@ function refreshZilWalletBalanceFiat() {
     if (!fiatPrice) {
         return;
     }
+    let decimals = (fiatPrice > 1) ? 0 : 2;
 
     let zilBalance = getNumberFromView('#zil_balance');
     if (!zilBalance) {
@@ -258,7 +259,7 @@ function refreshZilWalletBalanceFiat() {
     }
 
     let zilBalanceFiat = (fiatPrice * zilBalance);
-    bindViewZilBalanceFiat(commafyNumberToString(zilBalanceFiat));
+    bindViewZilBalanceFiat(commafyNumberToString(zilBalanceFiat, decimals));
 }
 
 function refreshZrcTokenPriceFiat() {
@@ -266,6 +267,7 @@ function refreshZrcTokenPriceFiat() {
     if (!fiatPrice) {
         return;
     }
+    let decimals = (fiatPrice > 1000) ? 0 : 2;
 
     for (let ticker in zrcTokenPropertiesListMap) {
         let zrcTokenPriceInZil = getNumberFromView('#' + ticker + '_price_zil');
@@ -273,7 +275,7 @@ function refreshZrcTokenPriceFiat() {
             return;
         }
         let zrcTokenPriceInFiat = 1.0 * fiatPrice * zrcTokenPriceInZil;
-        let zrcTokenPriceInFiatString = commafyNumberToString(zrcTokenPriceInFiat, /* decimals= */ 2);
+        let zrcTokenPriceInFiatString = commafyNumberToString(zrcTokenPriceInFiat, decimals);
         bindViewZrcTokenPriceInFiat(zrcTokenPriceInFiatString, ticker);
     }
 }
@@ -298,9 +300,10 @@ function refreshZrcTokenWalletBalanceZilFiat(ticker) {
     if (!fiatPrice) {
         return;
     }
+    let decimals = (fiatPrice > 1) ? 0 : 2;
 
     let zrcTokenBalanceFiat = 1.0 * fiatPrice * zrcTokenBalanceZil;
-    let zrcTokenBalanceFiatString = commafyNumberToString(zrcTokenBalanceFiat);
+    let zrcTokenBalanceFiatString = commafyNumberToString(zrcTokenBalanceFiat, decimals);
     bindViewZrcTokenWalletBalanceFiat(zrcTokenBalanceFiatString, ticker);
 }
 
@@ -327,10 +330,11 @@ function refreshTotalWalletBalanceZilFiat() {
     if (!fiatPrice) {
         return;
     }
+    let decimals = (fiatPrice > 1) ? 0 : 2;
 
     // Sum balance in USD
     let totalFiat = 1.0 * totalZil * fiatPrice;
-    let totalWalletBalanceFiat = commafyNumberToString(totalFiat);
+    let totalWalletBalanceFiat = commafyNumberToString(totalFiat, decimals);
     bindViewTotalWalletBalanceFiat(totalWalletBalanceFiat);
 }
 
@@ -359,6 +363,7 @@ function refreshZrcTokenLpBalanceFiat(ticker) {
     if (!fiatPrice) {
         return;
     }
+    let decimals = (fiatPrice > 1) ? 0 : 2;
 
     let zilLpBalance = getNumberFromView('#' + ticker + '_lp_zil_balance');
     if (!zilLpBalance) {
@@ -368,7 +373,7 @@ function refreshZrcTokenLpBalanceFiat(ticker) {
     // total worth is always times 2 (e.g., ZRC2-ZIL pair always have 50:50 value).
     // For now ZilSwap only support 50-50 weight pair.
     let lpBalanceFiat = 1.0 * fiatPrice * (zilLpBalance * 2.0);
-    let lpBalanceFiatString = commafyNumberToString(lpBalanceFiat);
+    let lpBalanceFiatString = commafyNumberToString(lpBalanceFiat, decimals);
     bindViewZrcTokenLpBalanceFiat(lpBalanceFiatString, ticker);
 }
 
@@ -392,8 +397,10 @@ function refreshTotalLpBalanceZilFiat() {
     if (!fiatPrice) {
         return;
     }
+    let decimals = (fiatPrice > 1) ? 0 : 2;
+
     let totalFiat = 1.0 * totalZil * fiatPrice;
-    let totalLpBalanceFiat = commafyNumberToString(totalFiat);
+    let totalLpBalanceFiat = commafyNumberToString(totalFiat, decimals);
     bindViewTotalLpBalanceFiat(totalLpBalanceFiat);
 }
 
@@ -402,6 +409,7 @@ function refreshZilStakingFiat(ssnAddress) {
     if (!fiatPrice) {
         return;
     }
+    let decimals = (fiatPrice > 1) ? 0 : 2;
 
     let zilStakingBalance = getNumberFromView('#' + ssnAddress + '_zil_staking_balance');
     if (!zilStakingBalance) {
@@ -409,7 +417,7 @@ function refreshZilStakingFiat(ssnAddress) {
     }
 
     let zilStakingBalanceFiat = 1.0 * fiatPrice * zilStakingBalance;
-    let zilStakingBalanceFiatString = commafyNumberToString(zilStakingBalanceFiat);
+    let zilStakingBalanceFiatString = commafyNumberToString(zilStakingBalanceFiat, decimals);
     bindViewZilStakingBalanceFiat(zilStakingBalanceFiatString, ssnAddress);
 }
 
@@ -418,6 +426,7 @@ function refreshZilStakingWithdrawalPendingFiat() {
     if (!fiatPrice) {
         return;
     }
+    let decimals = (fiatPrice > 1) ? 0 : 2;
 
     let zilStakingWithdrawalBalance = getNumberFromView('#zil_staking_withdrawal_pending_balance');
     if (!zilStakingWithdrawalBalance) {
@@ -425,7 +434,7 @@ function refreshZilStakingWithdrawalPendingFiat() {
     }
 
     let zilStakingWithdrawalBalanceFiat = 1.0 * fiatPrice * zilStakingWithdrawalBalance;
-    let zilStakingWithdrawalBalanceFiatString = commafyNumberToString(zilStakingWithdrawalBalanceFiat);
+    let zilStakingWithdrawalBalanceFiatString = commafyNumberToString(zilStakingWithdrawalBalanceFiat, decimals);
     bindViewZilStakingWithdrawalPendingBalanceFiat(zilStakingWithdrawalBalanceFiatString);
 }
 
@@ -449,9 +458,10 @@ function refreshCarbonStakingZilFiat() {
     if (!fiatPrice) {
         return;
     }
+    let decimals = (fiatPrice > 1) ? 0 : 2;
 
     let carbonStakingBalanceFiat = 1.0 * fiatPrice * carbonStakingBalanceZil;
-    let carbonStakingBalanceFiatString = commafyNumberToString(carbonStakingBalanceFiat);
+    let carbonStakingBalanceFiatString = commafyNumberToString(carbonStakingBalanceFiat, decimals);
     bindViewCarbonStakingBalanceFiat(carbonStakingBalanceFiatString);
 }
 
@@ -485,8 +495,10 @@ function refreshTotalStakingZilFiat() {
     if (!fiatPrice) {
         return;
     }
+    let decimals = (fiatPrice > 1) ? 0 : 2;
+
     let totalFiat = 1.0 * totalZil * fiatPrice;
-    let totalStakingBalanceFiat = commafyNumberToString(totalFiat);
+    let totalStakingBalanceFiat = commafyNumberToString(totalFiat, decimals);
     bindViewTotalStakingBalanceFiat(totalStakingBalanceFiat);
 }
 
@@ -516,8 +528,10 @@ function refreshNetWorthZilFiat() {
     if (!fiatPrice) {
         return;
     }
+    let decimals = (fiatPrice > 1) ? 0 : 2;
+
     let totalFiat = 1.0 * totalZil * fiatPrice;
-    let totalNetWorthFiat = commafyNumberToString(totalFiat);
+    let totalNetWorthFiat = commafyNumberToString(totalFiat, decimals);
     bindViewTotalNetWorthFiat(totalNetWorthFiat);
 }
 

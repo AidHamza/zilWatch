@@ -699,7 +699,7 @@ describe('BindView', function () {
 
         beforeEach(function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_total_volume_fiat').text(), '0.00');
+                assert.strictEqual($('#' + ticker + '_lp_total_volume_fiat').text(), '0');
             }
         });
 

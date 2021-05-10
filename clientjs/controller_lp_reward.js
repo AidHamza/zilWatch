@@ -57,6 +57,7 @@ function refreshTotalLpRewardFiat() {
     if (!fiatPrice) {
         return;
     }
+    let decimals = (fiatPrice > 1) ? 0 : 2;
 
     let zrcTokenPriceInZil = getNumberFromView('#' + ticker + '_price_zil');
     if (!zrcTokenPriceInZil) {
@@ -69,7 +70,7 @@ function refreshTotalLpRewardFiat() {
     }
 
     let rewardBalanceFiat = (fiatPrice * zrcTokenPriceInZil * rewardBalance);
-    let totalAllLpRewardFiat = commafyNumberToString(rewardBalanceFiat);
+    let totalAllLpRewardFiat = commafyNumberToString(rewardBalanceFiat, decimals);
     bindViewTotalRewardAllLpFiat(totalAllLpRewardFiat);
 }
 
