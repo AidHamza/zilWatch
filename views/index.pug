@@ -7,11 +7,11 @@ block content
       img(src='/images/zilWatch-02.svg' width='30' height='30' class='d-inline-block align-top mr-2' alt='zilWatch')
       = 'zilWatch'
 
-    select(id='currency_selector')
+    select(id='currency_selector' class='custom-select my-2 my-sm-0 ml-auto mr-2')
       each symbol, code in currencyMap
         option(value=code)= code.toUpperCase() + ' (' + symbol + ')'
 
-    button(id='toggle_theme_btn' class='btn btn-info my-2 my-sm-0 ml-auto mr-2')
+    button(id='toggle_theme_btn' class='btn btn-info my-2 my-sm-0 mr-2')
       i(id='toggle_theme_icon' class='fa fa-sun-o')
     
     button(id='wallet_refresh' class='btn btn-info my-2 my-sm-0 mr-2')

@@ -118,3 +118,10 @@ body {
   /* symbol for "collapsed" panels */
   content: "\f067"; 
 }
+
+.custom-select {
+  width: 8rem;
+  background: var(--bg-dynamic-3) var(--custom-select-arrow);
+  color: var(--text-color);
+  border: 1px solid var(--light-alpha-10);
+}

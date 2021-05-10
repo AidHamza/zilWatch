@@ -45,12 +45,17 @@
     --gray-dark-focus: #1d2124;
     --gray-dark-focus-2: #121416;
 
+    --white-970: #f7f7f7;
     --white-950: #f2f2f2;
     --white-940: #f0f0f0;
     --white-900: #e6e6e6;
+    --black-850: #22292a;
     --black-910: #141819;
     --black-930: #101314;
     --black-950: #0b0d0e;
+
+    --custom-select-arrow-black: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
+    --custom-select-arrow-white: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23bec4ca' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
 
     /* Mainly for navbar */
     --black-alpha-90: rgba(0, 0, 0, .9);
@@ -107,6 +112,8 @@
     --bg-dynamic: var(--white-900);
     --bg-dynamic-1: var(--white-940);
     --bg-dynamic-2: var(--white-950);
+    --bg-dynamic-3: var(--white-970);
+    --custom-select-arrow: var(--custom-select-arrow-black);
 
     --text-color: var(--text-primary-black);
     --text-color-secondary: var(--text-secondary-black);
@@ -152,6 +159,8 @@
     --bg-dynamic: var(--black-950);
     --bg-dynamic-1: var(--black-930);
     --bg-dynamic-2: var(--black-910);
+    --bg-dynamic-3: var(--black-850);
+    --custom-select-arrow: var(--custom-select-arrow-white);
 
     --text-color: var(--text-primary-white);
     --text-color-secondary: var(--text-secondary-white);
