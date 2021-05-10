@@ -133,7 +133,6 @@ function resetMainContainerContent() {
     $('#carbon_staking_balance_zil').text('Loading...');
     $('#carbon_staking_balance_fiat').text('Loading...');
 
-    $('#lp_reward_next_epoch_duration_counter').text('');
     $('#total_all_lp_reward_next_epoch_zwap').text('Loading...');
     $('#total_all_lp_reward_next_epoch_fiat').text('Loading...');
 
@@ -230,6 +229,7 @@ function bindViewTotalRewardAllLpZwap(totalRewardZwapString) {
     $('#lp_container').show();
 }
 
+// Exception, no need reset
 function bindViewLpNextEpochCounter(timeDurationString) {
     $('#lp_reward_next_epoch_duration_counter').text(timeDurationString);
 }

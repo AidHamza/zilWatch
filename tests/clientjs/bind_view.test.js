@@ -1520,8 +1520,7 @@ function assertDefaultStateMainContent() {
     assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'none');
     assert.strictEqual($('#lp_container').css('display'), 'none');
 
-    // bindViewLpNextEpochCounter()
-    assert.strictEqual($('#lp_reward_next_epoch_duration_counter').text(), '');
+    // bindViewLpNextEpochCounter(): Exception, no need refresh
 
     // bindViewZilBalanceFiat()
     assert.strictEqual($('#zil_balance_fiat').text(), '');

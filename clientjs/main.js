@@ -25,6 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // So don't need to reload.
     computeZrcTokensPriceInZil(onZilswapDexStatusLoaded);
     compute24hLpTradeVolume(onLpTradeVolumeLoaded);
+
+    computeLpEpochInfo(onLpCurrentEpochInfoLoaded);
 });
 
 window.addEventListener("load", async () => {
@@ -117,7 +119,6 @@ function refreshMainContentData(account) {
 
     // (8) Get Potential LP reward next epoch and time duration counter to the next epoch, async
     computeTotalLpRewardNextEpoch(account, onLpRewardNextEpochLoaded);
-    computeLpEpochInfo(onLpCurrentEpochInfoLoaded);
 
     // (9) Get ZIL staking balance, async
     computeZilStakingBalance(account, onZilStakingBalanceLoaded);
