@@ -1,7 +1,7 @@
 // Assumes zrcTokenPropertiesListMap is declared
 // Assumes ssnListMap is declared
 
-window.addEventListener("load", async () => {
+document.addEventListener("DOMContentLoaded", () => {
     // Get the user's theme preference from local storage, if it's available
     let currentTheme = localStorage.getItem("theme");
     if (currentTheme === "light") {
@@ -10,10 +10,24 @@ window.addEventListener("load", async () => {
         setThemeDarkMode();
     }
 
-    computeZrcTokensPriceInZil(onZilswapDexStatusLoaded);
-    computeZilPriceInFiat("usd", onZilFiatPriceLoaded);
-    compute24hLpTradeVolume(onLpTradeVolumeLoaded);
+    let currentCurrencyCode = localStorage.getItem("currency");
+    if (!currentCurrencyCode) {
+        currentCurrencyCode = "usd";
+    }
+    let currencySymbol = currencyMap[currentCurrencyCode];
+    $("#currency_selector").val(currentCurrencyCode);
+    $(".currency_symbol").text(currencySymbol);
+    
+    // Public information
+    computeZilPriceInFiat(currentCurrencyCode, onZilFiatPriceLoaded);
 
+    // This is unrelated to balance and the APIs used for personalized dashboard
+    // So don't need to reload.
+    computeZrcTokensPriceInZil(onZilswapDexStatusLoaded);
+    compute24hLpTradeVolume(onLpTradeVolumeLoaded);
+});
+
+window.addEventListener("load", async () => {
     let zilpayStatus = checkZilpayStatus();
     bindViewMainContainer(zilpayStatus);
     if (ZilpayStatus.connected !== zilpayStatus) {
@@ -67,27 +81,29 @@ $("#toggle_theme_btn").click(function() {
     localStorage.setItem("theme", theme);
 });
 
+$( "#currency_selector" ).change(function() {
+    let currencyCode = $(this).val();
+    computeZilPriceInFiat( currencyCode, onZilFiatPriceLoaded);
+    localStorage.setItem("currency", currencyCode);
+});
+
 function collapsePublicCards() {
     $('.card-header').addClass('collapsed');
     $('.card-body').removeClass('show');
 }
 
 function refreshMainContentData(account) {
-    // (0) Collapse all public cards.
+    // (1) Collapse all public cards.
     collapsePublicCards();
 
-    // (1) Refresh login button state
+    // (2) Refresh login button state
     bindViewLoggedInButton(censorBech32Address(account.bech32));
-
-    // (2) show main screen
-    bindViewMainContainer(ZilpayStatus.connected);
 
     // (3) Reset main content
     resetMainContainerContent();
 
-    // (4) Get ZIL price in USD, async.
-    computeZilPriceInFiat("usd", onZilFiatPriceLoaded);
-    compute24hLpTradeVolume(onLpTradeVolumeLoaded);
+    // (4) show main screen
+    bindViewMainContainer(ZilpayStatus.connected);
 
     // (5) Get ZIL balance, async.
     computeZilBalance(account, onZilWalletBalanceLoaded);

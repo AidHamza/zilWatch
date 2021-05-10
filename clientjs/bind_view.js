@@ -95,7 +95,6 @@ function resetMainContainerContent() {
     $('#staking_container').hide();
     $('#total_all_lp_reward_next_epoch_container').hide();
 
-    $('.zil_price_fiat').text('Loading...');
     $('#zil_balance').text('Loading...');
     $('#zil_balance_fiat').text('');
 
@@ -109,9 +108,6 @@ function resetMainContainerContent() {
         $('#' + ticker + '_lp_total_pool_zil').text('Loading...');
         $('#' + ticker + '_lp_total_pool_zrc').text('Loading...');
         $('#' + ticker + '_lp_total_pool_fiat').text('Loading...');
-
-        $('#' + ticker + '_lp_total_volume_zil').text('0');
-        $('#' + ticker + '_lp_total_volume_fiat').text('0.00');
 
         $('#' + ticker + '_lp_container').hide();
         $('#' + ticker + '_lp_pool_share_percent').text('Loading...');
@@ -158,8 +154,10 @@ function resetMainContainerContent() {
  * --------------------------------------------------------------------------------
  */
 
-function bindViewZilPriceInFiat(zilPriceInFiat) {
+// Exception, no need to reset
+function bindViewZilPriceInFiat(currencySymbol, zilPriceInFiat) {
     $(".zil_price_fiat").text(zilPriceInFiat);
+    $(".currency_symbol").text(currencySymbol);
 }
 
 function bindViewZilBalance(zilBalance) {
@@ -211,10 +209,12 @@ function bindViewCarbonStakingBalance(carbonStakingBalance) {
     $('#staking_container').show();
 }
 
+// Exception, no need reset
 function bindViewTotalTradeVolumeZil(totalVolumeZil, ticker) {
     $('#' + ticker + '_lp_total_volume_zil').text(totalVolumeZil);
 }
 
+// Exception, no need reset
 function bindViewTotalTradeVolumeFiat(totalVolumeFiat, ticker) {
     $('#' + ticker + '_lp_total_volume_fiat').text(totalVolumeFiat);
 }

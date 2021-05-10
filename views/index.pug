@@ -7,6 +7,10 @@ block content
       img(src='/images/zilWatch-02.svg' width='30' height='30' class='d-inline-block align-top mr-2' alt='zilWatch')
       = 'zilWatch'
 
+    select(id='currency_selector')
+      each symbol, code in currencyMap
+        option(value=code)= code.toUpperCase() + ' (' + symbol + ')'
+
     button(id='toggle_theme_btn' class='btn btn-info my-2 my-sm-0 ml-auto mr-2')
       i(id='toggle_theme_icon' class='fa fa-sun-o')
     
@@ -40,14 +44,17 @@ block content
                   th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Token Name'
                   th(style='text-align: right; white-space: nowrap; width: 15%;')= 'Symbol'
                   th(style='text-align: right; white-space: nowrap; width: 25%;' )= 'Price (ZIL)'
-                  th(style='text-align: right; white-space: nowrap; width: 25%;' )= 'Price (USD)'
+                  th(style='text-align: right; white-space: nowrap; width: 25%;' )
+                    span= 'Price'
+                    span= ' ('
+                    span(class='currency_symbol')= '$'
+                    span= ')'
                 tr
                   td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
                     img(height='18' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
                   td(colspan=3 style='text-align: left; white-space: nowrap; width: 75%;' )
                     span= 'Zilliqa'
                   td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                    span(class='mr-1')= '$'
                     span(class='zil_price_fiat')= 'Loading...'
                 each tokenProperties, key in zrcTokenPropertiesListMap
                   - var trStyle = ''
@@ -63,9 +70,7 @@ block content
                       span= tokenProperties.ticker
                     td(style='text-align: right; white-space: nowrap; width: 25%;' )
                       span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
-                      span(class='ml-1')= 'ZIL'
                     td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(class='mr-1')= '$'
                       span(id=tokenProperties.ticker+'_price_fiat')= 'Loading...'
 
       div(class='col-lg-6' style='padding: 0;')
@@ -78,8 +83,16 @@ block content
               tbody
                 tr
                   th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Liquidity Pair'
-                  th(style='text-align: right; white-space: nowrap; width: 25%;')= '24h Volume (USD)'
-                  th(style='text-align: right; white-space: nowrap; width: 25%;')= 'Total Pool (USD)'
+                  th(style='text-align: right; white-space: nowrap; width: 25%;')
+                    span= '24h Volume'
+                    span= ' ('
+                    span(class='currency_symbol')= '$'
+                    span= ')'
+                  th(style='text-align: right; white-space: nowrap; width: 25%;')
+                    span= 'Total Pool'
+                    span= ' ('
+                    span(class='currency_symbol')= '$'
+                    span= ')'
                 each tokenProperties, key in zrcTokenPropertiesListMap
                   - var trStyle = ''
                   if tokenProperties.ticker === 'XPORT'
@@ -94,14 +107,12 @@ block content
                     td(style='display: none;' )
                       span(id=tokenProperties.ticker+'_lp_total_volume_zil')= '0'
                     td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(class='mr-1')= '$'
                       span(id=tokenProperties.ticker+'_lp_total_volume_fiat')= '0.00'
                     //- Just a placeholder
                     td(style='display: none;' )
                       span(id=tokenProperties.ticker+'_lp_total_pool_zil')= 'Loading...'
                       span(id=tokenProperties.ticker+'_lp_total_pool_zrc')= 'Loading...'
                     td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(class='mr-1')= '$'
                       span(id=tokenProperties.ticker+'_lp_total_pool_fiat')= 'Loading...'
     
     hr
@@ -113,7 +124,7 @@ block content
       div(class='balance-box col-md-6')
         h3(class='font-weight-bold')= 'Net Worth'
         span(class='h4')
-          span(class='mr-1')= '$'
+          span(class='currency_symbol mr-1')= '$'
           span(id='net_worth_fiat')= 'Loading...'
         span(class='h6 ml-4')
           span(id='net_worth_zil')= 'Loading...'
@@ -122,7 +133,7 @@ block content
       div(class='balance-box col-md-6')
         h3(class='font-weight-bold')= 'Wallet Balance'
         span(class='h4')
-          span(class='mr-1')= '$'
+          span(class='currency_symbol mr-1')= '$'
           span(id='wallet_balance_fiat')= 'Loading...'
         span(class='h6 ml-4')
           span(id='wallet_balance_zil')= 'Loading...'
@@ -131,7 +142,7 @@ block content
       div(class='balance-box col-md-6')
         h3(class='font-weight-bold')= 'LP Balance'
         span(class='h4')
-          span(class='mr-1')= '$'
+          span(class='currency_symbol mr-1')= '$'
           span(id='lp_balance_fiat')= 'Loading...'
         span(class='h6 ml-4')
           span(id='lp_balance_zil')= 'Loading...'
@@ -140,7 +151,7 @@ block content
       div(class='balance-box col-md-6')
         h3(class='font-weight-bold')= 'Staking Balance'
         span(class='h4')
-          span(class='mr-1')= '$'
+          span(class='currency_symbol mr-1')= '$'
           span(id='staking_balance_fiat')= 'Loading...'
         span(class='h6 ml-4')
           span(id='staking_balance_zil')= 'Loading...'
@@ -168,13 +179,13 @@ block content
                     span(class='font-weight-bold')= 'Zilliqa'
                 tr
                   td(scope='row' class='font-weight-normal text-secondary' style='white-space: nowrap; width: 33%;' )
-                    span(class='mr-1')= '$'
+                    span(class='currency_symbol mr-1')= '$'
                     span(class='zil_price_fiat')= 'Loading...'
                   td(style='text-align: right; white-space: nowrap; width: 33%;' )
                     span(id='zil_balance')= 'Loading...'
                     span(id='zil_balance_unit' class='ml-1')= 'ZIL'
                   td(style='text-align: right; white-space: nowrap; width: 33%;' )
-                    span(class='mr-1')= '$'
+                    span(class='currency_symbol mr-1')= '$'
                     span(id='zil_balance_fiat')
 
         each tokenProperties, key in zrcTokenPropertiesListMap
@@ -199,7 +210,7 @@ block content
                       span(id=tokenProperties.ticker+'_balance')= 'Loading...'
                       span(id=tokenProperties.ticker+'_balance_unit' class='ml-1')= tokenProperties.ticker
                     td(style='text-align: right; white-space: nowrap; width: 33%;' )
-                      span(class='mr-1')= '$'
+                      span(class='currency_symbol mr-1')= '$'
                       span(id=tokenProperties.ticker+'_balance_fiat')= 'Loading...'
 
     hr
@@ -231,7 +242,7 @@ block content
                       span(id='total_all_lp_reward_next_epoch_zwap' class='ml-1')= 'Loading...'
                       span(id='total_all_lp_reward_next_epoch_zwap_unit' class='ml-1')= zrcTokenPropertiesListMap['ZWAP'].ticker
                     td(style='text-align: right; white-space: nowrap; width: 49%;' )
-                      span(class='mr-1')= '$'
+                      span(class='currency_symbol mr-1')= '$'
                       span(id='total_all_lp_reward_next_epoch_fiat')= 'Loading...'
 
           each tokenProperties, key in zrcTokenPropertiesListMap
@@ -259,7 +270,7 @@ block content
                         span(id=tokenProperties.ticker+'_lp_zil_balance' class='ml-1')
                         span(id=tokenProperties.ticker+'_lp_zil_balance_unit' class='ml-1')= 'ZIL'
                       td(style='text-align: right; white-space: nowrap; width: 33%;' )
-                        span(class='mr-1')= '$'
+                        span(class='currency_symbol mr-1')= '$'
                         span(id=tokenProperties.ticker+'_lp_balance_fiat')= 'Loading...'
       hr
 
@@ -289,7 +300,7 @@ block content
                         span(id=ssnAddress+'_zil_staking_balance')= 'Loading...'
                         span(id=ssnAddress+'_zil_staking_balance_unit' class='ml-1')= 'ZIL'
                       td(style='text-align: right; white-space: nowrap; width: 49%;' )
-                        span(class='mr-1')= '$'
+                        span(class='currency_symbol mr-1')= '$'
                         span(id=ssnAddress+'_zil_staking_balance_fiat')= 'Loading...'
 
           div(id='zil_staking_withdrawal_pending_container' class='col-lg-6' style='padding: 0; display: none')
@@ -306,7 +317,7 @@ block content
                         span(id='zil_staking_withdrawal_pending_balance')= 'Loading...'
                         span(id='zil_staking_withdrawal_pending_balance_unit' class='ml-1')= 'ZIL'
                       td(style='text-align: right; white-space: nowrap; width: 49%;' )
-                        span(class='mr-1')= '$'
+                        span(class='currency_symbol mr-1')= '$'
                         span(id='zil_staking_withdrawal_pending_balance_fiat')= 'Loading...'
 
           div(id='carbon_staking_container' class='col-lg-6' style='padding: 0; display: none')
@@ -326,7 +337,7 @@ block content
                       span(id='carbon_staking_balance')= 'Loading...'
                       span(id='carbon_zil_staking_balance_unit' class='ml-1')= zrcTokenPropertiesListMap['CARB'].ticker
                     td(style='text-align: right; white-space: nowrap; width: 49%;' )
-                      span(class='mr-1')= '$'
+                      span(class='currency_symbol mr-1')= '$'
                       span(id='carbon_staking_balance_fiat')= 'Loading...'
       hr
 
@@ -334,5 +345,8 @@ block script
   script(src='/javascripts/main.min.js')
 
   script.
-    var zrcTokenPropertiesListMap = !{JSON.stringify(zrcTokenPropertiesListMap)};
+    var currencyMap = !{JSON.stringify(currencyMap)};
     var ssnListMap = !{JSON.stringify(ssnListMap)};
+    var zrcTokenPropertiesListMap = !{JSON.stringify(zrcTokenPropertiesListMap)};
+    // Cache for zilPrice to multiple currencies map
+    var zilPriceInMultiFiatMap = null;

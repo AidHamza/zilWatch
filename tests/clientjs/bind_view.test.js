@@ -233,38 +233,41 @@ describe('BindView', function () {
 
     describe('#bindViewZilPriceInFiat()', function () {
 
-        beforeEach(function () {
-            $('.zil_price_fiat').each(function () {
-                assert.strictEqual($(this).text(), 'Loading...');
-            });
-        });
-
         it('bind view price in fiat', function () {
             // Act
-            BindView.bindViewZilPriceInFiat('0.123');
+            BindView.bindViewZilPriceInFiat('Rp', '0.123');
 
             // Assert
             $('.zil_price_fiat').each(function () {
                 assert.strictEqual($(this).text(), '0.123');
             });
+            $(".currency_symbol").each(function () {
+                assert.strictEqual($(this).text(), 'Rp');
+            });
         });
 
         it('bind view random string', function () {
             // Act
-            BindView.bindViewZilPriceInFiat('asdf');
+            BindView.bindViewZilPriceInFiat('qwer', 'asdf');
 
             // Assert
             $('.zil_price_fiat').each(function () {
                 assert.strictEqual($(this).text(), 'asdf');
             });
+            $(".currency_symbol").each(function () {
+                assert.strictEqual($(this).text(), 'qwer');
+            });
         });
 
         it('bind view empty string', function () {
             // Act
-            BindView.bindViewZilPriceInFiat('');
+            BindView.bindViewZilPriceInFiat('', '');
 
             // Assert
             $('.zil_price_fiat').each(function () {
+                assert.strictEqual($(this).text(), '');
+            });
+            $(".currency_symbol").each(function () {
                 assert.strictEqual($(this).text(), '');
             });
         });
@@ -1449,10 +1452,7 @@ describe('BindView', function () {
 });
 
 function assertDefaultStateMainContent() {
-    // bindViewZilPriceInFiat()
-    $('.zil_price_fiat').each(function () {
-        assert.strictEqual($(this).text(), 'Loading...');
-    });
+    // bindViewZilPriceInFiat(): Exception, no need refresh
 
     // bindViewZilBalance()
     assert.strictEqual($('#zil_balance').text(), 'Loading...');
@@ -1506,15 +1506,8 @@ function assertDefaultStateMainContent() {
     assert.strictEqual($('#carbon_staking_container').css('display'), 'none');
     assert.strictEqual($('#staking_container').css('display'), 'none');
 
-    // bindViewTotalTradeVolumeZil()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_lp_total_volume_zil').text(), '0');
-    }
-
-    // bindViewTotalTradeVolumeFiat()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_lp_total_volume_fiat').text(), '0.00');
-    }
+    // bindViewTotalTradeVolumeZil(): Exception, no need refresh
+    // bindViewTotalTradeVolumeFiat(): Exception, no need refresh
 
     // bindViewZwapRewardLp()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {

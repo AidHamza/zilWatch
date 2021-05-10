@@ -151,12 +151,22 @@ function computeZilStakingWithdrawalPendingBalanceWithRetry(account, onZilStakin
  */
 
 async function computeZilPriceInFiat(currencyCode, onZilFiatPriceLoaded) {
+    if (zilPriceInMultiFiatMap) {
+        onZilFiatPriceLoaded(currencyCode, zilPriceInMultiFiatMap);
+        return;
+    }
+
+    let allCurrenciesCode = 'usd';
+    for (let code in currencyMap) {
+        allCurrenciesCode += ',' + code;
+    }
+
     $.ajax({
         type: "GET",
-        url: "https://api.coingecko.com/api/v3/simple/price?ids=zilliqa&vs_currencies=" + currencyCode,
+        url: "https://api.coingecko.com/api/v3/simple/price?ids=zilliqa&vs_currencies=" + allCurrenciesCode,
         retryLimit: MAX_RETRY,
         success: function (data) {
-            onZilFiatPriceLoaded(data.zilliqa[currencyCode]);
+            onZilFiatPriceLoaded(currencyCode, data.zilliqa);
         },
         error: function (xhr, textStatus, errorThrown) {
             if (this.retryLimit--) {

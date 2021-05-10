@@ -4,12 +4,20 @@
  * --------------------------------------------------------------------------------
  */
 
-function onZilFiatPriceLoaded(zilPriceInFiat) {
-    let zilPriceInFiatFloat = parseFloat(zilPriceInFiat);
+function onZilFiatPriceLoaded(currencyCode, zilPriceInFiatMap) {
+    if (!zilPriceInFiatMap) {
+        return;
+    }
+    // Put in cache
+    zilPriceInMultiFiatMap = zilPriceInFiatMap;
+
+    let zilPriceInFiatFloat = parseFloat(zilPriceInFiatMap[currencyCode]);
     if (!zilPriceInFiatFloat) {
         return;
     }
-    bindViewZilPriceInFiat(zilPriceInFiatFloat.toFixed(4));
+
+    let currencySymbol = currencyMap[currencyCode];
+    bindViewZilPriceInFiat(currencySymbol, convertNumberQaToDecimalString(zilPriceInFiatFloat, /* decimals= */ 0));
 
     refreshZrcTokenPriceFiat();
 
