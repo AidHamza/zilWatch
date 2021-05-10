@@ -51,6 +51,9 @@ block content
                     span(class='mr-1')= '$'
                     span(class='zil_price_usd')= 'Loading...'
                 each tokenProperties, key in zrcTokenPropertiesListMap
+                  if tokenProperties.ticker === 'XPORT'
+                    - continue
+
                   tr
                     td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
                       img(height='18' src=tokenProperties.logo_url loading='lazy')
@@ -78,6 +81,9 @@ block content
                   th(style='text-align: right; white-space: nowrap; width: 25%;')= '24h Volume (USD)'
                   th(style='text-align: right; white-space: nowrap; width: 25%;')= 'Total Pool (USD)'
                 each tokenProperties, key in zrcTokenPropertiesListMap
+                  if tokenProperties.ticker === 'XPORT'
+                    - continue
+
                   tr
                     td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
                       img(height='18' src=tokenProperties.logo_url loading='lazy')
