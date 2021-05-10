@@ -36,6 +36,10 @@ async function computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded
 }
 
 function computeZrcTokensPriceAndZilswapLpBalanceWithRetry(onZilswapDexStatusLoaded, account, retryRemaining) {
+    if (zilswapDexSmartContractStateData) {
+        onZilswapDexStatusLoaded(zilswapDexSmartContractStateData, account);
+        return;
+    }
     if (retryRemaining <= 0) {
         console.log("computeZrcTokensPriceAndZilswapLpBalanceWithRetry failed! Out of retries!");
         return;
@@ -237,6 +241,10 @@ async function compute24hLpTradeVolume(onLpTradeVolumeLoaded) {
 }
 
 async function computeZrcTokensPriceInZil(onZilswapDexStatusLoaded) {
+    if (zilswapDexSmartContractStateData) {
+        onZilswapDexStatusLoaded(zilswapDexSmartContractStateData);
+        return;
+    }
     $.ajax({
         type: "POST",
         url: "https://api.zilliqa.com/",

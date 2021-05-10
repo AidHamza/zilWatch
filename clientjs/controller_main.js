@@ -67,6 +67,8 @@ function onZilWalletBalanceLoaded(zilBalanceQa) {
 }
 
 function onZilswapDexStatusLoaded(dataObject, account = null) {
+    zilswapDexSmartContractStateData = dataObject;
+    
     for (const key in zrcTokenPropertiesListMap) {
         let zrcTokenProperties = zrcTokenPropertiesListMap[key];
         let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();
