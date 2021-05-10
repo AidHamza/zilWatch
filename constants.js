@@ -2,7 +2,7 @@
 // Constants in the server mainly to pass to router to render main page.
 
 const title = 'zilWatch';
-const description = 'zilWatch.io is a smart dashboard to track your ZILs and ZRC-2 tokens in your wallet, liqudity pool farms, and staked tokens.';
+const description = 'zilWatch.io is a smart dashboard to track Zilliqa and ZRC-2 tokens prices and balances in your wallet, liqudity pool farms, and staked tokens.';
 
 // Obtained from getSmartContractSubState(ZilSeedNodeStakingImplementationAddress, "ssnlist");
 const ssnListMap = {
