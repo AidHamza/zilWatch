@@ -95,23 +95,23 @@ function resetMainContainerContent() {
     $('#staking_container').hide();
     $('#total_all_lp_reward_next_epoch_container').hide();
 
-    $('.zil_price_usd').text('Loading...');
+    $('.zil_price_fiat').text('Loading...');
     $('#zil_balance').text('Loading...');
-    $('#zil_balance_usd').text('');
+    $('#zil_balance_fiat').text('');
 
     for (let ticker in zrcTokenPropertiesListMap) {
         $('#' + ticker + '_container').hide();
         $('#' + ticker + '_price_zil').text('Loading...');
-        $('#' + ticker + '_price_usd').text('Loading...');
+        $('#' + ticker + '_price_fiat').text('Loading...');
         $('#' + ticker + '_balance').text('Loading...');
 
         $('#public_' + ticker + '_price_zil').text('Loading...');
         $('#' + ticker + '_lp_total_pool_zil').text('Loading...');
         $('#' + ticker + '_lp_total_pool_zrc').text('Loading...');
-        $('#' + ticker + '_lp_total_pool_usd').text('Loading...');
+        $('#' + ticker + '_lp_total_pool_fiat').text('Loading...');
 
         $('#' + ticker + '_lp_total_volume_zil').text('0');
-        $('#' + ticker + '_lp_total_volume_usd').text('0.00');
+        $('#' + ticker + '_lp_total_volume_fiat').text('0.00');
 
         $('#' + ticker + '_lp_container').hide();
         $('#' + ticker + '_lp_pool_share_percent').text('Loading...');
@@ -120,8 +120,8 @@ function resetMainContainerContent() {
         $('#' + ticker + '_lp_pool_reward_zwap').text('');
         $('#' + ticker + '_lp_pool_reward_zwap_unit').text('');
         $('#' + ticker + '_balance_zil').text('Loading...');
-        $('#' + ticker + '_balance_usd').text('Loading...');
-        $('#' + ticker + '_lp_balance_usd').text('Loading...');
+        $('#' + ticker + '_balance_fiat').text('Loading...');
+        $('#' + ticker + '_lp_balance_fiat').text('Loading...');
     }
 
     $('#zil_staking_withdrawal_pending_container').hide();
@@ -129,37 +129,37 @@ function resetMainContainerContent() {
     for (let ssnAddress in ssnListMap) {
         $('#' + ssnAddress + '_zil_staking_container').hide();
         $('#' + ssnAddress + '_zil_staking_balance').text('Loading...');
-        $('#' + ssnAddress + '_zil_staking_balance_usd').text('Loading...');
+        $('#' + ssnAddress + '_zil_staking_balance_fiat').text('Loading...');
     }
     $('#zil_staking_withdrawal_pending_balance').text('Loading...');
-    $('#zil_staking_withdrawal_pending_balance_usd').text('Loading...');
+    $('#zil_staking_withdrawal_pending_balance_fiat').text('Loading...');
     $('#carbon_staking_balance').text('Loading...');
     $('#carbon_staking_balance_zil').text('Loading...');
-    $('#carbon_staking_balance_usd').text('Loading...');
+    $('#carbon_staking_balance_fiat').text('Loading...');
 
     $('#lp_reward_next_epoch_duration_counter').text('');
     $('#total_all_lp_reward_next_epoch_zwap').text('Loading...');
-    $('#total_all_lp_reward_next_epoch_usd').text('Loading...');
+    $('#total_all_lp_reward_next_epoch_fiat').text('Loading...');
 
     $('#wallet_balance_zil').text('Loading...');
-    $('#wallet_balance_usd').text('Loading...');
+    $('#wallet_balance_fiat').text('Loading...');
 
     $('#lp_balance_zil').text('Loading...');
-    $('#lp_balance_usd').text('Loading...');
+    $('#lp_balance_fiat').text('Loading...');
 
     $('#staking_balance_zil').text('Loading...');
-    $('#staking_balance_usd').text('Loading...');
+    $('#staking_balance_fiat').text('Loading...');
 
     $('#net_worth_zil').text('Loading...');
-    $('#net_worth_usd').text('Loading...');
+    $('#net_worth_fiat').text('Loading...');
 }
 
 /**
  * --------------------------------------------------------------------------------
  */
 
-function bindViewZilPriceInUsd(zilPriceInUsd) {
-    $(".zil_price_usd").text(zilPriceInUsd);
+function bindViewZilPriceInFiat(zilPriceInFiat) {
+    $(".zil_price_fiat").text(zilPriceInFiat);
 }
 
 function bindViewZilBalance(zilBalance) {
@@ -171,8 +171,8 @@ function bindViewZrcTokenPriceInZil(publicZrcTokenPriceInZil, zrcTokenPriceInZil
     $('#' + ticker + '_price_zil').text(zrcTokenPriceInZil);
 }
 
-function bindViewZrcTokenPriceInUsd(zrcTokenPriceInUsd, ticker) {
-    $('#' + ticker + '_price_usd').text(zrcTokenPriceInUsd);
+function bindViewZrcTokenPriceInFiat(zrcTokenPriceInFiat, ticker) {
+    $('#' + ticker + '_price_fiat').text(zrcTokenPriceInFiat);
 }
 
 function bindViewZrcTokenWalletBalance(zrcTokenBalance, ticker) {
@@ -215,8 +215,8 @@ function bindViewTotalTradeVolumeZil(totalVolumeZil, ticker) {
     $('#' + ticker + '_lp_total_volume_zil').text(totalVolumeZil);
 }
 
-function bindViewTotalTradeVolumeUsd(totalVolumeUsd, ticker) {
-    $('#' + ticker + '_lp_total_volume_usd').text(totalVolumeUsd);
+function bindViewTotalTradeVolumeFiat(totalVolumeFiat, ticker) {
+    $('#' + ticker + '_lp_total_volume_fiat').text(totalVolumeFiat);
 }
 
 function bindViewZwapRewardLp(zwapRewardString, ticker) {
@@ -238,76 +238,76 @@ function bindViewLpNextEpochCounter(timeDurationString) {
  * --------------------------------------------------------------------------------
  */
 
-function bindViewZilBalanceUsd(zilBalanceUsd) {
-    $('#zil_balance_usd').text(zilBalanceUsd);
+function bindViewZilBalanceFiat(zilBalanceFiat) {
+    $('#zil_balance_fiat').text(zilBalanceFiat);
 }
 
 function bindViewZrcTokenWalletBalanceZil(zrcBalanceZil, ticker) {
     $('#' + ticker + '_balance_zil').text(zrcBalanceZil);
 }
 
-function bindViewZrcTokenWalletBalanceUsd(zrcBalanceUsd, ticker) {
-    $('#' + ticker + '_balance_usd').text(zrcBalanceUsd);
+function bindViewZrcTokenWalletBalanceFiat(zrcBalanceFiat, ticker) {
+    $('#' + ticker + '_balance_fiat').text(zrcBalanceFiat);
 }
 
 function bindViewTotalWalletBalanceZil(totalWalletBalanceZil) {
     $('#wallet_balance_zil').text(totalWalletBalanceZil);
 }
 
-function bindViewTotalWalletBalanceUsd(totalWalletBalanceUsd) {
-    $('#wallet_balance_usd').text(totalWalletBalanceUsd);
+function bindViewTotalWalletBalanceFiat(totalWalletBalanceFiat) {
+    $('#wallet_balance_fiat').text(totalWalletBalanceFiat);
 }
 
-function bindViewZrcTokenLpTotalPoolBalanceUsd(lpTotalPoolBalanceUsd, ticker) {
-    $('#' + ticker + '_lp_total_pool_usd').text(lpTotalPoolBalanceUsd);
+function bindViewZrcTokenLpTotalPoolBalanceFiat(lpTotalPoolBalanceFiat, ticker) {
+    $('#' + ticker + '_lp_total_pool_fiat').text(lpTotalPoolBalanceFiat);
 }
 
-function bindViewZrcTokenLpBalanceUsd(lpBalanceUsd, ticker) {
-    $('#' + ticker + '_lp_balance_usd').text(lpBalanceUsd);
+function bindViewZrcTokenLpBalanceFiat(lpBalanceFiat, ticker) {
+    $('#' + ticker + '_lp_balance_fiat').text(lpBalanceFiat);
 }
 
 function bindViewTotalLpBalanceZil(totalLpBalanceZil) {
     $('#lp_balance_zil').text(totalLpBalanceZil);
 }
 
-function bindViewTotalLpBalanceUsd(totalLpBalanceUsd) {
-    $('#lp_balance_usd').text(totalLpBalanceUsd);
+function bindViewTotalLpBalanceFiat(totalLpBalanceFiat) {
+    $('#lp_balance_fiat').text(totalLpBalanceFiat);
 }
 
-function bindViewZilStakingBalanceUsd(zilStakingBalanceUsd, ssnAddress) {
-    $('#' + ssnAddress + '_zil_staking_balance_usd').text(zilStakingBalanceUsd);
+function bindViewZilStakingBalanceFiat(zilStakingBalanceFiat, ssnAddress) {
+    $('#' + ssnAddress + '_zil_staking_balance_fiat').text(zilStakingBalanceFiat);
 }
 
-function bindViewZilStakingWithdrawalPendingBalanceUsd(zilStakingWithdrawalBalanceUsd) {
-    $('#zil_staking_withdrawal_pending_balance_usd').text(zilStakingWithdrawalBalanceUsd);
+function bindViewZilStakingWithdrawalPendingBalanceFiat(zilStakingWithdrawalBalanceFiat) {
+    $('#zil_staking_withdrawal_pending_balance_fiat').text(zilStakingWithdrawalBalanceFiat);
 }
 
 function bindViewCarbonStakingBalanceZil(carbonStakingBalanceZil) {
     $('#carbon_staking_balance_zil').text(carbonStakingBalanceZil);
 }
 
-function bindViewCarbonStakingBalanceUsd(carbonStakingBalanceUsd) {
-    $('#carbon_staking_balance_usd').text(carbonStakingBalanceUsd);
+function bindViewCarbonStakingBalanceFiat(carbonStakingBalanceFiat) {
+    $('#carbon_staking_balance_fiat').text(carbonStakingBalanceFiat);
 }
 
 function bindViewTotalStakingBalanceZil(totalStakingBalanceZil) {
     $('#staking_balance_zil').text(totalStakingBalanceZil);
 }
 
-function bindViewTotalStakingBalanceUsd(totalStakingBalanceUsd) {
-    $('#staking_balance_usd').text(totalStakingBalanceUsd);
+function bindViewTotalStakingBalanceFiat(totalStakingBalanceFiat) {
+    $('#staking_balance_fiat').text(totalStakingBalanceFiat);
 }
 
 function bindViewTotalNetWorthZil(totalNetWorthZil) {
     $('#net_worth_zil').text(totalNetWorthZil);
 }
 
-function bindViewTotalNetWorthUsd(totalNetWorthUsd) {
-    $('#net_worth_usd').text(totalNetWorthUsd);
+function bindViewTotalNetWorthFiat(totalNetWorthFiat) {
+    $('#net_worth_fiat').text(totalNetWorthFiat);
 }
 
-function bindViewTotalRewardAllLpUsd(totalAllLpRewardUsd) {
-    $('#total_all_lp_reward_next_epoch_usd').text(totalAllLpRewardUsd);
+function bindViewTotalRewardAllLpFiat(totalAllLpRewardFiat) {
+    $('#total_all_lp_reward_next_epoch_fiat').text(totalAllLpRewardFiat);
 }
 
 /**
@@ -349,10 +349,10 @@ if (typeof exports !== 'undefined') {
     exports.bindViewMainContainer = bindViewMainContainer;
     exports.resetMainContainerContent = resetMainContainerContent;
 
-    exports.bindViewZilPriceInUsd = bindViewZilPriceInUsd;
+    exports.bindViewZilPriceInFiat = bindViewZilPriceInFiat;
     exports.bindViewZilBalance = bindViewZilBalance;
     exports.bindViewZrcTokenPriceInZil = bindViewZrcTokenPriceInZil;
-    exports.bindViewZrcTokenPriceInUsd = bindViewZrcTokenPriceInUsd;
+    exports.bindViewZrcTokenPriceInFiat = bindViewZrcTokenPriceInFiat;
     exports.bindViewZrcTokenWalletBalance = bindViewZrcTokenWalletBalance;
     exports.bindViewZrcTokenLpTotalPoolBalance = bindViewZrcTokenLpTotalPoolBalance;
     exports.bindViewZrcTokenLpBalance = bindViewZrcTokenLpBalance;
@@ -361,29 +361,29 @@ if (typeof exports !== 'undefined') {
     exports.bindViewCarbonStakingBalance = bindViewCarbonStakingBalance;
 
     exports.bindViewTotalTradeVolumeZil = bindViewTotalTradeVolumeZil;
-    exports.bindViewTotalTradeVolumeUsd = bindViewTotalTradeVolumeUsd;
+    exports.bindViewTotalTradeVolumeFiat = bindViewTotalTradeVolumeFiat;
 
     exports.bindViewZwapRewardLp = bindViewZwapRewardLp;
     exports.bindViewTotalRewardAllLpZwap = bindViewTotalRewardAllLpZwap;
     exports.bindViewLpNextEpochCounter = bindViewLpNextEpochCounter;
 
 
-    exports.bindViewZilBalanceUsd = bindViewZilBalanceUsd;
+    exports.bindViewZilBalanceFiat = bindViewZilBalanceFiat;
     exports.bindViewZrcTokenWalletBalanceZil = bindViewZrcTokenWalletBalanceZil;
-    exports.bindViewZrcTokenWalletBalanceUsd = bindViewZrcTokenWalletBalanceUsd;
+    exports.bindViewZrcTokenWalletBalanceFiat = bindViewZrcTokenWalletBalanceFiat;
     exports.bindViewTotalWalletBalanceZil = bindViewTotalWalletBalanceZil;
-    exports.bindViewTotalWalletBalanceUsd = bindViewTotalWalletBalanceUsd;
-    exports.bindViewZrcTokenLpTotalPoolBalanceUsd = bindViewZrcTokenLpTotalPoolBalanceUsd;
-    exports.bindViewZrcTokenLpBalanceUsd = bindViewZrcTokenLpBalanceUsd;
+    exports.bindViewTotalWalletBalanceFiat = bindViewTotalWalletBalanceFiat;
+    exports.bindViewZrcTokenLpTotalPoolBalanceFiat = bindViewZrcTokenLpTotalPoolBalanceFiat;
+    exports.bindViewZrcTokenLpBalanceFiat = bindViewZrcTokenLpBalanceFiat;
     exports.bindViewTotalLpBalanceZil = bindViewTotalLpBalanceZil;
-    exports.bindViewTotalLpBalanceUsd = bindViewTotalLpBalanceUsd;
-    exports.bindViewZilStakingBalanceUsd = bindViewZilStakingBalanceUsd;
-    exports.bindViewZilStakingWithdrawalPendingBalanceUsd = bindViewZilStakingWithdrawalPendingBalanceUsd;
+    exports.bindViewTotalLpBalanceFiat = bindViewTotalLpBalanceFiat;
+    exports.bindViewZilStakingBalanceFiat = bindViewZilStakingBalanceFiat;
+    exports.bindViewZilStakingWithdrawalPendingBalanceFiat = bindViewZilStakingWithdrawalPendingBalanceFiat;
     exports.bindViewCarbonStakingBalanceZil = bindViewCarbonStakingBalanceZil;
-    exports.bindViewCarbonStakingBalanceUsd = bindViewCarbonStakingBalanceUsd;
+    exports.bindViewCarbonStakingBalanceFiat = bindViewCarbonStakingBalanceFiat;
     exports.bindViewTotalStakingBalanceZil = bindViewTotalStakingBalanceZil;
-    exports.bindViewTotalStakingBalanceUsd = bindViewTotalStakingBalanceUsd;
+    exports.bindViewTotalStakingBalanceFiat = bindViewTotalStakingBalanceFiat;
     exports.bindViewTotalNetWorthZil = bindViewTotalNetWorthZil;
-    exports.bindViewTotalNetWorthUsd = bindViewTotalNetWorthUsd;
-    exports.bindViewTotalRewardAllLpUsd = bindViewTotalRewardAllLpUsd;
+    exports.bindViewTotalNetWorthFiat = bindViewTotalNetWorthFiat;
+    exports.bindViewTotalRewardAllLpFiat = bindViewTotalRewardAllLpFiat;
 }

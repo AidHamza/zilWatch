@@ -18,6 +18,7 @@ app.set('view engine', 'pug');
 app.render('index', {
     title: Constants.title,
     description: Constants.description,
+    currencyMap: Constants.currencyMap,
     zrcTokenPropertiesListMap: Constants.zrcTokenPropertiesListMap,
     ssnListMap: Constants.ssnListMap
 }, function (err, html) {

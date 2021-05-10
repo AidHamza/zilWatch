@@ -7,6 +7,7 @@ router.get('/', function (req, res, next) {
   res.render('index', {
     title: constants.title,
     description: constants.description,
+    currencyMap: constants.currencyMap,
     zrcTokenPropertiesListMap: constants.zrcTokenPropertiesListMap,
     ssnListMap: constants.ssnListMap
   });

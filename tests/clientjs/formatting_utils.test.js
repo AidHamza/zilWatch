@@ -71,7 +71,7 @@ describe('FormattingUtils', function () {
       assert.strictEqual(result, expected);
     });
 
-    it('usdString not string: null', function () {
+    it('fiatString not string: null', function () {
       let result = FormattingUtils.parseFloatFromCommafiedNumberString(9432.45);
       let expected = null;
       assert.strictEqual(result, expected);

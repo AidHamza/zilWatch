@@ -150,13 +150,13 @@ function computeZilStakingWithdrawalPendingBalanceWithRetry(account, onZilStakin
  * ===============================================================================
  */
 
-async function computeZilPriceInUsd(onZilUsdPriceLoaded) {
+async function computeZilPriceInFiat(currencyCode, onZilFiatPriceLoaded) {
     $.ajax({
         type: "GET",
-        url: "https://api.coingecko.com/api/v3/simple/price?ids=zilliqa&vs_currencies=usd",
+        url: "https://api.coingecko.com/api/v3/simple/price?ids=zilliqa&vs_currencies=" + currencyCode,
         retryLimit: MAX_RETRY,
         success: function (data) {
-            onZilUsdPriceLoaded(data.zilliqa.usd);
+            onZilFiatPriceLoaded(data.zilliqa[currencyCode]);
         },
         error: function (xhr, textStatus, errorThrown) {
             if (this.retryLimit--) {

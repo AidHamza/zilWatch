@@ -33,7 +33,7 @@
     let totalRewardZwapString = convertNumberQaToDecimalString(totalZwapRewardQa, zrcTokenPropertiesListMap['ZWAP'].decimals)
     if (totalRewardZwapString) {
         bindViewTotalRewardAllLpZwap(totalRewardZwapString);
-        refreshTotalLpRewardUsd();
+        refreshTotalLpRewardFiat();
     }
 }
 
@@ -50,11 +50,11 @@ function onLpCurrentEpochInfoLoaded(epochInfoData) {
     bindViewLpNextEpochCounter(timeDiffDuration.getUserFriendlyString());
 }
 
-function refreshTotalLpRewardUsd() {
+function refreshTotalLpRewardFiat() {
     let ticker = 'ZWAP';
 
-    let usdPrice = getNumberFromView('.zil_price_usd');
-    if (!usdPrice) {
+    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    if (!fiatPrice) {
         return;
     }
 
@@ -68,9 +68,9 @@ function refreshTotalLpRewardUsd() {
         return;
     }
 
-    let rewardBalanceUsd = (usdPrice * zrcTokenPriceInZil * rewardBalance);
-    let totalAllLpRewardUsd = commafyNumberToString(rewardBalanceUsd);
-    bindViewTotalRewardAllLpUsd(totalAllLpRewardUsd);
+    let rewardBalanceFiat = (fiatPrice * zrcTokenPriceInZil * rewardBalance);
+    let totalAllLpRewardFiat = commafyNumberToString(rewardBalanceFiat);
+    bindViewTotalRewardAllLpFiat(totalAllLpRewardFiat);
 }
 
 if (typeof exports !== 'undefined') {
@@ -79,7 +79,7 @@ if (typeof exports !== 'undefined') {
         bindViewZwapRewardLp = BindView.bindViewZwapRewardLp;
         bindViewTotalRewardAllLpZwap = BindView.bindViewTotalRewardAllLpZwap;
         bindViewLpNextEpochCounter = BindView.bindViewLpNextEpochCounter;
-        bindViewTotalRewardAllLpUsd = BindView.bindViewTotalRewardAllLpUsd
+        bindViewTotalRewardAllLpFiat = BindView.bindViewTotalRewardAllLpFiat
         getNumberFromView = BindView.getNumberFromView;
     }
 

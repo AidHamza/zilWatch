@@ -4,43 +4,43 @@
  * --------------------------------------------------------------------------------
  */
 
-function onZilUsdPriceLoaded(zilPriceInUsd) {
-    let zilPriceInUsdFloat = parseFloat(zilPriceInUsd);
-    if (!zilPriceInUsdFloat) {
+function onZilFiatPriceLoaded(zilPriceInFiat) {
+    let zilPriceInFiatFloat = parseFloat(zilPriceInFiat);
+    if (!zilPriceInFiatFloat) {
         return;
     }
-    bindViewZilPriceInUsd(zilPriceInUsdFloat.toFixed(4));
+    bindViewZilPriceInFiat(zilPriceInFiatFloat.toFixed(4));
 
-    refreshZrcTokenPriceUsd();
+    refreshZrcTokenPriceFiat();
 
     // Wallet Balance
-    refreshZilWalletBalanceUsd();
+    refreshZilWalletBalanceFiat();
     for (let ticker in zrcTokenPropertiesListMap) {
-        refreshZrcTokenWalletBalanceZilUsd(ticker);
+        refreshZrcTokenWalletBalanceZilFiat(ticker);
     }
-    refreshTotalWalletBalanceZilUsd();
+    refreshTotalWalletBalanceZilFiat();
 
     // Lp balance
     for (let ticker in zrcTokenPropertiesListMap) {
-        refreshTotalTradeVolumeUsd(ticker);
-        refreshZrcTokenLpTotalPoolBalanceUsd(ticker);
-        refreshZrcTokenLpBalanceUsd(ticker);
+        refreshTotalTradeVolumeFiat(ticker);
+        refreshZrcTokenLpTotalPoolBalanceFiat(ticker);
+        refreshZrcTokenLpBalanceFiat(ticker);
     }
-    refreshTotalLpBalanceZilUsd();
+    refreshTotalLpBalanceZilFiat();
 
     // Lp reward
-    refreshTotalLpRewardUsd();
+    refreshTotalLpRewardFiat();
 
     // ZIL staking
     for (let ssnAddress in ssnListMap) {
-        refreshZilStakingUsd(ssnAddress);
+        refreshZilStakingFiat(ssnAddress);
     }
-    refreshZilStakingWithdrawalPendingUsd();
-    refreshCarbonStakingZilUsd();
-    refreshTotalStakingZilUsd();
+    refreshZilStakingWithdrawalPendingFiat();
+    refreshCarbonStakingZilFiat();
+    refreshTotalStakingZilFiat();
 
     // Net worth
-    refreshNetWorthZilUsd();
+    refreshNetWorthZilFiat();
 }
 
 function onZilWalletBalanceLoaded(zilBalanceQa) {
@@ -51,11 +51,11 @@ function onZilWalletBalanceLoaded(zilBalanceQa) {
     bindViewZilBalance(userFriendlyZilBalance);
 
     // Wallet Balance
-    refreshZilWalletBalanceUsd();
-    refreshTotalWalletBalanceZilUsd();
+    refreshZilWalletBalanceFiat();
+    refreshTotalWalletBalanceZilFiat();
 
     // Net worth
-    refreshNetWorthZilUsd();
+    refreshNetWorthZilFiat();
 }
 
 function onZilswapDexStatusLoaded(dataObject, account = null) {
@@ -86,27 +86,27 @@ function onZrcTokenPriceInZilLoaded(zrcTokenPriceInZilNumber, ticker) {
     }
     bindViewZrcTokenPriceInZil(publicUserFriendlyZrcTokenPriceInZil, userFriendlyZrcTokenPriceInZil, ticker)
 
-    refreshZrcTokenPriceUsd()
+    refreshZrcTokenPriceFiat()
 
     // Wallet Balance
-    refreshZrcTokenWalletBalanceZilUsd(ticker);
-    refreshTotalWalletBalanceZilUsd();
+    refreshZrcTokenWalletBalanceZilFiat(ticker);
+    refreshTotalWalletBalanceZilFiat();
 
     // Lp balance
-    refreshZrcTokenLpBalanceUsd(ticker)
-    refreshTotalLpBalanceZilUsd();
+    refreshZrcTokenLpBalanceFiat(ticker)
+    refreshTotalLpBalanceZilFiat();
 
     // Lp reward
     if (ticker === 'ZWAP') {
-        refreshTotalLpRewardUsd();
+        refreshTotalLpRewardFiat();
     } else if (ticker === 'CARB') {
         // Staking Balance
-        refreshCarbonStakingZilUsd();
-        refreshTotalStakingZilUsd();
+        refreshCarbonStakingZilFiat();
+        refreshTotalStakingZilFiat();
     }
 
     // Net worth
-    refreshNetWorthZilUsd();
+    refreshNetWorthZilFiat();
 }
 
 function onZrcTokenWalletBalanceLoaded(zrcTokenBalanceNumberQa, zrcTokenProperties) {
@@ -117,15 +117,15 @@ function onZrcTokenWalletBalanceLoaded(zrcTokenBalanceNumberQa, zrcTokenProperti
     bindViewZrcTokenWalletBalance(userFriendlyZrcTokenBalanceString, zrcTokenProperties.ticker);
 
     // Wallet Balance
-    refreshZrcTokenWalletBalanceZilUsd(zrcTokenProperties.ticker);
-    refreshTotalWalletBalanceZilUsd();
+    refreshZrcTokenWalletBalanceZilFiat(zrcTokenProperties.ticker);
+    refreshTotalWalletBalanceZilFiat();
 
     // Net worth
-    refreshNetWorthZilUsd();
+    refreshNetWorthZilFiat();
 }
 
 function onTotalLpRewardNextEpochLoaded() {
-    refreshTotalLpRewardUsd();
+    refreshTotalLpRewardFiat();
 }
 
 function onZrcTokenLpBalanceLoaded(walletZilswapSingleTokenLpStatus, ticker) {
@@ -139,7 +139,7 @@ function onZrcTokenLpBalanceLoaded(walletZilswapSingleTokenLpStatus, ticker) {
     bindViewZrcTokenLpTotalPoolBalance(totalPoolZilAmount, totalPoolZrcTokenAmount, ticker);
 
     // Refresh USD
-    refreshZrcTokenLpTotalPoolBalanceUsd(ticker)
+    refreshZrcTokenLpTotalPoolBalanceFiat(ticker)
 
     let poolSharePercent = parseFloat((walletZilswapSingleTokenLpStatus.shareRatio) * 100).toPrecision(3);
     let zilAmount = convertNumberQaToDecimalString(walletZilswapSingleTokenLpStatus.zilAmount, /* decimals= */ 0);
@@ -151,11 +151,11 @@ function onZrcTokenLpBalanceLoaded(walletZilswapSingleTokenLpStatus, ticker) {
     bindViewZrcTokenLpBalance(poolSharePercent, zilAmount, zrcTokenAmount, ticker);
 
     // Lp balance
-    refreshZrcTokenLpBalanceUsd(ticker)
-    refreshTotalLpBalanceZilUsd();
+    refreshZrcTokenLpBalanceFiat(ticker)
+    refreshTotalLpBalanceZilFiat();
 
     // Net worth
-    refreshNetWorthZilUsd();
+    refreshNetWorthZilFiat();
 }
 
 function onZilStakingBalanceLoaded(zilBalanceQa, ssnAddress) {
@@ -166,11 +166,11 @@ function onZilStakingBalanceLoaded(zilBalanceQa, ssnAddress) {
     bindViewZilStakingBalance(userFriendlyZilStakingBalanceString, ssnAddress);
 
     // Staking balance
-    refreshZilStakingUsd(ssnAddress)
-    refreshTotalStakingZilUsd();
+    refreshZilStakingFiat(ssnAddress)
+    refreshTotalStakingZilFiat();
 
     // Net worth
-    refreshNetWorthZilUsd();
+    refreshNetWorthZilFiat();
 }
 
 function onZilStakingWithdrawalPendingBalanceLoaded(blockNumberToBalanceMap) {
@@ -186,11 +186,11 @@ function onZilStakingWithdrawalPendingBalanceLoaded(blockNumberToBalanceMap) {
     bindViewZilStakingWithdrawalPendingBalance(userFriendlyZilWithdrawalString);
 
     // Staking balance
-    refreshZilStakingWithdrawalPendingUsd();
-    refreshTotalStakingZilUsd();
+    refreshZilStakingWithdrawalPendingFiat();
+    refreshTotalStakingZilFiat();
 
     // Net worth
-    refreshNetWorthZilUsd();
+    refreshNetWorthZilFiat();
 }
 
 function onCarbonStakingBalanceLoaded(carbonBalanceQa) {
@@ -201,11 +201,11 @@ function onCarbonStakingBalanceLoaded(carbonBalanceQa) {
     bindViewCarbonStakingBalance(userFriendlyCarbonStakingBalanceString);
 
     // Staking balance
-    refreshCarbonStakingZilUsd();
-    refreshTotalStakingZilUsd();
+    refreshCarbonStakingZilFiat();
+    refreshTotalStakingZilFiat();
 
     // Net worth
-    refreshNetWorthZilUsd();
+    refreshNetWorthZilFiat();
 }
 
 function onLpTradeVolumeLoaded(poolVolumeArray) {
@@ -229,7 +229,7 @@ function onLpTradeVolumeLoaded(poolVolumeArray) {
             let totalVolumeZilAmountString = convertNumberQaToDecimalString(totalVolumeZilAmount, /* decimals= */ 12);
             bindViewTotalTradeVolumeZil(totalVolumeZilAmountString, ticker);
 
-            refreshTotalTradeVolumeUsd(ticker);
+            refreshTotalTradeVolumeFiat(ticker);
         }
     }
 }
@@ -238,9 +238,9 @@ function onLpTradeVolumeLoaded(poolVolumeArray) {
  * --------------------------------------------------------------------------------
  */
 
-function refreshZilWalletBalanceUsd() {
-    let usdPrice = getNumberFromView('.zil_price_usd');
-    if (!usdPrice) {
+function refreshZilWalletBalanceFiat() {
+    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    if (!fiatPrice) {
         return;
     }
 
@@ -249,13 +249,13 @@ function refreshZilWalletBalanceUsd() {
         return;
     }
 
-    let zilBalanceUsd = (usdPrice * zilBalance);
-    bindViewZilBalanceUsd(commafyNumberToString(zilBalanceUsd));
+    let zilBalanceFiat = (fiatPrice * zilBalance);
+    bindViewZilBalanceFiat(commafyNumberToString(zilBalanceFiat));
 }
 
-function refreshZrcTokenPriceUsd() {
-    let usdPrice = getNumberFromView('.zil_price_usd');
-    if (!usdPrice) {
+function refreshZrcTokenPriceFiat() {
+    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    if (!fiatPrice) {
         return;
     }
 
@@ -264,13 +264,13 @@ function refreshZrcTokenPriceUsd() {
         if (!zrcTokenPriceInZil) {
             return;
         }
-        let zrcTokenPriceInUsd = 1.0 * usdPrice * zrcTokenPriceInZil;
-        let zrcTokenPriceInUsdString = commafyNumberToString(zrcTokenPriceInUsd, /* decimals= */ 2);
-        bindViewZrcTokenPriceInUsd(zrcTokenPriceInUsdString, ticker);
+        let zrcTokenPriceInFiat = 1.0 * fiatPrice * zrcTokenPriceInZil;
+        let zrcTokenPriceInFiatString = commafyNumberToString(zrcTokenPriceInFiat, /* decimals= */ 2);
+        bindViewZrcTokenPriceInFiat(zrcTokenPriceInFiatString, ticker);
     }
 }
 
-function refreshZrcTokenWalletBalanceZilUsd(ticker) {
+function refreshZrcTokenWalletBalanceZilFiat(ticker) {
 
     let zrcTokenPriceInZil = getNumberFromView('#' + ticker + '_price_zil');
     if (!zrcTokenPriceInZil) {
@@ -286,17 +286,17 @@ function refreshZrcTokenWalletBalanceZilUsd(ticker) {
     let zrcTokenBalanceZilString = convertNumberQaToDecimalString(zrcTokenBalanceZil, /* decimals= */ 0);
     bindViewZrcTokenWalletBalanceZil(zrcTokenBalanceZilString, ticker);
 
-    let usdPrice = getNumberFromView('.zil_price_usd');
-    if (!usdPrice) {
+    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    if (!fiatPrice) {
         return;
     }
 
-    let zrcTokenBalanceUsd = 1.0 * usdPrice * zrcTokenBalanceZil;
-    let zrcTokenBalanceUsdString = commafyNumberToString(zrcTokenBalanceUsd);
-    bindViewZrcTokenWalletBalanceUsd(zrcTokenBalanceUsdString, ticker);
+    let zrcTokenBalanceFiat = 1.0 * fiatPrice * zrcTokenBalanceZil;
+    let zrcTokenBalanceFiatString = commafyNumberToString(zrcTokenBalanceFiat);
+    bindViewZrcTokenWalletBalanceFiat(zrcTokenBalanceFiatString, ticker);
 }
 
-function refreshTotalWalletBalanceZilUsd() {
+function refreshTotalWalletBalanceZilFiat() {
     // Sum balance in ZIL.
     let totalZil = 0;
 
@@ -315,21 +315,21 @@ function refreshTotalWalletBalanceZilUsd() {
     let totalWalletBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
     bindViewTotalWalletBalanceZil(totalWalletBalanceZil);
 
-    let usdPrice = getNumberFromView('.zil_price_usd');
-    if (!usdPrice) {
+    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    if (!fiatPrice) {
         return;
     }
 
     // Sum balance in USD
-    let totalUsd = 1.0 * totalZil * usdPrice;
-    let totalWalletBalanceUsd = commafyNumberToString(totalUsd);
-    bindViewTotalWalletBalanceUsd(totalWalletBalanceUsd);
+    let totalFiat = 1.0 * totalZil * fiatPrice;
+    let totalWalletBalanceFiat = commafyNumberToString(totalFiat);
+    bindViewTotalWalletBalanceFiat(totalWalletBalanceFiat);
 }
 
-function refreshZrcTokenLpTotalPoolBalanceUsd(ticker) {
+function refreshZrcTokenLpTotalPoolBalanceFiat(ticker) {
 
-    let usdPrice = getNumberFromView('.zil_price_usd');
-    if (!usdPrice) {
+    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    if (!fiatPrice) {
         return;
     }
 
@@ -340,15 +340,15 @@ function refreshZrcTokenLpTotalPoolBalanceUsd(ticker) {
 
     // total worth is always times 2 (e.g., ZRC2-ZIL pair always have 50:50 value).
     // For now ZilSwap only support 50-50 weight pair.
-    let lpTotalPoolBalanceUsd = 1.0 * usdPrice * (zilLpBalance * 2.0);
-    let lpTotalPoolBalanceUsdString = commafyNumberToString(lpTotalPoolBalanceUsd, /* decimals= */ 0);
-    bindViewZrcTokenLpTotalPoolBalanceUsd(lpTotalPoolBalanceUsdString, ticker);
+    let lpTotalPoolBalanceFiat = 1.0 * fiatPrice * (zilLpBalance * 2.0);
+    let lpTotalPoolBalanceFiatString = commafyNumberToString(lpTotalPoolBalanceFiat, /* decimals= */ 0);
+    bindViewZrcTokenLpTotalPoolBalanceFiat(lpTotalPoolBalanceFiatString, ticker);
 }
 
-function refreshZrcTokenLpBalanceUsd(ticker) {
+function refreshZrcTokenLpBalanceFiat(ticker) {
 
-    let usdPrice = getNumberFromView('.zil_price_usd');
-    if (!usdPrice) {
+    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    if (!fiatPrice) {
         return;
     }
 
@@ -359,13 +359,13 @@ function refreshZrcTokenLpBalanceUsd(ticker) {
 
     // total worth is always times 2 (e.g., ZRC2-ZIL pair always have 50:50 value).
     // For now ZilSwap only support 50-50 weight pair.
-    let lpBalanceUsd = 1.0 * usdPrice * (zilLpBalance * 2.0);
-    let lpBalanceUsdString = commafyNumberToString(lpBalanceUsd);
-    bindViewZrcTokenLpBalanceUsd(lpBalanceUsdString, ticker);
+    let lpBalanceFiat = 1.0 * fiatPrice * (zilLpBalance * 2.0);
+    let lpBalanceFiatString = commafyNumberToString(lpBalanceFiat);
+    bindViewZrcTokenLpBalanceFiat(lpBalanceFiatString, ticker);
 }
 
 
-function refreshTotalLpBalanceZilUsd() {
+function refreshTotalLpBalanceZilFiat() {
     // Sum balance in ZIL.
     let totalZil = 0;
     for (let ticker in zrcTokenPropertiesListMap) {
@@ -380,18 +380,18 @@ function refreshTotalLpBalanceZilUsd() {
     bindViewTotalLpBalanceZil(totalLpBalanceZil);
 
     // Sum balance in USD.
-    let usdPrice = getNumberFromView('.zil_price_usd');
-    if (!usdPrice) {
+    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    if (!fiatPrice) {
         return;
     }
-    let totalUsd = 1.0 * totalZil * usdPrice;
-    let totalLpBalanceUsd = commafyNumberToString(totalUsd);
-    bindViewTotalLpBalanceUsd(totalLpBalanceUsd);
+    let totalFiat = 1.0 * totalZil * fiatPrice;
+    let totalLpBalanceFiat = commafyNumberToString(totalFiat);
+    bindViewTotalLpBalanceFiat(totalLpBalanceFiat);
 }
 
-function refreshZilStakingUsd(ssnAddress) {
-    let usdPrice = getNumberFromView('.zil_price_usd');
-    if (!usdPrice) {
+function refreshZilStakingFiat(ssnAddress) {
+    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    if (!fiatPrice) {
         return;
     }
 
@@ -400,14 +400,14 @@ function refreshZilStakingUsd(ssnAddress) {
         return;
     }
 
-    let zilStakingBalanceUsd = 1.0 * usdPrice * zilStakingBalance;
-    let zilStakingBalanceUsdString = commafyNumberToString(zilStakingBalanceUsd);
-    bindViewZilStakingBalanceUsd(zilStakingBalanceUsdString, ssnAddress);
+    let zilStakingBalanceFiat = 1.0 * fiatPrice * zilStakingBalance;
+    let zilStakingBalanceFiatString = commafyNumberToString(zilStakingBalanceFiat);
+    bindViewZilStakingBalanceFiat(zilStakingBalanceFiatString, ssnAddress);
 }
 
-function refreshZilStakingWithdrawalPendingUsd() {
-    let usdPrice = getNumberFromView('.zil_price_usd');
-    if (!usdPrice) {
+function refreshZilStakingWithdrawalPendingFiat() {
+    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    if (!fiatPrice) {
         return;
     }
 
@@ -416,12 +416,12 @@ function refreshZilStakingWithdrawalPendingUsd() {
         return;
     }
 
-    let zilStakingWithdrawalBalanceUsd = 1.0 * usdPrice * zilStakingWithdrawalBalance;
-    let zilStakingWithdrawalBalanceUsdString = commafyNumberToString(zilStakingWithdrawalBalanceUsd);
-    bindViewZilStakingWithdrawalPendingBalanceUsd(zilStakingWithdrawalBalanceUsdString);
+    let zilStakingWithdrawalBalanceFiat = 1.0 * fiatPrice * zilStakingWithdrawalBalance;
+    let zilStakingWithdrawalBalanceFiatString = commafyNumberToString(zilStakingWithdrawalBalanceFiat);
+    bindViewZilStakingWithdrawalPendingBalanceFiat(zilStakingWithdrawalBalanceFiatString);
 }
 
-function refreshCarbonStakingZilUsd() {
+function refreshCarbonStakingZilFiat() {
 
     let carbonPriceInZil = getNumberFromView('#' + zrcTokenPropertiesListMap['CARB'].ticker + '_price_zil');
     if (!carbonPriceInZil) {
@@ -437,17 +437,17 @@ function refreshCarbonStakingZilUsd() {
     let carbonStakingBalanceZilString = convertNumberQaToDecimalString(carbonStakingBalanceZil, /* decimals= */ 0);
     bindViewCarbonStakingBalanceZil(carbonStakingBalanceZilString);
 
-    let usdPrice = getNumberFromView('.zil_price_usd');
-    if (!usdPrice) {
+    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    if (!fiatPrice) {
         return;
     }
 
-    let carbonStakingBalanceUsd = 1.0 * usdPrice * carbonStakingBalanceZil;
-    let carbonStakingBalanceUsdString = commafyNumberToString(carbonStakingBalanceUsd);
-    bindViewCarbonStakingBalanceUsd(carbonStakingBalanceUsdString);
+    let carbonStakingBalanceFiat = 1.0 * fiatPrice * carbonStakingBalanceZil;
+    let carbonStakingBalanceFiatString = commafyNumberToString(carbonStakingBalanceFiat);
+    bindViewCarbonStakingBalanceFiat(carbonStakingBalanceFiatString);
 }
 
-function refreshTotalStakingZilUsd() {
+function refreshTotalStakingZilFiat() {
     // ZIL staking sum
     let totalZil = 0;
     for (let ssnAddress in ssnListMap) {
@@ -473,16 +473,16 @@ function refreshTotalStakingZilUsd() {
     bindViewTotalStakingBalanceZil(totalStakingBalanceZil);
 
     // Sum balance in USD.
-    let usdPrice = getNumberFromView('.zil_price_usd');
-    if (!usdPrice) {
+    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    if (!fiatPrice) {
         return;
     }
-    let totalUsd = 1.0 * totalZil * usdPrice;
-    let totalStakingBalanceUsd = commafyNumberToString(totalUsd);
-    bindViewTotalStakingBalanceUsd(totalStakingBalanceUsd);
+    let totalFiat = 1.0 * totalZil * fiatPrice;
+    let totalStakingBalanceFiat = commafyNumberToString(totalFiat);
+    bindViewTotalStakingBalanceFiat(totalStakingBalanceFiat);
 }
 
-function refreshNetWorthZilUsd() {
+function refreshNetWorthZilFiat() {
     // Sum balance in ZIL.
     let totalZil = 0;
 
@@ -504,22 +504,22 @@ function refreshNetWorthZilUsd() {
     bindViewTotalNetWorthZil(totalNetWorthZil);
 
     // Sum balance in USD.
-    let usdPrice = getNumberFromView('.zil_price_usd');
-    if (!usdPrice) {
+    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    if (!fiatPrice) {
         return;
     }
-    let totalUsd = 1.0 * totalZil * usdPrice;
-    let totalNetWorthUsd = commafyNumberToString(totalUsd);
-    bindViewTotalNetWorthUsd(totalNetWorthUsd);
+    let totalFiat = 1.0 * totalZil * fiatPrice;
+    let totalNetWorthFiat = commafyNumberToString(totalFiat);
+    bindViewTotalNetWorthFiat(totalNetWorthFiat);
 }
 
 /**
  * --------------------------------------------------------------------------------
  */
 
-function refreshTotalTradeVolumeUsd(ticker) {
-    let usdPrice = getNumberFromView('.zil_price_usd');
-    if (!usdPrice) {
+function refreshTotalTradeVolumeFiat(ticker) {
+    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    if (!fiatPrice) {
         return;
     }
 
@@ -528,7 +528,7 @@ function refreshTotalTradeVolumeUsd(ticker) {
         return;
     }
 
-    let totalVolumeUsd = (1.0 * usdPrice * totalVolumeZil);
-    let totalVolumeUsdString = commafyNumberToString(totalVolumeUsd, /* decimals= */ 0);
-    bindViewTotalTradeVolumeUsd(totalVolumeUsdString, ticker);
+    let totalVolumeFiat = (1.0 * fiatPrice * totalVolumeZil);
+    let totalVolumeFiatString = commafyNumberToString(totalVolumeFiat, /* decimals= */ 0);
+    bindViewTotalTradeVolumeFiat(totalVolumeFiatString, ticker);
 }

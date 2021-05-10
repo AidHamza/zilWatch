@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
     }
 
     computeZrcTokensPriceInZil(onZilswapDexStatusLoaded);
-    computeZilPriceInUsd(onZilUsdPriceLoaded);
+    computeZilPriceInFiat("usd", onZilFiatPriceLoaded);
     compute24hLpTradeVolume(onLpTradeVolumeLoaded);
 
     let zilpayStatus = checkZilpayStatus();
@@ -86,7 +86,7 @@ function refreshMainContentData(account) {
     resetMainContainerContent();
 
     // (4) Get ZIL price in USD, async.
-    computeZilPriceInUsd(onZilUsdPriceLoaded);
+    computeZilPriceInFiat("usd", onZilFiatPriceLoaded);
     compute24hLpTradeVolume(onLpTradeVolumeLoaded);
 
     // (5) Get ZIL balance, async.
