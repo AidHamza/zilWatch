@@ -10,9 +10,8 @@ block content
     button(id='toggle_theme_btn' class='btn btn-info my-2 my-sm-0 ml-auto mr-2')
       i(id='toggle_theme_icon' class='fa fa-sun-o')
     
-    button(id='wallet_refresh' class='btn btn-info my-2 my-sm-0 mr-2' style='display: none;')
-      i(class='fa fa-refresh mr-2')
-      = 'Refresh'
+    button(id='wallet_refresh' class='btn btn-info my-2 my-sm-0 mr-2')
+      i(id='wallet_refresh_icon' class='fa fa-refresh')
     button(id='wallet_address' class='btn btn-outline-info my-2 my-sm-0' style='display: none;')
     button(id='wallet_connect' class='btn btn-info my-2 my-sm-0')= 'Connect'
 
@@ -32,8 +31,8 @@ block content
       div(class='col-lg-6' style='padding: 0;')
         div(class='box-public')
 
-          div(class='card-header' data-toggle='collapse' href='#price_content_container')
-            a(class='card-title font-weight-bold')= 'Token Price'
+          div(id='price_content_header_container' class='card-header' data-toggle='collapse' href='#price_content_container')
+            a(id='price_content_header_title' class='card-title font-weight-bold')= 'Token Price'
           div(id='price_content_container' class='card-body collapse show')
             table(class='table table-sm table-borderless' width='100%')
               tbody
@@ -71,8 +70,8 @@ block content
       div(class='col-lg-6' style='padding: 0;')
 
         div(class='box-public')
-          div(class='card-header' data-toggle='collapse' href='#lp_status_content_container')
-            a(class='card-title font-weight-bold')= 'Liquidity Pool Status'
+          div(id='lp_status_content_header_container' class='card-header' data-toggle='collapse' href='#lp_status_content_container')
+            a(id='lp_status_content_header_title' class='card-title font-weight-bold')= 'Liquidity Pool Status'
           div(id='lp_status_content_container' class='card-body collapse show')
             table(class='table table-sm table-borderless' width='100%')
               tbody
