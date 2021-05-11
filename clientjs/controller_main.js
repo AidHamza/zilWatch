@@ -4,14 +4,11 @@
  * --------------------------------------------------------------------------------
  */
 
-function onZilFiatPriceLoaded(currencyCode, zilPriceInFiatMap) {
-    if (!zilPriceInFiatMap) {
+function onZilFiatPriceLoaded(currencyCode, zilPriceCoingeckoDataObject) {
+    if (!zilPriceCoingeckoDataObject) {
         return;
     }
-    // Put in cache
-    zilPriceInMultiFiatMap = zilPriceInFiatMap;
-
-    let zilPriceInFiatFloat = parseFloat(zilPriceInFiatMap[currencyCode]);
+    let zilPriceInFiatFloat = parseFloat(zilPriceCoingeckoDataObject.zilliqa[currencyCode]);
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -67,8 +64,6 @@ function onZilWalletBalanceLoaded(zilBalanceQa) {
 }
 
 function onZilswapDexStatusLoaded(dataObject, account = null) {
-    zilswapDexSmartContractStateData = dataObject;
-    
     for (const key in zrcTokenPropertiesListMap) {
         let zrcTokenProperties = zrcTokenPropertiesListMap[key];
         let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();

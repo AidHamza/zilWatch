@@ -37,6 +37,7 @@ async function computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded
 
 function computeZrcTokensPriceAndZilswapLpBalanceWithRetry(onZilswapDexStatusLoaded, account, retryRemaining) {
     if (zilswapDexSmartContractStateData) {
+        // Use cache if available.
         onZilswapDexStatusLoaded(zilswapDexSmartContractStateData, account);
         return;
     }
@@ -155,8 +156,9 @@ function computeZilStakingWithdrawalPendingBalanceWithRetry(account, onZilStakin
  */
 
 async function computeZilPriceInFiat(currencyCode, onZilFiatPriceLoaded) {
-    if (zilPriceInMultiFiatMap) {
-        onZilFiatPriceLoaded(currencyCode, zilPriceInMultiFiatMap);
+    if (zilPriceCoingeckoData) {
+        // Use cache if available.
+        onZilFiatPriceLoaded(currencyCode, zilPriceCoingeckoData);
         return;
     }
 
@@ -170,7 +172,7 @@ async function computeZilPriceInFiat(currencyCode, onZilFiatPriceLoaded) {
         url: "https://api.coingecko.com/api/v3/simple/price?ids=zilliqa&vs_currencies=" + allCurrenciesCode,
         retryLimit: MAX_RETRY,
         success: function (data) {
-            onZilFiatPriceLoaded(currencyCode, data.zilliqa);
+            onZilFiatPriceLoaded(currencyCode, data);
         },
         error: function (xhr, textStatus, errorThrown) {
             if (this.retryLimit--) {
@@ -242,9 +244,11 @@ async function compute24hLpTradeVolume(onLpTradeVolumeLoaded) {
 
 async function computeZrcTokensPriceInZil(onZilswapDexStatusLoaded) {
     if (zilswapDexSmartContractStateData) {
+        // Use cache if available.
         onZilswapDexStatusLoaded(zilswapDexSmartContractStateData);
         return;
     }
+
     $.ajax({
         type: "POST",
         url: "https://api.zilliqa.com/",

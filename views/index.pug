@@ -348,6 +348,7 @@ block script
     var currencyMap = !{JSON.stringify(currencyMap)};
     var ssnListMap = !{JSON.stringify(ssnListMap)};
     var zrcTokenPropertiesListMap = !{JSON.stringify(zrcTokenPropertiesListMap)};
-    // Cache for zilPrice to multiple currencies map
-    var zilPriceInMultiFiatMap = null;
-    var zilswapDexSmartContractStateData = null;
+    // Cache from redis (if any). If there are no cache, we will fallback to RPC network call.
+    var zilPriceCoingeckoData = !{JSON.stringify(zilPriceCoingecko)};
+    var zilswapDexSmartContractStateData = !{JSON.stringify(zilswapDexSmartContractState)};
+
