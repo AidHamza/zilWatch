@@ -2,7 +2,7 @@
 // Constants in the server mainly to pass to router to render main page.
 
 const title = 'zilWatch';
-const description = 'zilWatch.io is a smart dashboard to track Zilliqa and ZRC-2 tokens prices and balances in your wallet, liqudity pool farms, and staked tokens.';
+const description = 'View your Zilliqa (ZIL) wallet balances and current ZIL and ZRC-2 prices today in an all-in-one smart dashboard.';
 
 const currencyMap = {
   "usd": "$",
