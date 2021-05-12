@@ -203,6 +203,12 @@ async function computeTotalLpRewardNextEpoch(account, onLpRewardNextEpochLoaded)
 }
 
 async function computeLpEpochInfo(onLpCurrentEpochInfoLoaded) {
+    if (zilswapDexEpochInfoData) {
+        // Use cache if available.
+        onLpCurrentEpochInfoLoaded(zilswapDexEpochInfoData);
+        return;
+    }
+
     $.ajax({
         type: "GET",
         url: "https://stats.zilswap.org/epoch/info",
@@ -221,6 +227,12 @@ async function computeLpEpochInfo(onLpCurrentEpochInfoLoaded) {
 }
 
 async function compute24hLpTradeVolume(onLpTradeVolumeLoaded) {
+    if (zilswapDex24hTradeVolumeData) {
+        // Use cache if available.
+        onLpTradeVolumeLoaded(zilswapDex24hTradeVolumeData);
+        return;
+    }
+
     let currentDate = new Date();
     let currentTimeSeconds = currentDate.getTime() / 1000;
     let oneDayAgoSeconds =  currentTimeSeconds - (60 * 60 * 24);
