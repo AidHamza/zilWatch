@@ -95,6 +95,8 @@ function collapsePublicCards() {
 }
 
 function refreshMainContentData(account) {
+    let walletAddressBase16 = account.base16.toLowerCase();
+
     // (1) Collapse all public cards.
     collapsePublicCards();
 
@@ -112,7 +114,7 @@ function refreshMainContentData(account) {
 
     // (6) Get ZRC-2 tokens price & ZRC-2 tokens LP balances in Zilswap, async.
     // Do this together because they are one API call, using the same data.
-    computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded, account);
+    computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded, walletAddressBase16);
 
     // (7) Get ZRC-2 tokens balances, async.
     computeZrcTokensBalance(account, zrcTokenPropertiesListMap, onZrcTokenWalletBalanceLoaded);

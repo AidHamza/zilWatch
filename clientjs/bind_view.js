@@ -100,14 +100,7 @@ function resetMainContainerContent() {
 
     for (let ticker in zrcTokenPropertiesListMap) {
         $('#' + ticker + '_container').hide();
-        $('#' + ticker + '_price_zil').text('Loading...');
-        $('#' + ticker + '_price_fiat').text('Loading...');
         $('#' + ticker + '_balance').text('Loading...');
-
-        $('#public_' + ticker + '_price_zil').text('Loading...');
-        $('#' + ticker + '_lp_total_pool_zil').text('Loading...');
-        $('#' + ticker + '_lp_total_pool_zrc').text('Loading...');
-        $('#' + ticker + '_lp_total_pool_fiat').text('Loading...');
 
         $('#' + ticker + '_lp_container').hide();
         $('#' + ticker + '_lp_pool_share_percent').text('Loading...');
@@ -163,13 +156,15 @@ function bindViewZilBalance(zilBalance) {
     $('#zil_balance').text(zilBalance);
 }
 
+// Exception, no need to reset
 function bindViewZrcTokenPriceInZil(publicZrcTokenPriceInZil, zrcTokenPriceInZil, ticker) {
     $('#public_' + ticker + '_price_zil').text(publicZrcTokenPriceInZil);
     $('#' + ticker + '_price_zil').text(zrcTokenPriceInZil);
 }
 
+// Exception, no need to reset
 function bindViewZrcTokenPriceInFiat(zrcTokenPriceInFiat, ticker) {
-    $('#' + ticker + '_price_fiat').text(zrcTokenPriceInFiat);
+    $('#public_' + ticker + '_price_fiat').text(zrcTokenPriceInFiat);
 }
 
 function bindViewZrcTokenWalletBalance(zrcTokenBalance, ticker) {
@@ -177,6 +172,7 @@ function bindViewZrcTokenWalletBalance(zrcTokenBalance, ticker) {
     $('#' + ticker + '_container').show();
 }
 
+// Exception, no need to reset
 function bindViewZrcTokenLpTotalPoolBalance(totalPoolZilBalance, totalPoolZrcBalance, ticker) {
     $('#' + ticker + '_lp_total_pool_zil').text(totalPoolZilBalance);
     $('#' + ticker + '_lp_total_pool_zrc').text(totalPoolZrcBalance);
@@ -258,6 +254,7 @@ function bindViewTotalWalletBalanceFiat(totalWalletBalanceFiat) {
     $('#wallet_balance_fiat').text(totalWalletBalanceFiat);
 }
 
+// Exception, no need to reset
 function bindViewZrcTokenLpTotalPoolBalanceFiat(lpTotalPoolBalanceFiat, ticker) {
     $('#' + ticker + '_lp_total_pool_fiat').text(lpTotalPoolBalanceFiat);
 }

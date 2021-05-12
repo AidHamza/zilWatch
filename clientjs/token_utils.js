@@ -44,7 +44,7 @@ function parseZrcTokenBalanceNumberQaFromGetSmartContractSubState(dataObject, wa
  *
  * @returns {number} The number representation of price of ZRC token in terms of ZIL
  */
-function getZrcTokenPriceInZilFromZilswapDexState(dataObject, zrcTokenAddressBase16, zrcTokenDecimals) {
+function getZilswapSinglePairPublicStatusFromDexState(dataObject, zrcTokenAddressBase16, zrcTokenDecimals) {
     if (dataObject === null || typeof dataObject !== 'object') {
         return null;
     }
@@ -64,103 +64,82 @@ function getZrcTokenPriceInZilFromZilswapDexState(dataObject, zrcTokenAddressBas
             let zilPoolReserveNumberQa = parseInt(zilPoolReserveQa);
             let zrcTokenPoolReserveNumberQa = parseInt(zrcTokenPoolReserveQa);
             if (zilPoolReserveNumberQa && zrcTokenPoolReserveNumberQa) {
-                let zilAmount = 1.0 * zilPoolReserveNumberQa / Math.pow(10, 12);
-                let zrcTokenAmount = 1.0 * zrcTokenPoolReserveNumberQa / Math.pow(10, zrcTokenDecimals);
-                return zilAmount / zrcTokenAmount;
+                let totalPoolZilAmount = 1.0 * zilPoolReserveNumberQa / Math.pow(10, 12);
+                let totalPoolZrcTokenAmount = 1.0 * zrcTokenPoolReserveNumberQa / Math.pow(10, zrcTokenDecimals);
+                return new ZilswapSinglePairPublicStatus(totalPoolZilAmount, totalPoolZrcTokenAmount);
             }
         }
     }
     return null;
 }
 
-
-/** A class to represent a single token pair in Zilswap LP.  */
-class ZilswapSingleTokenLpStatus {
-    constructor(shareRatio, zilAmount, zrcTokenAmount, totalPoolZilAmount, totalPoolZrcTokenAmount) {
-        this.shareRatio = shareRatio;
-        this.zilAmount = zilAmount;
-        this.zrcTokenAmount = zrcTokenAmount;
-        this.totalPoolZilAmount = totalPoolZilAmount;
-        this.totalPoolZrcTokenAmount = totalPoolZrcTokenAmount;
-    }
-}
-
 /**
  * Parse data returned by ZIL API call getSmartContractState() for Zilswap DEX and return the
- * given wallet's share of liquidity pool.
+ * given wallet's share ratio of liquidity pool.
  * 
- * If the pool is found and there are no error state, return the ZilswapSingleTokenLpStatus, else return null.
+ * If the pool is found and there are no error state, return the share ratio, else return null.
  *
  * @param {Object} dataObject required The data object returned by the getSmartContractState() Zilliqa API call for Zilswap DEX
  * @param {string} zrcTokenAddressBase16 required The ZRC token contract address in base16
  * @param {number} zrcTokenDecimals required The decimals of the ZRC token
- * @param {?string} walletAddressBase16 optional The wallet address to obtain the share from, if not, there won't be personal share ratio
+ * @param {string} walletAddressBase16 required The wallet address to obtain the share from
  *
- * @returns {object} The ZilswapSingleTokenLpStatus object representation of shareRatio, zilAmount, and zrcTokenAmount
+ * @returns {number} a floating point representation of the share ratio
  */
-function getSingleTokenLpStatusFromZilswapDexState(dataObject, zrcTokenAddressBase16, zrcTokenDecimals, walletAddressBase16 = null) {
+function getZilswapSinglePairShareRatio(dataObject, zrcTokenAddressBase16, walletAddressBase16) {
     if (dataObject === null || typeof dataObject !== 'object') {
         return null;
     }
     if (typeof zrcTokenAddressBase16 !== 'string') {
         return null;
     }
-    if (typeof zrcTokenDecimals !== 'number' && typeof zrcTokenDecimals !== 'bigint') {
+    if (typeof walletAddressBase16 !== 'string') {
         return null;
     }
     zrcTokenAddressBase16 = zrcTokenAddressBase16.toLowerCase();
-    if (typeof walletAddressBase16 === 'string') {
-        walletAddressBase16 = walletAddressBase16.toLowerCase();
-    } else {
-        walletAddressBase16 = null;
-    }
+    walletAddressBase16 = walletAddressBase16.toLowerCase();
 
-    if (dataObject && dataObject.result && dataObject.result.pools && dataObject.result.balances) {
+    if (dataObject && dataObject.result && dataObject.result.balances && dataObject.result.total_contributions) {
         let zrcTokenLiquidityMap = dataObject.result.balances[zrcTokenAddressBase16];
         if (!zrcTokenLiquidityMap) {
             return null;
         }
+        let walletLiquidity = zrcTokenLiquidityMap[walletAddressBase16];
+        let walletLiquidityNumber = parseInt(walletLiquidity);
 
-
-        let zrcTokenPools = dataObject.result.pools[zrcTokenAddressBase16];
         let poolTotalLiquidity = dataObject.result.total_contributions[zrcTokenAddressBase16];
-
-        if (zrcTokenPools && poolTotalLiquidity) {
-            let zilPoolReserveQa = zrcTokenPools.arguments[0];
-            let zrcTokenPoolReserveQa = zrcTokenPools.arguments[1];
-
-            let zilPoolReserveNumberQa = parseInt(zilPoolReserveQa);
-            let zrcTokenPoolReserveNumberQa = parseInt(zrcTokenPoolReserveQa);
-
-            let walletLiquidityNumber = 0;
-            if (walletAddressBase16) {
-                let walletLiquidity = zrcTokenLiquidityMap[walletAddressBase16];
-                walletLiquidityNumber = parseInt(walletLiquidity);
-            }
-            let poolTotalLiquidityNumber = parseInt(poolTotalLiquidity);
-
-            if (zilPoolReserveNumberQa && zrcTokenPoolReserveNumberQa) {
-                let totalPoolZilAmount = (1.0 * zilPoolReserveNumberQa / Math.pow(10, 12));
-                let totalPoolZrcTokenAmount = (1.0 * zrcTokenPoolReserveNumberQa / Math.pow(10, zrcTokenDecimals));
-
-                let walletShare = 0;
-                let zilAmount = 0;
-                let zrcTokenAmount = 0;
-                if (walletLiquidityNumber && poolTotalLiquidityNumber) {
-                    walletShare = 1.0 * walletLiquidityNumber / poolTotalLiquidityNumber;
-                    zilAmount =  totalPoolZilAmount * walletShare;
-                    zrcTokenAmount = totalPoolZrcTokenAmount * walletShare;
-                }
-                return new ZilswapSingleTokenLpStatus(walletShare, zilAmount, zrcTokenAmount, totalPoolZilAmount, totalPoolZrcTokenAmount);
-            }
+        if (!poolTotalLiquidity) {
+            return null;
         }
+        let poolTotalLiquidityNumber = parseInt(poolTotalLiquidity);
+
+        return 1.0 * walletLiquidityNumber / poolTotalLiquidityNumber;
     }
     return null;
 }
 
+/** A class to represent a single token pair in Zilswap LP.  */
+class ZilswapSinglePairPublicStatus {
+    constructor(totalPoolZilAmount, totalPoolZrcTokenAmount) {
+        this.totalPoolZilAmount = totalPoolZilAmount;
+        this.totalPoolZrcTokenAmount = totalPoolZrcTokenAmount;
+        this.zrcTokenPriceInZil = totalPoolZilAmount / totalPoolZrcTokenAmount;
+    }
+}
+
+/** A class to represent a single token pair in Zilswap LP.  */
+class ZilswapSinglePairPersonalStatus {
+    constructor(shareRatio, zilswapSingleTokenPublicStatus) {
+        this.shareRatio = shareRatio;
+        this.zilAmount =  zilswapSingleTokenPublicStatus.totalPoolZilAmount * shareRatio;
+        this.zrcTokenAmount = zilswapSingleTokenPublicStatus.totalPoolZrcTokenAmount * shareRatio;
+    }
+}
+
 if (typeof exports !== 'undefined') {
     exports.parseZrcTokenBalanceNumberQaFromGetSmartContractSubState = parseZrcTokenBalanceNumberQaFromGetSmartContractSubState;
-    exports.getZrcTokenPriceInZilFromZilswapDexState = getZrcTokenPriceInZilFromZilswapDexState;
-    exports.ZilswapSingleTokenLpStatus = ZilswapSingleTokenLpStatus;
-    exports.getSingleTokenLpStatusFromZilswapDexState = getSingleTokenLpStatusFromZilswapDexState;
+    exports.getZilswapSinglePairPublicStatusFromDexState = getZilswapSinglePairPublicStatusFromDexState;
+    exports.getZilswapSinglePairShareRatio = getZilswapSinglePairShareRatio;
+    exports.ZilswapSinglePairPublicStatus = ZilswapSinglePairPublicStatus;
+    exports.ZilswapSinglePairPersonalStatus = ZilswapSinglePairPersonalStatus;
 }

@@ -31,27 +31,51 @@ function computeZilBalanceWithRetry(account, onZilWalletBalanceLoaded, retryRema
  * --------------------------------------------------------------------------------
  */
 
-async function computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded, account) {
-    computeZrcTokensPriceAndZilswapLpBalanceWithRetry(onZilswapDexStatusLoaded, account, MAX_RETRY);
-}
-
-function computeZrcTokensPriceAndZilswapLpBalanceWithRetry(onZilswapDexStatusLoaded, account, retryRemaining) {
+async function computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded, walletAddressBase16) {
     if (zilswapDexSmartContractStateData) {
         // Use cache if available.
-        onZilswapDexStatusLoaded(zilswapDexSmartContractStateData, account);
+        if (zilswapDexSmartContractStateData.result.balances) {
+            onZilswapDexStatusLoaded(zilswapDexSmartContractStateData, walletAddressBase16);
+            return;
+        }
+        computeZilswapDexPersonalSubStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, MAX_RETRY);
+    } else {
+        computeZilswapDexStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, MAX_RETRY);
+    }
+}
+
+function computeZilswapDexPersonalSubStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, retryRemaining) {
+    if (retryRemaining <= 0) {
+        console.log("computeZilswapDexPersonalSubStateWithRetry failed! Out of retries!");
         return;
     }
+    
+    window.zilPay.blockchain.getSmartContractSubState(ZilSwapDexAddress, "balances", [])
+        .then(function (data) {
+            if (data.result.balances) {
+                zilswapDexSmartContractStateData.result.balances = data.result.balances;
+                onZilswapDexStatusLoaded(zilswapDexSmartContractStateData, walletAddressBase16);
+            }
+        })
+        .catch(function () {
+            console.log("computeZilswapDexPersonalSubStateWithRetry failed! %s", retryRemaining);
+            computeZilswapDexPersonalSubStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, retryRemaining - 1);
+        });
+}
+
+function computeZilswapDexStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, retryRemaining) {
     if (retryRemaining <= 0) {
-        console.log("computeZrcTokensPriceAndZilswapLpBalanceWithRetry failed! Out of retries!");
+        console.log("computeZilswapDexStateWithRetry failed! Out of retries!");
         return;
     }
     window.zilPay.blockchain.getSmartContractState(ZilSwapDexAddress)
         .then(function (data) {
-            onZilswapDexStatusLoaded(data, account);
+            zilswapDexSmartContractStateData = data;
+            onZilswapDexStatusLoaded(zilswapDexSmartContractStateData, walletAddressBase16);
         })
         .catch(function () {
-            console.log("computeZrcTokensPriceAndZilswapLpBalanceWithRetry failed! %s", retryRemaining);
-            computeZrcTokensPriceAndZilswapLpBalanceWithRetry(onZilswapDexStatusLoaded, account, retryRemaining - 1);
+            console.log("computeZilswapDexStateWithRetry failed! %s", retryRemaining);
+            computeZilswapDexStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, retryRemaining - 1);
         });
 }
 
@@ -267,8 +291,8 @@ async function computeZrcTokensPriceInZil(onZilswapDexStatusLoaded) {
         data: JSON.stringify({
             "id": "1",
             "jsonrpc": "2.0",
-            "method": "GetSmartContractState",
-            "params": [ZilSwapDexAddressBase16]
+            "method": "GetSmartContractSubState",
+            "params": [ZilSwapDexAddressBase16, "pools", []]
         }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",

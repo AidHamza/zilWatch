@@ -351,7 +351,7 @@ describe('BindView', function () {
 
         beforeEach(function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_price_fiat').text(), 'Loading...');
+                assert.strictEqual($('#public_' + ticker + '_price_fiat').text(), 'Loading...');
             }
         });
 
@@ -361,7 +361,7 @@ describe('BindView', function () {
                 BindView.bindViewZrcTokenPriceInFiat('1234.4', ticker);
 
                 // Assert
-                assert.strictEqual($('#' + ticker + '_price_fiat').text(), '1234.4');
+                assert.strictEqual($('#public_' + ticker + '_price_fiat').text(), '1234.4');
             }
         });
 
@@ -371,7 +371,7 @@ describe('BindView', function () {
                 BindView.bindViewZrcTokenPriceInFiat('asdf', ticker);
 
                 // Assert
-                assert.strictEqual($('#' + ticker + '_price_fiat').text(), 'asdf');
+                assert.strictEqual($('#public_' + ticker + '_price_fiat').text(), 'asdf');
             }
         });
 
@@ -381,7 +381,7 @@ describe('BindView', function () {
                 BindView.bindViewZrcTokenPriceInFiat('', ticker);
 
                 // Assert
-                assert.strictEqual($('#' + ticker + '_price_fiat').text(), '');
+                assert.strictEqual($('#public_' + ticker + '_price_fiat').text(), '');
             }
         });
     });
@@ -1457,16 +1457,9 @@ function assertDefaultStateMainContent() {
     // bindViewZilBalance()
     assert.strictEqual($('#zil_balance').text(), 'Loading...');
 
-    // bindViewZrcTokenPriceInZil()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#public_' + ticker + '_price_zil').text(), 'Loading...');
-        assert.strictEqual($('#' + ticker + '_price_zil').text(), 'Loading...');
-    }
+    // bindViewZrcTokenPriceInZil(): Exception, no need refresh
 
-    // bindViewZrcTokenPriceInFiat()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_price_fiat').text(), 'Loading...');
-    }
+    // bindViewZrcTokenPriceInFiat(): Exception, no need refresh
 
     // bindViewZrcTokenWalletBalance()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {
@@ -1474,11 +1467,7 @@ function assertDefaultStateMainContent() {
         assert.strictEqual($('#' + ticker + '_container').css('display'), 'none');
     }
 
-    // bindViewZrcTokenLpTotalPoolBalance()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_lp_total_pool_zil').text(), 'Loading...');
-        assert.strictEqual($('#' + ticker + '_lp_total_pool_zrc').text(), 'Loading...');
-    }
+    // bindViewZrcTokenLpTotalPoolBalance(): Exception, no need refresh
 
     // bindViewZrcTokenLpBalance()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {
@@ -1541,10 +1530,7 @@ function assertDefaultStateMainContent() {
     // bindViewTotalWalletBalanceFiat()
     assert.strictEqual($('#wallet_balance_fiat').text(), 'Loading...');
 
-    // bindViewZrcTokenLpTotalPoolBalanceFiat()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_lp_total_pool_fiat').text(), 'Loading...');
-    }
+    // bindViewZrcTokenLpTotalPoolBalanceFiat(): Exception, no need refresh
 
     // bindViewZrcTokenLpBalanceFiat()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {
