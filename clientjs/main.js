@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     $(".currency_symbol").text(currencySymbol);
     
     // Public information
-    computeZilPriceInFiat(currentCurrencyCode, onZilFiatPriceLoaded);
+    computeZilPriceInFiat(currentCurrencyCode, onCoinFiatPriceLoaded);
 
     // This is unrelated to balance and the APIs used for personalized dashboard
     // So don't need to reload.
@@ -85,7 +85,7 @@ $("#toggle_theme_btn").click(function() {
 
 $( "#currency_selector" ).change(function() {
     let currencyCode = $(this).val();
-    computeZilPriceInFiat( currencyCode, onZilFiatPriceLoaded);
+    computeZilPriceInFiat( currencyCode, onCoinFiatPriceLoaded);
     localStorage.setItem("currency", currencyCode);
 });
 

@@ -4,6 +4,33 @@
 const title = 'zilWatch';
 const description = 'View your Zilliqa (ZIL) wallet balances and current ZIL and ZRC-2 prices today in an all-in-one smart dashboard.';
 
+const coinMap = {
+  "BTC": {
+    name: "Bitcoin",
+    ticker: "BTC",
+    coingecko_id: "bitcoin",
+    logo_url: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png",
+  },
+  "ETH": {
+    name: "Ethereum",
+    ticker: "ETH",
+    coingecko_id: "ethereum",
+    logo_url: "https://assets.coingecko.com/coins/images/279/small/ethereum.png",
+  },
+  "BNB": {
+    name: "Binance Coin",
+    ticker: "BNB",
+    coingecko_id: "binancecoin",
+    logo_url: "https://assets.coingecko.com/coins/images/825/small/binance-coin-logo.png",
+  },
+  "ZIL": {
+    name: "Zilliqa",
+    ticker: "ZIL",
+    coingecko_id: "zilliqa",
+    logo_url: "https://meta.viewblock.io/ZIL/logo",
+  },
+}
+
 const currencyMap = {
   "usd": "$",
   "aed": "AED",
@@ -338,6 +365,7 @@ const zrcTokenPropertiesListMap = {
 module.exports = {
   title: title,
   description: description,
+  coinMap: coinMap,
   currencyMap: currencyMap,
   ssnListMap: ssnListMap,
   zrcTokenPropertiesListMap: zrcTokenPropertiesListMap,

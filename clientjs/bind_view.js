@@ -147,9 +147,14 @@ function resetMainContainerContent() {
  */
 
 // Exception, no need to reset
-function bindViewZilPriceInFiat(currencySymbol, zilPriceInFiat) {
-    $(".zil_price_fiat").text(zilPriceInFiat);
+function bindViewCoinPriceInFiat(currencySymbol, coinPriceInFiat, coinTicker) {
+    $("." + coinTicker + "_price_fiat").text(coinPriceInFiat);
     $(".currency_symbol").text(currencySymbol);
+}
+
+// Exception, no need to reset
+function bindViewCoinPriceInZil(coinPriceInZil, coinTicker) {
+    $("." + coinTicker + "_price_zil").text(coinPriceInZil);
 }
 
 function bindViewZilBalance(zilBalance) {
@@ -346,7 +351,8 @@ if (typeof exports !== 'undefined') {
     exports.bindViewMainContainer = bindViewMainContainer;
     exports.resetMainContainerContent = resetMainContainerContent;
 
-    exports.bindViewZilPriceInFiat = bindViewZilPriceInFiat;
+    exports.bindViewCoinPriceInFiat = bindViewCoinPriceInFiat;
+    exports.bindViewCoinPriceInZil = bindViewCoinPriceInZil;
     exports.bindViewZilBalance = bindViewZilBalance;
     exports.bindViewZrcTokenPriceInZil = bindViewZrcTokenPriceInZil;
     exports.bindViewZrcTokenPriceInFiat = bindViewZrcTokenPriceInFiat;

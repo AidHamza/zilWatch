@@ -53,7 +53,7 @@ function onLpCurrentEpochInfoLoaded(epochInfoData) {
 function refreshTotalLpRewardFiat() {
     let ticker = 'ZWAP';
 
-    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
     if (!fiatPrice) {
         return;
     }

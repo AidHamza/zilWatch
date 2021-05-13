@@ -4,17 +4,42 @@
  * --------------------------------------------------------------------------------
  */
 
-function onZilFiatPriceLoaded(currencyCode, zilPriceCoingeckoDataObject) {
-    if (!zilPriceCoingeckoDataObject) {
+function onCoinFiatPriceLoaded(currencyCode, coinPriceCoingeckoDataObject) {
+    if (!coinPriceCoingeckoDataObject) {
         return;
     }
-    let zilPriceInFiatFloat = parseFloat(zilPriceCoingeckoDataObject.zilliqa[currencyCode]);
-    if (!zilPriceInFiatFloat) {
-        return;
+    let currencySymbol = currencyMap[currencyCode];
+
+    // Get zilliqa price in fiat first to use to compute other coins in ZIL later on
+    let zilPriceInFiatFloat = null;
+    if (coinPriceCoingeckoDataObject.zilliqa && coinPriceCoingeckoDataObject.zilliqa[currencyCode]) {
+        zilPriceInFiatFloat = parseFloat(coinPriceCoingeckoDataObject.zilliqa[currencyCode]);
     }
 
-    let currencySymbol = currencyMap[currencyCode];
-    bindViewZilPriceInFiat(currencySymbol, convertNumberQaToDecimalString(zilPriceInFiatFloat, /* decimals= */ 0));
+    for (let coinTicker in coinMap) {
+        let coingeckoId = coinMap[coinTicker].coingecko_id;
+        if (coinPriceCoingeckoDataObject[coingeckoId] && coinPriceCoingeckoDataObject[coingeckoId][currencyCode]) {
+            let coinPriceInFiatFloat = parseFloat(coinPriceCoingeckoDataObject[coingeckoId][currencyCode]);
+
+            if (!coinPriceInFiatFloat) {
+                continue;
+            }
+
+            let decimals = (zilPriceInFiatFloat > 1000) ? 0 : 2;
+            let coinPriceInFiatString = commafyNumberToString(coinPriceInFiatFloat, decimals);
+            if (coingeckoId === 'zilliqa') {
+                coinPriceInFiatString = convertNumberQaToDecimalString(coinPriceInFiatFloat, /* decimals= */ 0);
+            }
+            bindViewCoinPriceInFiat(currencySymbol, coinPriceInFiatString, coinTicker);
+
+            // Compute other coins in ZIL.
+            let coinPriceInZilFloat = 1.0 * coinPriceInFiatFloat / zilPriceInFiatFloat;
+            if (!coinPriceInZilFloat) {
+                continue;
+            }
+            bindViewCoinPriceInZil(commafyNumberToString(coinPriceInZilFloat, 2), coinTicker);
+        }
+    }
 
     refreshZrcTokenPriceFiat();
 
@@ -242,7 +267,7 @@ function onLpTradeVolumeLoaded(poolVolumeArray) {
  */
 
 function refreshZilWalletBalanceFiat() {
-    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
     if (!fiatPrice) {
         return;
     }
@@ -258,7 +283,7 @@ function refreshZilWalletBalanceFiat() {
 }
 
 function refreshZrcTokenPriceFiat() {
-    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
     if (!fiatPrice) {
         return;
     }
@@ -291,7 +316,7 @@ function refreshZrcTokenWalletBalanceZilFiat(ticker) {
     let zrcTokenBalanceZilString = convertNumberQaToDecimalString(zrcTokenBalanceZil, /* decimals= */ 0);
     bindViewZrcTokenWalletBalanceZil(zrcTokenBalanceZilString, ticker);
 
-    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
     if (!fiatPrice) {
         return;
     }
@@ -321,7 +346,7 @@ function refreshTotalWalletBalanceZilFiat() {
     let totalWalletBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
     bindViewTotalWalletBalanceZil(totalWalletBalanceZil);
 
-    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
     if (!fiatPrice) {
         return;
     }
@@ -335,7 +360,7 @@ function refreshTotalWalletBalanceZilFiat() {
 
 function refreshZrcTokenLpTotalPoolBalanceFiat(ticker) {
 
-    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
     if (!fiatPrice) {
         return;
     }
@@ -354,7 +379,7 @@ function refreshZrcTokenLpTotalPoolBalanceFiat(ticker) {
 
 function refreshZrcTokenLpBalanceFiat(ticker) {
 
-    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
     if (!fiatPrice) {
         return;
     }
@@ -388,7 +413,7 @@ function refreshTotalLpBalanceZilFiat() {
     bindViewTotalLpBalanceZil(totalLpBalanceZil);
 
     // Sum balance in USD.
-    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
     if (!fiatPrice) {
         return;
     }
@@ -400,7 +425,7 @@ function refreshTotalLpBalanceZilFiat() {
 }
 
 function refreshZilStakingFiat(ssnAddress) {
-    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
     if (!fiatPrice) {
         return;
     }
@@ -417,7 +442,7 @@ function refreshZilStakingFiat(ssnAddress) {
 }
 
 function refreshZilStakingWithdrawalPendingFiat() {
-    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
     if (!fiatPrice) {
         return;
     }
@@ -449,7 +474,7 @@ function refreshCarbonStakingZilFiat() {
     let carbonStakingBalanceZilString = convertNumberQaToDecimalString(carbonStakingBalanceZil, /* decimals= */ 0);
     bindViewCarbonStakingBalanceZil(carbonStakingBalanceZilString);
 
-    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
     if (!fiatPrice) {
         return;
     }
@@ -486,7 +511,7 @@ function refreshTotalStakingZilFiat() {
     bindViewTotalStakingBalanceZil(totalStakingBalanceZil);
 
     // Sum balance in USD.
-    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
     if (!fiatPrice) {
         return;
     }
@@ -519,7 +544,7 @@ function refreshNetWorthZilFiat() {
     bindViewTotalNetWorthZil(totalNetWorthZil);
 
     // Sum balance in USD.
-    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
     if (!fiatPrice) {
         return;
     }
@@ -535,7 +560,7 @@ function refreshNetWorthZilFiat() {
  */
 
 function refreshTotalTradeVolumeFiat(ticker) {
-    let fiatPrice = getNumberFromView('.zil_price_fiat');
+    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
     if (!fiatPrice) {
         return;
     }

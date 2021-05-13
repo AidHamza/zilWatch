@@ -231,45 +231,91 @@ describe('BindView', function () {
         });
     });
 
-    describe('#bindViewZilPriceInFiat()', function () {
+    describe('#bindViewCoinPriceInFiat()', function () {
 
         it('bind view price in fiat', function () {
-            // Act
-            BindView.bindViewZilPriceInFiat('Rp', '0.123');
+            for (let coinTicker in Constants.coinMap) {
+                // Act
+                BindView.bindViewCoinPriceInFiat('Rp', '0.123', coinTicker);
 
-            // Assert
-            $('.zil_price_fiat').each(function () {
-                assert.strictEqual($(this).text(), '0.123');
-            });
-            $(".currency_symbol").each(function () {
-                assert.strictEqual($(this).text(), 'Rp');
-            });
+                // Assert
+                $('.' + coinTicker + '_price_fiat').each(function () {
+                    assert.strictEqual($(this).text(), '0.123');
+                });
+                $(".currency_symbol").each(function () {
+                    assert.strictEqual($(this).text(), 'Rp');
+                });
+            }
         });
 
         it('bind view random string', function () {
-            // Act
-            BindView.bindViewZilPriceInFiat('qwer', 'asdf');
+            for (let coinTicker in Constants.coinMap) {
+                // Act
+                BindView.bindViewCoinPriceInFiat('qwer', 'asdf', coinTicker);
 
-            // Assert
-            $('.zil_price_fiat').each(function () {
-                assert.strictEqual($(this).text(), 'asdf');
-            });
-            $(".currency_symbol").each(function () {
-                assert.strictEqual($(this).text(), 'qwer');
-            });
+                // Assert
+                $('.' + coinTicker + '_price_fiat').each(function () {
+                    assert.strictEqual($(this).text(), 'asdf');
+                });
+                $(".currency_symbol").each(function () {
+                    assert.strictEqual($(this).text(), 'qwer');
+                });
+            }
         });
 
         it('bind view empty string', function () {
-            // Act
-            BindView.bindViewZilPriceInFiat('', '');
+            for (let coinTicker in Constants.coinMap) {
+                // Act
+                BindView.bindViewCoinPriceInFiat('', '', coinTicker);
 
-            // Assert
-            $('.zil_price_fiat').each(function () {
-                assert.strictEqual($(this).text(), '');
-            });
-            $(".currency_symbol").each(function () {
-                assert.strictEqual($(this).text(), '');
-            });
+                // Assert
+                $('.' + coinTicker + '_price_fiat').each(function () {
+                    assert.strictEqual($(this).text(), '');
+                });
+                $(".currency_symbol").each(function () {
+                    assert.strictEqual($(this).text(), '');
+                });
+            }
+        });
+    });
+
+
+    describe('#bindViewCoinPriceInZil()', function () {
+
+        it('bind view price in fiat', function () {
+            for (let coinTicker in Constants.coinMap) {
+                // Act
+                BindView.bindViewCoinPriceInZil('0.123', coinTicker);
+
+                // Assert
+                $('.' + coinTicker + '_price_zil').each(function () {
+                    assert.strictEqual($(this).text(), '0.123');
+                });
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let coinTicker in Constants.coinMap) {
+                // Act
+                BindView.bindViewCoinPriceInZil('asdf', coinTicker);
+
+                // Assert
+                $('.' + coinTicker + '_price_zil').each(function () {
+                    assert.strictEqual($(this).text(), 'asdf');
+                });
+            }
+        });
+
+        it('bind view empty string', function () {
+            for (let coinTicker in Constants.coinMap) {
+                // Act
+                BindView.bindViewCoinPriceInZil('', coinTicker);
+
+                // Assert
+                $('.' + coinTicker + '_price_zil').each(function () {
+                    assert.strictEqual($(this).text(), '');
+                });
+            }
         });
     });
 
@@ -1452,7 +1498,8 @@ describe('BindView', function () {
 });
 
 function assertDefaultStateMainContent() {
-    // bindViewZilPriceInFiat(): Exception, no need refresh
+    // bindViewCoinPriceInFiat(): Exception, no need refresh
+    // bindViewCoinPriceInZil(): Exception, no need refresh
 
     // bindViewZilBalance()
     assert.strictEqual($('#zil_balance').text(), 'Loading...');

@@ -14,8 +14,8 @@ router.get('/', function (req, res, next) {
   redisClient.mget(
     ["zilswap_dex_smart_contract_state_timestamp_seconds",
       "zilswap_dex_smart_contract_state",
-      "zil_price_coingecko_timestamp_seconds",
-      "zil_price_coingecko",
+      "coin_price_coingecko_timestamp_seconds",
+      "coin_price_coingecko",
       "zilswap_dex_24h_trade_volume_timestamp_seconds",
       "zilswap_dex_24h_trade_volume",
       "zilswap_dex_epoch_info_timestamp_seconds",
@@ -24,8 +24,8 @@ router.get('/', function (req, res, next) {
     function (err, reply) {
       let currZilswapDexSmartContractStateTimestampSeconds = null;
       let currZilswapDexSmartContractState = null;
-      let currZilPriceCoingeckoTimestampSeconds = null;
-      let currZilPriceCoingecko = null;
+      let currCoinPriceCoingeckoTimestampSeconds = null;
+      let currCoinPriceCoingecko = null;
       let currZilswapDex24hTradeVolume = null;
       let currZilswapDex24hTradeVolumeTimestampSeconds = null;
       let currZilswapDexEpochInfo = null;
@@ -42,10 +42,10 @@ router.get('/', function (req, res, next) {
             currZilswapDexSmartContractState = JSON.parse(reply[1]);
           }
 
-          currZilPriceCoingeckoTimestampSeconds = parseInt(reply[2]);
+          currCoinPriceCoingeckoTimestampSeconds = parseInt(reply[2]);
           // Only use the cache if it's within 15 seconds.
-          if (currentTimeSeconds - currZilPriceCoingeckoTimestampSeconds <= 15) {
-            currZilPriceCoingecko = JSON.parse(reply[3]);
+          if (currentTimeSeconds - currCoinPriceCoingeckoTimestampSeconds <= 15) {
+            currCoinPriceCoingecko = JSON.parse(reply[3]);
           }
           
           currZilswapDex24hTradeVolumeTimestampSeconds = parseInt(reply[4]);
@@ -67,11 +67,12 @@ router.get('/', function (req, res, next) {
       res.render('index', {
         title: constants.title,
         description: constants.description,
+        coinMap: constants.coinMap,
         currencyMap: constants.currencyMap,
         zrcTokenPropertiesListMap: constants.zrcTokenPropertiesListMap,
         ssnListMap: constants.ssnListMap,
         zilswapDexSmartContractState: currZilswapDexSmartContractState,
-        zilPriceCoingecko: currZilPriceCoingecko,
+        coinPriceCoingecko: currCoinPriceCoingecko,
         zilswapDex24hTradeVolume: currZilswapDex24hTradeVolume,
         zilswapDexEpochInfo: currZilswapDexEpochInfo,
       });

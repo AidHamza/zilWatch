@@ -49,13 +49,20 @@ block content
                     span= ' ('
                     span(class='currency_symbol')= '$'
                     span= ')'
-                tr
-                  td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                    img(height='18' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
-                  td(colspan=3 style='text-align: left; white-space: nowrap; width: 75%;' )
-                    span= 'Zilliqa'
-                  td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                    span(class='zil_price_fiat')= 'Loading...'
+                
+                each coinProperties, key in coinMap 
+                  tr
+                    td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                      img(height='18' src=coinProperties.logo_url loading='lazy')
+                    td(style='text-align: left; white-space: nowrap; width: 35%;' )
+                      span= coinProperties.name
+                    td(style='text-align: right; white-space: nowrap; width: 15%;' )
+                      span= coinProperties.ticker
+                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                      span(class=coinProperties.ticker+'_price_zil')= 'Loading...'
+                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                      span(class=coinProperties.ticker+'_price_fiat')= 'Loading...'
+
                 each tokenProperties, key in zrcTokenPropertiesListMap
                   - var trStyle = ''
                   if tokenProperties.ticker === 'XPORT'
@@ -180,7 +187,7 @@ block content
                 tr
                   td(scope='row' class='font-weight-normal text-secondary' style='white-space: nowrap; width: 33%;' )
                     span(class='currency_symbol mr-1')= '$'
-                    span(class='zil_price_fiat')= 'Loading...'
+                    span(class='ZIL_price_fiat')= 'Loading...'
                   td(style='text-align: right; white-space: nowrap; width: 33%;' )
                     span(id='zil_balance')= 'Loading...'
                     span(id='zil_balance_unit' class='ml-1')= 'ZIL'
@@ -345,11 +352,12 @@ block script
   script(src='/javascripts/main.min.js')
 
   script.
+    var coinMap = !{JSON.stringify(coinMap)};
     var currencyMap = !{JSON.stringify(currencyMap)};
     var ssnListMap = !{JSON.stringify(ssnListMap)};
     var zrcTokenPropertiesListMap = !{JSON.stringify(zrcTokenPropertiesListMap)};
     // Cache from redis (if any). If there are no cache, we will fallback to RPC network call.
-    var zilPriceCoingeckoData = !{JSON.stringify(zilPriceCoingecko)};
+    var coinPriceCoingeckoData = !{JSON.stringify(coinPriceCoingecko)};
     var zilswapDexSmartContractStateData = !{JSON.stringify(zilswapDexSmartContractState)};
     var zilswapDex24hTradeVolumeData = !{JSON.stringify(zilswapDex24hTradeVolume)};
     var zilswapDexEpochInfoData = !{JSON.stringify(zilswapDexEpochInfo)};
