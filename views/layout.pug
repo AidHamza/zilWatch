@@ -10,6 +10,12 @@ html(lang='en' class='dark-mode')
       'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
       })(window,document,'script','dataLayer','GTM-MJ3SBZC');
 
+    script. 
+      var localStorageTheme = localStorage.getItem('theme');
+      if (localStorageTheme === "light") {
+        document.documentElement.classList.remove('dark-mode');
+      }
+
     meta(charset='utf-8')
     meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
 
