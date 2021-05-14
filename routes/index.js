@@ -37,26 +37,26 @@ router.get('/', function (req, res, next) {
       if (!err && reply) {
         try {
           currZilswapDexSmartContractStateTimestampSeconds = parseInt(reply[0]);
-          // Only use the cache if it's within 15 seconds.
-          if (currentTimeSeconds - currZilswapDexSmartContractStateTimestampSeconds <= 15) {
+          // Only use the cache if it's within 20 seconds.
+          if (currentTimeSeconds - currZilswapDexSmartContractStateTimestampSeconds <= 20) {
             currZilswapDexSmartContractState = JSON.parse(reply[1]);
           }
 
           currCoinPriceCoingeckoTimestampSeconds = parseInt(reply[2]);
-          // Only use the cache if it's within 15 seconds.
-          if (currentTimeSeconds - currCoinPriceCoingeckoTimestampSeconds <= 15) {
+          // Only use the cache if it's within 200 seconds.
+          if (currentTimeSeconds - currCoinPriceCoingeckoTimestampSeconds <= 200) {
             currCoinPriceCoingecko = JSON.parse(reply[3]);
           }
           
           currZilswapDex24hTradeVolumeTimestampSeconds = parseInt(reply[4]);
-          // Only use the cache if it's within 15 seconds.
-          if (currentTimeSeconds - currZilswapDex24hTradeVolumeTimestampSeconds <= 15) {
+          // Only use the cache if it's within 200 seconds.
+          if (currentTimeSeconds - currZilswapDex24hTradeVolumeTimestampSeconds <= 200) {
             currZilswapDex24hTradeVolume = JSON.parse(reply[5]);
           }
 
           currZilswapDexEpochInfoTimestampSeconds = parseInt(reply[6]);
-          // Only use the cache if it's within 60 seconds.
-          if (currentTimeSeconds - currZilswapDexEpochInfoTimestampSeconds <= 60) {
+          // Only use the cache if it's within 300 seconds.
+          if (currentTimeSeconds - currZilswapDexEpochInfoTimestampSeconds <= 300) {
             currZilswapDexEpochInfo = JSON.parse(reply[7]);
           }
 
