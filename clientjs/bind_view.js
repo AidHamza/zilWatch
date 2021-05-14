@@ -95,8 +95,11 @@ function resetMainContainerContent() {
     $('#staking_container').hide();
     $('#total_all_lp_reward_next_epoch_container').hide();
 
+    
     $('#zil_balance').text('Loading...');
-    $('#zil_balance_fiat').text('');
+    $('#zil_balance_fiat').text('Loading...');
+    $('#zil_balance_fiat_24h_ago').text('');
+    $('#zil_balance_fiat_percent_change_24h').text('');
 
     for (let ticker in zrcTokenPropertiesListMap) {
         $('#' + ticker + '_container').hide();
@@ -291,6 +294,12 @@ function bindViewLpNextEpochCounter(timeDurationString) {
 /**
  * --------------------------------------------------------------------------------
  */
+
+
+ function bindViewZilBalanceFiat24hAgo(zilBalanceFiat24hAgo, zilBalanceFiatPercentChange24h) {
+    $('#zil_balance_fiat_24h_ago').text(zilBalanceFiat24hAgo);
+    $('#zil_balance_fiat_percent_change_24h').text(zilBalanceFiatPercentChange24h);
+}
 
 function bindViewZilBalanceFiat(zilBalanceFiat) {
     $('#zil_balance_fiat').text(zilBalanceFiat);
@@ -501,6 +510,7 @@ if (typeof exports !== 'undefined') {
     exports.bindViewLpNextEpochCounter = bindViewLpNextEpochCounter;
 
 
+    exports.bindViewZilBalanceFiat24hAgo = bindViewZilBalanceFiat24hAgo;
     exports.bindViewZilBalanceFiat = bindViewZilBalanceFiat;
     exports.bindViewZrcTokenWalletBalanceZil24hAgo = bindViewZrcTokenWalletBalanceZil24hAgo;
     exports.bindViewZrcTokenWalletBalanceZil = bindViewZrcTokenWalletBalanceZil;

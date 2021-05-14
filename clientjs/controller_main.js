@@ -309,6 +309,14 @@ function refreshZilWalletBalanceFiat() {
 
     let zilBalanceFiat = (zilPriceInFiatFloat * zilBalance);
     bindViewZilBalanceFiat(commafyNumberToString(zilBalanceFiat, decimals));
+
+    // Set token wallet balance in fiat 24h ago
+    if (zilPriceInFiat24hAgoFloat) {
+        let zilBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zilBalance;
+        let zilBalanceFiat24hAgoString = commafyNumberToString(zilBalanceFiat24hAgo, decimals);
+        let zilBalanceFiatPercentChange24h = getPercentChange(zilBalanceFiat, zilBalanceFiat24hAgo).toFixed(1);
+        bindViewZilBalanceFiat24hAgo(zilBalanceFiat24hAgoString, zilBalanceFiatPercentChange24h);
+    }
 }
 
 function refreshZrcTokenPriceFiat() {
@@ -343,8 +351,9 @@ function refreshZrcTokenWalletBalanceZilFiat(ticker) {
 
     // Set token wallet balance in ZIL 24h ago
     let zrcTokenPriceInZil24hAgo = getNumberFromView('.' + ticker + '_price_zil_24h_ago');
+    let zrcTokenBalanceZil24hAgo = null;
     if (zrcTokenPriceInZil24hAgo) {
-        let zrcTokenBalanceZil24hAgo = 1.0 * zrcTokenPriceInZil24hAgo * zrcTokenBalance;
+        zrcTokenBalanceZil24hAgo = 1.0 * zrcTokenPriceInZil24hAgo * zrcTokenBalance;
         let zrcTokenBalanceZil24hAgoString = convertNumberQaToDecimalString(zrcTokenBalanceZil24hAgo, /* decimals= */ 0);
         let zrcTokenInZilPercentChange24h = getPercentChange(zrcTokenBalanceZil, zrcTokenBalanceZil24hAgo);
         bindViewZrcTokenWalletBalanceZil24hAgo(zrcTokenBalanceZil24hAgoString, zrcTokenInZilPercentChange24h.toFixed(1), ticker);
@@ -360,8 +369,8 @@ function refreshZrcTokenWalletBalanceZilFiat(ticker) {
     bindViewZrcTokenWalletBalanceFiat(zrcTokenBalanceFiatString, ticker);
 
     // Set token wallet balance in fiat 24h ago
-    if (zilPriceInFiat24hAgoFloat) {
-        let zrcTokenBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zrcTokenBalanceZil;
+    if (zilPriceInFiat24hAgoFloat && zrcTokenBalanceZil24hAgo) {
+        let zrcTokenBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zrcTokenBalanceZil24hAgo;
         let zrcTokenBalanceFiat24hAgoString = commafyNumberToString(zrcTokenBalanceFiat24hAgo, decimals);
         let zrcTokenBalanceFiatPercentChange24h = getPercentChange(zrcTokenBalanceFiat, zrcTokenBalanceFiat24hAgo);
         bindViewZrcTokenWalletBalanceFiat24hAgo(zrcTokenBalanceFiat24hAgoString, zrcTokenBalanceFiatPercentChange24h.toFixed(1), ticker);
