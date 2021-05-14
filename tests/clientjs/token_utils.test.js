@@ -261,4 +261,79 @@ describe('TokenUtils', function () {
             assert.notStrictEqual(zilswapSinglePairPersonalStatus, expected);
         });
     });
+
+
+    describe('#getPercentChange()', function () {
+
+        it('0% change', function () {
+            let percentChange = TokenUtils.getPercentChange(/* currentBalance= */ 100, /* pastBalance= */ 100);
+            let expected = 0;
+            
+            assert.strictEqual(percentChange, expected);
+        });
+
+        it('20% change', function () {
+            
+            let percentChange = TokenUtils.getPercentChange(/* currentBalance= */ 120, /* pastBalance= */ 100);
+            let expected = 20;
+            
+            assert.strictEqual(percentChange, expected);
+        });
+
+        it('-20% change', function () {
+            
+            let percentChange = TokenUtils.getPercentChange(/* currentBalance= */ 80, /* pastBalance= */ 100);
+            let expected = -20;
+            
+            assert.strictEqual(percentChange, expected);
+        });
+
+        it('100% change', function () {
+            
+            let percentChange = TokenUtils.getPercentChange(/* currentBalance= */ 100.0, /* pastBalance= */ 50.0);
+            let expected = 100;
+            
+            assert.strictEqual(percentChange, expected);
+        });
+
+        it('300% change', function () {
+            
+            let percentChange = TokenUtils.getPercentChange(/* currentBalance= */ 200.0, /* pastBalance= */ 50.0);
+            let expected = 300;
+            
+            assert.strictEqual(percentChange, expected);
+        });
+
+        it('-90% change', function () {
+            
+            let percentChange = TokenUtils.getPercentChange(/* currentBalance= */ 10.0, /* pastBalance= */ 100.0);
+            let expected = -90;
+            
+            assert.strictEqual(percentChange, expected);
+        });
+
+        it('-44.44% change', function () {
+            
+            let percentChange = TokenUtils.getPercentChange(/* currentBalance= */ 55.56, /* pastBalance= */ 100.0);
+            let expected = -44.44;
+            
+            assert.strictEqual(percentChange, expected);
+        });
+
+        it('133.33% change', function () {
+            
+            let percentChange = TokenUtils.getPercentChange(/* currentBalance= */ 233.33, /* pastBalance= */ 100.0);
+            let expected = 133.33;
+            
+            assert.strictEqual(percentChange, expected);
+        });
+
+        it('argument not number, returns null', function () {
+            
+            let percentChange = TokenUtils.getPercentChange(/* currentBalance= */ 'asf', /* pastBalance= */ 100.0);
+            let expected = null;
+            
+            assert.strictEqual(percentChange, expected);
+        });
+    });
 });

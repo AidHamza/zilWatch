@@ -118,6 +118,29 @@ function getZilswapSinglePairShareRatio(dataObject, zrcTokenAddressBase16, walle
     return null;
 }
 
+/**
+ * Compute percentage change given current balance vs past balance.
+ * 
+ * For example, currentBalance = 120, pastBalance = 100, it will return 20.0 (%)
+ * if currentBalance = 80, pastBalance = 100, it will return -20.0 (%)
+ *
+ * @param {number} currentBalance required The current balance
+ * @param {number} pastBalance required The past balance as baseline
+ *
+ * @returns {number} a floating point representation of the increase or decrease in percentage
+ */
+function getPercentChange(currentBalance, pastBalance) {
+    if (typeof currentBalance !== 'number' && typeof currentBalance !== 'bigint') {
+        return null;
+    }
+    if (typeof pastBalance !== 'number' && typeof pastBalance !== 'bigint') {
+        return null;
+    }
+
+    let balanceDiff = currentBalance - pastBalance;
+    return 100.0 * balanceDiff / pastBalance;
+}
+
 /** A class to represent a single token pair in Zilswap LP.  */
 class ZilswapSinglePairPublicStatus {
     constructor(totalPoolZilAmount, totalPoolZrcTokenAmount) {
@@ -140,6 +163,7 @@ if (typeof exports !== 'undefined') {
     exports.parseZrcTokenBalanceNumberQaFromGetSmartContractSubState = parseZrcTokenBalanceNumberQaFromGetSmartContractSubState;
     exports.getZilswapSinglePairPublicStatusFromDexState = getZilswapSinglePairPublicStatusFromDexState;
     exports.getZilswapSinglePairShareRatio = getZilswapSinglePairShareRatio;
+    exports.getPercentChange = getPercentChange;
     exports.ZilswapSinglePairPublicStatus = ZilswapSinglePairPublicStatus;
     exports.ZilswapSinglePairPersonalStatus = ZilswapSinglePairPersonalStatus;
 }

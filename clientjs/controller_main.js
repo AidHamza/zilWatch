@@ -200,9 +200,10 @@ function onZrcTokenLpBalanceLoaded(/* nullable */ zilswapSinglePairPersonalStatu
         let zilAmount24hAgo = convertNumberQaToDecimalString(zilswapSinglePairPersonalStatus24hAgo.zilAmount, /* decimals= */ 0);
         let zrcTokenAmount24hAgo = convertNumberQaToDecimalString(zilswapSinglePairPersonalStatus24hAgo.zrcTokenAmount, /* decimals= */ 0);
         let balanceInZilAmount24hAgo = convertNumberQaToDecimalString(2.0 * zilswapSinglePairPersonalStatus24hAgo.zilAmount, /* decimals= */ 0);
+        let balanceInZilPercentChange24h = getPercentChange(zilswapSinglePairPersonalStatus.zilAmount, zilswapSinglePairPersonalStatus24hAgo.zilAmount).toFixed(1);
 
         if (poolSharePercent24hAgo && zilAmount24hAgo && zrcTokenAmount24hAgo && balanceInZilAmount24hAgo) {
-            bindViewZrcTokenLpBalance24hAgo(poolSharePercent24hAgo, zilAmount24hAgo, zrcTokenAmount24hAgo, balanceInZilAmount24hAgo, ticker);
+            bindViewZrcTokenLpBalance24hAgo(poolSharePercent24hAgo, zilAmount24hAgo, zrcTokenAmount24hAgo, balanceInZilAmount24hAgo, balanceInZilPercentChange24h, ticker);
         }
     }
 
@@ -345,7 +346,8 @@ function refreshZrcTokenWalletBalanceZilFiat(ticker) {
     if (zrcTokenPriceInZil24hAgo) {
         let zrcTokenBalanceZil24hAgo = 1.0 * zrcTokenPriceInZil24hAgo * zrcTokenBalance;
         let zrcTokenBalanceZil24hAgoString = convertNumberQaToDecimalString(zrcTokenBalanceZil24hAgo, /* decimals= */ 0);
-        bindViewZrcTokenWalletBalanceZil24hAgo(zrcTokenBalanceZil24hAgoString, ticker);
+        let zrcTokenInZilPercentChange24h = getPercentChange(zrcTokenBalanceZil, zrcTokenBalanceZil24hAgo);
+        bindViewZrcTokenWalletBalanceZil24hAgo(zrcTokenBalanceZil24hAgoString, zrcTokenInZilPercentChange24h.toFixed(1), ticker);
     }
 
     if (!zilPriceInFiatFloat) {
@@ -361,7 +363,8 @@ function refreshZrcTokenWalletBalanceZilFiat(ticker) {
     if (zilPriceInFiat24hAgoFloat) {
         let zrcTokenBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zrcTokenBalanceZil;
         let zrcTokenBalanceFiat24hAgoString = commafyNumberToString(zrcTokenBalanceFiat24hAgo, decimals);
-        bindViewZrcTokenWalletBalanceFiat24hAgo(zrcTokenBalanceFiat24hAgoString, ticker);
+        let zrcTokenBalanceFiatPercentChange24h = getPercentChange(zrcTokenBalanceFiat, zrcTokenBalanceFiat24hAgo);
+        bindViewZrcTokenWalletBalanceFiat24hAgo(zrcTokenBalanceFiat24hAgoString, zrcTokenBalanceFiatPercentChange24h.toFixed(1), ticker);
     }
 }
 
@@ -390,8 +393,8 @@ function refreshTotalWalletBalanceZilFiat() {
     let totalWalletBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
     bindViewTotalWalletBalanceZil(totalWalletBalanceZil);
     let totalWalletBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
-    bindViewTotalWalletBalanceZil24hAgo(totalWalletBalanceZil24hAgo);
-
+    let totalWalletBalanceZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
+    bindViewTotalWalletBalanceZil24hAgo(totalWalletBalanceZil24hAgo, totalWalletBalanceZilPercentChange24h);
 
     if (!zilPriceInFiatFloat) {
         return;
@@ -406,7 +409,8 @@ function refreshTotalWalletBalanceZilFiat() {
     if (zilPriceInFiat24hAgoFloat) {
         let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
         let totalWalletBalanceFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
-        bindViewTotalWalletBalanceFiat24hAgo(totalWalletBalanceFiat24hAgo);
+        let totalWalletBalanceFiatPercentChange24h = getPercentChange(totalFiat, totalFiat24hAgo).toFixed(1);
+        bindViewTotalWalletBalanceFiat24hAgo(totalWalletBalanceFiat24hAgo, totalWalletBalanceFiatPercentChange24h);
     }
 }
 
@@ -450,7 +454,8 @@ function refreshZrcTokenLpBalanceFiat(ticker) {
         }
         let lpBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * lpBalanceInZil24hAgo;
         let lpBalanceFiat24hAgoString = commafyNumberToString(lpBalanceFiat24hAgo, decimals);
-        bindViewZrcTokenLpBalanceFiat24hAgo(lpBalanceFiat24hAgoString, ticker);
+        let lpBalanceFiatPercentChange24h = getPercentChange(lpBalanceFiat, lpBalanceFiat24hAgo).toFixed(1);
+        bindViewZrcTokenLpBalanceFiat24hAgo(lpBalanceFiat24hAgoString, lpBalanceFiatPercentChange24h, ticker);
     }
 }
 
@@ -472,7 +477,8 @@ function refreshTotalLpBalanceZilFiat() {
     let totalLpBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
     bindViewTotalLpBalanceZil(totalLpBalanceZil);
     let totalLpBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
-    bindViewTotalLpBalanceZil24hAgo(totalLpBalanceZil24hAgo);
+    let totalLpBalanceZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
+    bindViewTotalLpBalanceZil24hAgo(totalLpBalanceZil24hAgo, totalLpBalanceZilPercentChange24h);
 
     // Sum balance in USD.
     if (!zilPriceInFiatFloat) {
@@ -487,7 +493,8 @@ function refreshTotalLpBalanceZilFiat() {
     if (zilPriceInFiat24hAgoFloat) {
         let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
         let totalLpBalanceFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
-        bindViewTotalLpBalanceFiat24hAgo(totalLpBalanceFiat24hAgo);
+        let totalLpBalanceFiatPercentChange24h = getPercentChange(totalFiat, totalFiat24hAgo).toFixed(1);
+        bindViewTotalLpBalanceFiat24hAgo(totalLpBalanceFiat24hAgo, totalLpBalanceFiatPercentChange24h);
     }
 }
 
@@ -509,7 +516,8 @@ function refreshZilStakingFiat(ssnAddress) {
     if (zilPriceInFiat24hAgoFloat) {
         let zilStakingBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zilStakingBalance;
         let zilStakingBalanceFiat24hAgoString = commafyNumberToString(zilStakingBalanceFiat24hAgo, decimals);
-        bindViewZilStakingBalanceFiat24hAgo(zilStakingBalanceFiat24hAgoString, ssnAddress);
+        let zilStakingBalanceFiatPercentChange24h = getPercentChange(zilStakingBalanceFiat, zilStakingBalanceFiat24hAgo).toFixed(1);
+        bindViewZilStakingBalanceFiat24hAgo(zilStakingBalanceFiat24hAgoString, zilStakingBalanceFiatPercentChange24h, ssnAddress);
     }
 }
 
@@ -532,7 +540,8 @@ function refreshZilStakingWithdrawalPendingFiat() {
     if (zilPriceInFiat24hAgoFloat) {
         let zilStakingWithdrawalBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zilStakingWithdrawalBalance;
         let zilStakingWithdrawalBalanceFiat24hAgoString = commafyNumberToString(zilStakingWithdrawalBalanceFiat24hAgo, decimals);
-        bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo(zilStakingWithdrawalBalanceFiat24hAgoString);
+        let zilStakingWithdrawalBalanceFiatPercentChange24h = getPercentChange(zilStakingWithdrawalBalanceFiat, zilStakingWithdrawalBalanceFiat24hAgo).toFixed(1);
+        bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo(zilStakingWithdrawalBalanceFiat24hAgoString, zilStakingWithdrawalBalanceFiatPercentChange24h);
     }
 }
 
@@ -557,7 +566,8 @@ function refreshCarbonStakingZilFiat() {
     if (carbonPriceInZil24hAgo) {
         let carbonStakingBalanceZil24hAgo = 1.0 * carbonPriceInZil24hAgo * carbonStakingBalance;
         let carbonStakingBalanceZil24hAgoString = convertNumberQaToDecimalString(carbonStakingBalanceZil24hAgo, /* decimals= */ 0);
-        bindViewCarbonStakingBalanceZil24hAgo(carbonStakingBalanceZil24hAgoString);
+        let carbonStakingBalanceZilPercentChange24h = getPercentChange(carbonStakingBalanceZil, carbonStakingBalanceZil24hAgo).toFixed(1);
+        bindViewCarbonStakingBalanceZil24hAgo(carbonStakingBalanceZil24hAgoString, carbonStakingBalanceZilPercentChange24h);
     }
 
     if (!zilPriceInFiatFloat) {
@@ -572,7 +582,8 @@ function refreshCarbonStakingZilFiat() {
     if (zilPriceInFiat24hAgoFloat) {
         let carbonStakingBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * carbonStakingBalanceZil;
         let carbonStakingBalanceFiat24hAgoString = commafyNumberToString(carbonStakingBalanceFiat24hAgo, decimals);
-        bindViewCarbonStakingBalanceFiat24hAgo(carbonStakingBalanceFiat24hAgoString);
+        let carbonStakingBalanceFiatPercentChange24h = getPercentChange(carbonStakingBalanceFiat, carbonStakingBalanceFiat24hAgo).toFixed(1);
+        bindViewCarbonStakingBalanceFiat24hAgo(carbonStakingBalanceFiat24hAgoString, carbonStakingBalanceFiatPercentChange24h);
     }
 }
 
@@ -626,7 +637,8 @@ function refreshTotalStakingZilFiat() {
     }
 
     let totalStakingBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
-    bindViewTotalStakingBalanceZil24hAgo(totalStakingBalanceZil24hAgo);
+    let totalStakingBalanceZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
+    bindViewTotalStakingBalanceZil24hAgo(totalStakingBalanceZil24hAgo, totalStakingBalanceZilPercentChange24h);
 
     // -----------------------------------------------
     // Sum balance in USD.
@@ -644,7 +656,8 @@ function refreshTotalStakingZilFiat() {
     if (zilPriceInFiat24hAgoFloat) {
         let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
         let totalStakingBalanceFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
-        bindViewTotalStakingBalanceFiat24hAgo(totalStakingBalanceFiat24hAgo);
+        let totalStakingBalanceFiatPercentChange24h = getPercentChange(totalFiat, totalFiat24hAgo).toFixed(1);
+        bindViewTotalStakingBalanceFiat24hAgo(totalStakingBalanceFiat24hAgo, totalStakingBalanceFiatPercentChange24h);
     }
 }
 
@@ -689,7 +702,8 @@ function refreshNetWorthZilFiat() {
         totalZil24hAgo += zilStakingBalanceZil;
      }
      let totalNetWorthZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
-     bindViewTotalNetWorthZil24hAgo(totalNetWorthZil24hAgo);
+     let totalNetWorthZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
+     bindViewTotalNetWorthZil24hAgo(totalNetWorthZil24hAgo, totalNetWorthZilPercentChange24h);
 
     // Sum balance in USD.
 
@@ -706,7 +720,8 @@ function refreshNetWorthZilFiat() {
     if (zilPriceInFiat24hAgoFloat) {
         let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
         let totalNetWorthFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
-        bindViewTotalNetWorthFiat24hAgo(totalNetWorthFiat24hAgo);
+        let totalNetWorthFiatPercentChange24h = getPercentChange(totalFiat, totalFiat24hAgo).toFixed(1);
+        bindViewTotalNetWorthFiat24hAgo(totalNetWorthFiat24hAgo, totalNetWorthFiatPercentChange24h);
     }
 }
 
