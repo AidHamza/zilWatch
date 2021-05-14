@@ -10,12 +10,6 @@ function onCoinFiatPriceLoaded(currencyCode, coinPriceCoingeckoDataObject) {
     }
     let currencySymbol = currencyMap[currencyCode];
 
-    // Get zilliqa price in fiat first to use to compute other coins in ZIL later on
-    let zilPriceInFiatFloat = null;
-    if (coinPriceCoingeckoDataObject.zilliqa && coinPriceCoingeckoDataObject.zilliqa[currencyCode]) {
-        zilPriceInFiatFloat = parseFloat(coinPriceCoingeckoDataObject.zilliqa[currencyCode]);
-    }
-
     for (let coinTicker in coinMap) {
         let coingeckoId = coinMap[coinTicker].coingecko_id;
         if (coinPriceCoingeckoDataObject[coingeckoId] && coinPriceCoingeckoDataObject[coingeckoId][currencyCode]) {
@@ -96,9 +90,16 @@ function onZilswapDexStatusLoaded(dataObject, walletAddressBase16 = null) {
         let zrcTokenProperties = zrcTokenPropertiesListMap[key];
         let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();
 
-        // To get ZrcTokensPrice in ZIL, already in decimal.
+        // To get pool status and zrc token price in ZIL, for values 24h ago
+        let zilswapSinglePairPublicStatus24hAgo = null;
+        if (zilswapDexSmartContractState24hAgoData) {
+            zilswapSinglePairPublicStatus24hAgo = getZilswapSinglePairPublicStatusFromDexState(zilswapDexSmartContractState24hAgoData, zrcTokenAddressBase16, zrcTokenProperties.decimals);
+        }
+
+        // To get pool status and zrc token price in ZIL
         let zilswapSinglePairPublicStatus = getZilswapSinglePairPublicStatusFromDexState(dataObject, zrcTokenAddressBase16, zrcTokenProperties.decimals);
-        onZilswapSinglePairPublicStatusLoaded(zilswapSinglePairPublicStatus, zrcTokenProperties.ticker);
+
+        onZilswapSinglePairPublicStatusLoaded(zilswapSinglePairPublicStatus24hAgo, zilswapSinglePairPublicStatus, zrcTokenProperties.ticker);
 
         if (!walletAddressBase16) {
             continue;
@@ -107,13 +108,27 @@ function onZilswapDexStatusLoaded(dataObject, walletAddressBase16 = null) {
         // To get ZilswapLp balance and Total pool status
         let walletShareRatio = getZilswapSinglePairShareRatio(dataObject, zrcTokenAddressBase16, walletAddressBase16);
         let zilswapSinglePairPersonalStatus = new ZilswapSinglePairPersonalStatus(walletShareRatio, zilswapSinglePairPublicStatus);
-        onZrcTokenLpBalanceLoaded(zilswapSinglePairPersonalStatus, zrcTokenProperties.ticker);
+        
+        // To getZilswapLp balance and share ratio 24h ago
+        let zilswapSinglePairPersonalStatus24hAgo = null;
+        if (zilswapDexSmartContractState24hAgoData && zilswapDexSmartContractState24hAgoData.result && zilswapSinglePairPublicStatus24hAgo) {
+            zilswapDexSmartContractState24hAgoData.result.balances = dataObject.result.balances;
+            let walletShareRatio24hAgo = getZilswapSinglePairShareRatio(zilswapDexSmartContractState24hAgoData, zrcTokenAddressBase16, walletAddressBase16);
+            zilswapSinglePairPersonalStatus24hAgo = new ZilswapSinglePairPersonalStatus(walletShareRatio24hAgo, zilswapSinglePairPublicStatus24hAgo);
+        }
+
+        onZrcTokenLpBalanceLoaded(zilswapSinglePairPersonalStatus24hAgo, zilswapSinglePairPersonalStatus, zrcTokenProperties.ticker);
     }
 }
 
-function onZilswapSinglePairPublicStatusLoaded(zilswapSinglePairPublicStatus, ticker) {
-    let zrcTokenPriceInZilNumber = zilswapSinglePairPublicStatus.zrcTokenPriceInZil;
+function onZilswapSinglePairPublicStatusLoaded( /* nullable */ zilswapSinglePairPublicStatus24hAgo, zilswapSinglePairPublicStatus, ticker) {
+    if (zilswapSinglePairPublicStatus24hAgo) {
+        let zrcTokenPriceInZilNumber24hAgo = zilswapSinglePairPublicStatus24hAgo.zrcTokenPriceInZil;
+        let userFriendlyZrcTokenPriceInZil24hAgo = convertNumberQaToDecimalString(zrcTokenPriceInZilNumber24hAgo, /* decimals= */ 0);
+        bindViewZrcTokenPriceInZil24hAgo(userFriendlyZrcTokenPriceInZil24hAgo, ticker);
+    }
 
+    let zrcTokenPriceInZilNumber = zilswapSinglePairPublicStatus.zrcTokenPriceInZil;
     let publicUserFriendlyZrcTokenPriceInZil = commafyNumberToString(zrcTokenPriceInZilNumber, 2);
     let userFriendlyZrcTokenPriceInZil = convertNumberQaToDecimalString(zrcTokenPriceInZilNumber, /* decimals= */ 0);
     bindViewZrcTokenPriceInZil(publicUserFriendlyZrcTokenPriceInZil, userFriendlyZrcTokenPriceInZil, ticker)
@@ -165,18 +180,31 @@ function onTotalLpRewardNextEpochLoaded() {
     refreshTotalLpRewardFiat();
 }
 
-function onZrcTokenLpBalanceLoaded(zilswapSinglePairPersonalStatus, ticker) {
+function onZrcTokenLpBalanceLoaded(/* nullable */ zilswapSinglePairPersonalStatus24hAgo, zilswapSinglePairPersonalStatus, ticker) {
     if (!zilswapSinglePairPersonalStatus) {
         return;
     }
     let poolSharePercent = parseFloat((zilswapSinglePairPersonalStatus.shareRatio) * 100).toPrecision(3);
     let zilAmount = convertNumberQaToDecimalString(zilswapSinglePairPersonalStatus.zilAmount, /* decimals= */ 0);
     let zrcTokenAmount = convertNumberQaToDecimalString(zilswapSinglePairPersonalStatus.zrcTokenAmount, /* decimals= */ 0);
+    let balanceInZilAmount = convertNumberQaToDecimalString(2.0 * zilswapSinglePairPersonalStatus.zilAmount, /* decimals= */ 0);
 
-    if (!poolSharePercent || !zilAmount || !zrcTokenAmount) {
+    if (!poolSharePercent || !zilAmount || !zrcTokenAmount || !balanceInZilAmount) {
         return;
     }
-    bindViewZrcTokenLpBalance(poolSharePercent, zilAmount, zrcTokenAmount, ticker);
+    bindViewZrcTokenLpBalance(poolSharePercent, zilAmount, zrcTokenAmount, balanceInZilAmount, ticker);
+
+    // If there is a 24h ago data
+    if (zilswapSinglePairPersonalStatus24hAgo) {
+        let poolSharePercent24hAgo = parseFloat((zilswapSinglePairPersonalStatus24hAgo.shareRatio) * 100).toPrecision(3);
+        let zilAmount24hAgo = convertNumberQaToDecimalString(zilswapSinglePairPersonalStatus24hAgo.zilAmount, /* decimals= */ 0);
+        let zrcTokenAmount24hAgo = convertNumberQaToDecimalString(zilswapSinglePairPersonalStatus24hAgo.zrcTokenAmount, /* decimals= */ 0);
+        let balanceInZilAmount24hAgo = convertNumberQaToDecimalString(2.0 * zilswapSinglePairPersonalStatus24hAgo.zilAmount, /* decimals= */ 0);
+
+        if (poolSharePercent24hAgo && zilAmount24hAgo && zrcTokenAmount24hAgo && balanceInZilAmount24hAgo) {
+            bindViewZrcTokenLpBalance24hAgo(poolSharePercent24hAgo, zilAmount24hAgo, zrcTokenAmount24hAgo, balanceInZilAmount24hAgo, ticker);
+        }
+    }
 
     // Lp balance
     refreshZrcTokenLpBalanceFiat(ticker)
@@ -222,7 +250,7 @@ function onZilStakingWithdrawalPendingBalanceLoaded(blockNumberToBalanceMap) {
 }
 
 function onCarbonStakingBalanceLoaded(carbonBalanceQa) {
-    let userFriendlyCarbonStakingBalanceString = convertNumberQaToDecimalString(parseInt(carbonBalanceQa),zrcTokenPropertiesListMap['CARB'].decimals);
+    let userFriendlyCarbonStakingBalanceString = convertNumberQaToDecimalString(parseInt(carbonBalanceQa), zrcTokenPropertiesListMap['CARB'].decimals);
     if (!userFriendlyCarbonStakingBalanceString) {
         return;
     }
@@ -267,34 +295,30 @@ function onLpTradeVolumeLoaded(poolVolumeArray) {
  */
 
 function refreshZilWalletBalanceFiat() {
-    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
-    if (!fiatPrice) {
+
+    if (!zilPriceInFiatFloat) {
         return;
     }
-    let decimals = (fiatPrice > 1) ? 0 : 2;
+    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
     let zilBalance = getNumberFromView('#zil_balance');
     if (!zilBalance) {
         return;
     }
 
-    let zilBalanceFiat = (fiatPrice * zilBalance);
+    let zilBalanceFiat = (zilPriceInFiatFloat * zilBalance);
     bindViewZilBalanceFiat(commafyNumberToString(zilBalanceFiat, decimals));
 }
 
 function refreshZrcTokenPriceFiat() {
-    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
-    if (!fiatPrice) {
-        return;
-    }
-    let decimals = (fiatPrice > 1000) ? 0 : 2;
+    let decimals = (zilPriceInFiatFloat > 1000) ? 0 : 2;
 
     for (let ticker in zrcTokenPropertiesListMap) {
-        let zrcTokenPriceInZil = getNumberFromView('#' + ticker + '_price_zil');
+        let zrcTokenPriceInZil = getNumberFromView('.' + ticker + '_price_zil');
         if (!zrcTokenPriceInZil) {
             return;
         }
-        let zrcTokenPriceInFiat = 1.0 * fiatPrice * zrcTokenPriceInZil;
+        let zrcTokenPriceInFiat = 1.0 * zilPriceInFiatFloat * zrcTokenPriceInZil;
         let zrcTokenPriceInFiatString = commafyNumberToString(zrcTokenPriceInFiat, decimals);
         bindViewZrcTokenPriceInFiat(zrcTokenPriceInFiatString, ticker);
     }
@@ -302,7 +326,7 @@ function refreshZrcTokenPriceFiat() {
 
 function refreshZrcTokenWalletBalanceZilFiat(ticker) {
 
-    let zrcTokenPriceInZil = getNumberFromView('#' + ticker + '_price_zil');
+    let zrcTokenPriceInZil = getNumberFromView('.' + ticker + '_price_zil');
     if (!zrcTokenPriceInZil) {
         return;
     }
@@ -316,24 +340,40 @@ function refreshZrcTokenWalletBalanceZilFiat(ticker) {
     let zrcTokenBalanceZilString = convertNumberQaToDecimalString(zrcTokenBalanceZil, /* decimals= */ 0);
     bindViewZrcTokenWalletBalanceZil(zrcTokenBalanceZilString, ticker);
 
-    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
-    if (!fiatPrice) {
+    // Set token wallet balance in ZIL 24h ago
+    let zrcTokenPriceInZil24hAgo = getNumberFromView('.' + ticker + '_price_zil_24h_ago');
+    if (zrcTokenPriceInZil24hAgo) {
+        let zrcTokenBalanceZil24hAgo = 1.0 * zrcTokenPriceInZil24hAgo * zrcTokenBalance;
+        let zrcTokenBalanceZil24hAgoString = convertNumberQaToDecimalString(zrcTokenBalanceZil24hAgo, /* decimals= */ 0);
+        bindViewZrcTokenWalletBalanceZil24hAgo(zrcTokenBalanceZil24hAgoString, ticker);
+    }
+
+    if (!zilPriceInFiatFloat) {
         return;
     }
-    let decimals = (fiatPrice > 1) ? 0 : 2;
+    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
-    let zrcTokenBalanceFiat = 1.0 * fiatPrice * zrcTokenBalanceZil;
+    let zrcTokenBalanceFiat = 1.0 * zilPriceInFiatFloat * zrcTokenBalanceZil;
     let zrcTokenBalanceFiatString = commafyNumberToString(zrcTokenBalanceFiat, decimals);
     bindViewZrcTokenWalletBalanceFiat(zrcTokenBalanceFiatString, ticker);
+
+    // Set token wallet balance in fiat 24h ago
+    if (zilPriceInFiat24hAgoFloat) {
+        let zrcTokenBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zrcTokenBalanceZil;
+        let zrcTokenBalanceFiat24hAgoString = commafyNumberToString(zrcTokenBalanceFiat24hAgo, decimals);
+        bindViewZrcTokenWalletBalanceFiat24hAgo(zrcTokenBalanceFiat24hAgoString, ticker);
+    }
 }
 
 function refreshTotalWalletBalanceZilFiat() {
     // Sum balance in ZIL.
     let totalZil = 0;
+    let totalZil24hAgo = 0;
 
     let zil = getNumberFromView('#zil_balance');
     if (zil) {
         totalZil += zil;
+        totalZil24hAgo += zil;
     }
 
     for (let ticker in zrcTokenPropertiesListMap) {
@@ -341,27 +381,38 @@ function refreshTotalWalletBalanceZilFiat() {
         if (zrcZil) {
             totalZil += zrcZil;
         }
+        let zrcZil24hAgo = getNumberFromView('#' + ticker + '_balance_zil_24h_ago');
+        if (zrcZil24hAgo) {
+            totalZil24hAgo += zrcZil24hAgo;
+        }
     }
 
     let totalWalletBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
     bindViewTotalWalletBalanceZil(totalWalletBalanceZil);
+    let totalWalletBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
+    bindViewTotalWalletBalanceZil24hAgo(totalWalletBalanceZil24hAgo);
 
-    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
-    if (!fiatPrice) {
+
+    if (!zilPriceInFiatFloat) {
         return;
     }
-    let decimals = (fiatPrice > 1) ? 0 : 2;
+    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
     // Sum balance in USD
-    let totalFiat = 1.0 * totalZil * fiatPrice;
+    let totalFiat = 1.0 * totalZil * zilPriceInFiatFloat;
     let totalWalletBalanceFiat = commafyNumberToString(totalFiat, decimals);
     bindViewTotalWalletBalanceFiat(totalWalletBalanceFiat);
+
+    if (zilPriceInFiat24hAgoFloat) {
+        let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
+        let totalWalletBalanceFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
+        bindViewTotalWalletBalanceFiat24hAgo(totalWalletBalanceFiat24hAgo);
+    }
 }
 
 function refreshZrcTokenLpTotalPoolBalanceFiat(ticker) {
 
-    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
-    if (!fiatPrice) {
+    if (!zilPriceInFiatFloat) {
         return;
     }
 
@@ -372,95 +423,122 @@ function refreshZrcTokenLpTotalPoolBalanceFiat(ticker) {
 
     // total worth is always times 2 (e.g., ZRC2-ZIL pair always have 50:50 value).
     // For now ZilSwap only support 50-50 weight pair.
-    let lpTotalPoolBalanceFiat = 1.0 * fiatPrice * (zilLpBalance * 2.0);
+    let lpTotalPoolBalanceFiat = 1.0 * zilPriceInFiatFloat * (zilLpBalance * 2.0);
     let lpTotalPoolBalanceFiatString = commafyNumberToString(lpTotalPoolBalanceFiat, /* decimals= */ 0);
     bindViewZrcTokenLpTotalPoolBalanceFiat(lpTotalPoolBalanceFiatString, ticker);
 }
 
 function refreshZrcTokenLpBalanceFiat(ticker) {
-
-    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
-    if (!fiatPrice) {
+    if (!zilPriceInFiatFloat) {
         return;
     }
-    let decimals = (fiatPrice > 1) ? 0 : 2;
+    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
-    let zilLpBalance = getNumberFromView('#' + ticker + '_lp_zil_balance');
-    if (!zilLpBalance) {
+    let lpBalanceInZil = getNumberFromView('#' + ticker + '_lp_balance_zil');
+    if (!lpBalanceInZil) {
         return;
     }
 
-    // total worth is always times 2 (e.g., ZRC2-ZIL pair always have 50:50 value).
-    // For now ZilSwap only support 50-50 weight pair.
-    let lpBalanceFiat = 1.0 * fiatPrice * (zilLpBalance * 2.0);
+    let lpBalanceFiat = 1.0 * zilPriceInFiatFloat * lpBalanceInZil;
     let lpBalanceFiatString = commafyNumberToString(lpBalanceFiat, decimals);
     bindViewZrcTokenLpBalanceFiat(lpBalanceFiatString, ticker);
+
+    if (zilPriceInFiat24hAgoFloat) {
+        let lpBalanceInZil24hAgo = getNumberFromView('#' + ticker + '_lp_balance_zil_24h_ago');
+        if (!lpBalanceInZil24hAgo) {
+            return;
+        }
+        let lpBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * lpBalanceInZil24hAgo;
+        let lpBalanceFiat24hAgoString = commafyNumberToString(lpBalanceFiat24hAgo, decimals);
+        bindViewZrcTokenLpBalanceFiat24hAgo(lpBalanceFiat24hAgoString, ticker);
+    }
 }
 
 
 function refreshTotalLpBalanceZilFiat() {
     // Sum balance in ZIL.
     let totalZil = 0;
+    let totalZil24hAgo = 0;
     for (let ticker in zrcTokenPropertiesListMap) {
-        let lpZil = getNumberFromView('#' + ticker + '_lp_zil_balance');
+        let lpZil = getNumberFromView('#' + ticker + '_lp_balance_zil');
         if (lpZil) {
-            // total worth is always times 2 (e.g., ZRC2-ZIL pair always have 50:50 value)
-            // For now ZilSwap only support 50-50 weight pair.
-            totalZil += (lpZil * 2.0);
+            totalZil += lpZil;
+        }
+        let lpZil24hAgo = getNumberFromView('#' + ticker + '_lp_balance_zil_24h_ago');
+        if (lpZil24hAgo) {
+            totalZil24hAgo += lpZil24hAgo;
         }
     }
     let totalLpBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
     bindViewTotalLpBalanceZil(totalLpBalanceZil);
+    let totalLpBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
+    bindViewTotalLpBalanceZil24hAgo(totalLpBalanceZil24hAgo);
 
     // Sum balance in USD.
-    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
-    if (!fiatPrice) {
+    if (!zilPriceInFiatFloat) {
         return;
     }
-    let decimals = (fiatPrice > 1) ? 0 : 2;
+    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
-    let totalFiat = 1.0 * totalZil * fiatPrice;
+    let totalFiat = 1.0 * totalZil * zilPriceInFiatFloat;
     let totalLpBalanceFiat = commafyNumberToString(totalFiat, decimals);
     bindViewTotalLpBalanceFiat(totalLpBalanceFiat);
+
+    if (zilPriceInFiat24hAgoFloat) {
+        let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
+        let totalLpBalanceFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
+        bindViewTotalLpBalanceFiat24hAgo(totalLpBalanceFiat24hAgo);
+    }
 }
 
 function refreshZilStakingFiat(ssnAddress) {
-    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
-    if (!fiatPrice) {
+    if (!zilPriceInFiatFloat) {
         return;
     }
-    let decimals = (fiatPrice > 1) ? 0 : 2;
+    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
     let zilStakingBalance = getNumberFromView('#' + ssnAddress + '_zil_staking_balance');
     if (!zilStakingBalance) {
         return;
     }
 
-    let zilStakingBalanceFiat = 1.0 * fiatPrice * zilStakingBalance;
+    let zilStakingBalanceFiat = 1.0 * zilPriceInFiatFloat * zilStakingBalance;
     let zilStakingBalanceFiatString = commafyNumberToString(zilStakingBalanceFiat, decimals);
     bindViewZilStakingBalanceFiat(zilStakingBalanceFiatString, ssnAddress);
+
+    if (zilPriceInFiat24hAgoFloat) {
+        let zilStakingBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zilStakingBalance;
+        let zilStakingBalanceFiat24hAgoString = commafyNumberToString(zilStakingBalanceFiat24hAgo, decimals);
+        bindViewZilStakingBalanceFiat24hAgo(zilStakingBalanceFiat24hAgoString, ssnAddress);
+    }
 }
 
 function refreshZilStakingWithdrawalPendingFiat() {
-    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
-    if (!fiatPrice) {
+
+    if (!zilPriceInFiatFloat) {
         return;
     }
-    let decimals = (fiatPrice > 1) ? 0 : 2;
+    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
     let zilStakingWithdrawalBalance = getNumberFromView('#zil_staking_withdrawal_pending_balance');
     if (!zilStakingWithdrawalBalance) {
         return;
     }
 
-    let zilStakingWithdrawalBalanceFiat = 1.0 * fiatPrice * zilStakingWithdrawalBalance;
+    let zilStakingWithdrawalBalanceFiat = 1.0 * zilPriceInFiatFloat * zilStakingWithdrawalBalance;
     let zilStakingWithdrawalBalanceFiatString = commafyNumberToString(zilStakingWithdrawalBalanceFiat, decimals);
     bindViewZilStakingWithdrawalPendingBalanceFiat(zilStakingWithdrawalBalanceFiatString);
+
+    if (zilPriceInFiat24hAgoFloat) {
+        let zilStakingWithdrawalBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zilStakingWithdrawalBalance;
+        let zilStakingWithdrawalBalanceFiat24hAgoString = commafyNumberToString(zilStakingWithdrawalBalanceFiat24hAgo, decimals);
+        bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo(zilStakingWithdrawalBalanceFiat24hAgoString);
+    }
 }
 
 function refreshCarbonStakingZilFiat() {
 
-    let carbonPriceInZil = getNumberFromView('#' + zrcTokenPropertiesListMap['CARB'].ticker + '_price_zil');
+    let carbonPriceInZil = getNumberFromView('.' + zrcTokenPropertiesListMap['CARB'].ticker + '_price_zil');
     if (!carbonPriceInZil) {
         return;
     }
@@ -474,18 +552,32 @@ function refreshCarbonStakingZilFiat() {
     let carbonStakingBalanceZilString = convertNumberQaToDecimalString(carbonStakingBalanceZil, /* decimals= */ 0);
     bindViewCarbonStakingBalanceZil(carbonStakingBalanceZilString);
 
-    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
-    if (!fiatPrice) {
+    // Balance in ZIL 24h hour ago
+    let carbonPriceInZil24hAgo = getNumberFromView('.' + zrcTokenPropertiesListMap['CARB'].ticker + '_price_zil_24h_ago');
+    if (carbonPriceInZil24hAgo) {
+        let carbonStakingBalanceZil24hAgo = 1.0 * carbonPriceInZil24hAgo * carbonStakingBalance;
+        let carbonStakingBalanceZil24hAgoString = convertNumberQaToDecimalString(carbonStakingBalanceZil24hAgo, /* decimals= */ 0);
+        bindViewCarbonStakingBalanceZil24hAgo(carbonStakingBalanceZil24hAgoString);
+    }
+
+    if (!zilPriceInFiatFloat) {
         return;
     }
-    let decimals = (fiatPrice > 1) ? 0 : 2;
+    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
-    let carbonStakingBalanceFiat = 1.0 * fiatPrice * carbonStakingBalanceZil;
+    let carbonStakingBalanceFiat = 1.0 * zilPriceInFiatFloat * carbonStakingBalanceZil;
     let carbonStakingBalanceFiatString = commafyNumberToString(carbonStakingBalanceFiat, decimals);
     bindViewCarbonStakingBalanceFiat(carbonStakingBalanceFiatString);
+
+    if (zilPriceInFiat24hAgoFloat) {
+        let carbonStakingBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * carbonStakingBalanceZil;
+        let carbonStakingBalanceFiat24hAgoString = commafyNumberToString(carbonStakingBalanceFiat24hAgo, decimals);
+        bindViewCarbonStakingBalanceFiat24hAgo(carbonStakingBalanceFiat24hAgoString);
+    }
 }
 
 function refreshTotalStakingZilFiat() {
+    // -----------------------------------------------
     // ZIL staking sum
     let totalZil = 0;
     for (let ssnAddress in ssnListMap) {
@@ -510,19 +602,54 @@ function refreshTotalStakingZilFiat() {
     let totalStakingBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
     bindViewTotalStakingBalanceZil(totalStakingBalanceZil);
 
+    // -----------------------------------------------
+    // Compute Total 24h ago
+    // ZIL staking sum
+    let totalZil24hAgo = 0;
+    for (let ssnAddress in ssnListMap) {
+        let stakingZil24hAgo = getNumberFromView('#' + ssnAddress + '_zil_staking_balance');
+        if (stakingZil24hAgo) {
+            totalZil24hAgo += stakingZil24hAgo;
+        }
+    }
+
+    // ZIL staking withdrawal pending sum
+    let zilWithdrawalBalance24hAgo = getNumberFromView('#zil_staking_withdrawal_pending_balance_24h_ago');
+    if (zilWithdrawalBalance24hAgo) {
+        totalZil24hAgo += zilWithdrawalBalance24hAgo
+    }
+
+    // Carbon staking
+    let carbonStakingBalanceZil24hAgo = getNumberFromView('#carbon_staking_balance_zil_24h_ago');
+    if (carbonStakingBalanceZil24hAgo) {
+        totalZil24hAgo += carbonStakingBalanceZil24hAgo
+    }
+
+    let totalStakingBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
+    bindViewTotalStakingBalanceZil24hAgo(totalStakingBalanceZil24hAgo);
+
+    // -----------------------------------------------
     // Sum balance in USD.
-    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
-    if (!fiatPrice) {
+
+    if (!zilPriceInFiatFloat) {
         return;
     }
-    let decimals = (fiatPrice > 1) ? 0 : 2;
+    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
-    let totalFiat = 1.0 * totalZil * fiatPrice;
+    let totalFiat = 1.0 * totalZil * zilPriceInFiatFloat;
     let totalStakingBalanceFiat = commafyNumberToString(totalFiat, decimals);
     bindViewTotalStakingBalanceFiat(totalStakingBalanceFiat);
+
+    // -----------------------------------------------
+    if (zilPriceInFiat24hAgoFloat) {
+        let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
+        let totalStakingBalanceFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
+        bindViewTotalStakingBalanceFiat24hAgo(totalStakingBalanceFiat24hAgo);
+    }
 }
 
 function refreshNetWorthZilFiat() {
+    // -----------------------------------------------
     // Sum balance in ZIL.
     let totalZil = 0;
 
@@ -543,16 +670,44 @@ function refreshNetWorthZilFiat() {
     let totalNetWorthZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
     bindViewTotalNetWorthZil(totalNetWorthZil);
 
+    // -----------------------------------------------
+     // Sum balance in ZIL.
+     let totalZil24hAgo = 0;
+
+     let walletBalanceZil24hAgo = getNumberFromView('#wallet_balance_zil_24h_ago');
+     if (walletBalanceZil24hAgo) {
+        totalZil24hAgo += walletBalanceZil24hAgo;
+     }
+ 
+     let lpBalanceZil24hAgo = getNumberFromView('#lp_balance_zil_24h_ago');
+     if (lpBalanceZil24hAgo) {
+        totalZil24hAgo += lpBalanceZil24hAgo;
+     }
+ 
+     let zilStakingBalanceZil24hAgo = getNumberFromView('#staking_balance_zil_24h_ago');
+     if (zilStakingBalanceZil24hAgo) {
+        totalZil24hAgo += zilStakingBalanceZil;
+     }
+     let totalNetWorthZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
+     bindViewTotalNetWorthZil24hAgo(totalNetWorthZil24hAgo);
+
     // Sum balance in USD.
-    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
-    if (!fiatPrice) {
+
+    if (!zilPriceInFiatFloat) {
         return;
     }
-    let decimals = (fiatPrice > 1) ? 0 : 2;
+    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
-    let totalFiat = 1.0 * totalZil * fiatPrice;
+    let totalFiat = 1.0 * totalZil * zilPriceInFiatFloat;
     let totalNetWorthFiat = commafyNumberToString(totalFiat, decimals);
     bindViewTotalNetWorthFiat(totalNetWorthFiat);
+
+    // -----------------------------------------------
+    if (zilPriceInFiat24hAgoFloat) {
+        let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
+        let totalNetWorthFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
+        bindViewTotalNetWorthFiat24hAgo(totalNetWorthFiat24hAgo);
+    }
 }
 
 /**
@@ -560,8 +715,8 @@ function refreshNetWorthZilFiat() {
  */
 
 function refreshTotalTradeVolumeFiat(ticker) {
-    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
-    if (!fiatPrice) {
+
+    if (!zilPriceInFiatFloat) {
         return;
     }
 
@@ -570,7 +725,7 @@ function refreshTotalTradeVolumeFiat(ticker) {
         return;
     }
 
-    let totalVolumeFiat = (1.0 * fiatPrice * totalVolumeZil);
+    let totalVolumeFiat = (1.0 * zilPriceInFiatFloat * totalVolumeZil);
     let totalVolumeFiatString = commafyNumberToString(totalVolumeFiat, /* decimals= */ 0);
     bindViewTotalTradeVolumeFiat(totalVolumeFiatString, ticker);
 }

@@ -179,9 +179,17 @@ function computeZilStakingWithdrawalPendingBalanceWithRetry(account, onZilStakin
  * ===============================================================================
  */
 
-async function computeZilPriceInFiat(currencyCode, onCoinFiatPriceLoaded) {
+async function computeCoinPriceInFiat(currencyCode, onCoinFiatPriceLoaded) {
+    // Update cache for computation
+    if (coinPriceCoingecko24hAgoData && coinPriceCoingecko24hAgoData.zilliqa && coinPriceCoingecko24hAgoData.zilliqa[currencyCode]) {
+        zilPriceInFiat24hAgoFloat = parseFloat(coinPriceCoingecko24hAgoData.zilliqa[currencyCode]);
+    }
+    if (coinPriceCoingeckoData && coinPriceCoingeckoData.zilliqa && coinPriceCoingeckoData.zilliqa[currencyCode]) {
+        zilPriceInFiatFloat = parseFloat(coinPriceCoingeckoData.zilliqa[currencyCode]);
+    }
+
     if (coinPriceCoingeckoData) {
-        // Use cache if available.
+        // Use cache if available
         onCoinFiatPriceLoaded(currencyCode, coinPriceCoingeckoData);
         return;
     }
@@ -201,6 +209,9 @@ async function computeZilPriceInFiat(currencyCode, onCoinFiatPriceLoaded) {
         url: "https://api.coingecko.com/api/v3/simple/price?ids=" + allCoinsCode + "&vs_currencies=" + allCurrenciesCode,
         retryLimit: MAX_RETRY,
         success: function (data) {
+            if (data.zilliqa && data.zilliqa[currencyCode]) {
+                zilPriceInFiatFloat = parseFloat(data.zilliqa[currencyCode]);
+            }
             onCoinFiatPriceLoaded(currencyCode, data);
         },
         error: function (xhr, textStatus, errorThrown) {

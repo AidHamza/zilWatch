@@ -131,36 +131,44 @@ block content
       div(class='balance-box col-md-6')
         h3(class='font-weight-bold')= 'Net Worth'
         span(class='h4')
+          span(id='net_worth_fiat_24h_ago' style='display: none;')
           span(class='currency_symbol mr-1')= '$'
           span(id='net_worth_fiat')= 'Loading...'
         span(class='h6 ml-4')
+          span(id='net_worth_zil_24h_ago' style='display: none;')
           span(id='net_worth_zil')= 'Loading...'
           span(class='ml-1')= 'ZIL'
 
       div(class='balance-box col-md-6')
         h3(class='font-weight-bold')= 'Wallet Balance'
         span(class='h4')
+          span(id='wallet_balance_fiat_24h_ago' style='display: none;')
           span(class='currency_symbol mr-1')= '$'
           span(id='wallet_balance_fiat')= 'Loading...'
         span(class='h6 ml-4')
+          span(id='wallet_balance_zil_24h_ago' style='display: none;')
           span(id='wallet_balance_zil')= 'Loading...'
           span(class='ml-1')= 'ZIL'
 
       div(class='balance-box col-md-6')
         h3(class='font-weight-bold')= 'LP Balance'
         span(class='h4')
+          span(id='lp_balance_fiat_24h_ago' style='display: none;')
           span(class='currency_symbol mr-1')= '$'
           span(id='lp_balance_fiat')= 'Loading...'
         span(class='h6 ml-4')
+          span(id='lp_balance_zil_24h_ago' style='display: none;')
           span(id='lp_balance_zil')= 'Loading...'
           span(class='ml-1')= 'ZIL'
 
       div(class='balance-box col-md-6')
         h3(class='font-weight-bold')= 'Staking Balance'
         span(class='h4')
+          span(id='staking_balance_fiat_24h_ago' style='display: none;')
           span(class='currency_symbol mr-1')= '$'
           span(id='staking_balance_fiat')= 'Loading...'
         span(class='h6 ml-4')
+          span(id='staking_balance_zil_24h_ago' style='display: none;')
           span(id='staking_balance_zil')= 'Loading...'
           span(class='ml-1')= 'ZIL'
 
@@ -207,16 +215,19 @@ block content
                     td(colspan='2')
                       span(class='font-weight-bold')= tokenProperties.name
                     td(style='text-align: right; white-space: nowrap; width: 33%;' )
+                      span(id=tokenProperties.ticker+'_balance_zil_24h_ago' style='display: none;')
                       span(id=tokenProperties.ticker+'_balance_zil')= 'Loading...'
                       span(class='ml-1')= 'ZIL'
                   tr
                     td(scope='row' class='font-weight-normal text-secondary' style='white-space: nowrap; width: 33%;' )
-                      span(id=tokenProperties.ticker+'_price_zil')= 'Loading...'
+                      span(class=tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
+                      span(class=tokenProperties.ticker+'_price_zil')= 'Loading...'
                       span(class='ml-1')= 'ZIL'
                     td(style='text-align: right; white-space: nowrap; width: 33%;' )
                       span(id=tokenProperties.ticker+'_balance')= 'Loading...'
                       span(id=tokenProperties.ticker+'_balance_unit' class='ml-1')= tokenProperties.ticker
                     td(style='text-align: right; white-space: nowrap; width: 33%;' )
+                      span(id=tokenProperties.ticker+'_balance_fiat_24h_ago' style='display: none;')
                       span(class='currency_symbol mr-1')= '$'
                       span(id=tokenProperties.ticker+'_balance_fiat')= 'Loading...'
 
@@ -276,9 +287,25 @@ block content
                         span(class='ml-1')= '-'
                         span(id=tokenProperties.ticker+'_lp_zil_balance' class='ml-1')
                         span(id=tokenProperties.ticker+'_lp_zil_balance_unit' class='ml-1')= 'ZIL'
+
+                        span(id=tokenProperties.ticker+'_lp_balance_zil' style='display: none' class='ml-1')
                       td(style='text-align: right; white-space: nowrap; width: 33%;' )
                         span(class='currency_symbol mr-1')= '$'
                         span(id=tokenProperties.ticker+'_lp_balance_fiat')= 'Loading...'
+                    tr(style='display: none')
+                      td(colspan='2' style='text-align: left; white-space: nowrap; width: 66%;' )
+                        span(id=tokenProperties.ticker+'_lp_pool_share_percent_24h_ago')
+                        span(id=tokenProperties.ticker+'_lp_token_balance_24h_ago')
+                        span(id=tokenProperties.ticker+'_lp_token_balance_24h_ago_unit' class='ml-1')= tokenProperties.ticker
+                        span(class='ml-1')= '-'
+                        span(id=tokenProperties.ticker+'_lp_zil_balance_24h_ago' class='ml-1' style='display: none')
+                        span(id=tokenProperties.ticker+'_lp_zil_balance_24h_ago_unit' class='ml-1')= 'ZIL'
+
+                        span(id=tokenProperties.ticker+'_lp_balance_zil_24h_ago' class='ml-1')
+                      td(style='text-align: right; white-space: nowrap; width: 33%;' )
+                        span(class='currency_symbol mr-1')= '$'
+                        span(id=tokenProperties.ticker+'_lp_balance_fiat_24h_ago')
+                        
       hr
 
     div(id='staking_container' style='display: none')
@@ -309,6 +336,7 @@ block content
                       td(style='text-align: right; white-space: nowrap; width: 49%;' )
                         span(class='currency_symbol mr-1')= '$'
                         span(id=ssnAddress+'_zil_staking_balance_fiat')= 'Loading...'
+                        span(id=ssnAddress+'_zil_staking_balance_fiat_24h_ago' style='display: none')
 
           div(id='zil_staking_withdrawal_pending_container' class='col-lg-6' style='padding: 0; display: none')
               div(class='box')
@@ -326,6 +354,7 @@ block content
                       td(style='text-align: right; white-space: nowrap; width: 49%;' )
                         span(class='currency_symbol mr-1')= '$'
                         span(id='zil_staking_withdrawal_pending_balance_fiat')= 'Loading...'
+                        span(id='zil_staking_withdrawal_pending_balance_fiat_24h_ago' style='display: none')
 
           div(id='carbon_staking_container' class='col-lg-6' style='padding: 0; display: none')
             div(class='box')
@@ -339,6 +368,7 @@ block content
                     td(style='text-align: right; white-space: nowrap; width: 49%;' )
                       span(id='carbon_staking_balance_zil')= 'Loading...'
                       span(class='ml-1')= 'ZIL'
+                      span(id='carbon_staking_balance_zil_24h_ago' style='display: none')
                   tr
                     td(style='text-align: left; white-space: nowrap; width: 49%;' )
                       span(id='carbon_staking_balance')= 'Loading...'
@@ -346,6 +376,7 @@ block content
                     td(style='text-align: right; white-space: nowrap; width: 49%;' )
                       span(class='currency_symbol mr-1')= '$'
                       span(id='carbon_staking_balance_fiat')= 'Loading...'
+                      span(id='carbon_staking_balance_fiat_24h_ago' style='display: none')
       hr
 
 block script
@@ -358,7 +389,13 @@ block script
     var zrcTokenPropertiesListMap = !{JSON.stringify(zrcTokenPropertiesListMap)};
     // Cache from redis (if any). If there are no cache, we will fallback to RPC network call.
     var coinPriceCoingeckoData = !{JSON.stringify(coinPriceCoingecko)};
+    var coinPriceCoingecko24hAgoData = !{JSON.stringify(coinPriceCoingecko24hAgo)};
     var zilswapDexSmartContractStateData = !{JSON.stringify(zilswapDexSmartContractState)};
+    var zilswapDexSmartContractState24hAgoData = !{JSON.stringify(zilswapDexSmartContractState24hAgo)};
     var zilswapDex24hTradeVolumeData = !{JSON.stringify(zilswapDex24hTradeVolume)};
     var zilswapDexEpochInfoData = !{JSON.stringify(zilswapDexEpochInfo)};
 
+    // Global cache for zilliqa price in fiat
+    var zilPriceInFiatFloat = null;
+    // Global cache for zilliqa price in fiat, 24h ago
+    var zilPriceInFiat24hAgoFloat = null;

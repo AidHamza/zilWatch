@@ -262,21 +262,6 @@ describe('BindView', function () {
                 });
             }
         });
-
-        it('bind view empty string', function () {
-            for (let coinTicker in Constants.coinMap) {
-                // Act
-                BindView.bindViewCoinPriceInFiat('', '', coinTicker);
-
-                // Assert
-                $('.' + coinTicker + '_price_fiat').each(function () {
-                    assert.strictEqual($(this).text(), '');
-                });
-                $(".currency_symbol").each(function () {
-                    assert.strictEqual($(this).text(), '');
-                });
-            }
-        });
     });
 
 
@@ -305,18 +290,6 @@ describe('BindView', function () {
                 });
             }
         });
-
-        it('bind view empty string', function () {
-            for (let coinTicker in Constants.coinMap) {
-                // Act
-                BindView.bindViewCoinPriceInZil('', coinTicker);
-
-                // Assert
-                $('.' + coinTicker + '_price_zil').each(function () {
-                    assert.strictEqual($(this).text(), '');
-                });
-            }
-        });
     });
 
     describe('#bindViewZilBalance()', function () {
@@ -340,13 +313,34 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#zil_balance').text(), 'asdf');
         });
+    });
 
-        it('bind view empty string', function () {
-            // Act
-            BindView.bindViewZilBalance('');
+    describe('#bindViewZrcTokenPriceInZil24hAgo()', function () {
 
-            // Assert
-            assert.strictEqual($('#zil_balance').text(), '');
+        beforeEach(function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('.' + ticker + '_price_zil_24h_ago').text(), '');
+            }
+        });
+
+        it('bind view happy case', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenPriceInZil24hAgo('1234.4', ticker);
+
+                // Assert
+                assert.strictEqual($('.' + ticker + '_price_zil_24h_ago').text(), '1234.4');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenPriceInZil24hAgo('asdf', ticker);
+
+                // Assert
+                assert.strictEqual($('.' + ticker + '_price_zil_24h_ago').text(), 'asdf');
+            }
         });
     });
 
@@ -355,7 +349,7 @@ describe('BindView', function () {
         beforeEach(function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#public_' + ticker + '_price_zil').text(), 'Loading...');
-                assert.strictEqual($('#' + ticker + '_price_zil').text(), 'Loading...');
+                assert.strictEqual($('.' + ticker + '_price_zil').text(), 'Loading...');
             }
         });
 
@@ -366,7 +360,7 @@ describe('BindView', function () {
 
                 // Assert
                 assert.strictEqual($('#public_' + ticker + '_price_zil').text(), '12345.5');
-                assert.strictEqual($('#' + ticker + '_price_zil').text(), '1234.4');
+                assert.strictEqual($('.' + ticker + '_price_zil').text(), '1234.4');
             }
         });
 
@@ -377,18 +371,7 @@ describe('BindView', function () {
 
                 // Assert
                 assert.strictEqual($('#public_' + ticker + '_price_zil').text(), 'qwer');
-                assert.strictEqual($('#' + ticker + '_price_zil').text(), 'asdf');
-            }
-        });
-
-        it('bind view empty string', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewZrcTokenPriceInZil('', '', ticker);
-
-                // Assert
-                assert.strictEqual($('#public_' + ticker + '_price_zil').text(), '');
-                assert.strictEqual($('#' + ticker + '_price_zil').text(), '');
+                assert.strictEqual($('.' + ticker + '_price_zil').text(), 'asdf');
             }
         });
     });
@@ -420,16 +403,6 @@ describe('BindView', function () {
                 assert.strictEqual($('#public_' + ticker + '_price_fiat').text(), 'asdf');
             }
         });
-
-        it('bind view empty string', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewZrcTokenPriceInFiat('', ticker);
-
-                // Assert
-                assert.strictEqual($('#public_' + ticker + '_price_fiat').text(), '');
-            }
-        });
     });
 
     describe('#bindViewZrcTokenWalletBalance()', function () {
@@ -459,17 +432,6 @@ describe('BindView', function () {
 
                 // Assert
                 assert.strictEqual($('#' + ticker + '_balance').text(), 'asdf');
-                assert.strictEqual($('#' + ticker + '_container').css('display'), 'block');
-            }
-        });
-
-        it('bind view empty string', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewZrcTokenWalletBalance('', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_balance').text(), '');
                 assert.strictEqual($('#' + ticker + '_container').css('display'), 'block');
             }
         });
@@ -506,15 +468,42 @@ describe('BindView', function () {
                 assert.strictEqual($('#' + ticker + '_lp_total_pool_zrc').text(), 'qwer');
             }
         });
+    });
 
-        it('bind view empty string', function () {
+    describe('#bindViewZrcTokenLpBalance24hAgo()', function () {
+
+        beforeEach(function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_24h_ago').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_zil_balance_24h_ago').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_token_balance_24h_ago').text(), '');
+                // assert.strictEqual($('#' + ticker + '_lp_balance_zil_24h_ago').text(), '');
+            }
+        });
+
+        it('bind view happy case', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 // Act
-                BindView.bindViewZrcTokenLpTotalPoolBalance( /* zilBalance= */ '', /* zrcBalance = */ '', ticker);
+                BindView.bindViewZrcTokenLpBalance24hAgo( /* poolSharePercent= */ '0.0012', /* zilBalance= */ '1234.4', /* zrcBalance = */ '54.43', /* balanceZil= */ '2468.8', ticker);
 
                 // Assert
-                assert.strictEqual($('#' + ticker + '_lp_total_pool_zil').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_total_pool_zrc').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_24h_ago').text(), '0.0012');
+                assert.strictEqual($('#' + ticker + '_lp_zil_balance_24h_ago').text(), '1234.4');
+                assert.strictEqual($('#' + ticker + '_lp_token_balance_24h_ago').text(), '54.43');
+                assert.strictEqual($('#' + ticker + '_lp_balance_zil_24h_ago').text(), '2468.8');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenLpBalance24hAgo( /* poolSharePercent= */ 'asdf', /* zilBalance= */ 'hjkl', /* zrcBalance = */ 'qwer', /* balanceZil= */ 'ert', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_24h_ago').text(), 'asdf');
+                assert.strictEqual($('#' + ticker + '_lp_zil_balance_24h_ago').text(), 'hjkl');
+                assert.strictEqual($('#' + ticker + '_lp_token_balance_24h_ago').text(), 'qwer');
+                assert.strictEqual($('#' + ticker + '_lp_balance_zil_24h_ago').text(), 'ert');
             }
         });
     });
@@ -526,6 +515,7 @@ describe('BindView', function () {
                 assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
                 assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
             }
             assert.strictEqual($('#lp_container').css('display'), 'none');
@@ -534,12 +524,13 @@ describe('BindView', function () {
         it('bind view happy case', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 // Act
-                BindView.bindViewZrcTokenLpBalance( /* poolSharePercent= */ '0.0012', /* zilBalance= */ '1234.4', /* zrcBalance = */ '54.43', ticker);
+                BindView.bindViewZrcTokenLpBalance( /* poolSharePercent= */ '0.0012', /* zilBalance= */ '1234.4', /* zrcBalance = */ '54.43', /* balanceZil= */ '2468.8', ticker);
 
                 // Assert
                 assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), '0.0012');
                 assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '1234.4');
                 assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '54.43');
+                assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), '2468.8');
                 assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'block');
                 assert.strictEqual($('#lp_container').css('display'), 'block');
             }
@@ -548,26 +539,13 @@ describe('BindView', function () {
         it('bind view random string', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 // Act
-                BindView.bindViewZrcTokenLpBalance( /* poolSharePercent= */ 'asdf', /* zilBalance= */ 'hjkl', /* zrcBalance = */ 'qwer', ticker);
+                BindView.bindViewZrcTokenLpBalance( /* poolSharePercent= */ 'asdf', /* zilBalance= */ 'hjkl', /* zrcBalance = */ 'qwer', /* balanceZil= */ 'ert', ticker);
 
                 // Assert
                 assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'asdf');
                 assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), 'hjkl');
                 assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), 'qwer');
-                assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'block');
-                assert.strictEqual($('#lp_container').css('display'), 'block');
-            }
-        });
-
-        it('bind view empty string', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewZrcTokenLpBalance( /* poolSharePercent= */ '', /* zilBalance= */ '', /* zrcBalance = */ '', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), 'ert');
                 assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'block');
                 assert.strictEqual($('#lp_container').css('display'), 'block');
             }
@@ -598,16 +576,6 @@ describe('BindView', function () {
 
             // Assert
             assert.strictEqual($($('#carbon_staking_balance')).text(), 'asdf');
-            assert.strictEqual($('#carbon_staking_container').css('display'), 'block');
-            assert.strictEqual($('#staking_container').css('display'), 'block');
-        });
-
-        it('bind view empty string', function () {
-            // Act
-            BindView.bindViewCarbonStakingBalance('');
-
-            // Assert
-            assert.strictEqual($($('#carbon_staking_balance')).text(), '');
             assert.strictEqual($('#carbon_staking_container').css('display'), 'block');
             assert.strictEqual($('#staking_container').css('display'), 'block');
         });
@@ -648,18 +616,6 @@ describe('BindView', function () {
                 assert.strictEqual($('#staking_container').css('display'), 'block');
             }
         });
-
-        it('bind view empty string', function () {
-            for (let ssnAddress in Constants.ssnListMap) {
-                // Act
-                BindView.bindViewZilStakingBalance('', ssnAddress);
-
-                // Assert
-                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance').text(), '');
-                assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'block');
-                assert.strictEqual($('#staking_container').css('display'), 'block');
-            }
-        });
     });
 
 
@@ -687,16 +643,6 @@ describe('BindView', function () {
 
             // Assert
             assert.strictEqual($('#zil_staking_withdrawal_pending_balance').text(), 'asdf');
-            assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'block');
-            assert.strictEqual($('#staking_container').css('display'), 'block');
-        });
-
-        it('bind view empty string', function () {
-            // Act
-            BindView.bindViewZilStakingWithdrawalPendingBalance('');
-
-            // Assert
-            assert.strictEqual($('#zil_staking_withdrawal_pending_balance').text(), '');
             assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'block');
             assert.strictEqual($('#staking_container').css('display'), 'block');
         });
@@ -729,16 +675,6 @@ describe('BindView', function () {
                 assert.strictEqual($('#' + ticker + '_lp_total_volume_zil').text(), 'asdf');
             }
         });
-
-        it('bind view empty string', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewTotalTradeVolumeZil('', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_lp_total_volume_zil').text(), '');
-            }
-        });
     });
 
     describe('#bindViewTotalTradeVolumeFiat()', function () {
@@ -766,16 +702,6 @@ describe('BindView', function () {
 
                 // Assert
                 assert.strictEqual($('#' + ticker + '_lp_total_volume_fiat').text(), 'asdf');
-            }
-        });
-
-        it('bind view empty string', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewTotalTradeVolumeFiat('', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_lp_total_volume_fiat').text(), '');
             }
         });
     });
@@ -810,17 +736,6 @@ describe('BindView', function () {
                 assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), 'ZWAP');
             }
         });
-
-        it('bind view empty string', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewZwapRewardLp('', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), 'ZWAP');
-            }
-        });
     });
 
 
@@ -851,16 +766,6 @@ describe('BindView', function () {
             assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'block');
             assert.strictEqual($('#lp_container').css('display'), 'block');
         });
-
-        it('bind view empty string', function () {
-            // Act
-            BindView.bindViewTotalRewardAllLpZwap('');
-
-            // Assert
-            assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), '');
-            assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'block');
-            assert.strictEqual($('#lp_container').css('display'), 'block');
-        });
     });
 
     describe('#bindViewLpNextEpochCounter()', function () {
@@ -883,14 +788,6 @@ describe('BindView', function () {
 
             // Assert
             assert.strictEqual($('#lp_reward_next_epoch_duration_counter').text(), 'asdf');
-        });
-
-        it('bind view empty string', function () {
-            // Act
-            BindView.bindViewLpNextEpochCounter('');
-
-            // Assert
-            assert.strictEqual($('#lp_reward_next_epoch_duration_counter').text(), '');
         });
     });
 
@@ -915,13 +812,34 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#zil_balance_fiat').text(), 'asdf');
         });
+    });
 
-        it('bind view empty string', function () {
-            // Act
-            BindView.bindViewZilBalanceFiat('');
+    describe('#bindViewZrcTokenWalletBalanceZil24hAgo()', function () {
 
-            // Assert
-            assert.strictEqual($('#zil_balance_fiat').text(), '');
+        beforeEach(function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#' + ticker + '_balance_zil_24h_ago').text(), '');
+            }
+        });
+
+        it('bind view happy case', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenWalletBalanceZil24hAgo('1234.4', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_balance_zil_24h_ago').text(), '1234.4');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenWalletBalanceZil24hAgo('asdf', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_balance_zil_24h_ago').text(), 'asdf');
+            }
         });
     });
 
@@ -952,14 +870,33 @@ describe('BindView', function () {
                 assert.strictEqual($('#' + ticker + '_balance_zil').text(), 'asdf');
             }
         });
+    });
 
-        it('bind view empty string', function () {
+    describe('#bindViewZrcTokenWalletBalanceFiat24hAgo()', function () {
+
+        beforeEach(function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#' + ticker + '_balance_fiat_24h_ago').text(), '');
+            }
+        });
+
+        it('bind view happy case', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 // Act
-                BindView.bindViewZrcTokenWalletBalanceZil('', ticker);
+                BindView.bindViewZrcTokenWalletBalanceFiat24hAgo('1234.4', ticker);
 
                 // Assert
-                assert.strictEqual($('#' + ticker + '_balance_zil').text(), '');
+                assert.strictEqual($('#' + ticker + '_balance_fiat_24h_ago').text(), '1234.4');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenWalletBalanceFiat24hAgo('asdf', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_balance_fiat_24h_ago').text(), 'asdf');
             }
         });
     });
@@ -991,15 +928,28 @@ describe('BindView', function () {
                 assert.strictEqual($('#' + ticker + '_balance_fiat').text(), 'asdf');
             }
         });
+    });
 
-        it('bind view empty string', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewZrcTokenWalletBalanceFiat('', ticker);
+    describe('#bindViewTotalWalletBalanceZil24hAgo()', function () {
 
-                // Assert
-                assert.strictEqual($('#' + ticker + '_balance_fiat').text(), '');
-            }
+        beforeEach(function () {
+            assert.strictEqual($('#wallet_balance_zil_24h_ago').text(), '');
+        });
+
+        it('bind view happy case', function () {
+            // Act
+            BindView.bindViewTotalWalletBalanceZil24hAgo('1234.52');
+
+            // Assert
+            assert.strictEqual($('#wallet_balance_zil_24h_ago').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewTotalWalletBalanceZil24hAgo('asdf');
+
+            // Assert
+            assert.strictEqual($('#wallet_balance_zil_24h_ago').text(), 'asdf');
         });
     });
 
@@ -1024,13 +974,30 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#wallet_balance_zil').text(), 'asdf');
         });
+    });
 
-        it('bind view empty string', function () {
+
+    describe('#bindViewTotalWalletBalanceFiat24hAgo()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#wallet_balance_fiat_24h_ago').text(), '');
+        });
+
+
+        it('bind view happy case', function () {
             // Act
-            BindView.bindViewTotalWalletBalanceZil('');
+            BindView.bindViewTotalWalletBalanceFiat24hAgo('1234.52');
 
             // Assert
-            assert.strictEqual($('#wallet_balance_zil').text(), '');
+            assert.strictEqual($('#wallet_balance_fiat_24h_ago').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewTotalWalletBalanceFiat24hAgo('asdf');
+
+            // Assert
+            assert.strictEqual($('#wallet_balance_fiat_24h_ago').text(), 'asdf');
         });
     });
 
@@ -1055,14 +1022,6 @@ describe('BindView', function () {
 
             // Assert
             assert.strictEqual($('#wallet_balance_fiat').text(), 'asdf');
-        });
-
-        it('bind view empty string', function () {
-            // Act
-            BindView.bindViewTotalWalletBalanceFiat('');
-
-            // Assert
-            assert.strictEqual($('#wallet_balance_fiat').text(), '');
         });
     });
 
@@ -1093,14 +1052,33 @@ describe('BindView', function () {
                 assert.strictEqual($('#' + ticker + '_lp_total_pool_fiat').text(), 'asdf');
             }
         });
+    });
 
-        it('bind view empty string', function () {
+    describe('#bindViewZrcTokenLpBalanceFiat24hAgo()', function () {
+
+        beforeEach(function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_24h_ago').text(), '');
+            }
+        });
+
+        it('bind view happy case', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 // Act
-                BindView.bindViewZrcTokenLpTotalPoolBalanceFiat('', ticker);
+                BindView.bindViewZrcTokenLpBalanceFiat24hAgo('1234.4', ticker);
 
                 // Assert
-                assert.strictEqual($('#' + ticker + '_lp_total_pool_fiat').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_24h_ago').text(), '1234.4');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenLpBalanceFiat24hAgo('asdf', ticker);
+
+                // Assert
+                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_24h_ago').text(), 'asdf');
             }
         });
     });
@@ -1132,15 +1110,28 @@ describe('BindView', function () {
                 assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), 'asdf');
             }
         });
+    });
 
-        it('bind view empty string', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewZrcTokenLpBalanceFiat('', ticker);
+    describe('#bindViewTotalLpBalanceZil24hAgo()', function () {
 
-                // Assert
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), '');
-            }
+        beforeEach(function () {
+            assert.strictEqual($('#lp_balance_zil_24h_ago').text(), '');
+        });
+
+        it('bind view happy case', function () {
+            // Act
+            BindView.bindViewTotalLpBalanceZil24hAgo('1234.52');
+
+            // Assert
+            assert.strictEqual($('#lp_balance_zil_24h_ago').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewTotalLpBalanceZil24hAgo('asdf');
+
+            // Assert
+            assert.strictEqual($('#lp_balance_zil_24h_ago').text(), 'asdf');
         });
     });
 
@@ -1165,13 +1156,28 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#lp_balance_zil').text(), 'asdf');
         });
+    });
 
-        it('bind view empty string', function () {
+    describe('#bindViewTotalLpBalanceFiat24hAgo()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#lp_balance_fiat_24h_ago').text(), '');
+        });
+
+        it('bind view happy case', function () {
             // Act
-            BindView.bindViewTotalLpBalanceZil('');
+            BindView.bindViewTotalLpBalanceFiat24hAgo('1234.52');
 
             // Assert
-            assert.strictEqual($('#lp_balance_zil').text(), '');
+            assert.strictEqual($('#lp_balance_fiat_24h_ago').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewTotalLpBalanceFiat24hAgo('asdf');
+
+            // Assert
+            assert.strictEqual($('#lp_balance_fiat_24h_ago').text(), 'asdf');
         });
     });
 
@@ -1196,13 +1202,34 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#lp_balance_fiat').text(), 'asdf');
         });
+    });
 
-        it('bind view empty string', function () {
-            // Act
-            BindView.bindViewTotalLpBalanceFiat('');
+    describe('#bindViewZilStakingBalanceFiat24hAgo()', function () {
 
-            // Assert
-            assert.strictEqual($('#lp_balance_fiat').text(), '');
+        beforeEach(function () {
+            for (let ssnAddress in Constants.ssnListMap) {
+                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_fiat_24h_ago').text(), '');
+            }
+        });
+
+        it('bind view happy case', function () {
+            for (let ssnAddress in Constants.ssnListMap) {
+                // Act
+                BindView.bindViewZilStakingBalanceFiat24hAgo('1234.4', ssnAddress);
+
+                // Assert
+                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_fiat_24h_ago').text(), '1234.4');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ssnAddress in Constants.ssnListMap) {
+                // Act
+                BindView.bindViewZilStakingBalanceFiat24hAgo('asdf', ssnAddress);
+
+                // Assert
+                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_fiat_24h_ago').text(), 'asdf');
+            }
         });
     });
 
@@ -1213,7 +1240,6 @@ describe('BindView', function () {
                 assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_fiat').text(), 'Loading...');
             }
         });
-
 
         it('bind view happy case', function () {
             for (let ssnAddress in Constants.ssnListMap) {
@@ -1234,18 +1260,31 @@ describe('BindView', function () {
                 assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_fiat').text(), 'asdf');
             }
         });
-
-        it('bind view empty string', function () {
-            for (let ssnAddress in Constants.ssnListMap) {
-                // Act
-                BindView.bindViewZilStakingBalanceFiat('', ssnAddress);
-
-                // Assert
-                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_fiat').text(), '');
-            }
-        });
     });
 
+    describe('#bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(), '');
+        });
+
+        it('bind view happy case', function () {
+            // Act
+            BindView.bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo('1234.4');
+
+            // Assert
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(), '1234.4');
+            
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo('asdf');
+
+            // Assert
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(), 'asdf');
+        });
+    });
 
     describe('#bindViewZilStakingWithdrawalPendingBalanceFiat()', function () {
 
@@ -1269,15 +1308,31 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat').text(), 'asdf');
         });
+    });
 
-        it('bind view empty string', function () {
+    describe('#bindViewCarbonStakingBalanceZil24hAgo()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#carbon_staking_balance_zil_24h_ago').text(), '');
+        });
+
+        it('bind view happy case', function () {
             // Act
-            BindView.bindViewZilStakingWithdrawalPendingBalanceFiat('');
+            BindView.bindViewCarbonStakingBalanceZil24hAgo('1234.4');
 
             // Assert
-            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat').text(), '');
+            assert.strictEqual($('#carbon_staking_balance_zil_24h_ago').text(), '1234.4');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewCarbonStakingBalanceZil24hAgo('asdf');
+
+            // Assert
+            assert.strictEqual($('#carbon_staking_balance_zil_24h_ago').text(), 'asdf');
         });
     });
+
 
     describe('#bindViewCarbonStakingBalanceZil()', function () {
 
@@ -1300,13 +1355,28 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#carbon_staking_balance_zil').text(), 'asdf');
         });
+    });
 
-        it('bind view empty string', function () {
+    describe('#bindViewCarbonStakingBalanceFiat24hAgo()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#carbon_staking_balance_fiat_24h_ago').text(), '');
+        });
+
+        it('bind view happy case', function () {
             // Act
-            BindView.bindViewCarbonStakingBalanceZil('');
+            BindView.bindViewCarbonStakingBalanceFiat24hAgo('1234.4');
 
             // Assert
-            assert.strictEqual($('#carbon_staking_balance_zil').text(), '');
+            assert.strictEqual($('#carbon_staking_balance_fiat_24h_ago').text(), '1234.4');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewCarbonStakingBalanceFiat24hAgo('asdf');
+
+            // Assert
+            assert.strictEqual($('#carbon_staking_balance_fiat_24h_ago').text(), 'asdf');
         });
     });
 
@@ -1331,13 +1401,28 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#carbon_staking_balance_fiat').text(), 'asdf');
         });
+    });
 
-        it('bind view empty string', function () {
+    describe('#bindViewTotalStakingBalanceZil24hAgo()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#staking_balance_zil_24h_ago').text(), '');
+        });
+
+        it('bind view happy case', function () {
             // Act
-            BindView.bindViewCarbonStakingBalanceFiat('');
+            BindView.bindViewTotalStakingBalanceZil24hAgo('1234.52');
 
             // Assert
-            assert.strictEqual($('#carbon_staking_balance_fiat').text(), '');
+            assert.strictEqual($('#staking_balance_zil_24h_ago').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewTotalStakingBalanceZil24hAgo('asdf');
+
+            // Assert
+            assert.strictEqual($('#staking_balance_zil_24h_ago').text(), 'asdf');
         });
     });
 
@@ -1362,13 +1447,28 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#staking_balance_zil').text(), 'asdf');
         });
+    });
 
-        it('bind view empty string', function () {
+    describe('#bindViewTotalStakingBalanceFiat24hAgo()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#staking_balance_fiat_24h_ago').text(), '');
+        });
+
+        it('bind view happy case', function () {
             // Act
-            BindView.bindViewTotalStakingBalanceZil('');
+            BindView.bindViewTotalStakingBalanceFiat24hAgo('1234.52');
 
             // Assert
-            assert.strictEqual($('#staking_balance_zil').text(), '');
+            assert.strictEqual($('#staking_balance_fiat_24h_ago').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewTotalStakingBalanceFiat24hAgo('asdf');
+
+            // Assert
+            assert.strictEqual($('#staking_balance_fiat_24h_ago').text(), 'asdf');
         });
     });
 
@@ -1393,13 +1493,28 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#staking_balance_fiat').text(), 'asdf');
         });
+    });
 
-        it('bind view empty string', function () {
+    describe('#bindViewTotalNetWorthZil24hAgo()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#net_worth_zil_24h_ago').text(), '');
+        });
+
+        it('bind view happy case', function () {
             // Act
-            BindView.bindViewTotalStakingBalanceFiat('');
+            BindView.bindViewTotalNetWorthZil24hAgo('1234.52');
 
             // Assert
-            assert.strictEqual($('#staking_balance_fiat').text(), '');
+            assert.strictEqual($('#net_worth_zil_24h_ago').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewTotalNetWorthZil24hAgo('asdf');
+
+            // Assert
+            assert.strictEqual($('#net_worth_zil_24h_ago').text(), 'asdf');
         });
     });
 
@@ -1424,13 +1539,29 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#net_worth_zil').text(), 'asdf');
         });
+    });
 
-        it('bind view empty string', function () {
+
+    describe('#bindViewTotalNetWorthFiat24hAgo()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#net_worth_fiat_24h_ago').text(), '');
+        });
+
+        it('bind view happy case', function () {
             // Act
-            BindView.bindViewTotalNetWorthZil('');
+            BindView.bindViewTotalNetWorthFiat24hAgo('1234.52');
 
             // Assert
-            assert.strictEqual($('#net_worth_zil').text(), '');
+            assert.strictEqual($('#net_worth_fiat_24h_ago').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewTotalNetWorthFiat24hAgo('asdf');
+
+            // Assert
+            assert.strictEqual($('#net_worth_fiat_24h_ago').text(), 'asdf');
         });
     });
 
@@ -1455,14 +1586,6 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#net_worth_fiat').text(), 'asdf');
         });
-
-        it('bind view empty string', function () {
-            // Act
-            BindView.bindViewTotalNetWorthFiat('');
-
-            // Assert
-            assert.strictEqual($('#net_worth_fiat').text(), '');
-        });
     });
 
     describe('#bindViewTotalRewardAllLpFiat()', function () {
@@ -1486,14 +1609,6 @@ describe('BindView', function () {
             // Assert
             assert.strictEqual($('#total_all_lp_reward_next_epoch_fiat').text(), 'asdf');
         });
-
-        it('bind view empty string', function () {
-            // Act
-            BindView.bindViewTotalRewardAllLpFiat('');
-
-            // Assert
-            assert.strictEqual($('#total_all_lp_reward_next_epoch_fiat').text(), '');
-        });
     });
 });
 
@@ -1504,6 +1619,7 @@ function assertDefaultStateMainContent() {
     // bindViewZilBalance()
     assert.strictEqual($('#zil_balance').text(), 'Loading...');
 
+    // bindViewZrcTokenPriceInZil24hAgo(): Exception, no need refresh
     // bindViewZrcTokenPriceInZil(): Exception, no need refresh
 
     // bindViewZrcTokenPriceInFiat(): Exception, no need refresh
@@ -1516,11 +1632,21 @@ function assertDefaultStateMainContent() {
 
     // bindViewZrcTokenLpTotalPoolBalance(): Exception, no need refresh
 
+
+    // bindViewZrcTokenLpBalance24hAgo()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_24h_ago').text(), '');
+        assert.strictEqual($('#' + ticker + '_lp_zil_balance_24h_ago').text(), '');
+        assert.strictEqual($('#' + ticker + '_lp_token_balance_24h_ago').text(), '');
+        assert.strictEqual($('#' + ticker + '_lp_balance_zil_24h_ago').text(), '');
+    }
+
     // bindViewZrcTokenLpBalance()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {
         assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
         assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
         assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
+        assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), '');
         assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
     }
     assert.strictEqual($('#lp_container').css('display'), 'none');
@@ -1561,51 +1687,109 @@ function assertDefaultStateMainContent() {
     // bindViewZilBalanceFiat()
     assert.strictEqual($('#zil_balance_fiat').text(), '');
 
+    // bindViewZrcTokenWalletBalanceZil24hAgo()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_balance_zil_24h_ago').text(), '');
+    }
+
     // bindViewZrcTokenWalletBalanceZil()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {
         assert.strictEqual($('#' + ticker + '_balance_zil').text(), 'Loading...');
+    }
+
+    // bindViewZrcTokenWalletBalanceFiat24hAgo()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_balance_fiat_24h_ago').text(), '');
     }
 
     // bindViewZrcTokenWalletBalanceFiat()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {
         assert.strictEqual($('#' + ticker + '_balance_fiat').text(), 'Loading...');
     }
+    // bindViewTotalWalletBalanceZil24hAgo()
+    assert.strictEqual($('#wallet_balance_zil_24h_ago').text(), '');
 
     // bindViewTotalWalletBalanceZil()
     assert.strictEqual($('#wallet_balance_zil').text(), 'Loading...');
+
+    // bindViewTotalWalletBalanceFiat24hAgo()
+    assert.strictEqual($('#wallet_balance_fiat_24h_ago').text(), '');
 
     // bindViewTotalWalletBalanceFiat()
     assert.strictEqual($('#wallet_balance_fiat').text(), 'Loading...');
 
     // bindViewZrcTokenLpTotalPoolBalanceFiat(): Exception, no need refresh
 
+    // bindViewZrcTokenLpBalanceFiat24hAgo()
+    for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        assert.strictEqual($('#' + ticker + '_lp_balance_fiat_24h_ago').text(), '');
+    }
+
     // bindViewZrcTokenLpBalanceFiat()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {
         assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), 'Loading...');
     }
 
+    // bindViewTotalLpBalanceZil24hAgo()
+    assert.strictEqual($('#lp_balance_zil_24h_ago').text(), '');
+
     // bindViewTotalLpBalanceZil()
     assert.strictEqual($('#lp_balance_zil').text(), 'Loading...');
 
+    // bindViewTotalLpBalanceFiat24hAgo()
+    assert.strictEqual($('#lp_balance_fiat_24h_ago').text(), '');
+
     // bindViewTotalLpBalanceFiat()
     assert.strictEqual($('#lp_balance_fiat').text(), 'Loading...');
+
+    // bindViewZilStakingBalanceFiat24hAgo()
+    for (let ssnAddress in Constants.ssnListMap) {
+        assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_fiat_24h_ago').text(), '');
+    }
 
     // bindViewZilStakingBalanceFiat()
     for (let ssnAddress in Constants.ssnListMap) {
         assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_fiat').text(), 'Loading...');
     }
 
+    // bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo()
+    assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(), '');
+
     // bindViewZilStakingWithdrawalPendingBalanceFiat()
     assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat').text(), 'Loading...');
+
+    // bindViewCarbonStakingBalanceZil24hAgo()
+    assert.strictEqual($('#carbon_staking_balance_zil_24h_ago').text(), '');
+
+    // bindViewCarbonStakingBalanceZil()
+    assert.strictEqual($('#carbon_staking_balance_zil').text(), 'Loading...');
+    
+    // bindViewCarbonStakingBalanceFiat24hAgo()
+    assert.strictEqual($('#carbon_staking_balance_fiat_24h_ago').text(), '');
+
+    // bindViewCarbonStakingBalanceFiat()
+    assert.strictEqual($('#carbon_staking_balance_fiat').text(), 'Loading...');
+
+    // bindViewTotalStakingBalanceZil24hAgo()
+    assert.strictEqual($('#staking_balance_zil_24h_ago').text(), '');
 
     // bindViewTotalStakingBalanceZil()
     assert.strictEqual($('#staking_balance_zil').text(), 'Loading...');
 
+    // bindViewTotalStakingBalanceFiat24hAgo()
+    assert.strictEqual($('#staking_balance_fiat_24h_ago').text(), '');
+
     // bindViewTotalStakingBalanceFiat()
     assert.strictEqual($('#staking_balance_fiat').text(), 'Loading...');
 
+    // bindViewTotalNetWorthZil24hAgo()
+    assert.strictEqual($('#net_worth_zil_24h_ago').text(), '');
+
     // bindViewTotalNetWorthZil()
     assert.strictEqual($('#net_worth_zil').text(), 'Loading...');
+
+    // bindViewTotalNetWorthFiat24hAgo()
+    assert.strictEqual($('#net_worth_fiat_24h_ago').text(), '');
 
     // bindViewTotalNetWorthFiat()
     assert.strictEqual($('#net_worth_fiat').text(), 'Loading...');

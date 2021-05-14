@@ -53,13 +53,12 @@ function onLpCurrentEpochInfoLoaded(epochInfoData) {
 function refreshTotalLpRewardFiat() {
     let ticker = 'ZWAP';
 
-    let fiatPrice = getNumberFromView('.ZIL_price_fiat');
-    if (!fiatPrice) {
+    if (!zilPriceInFiatFloat) {
         return;
     }
-    let decimals = (fiatPrice > 1) ? 0 : 2;
+    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
-    let zrcTokenPriceInZil = getNumberFromView('#' + ticker + '_price_zil');
+    let zrcTokenPriceInZil = getNumberFromView('.' + ticker + '_price_zil');
     if (!zrcTokenPriceInZil) {
         return;
     }
@@ -69,7 +68,7 @@ function refreshTotalLpRewardFiat() {
         return;
     }
 
-    let rewardBalanceFiat = (fiatPrice * zrcTokenPriceInZil * rewardBalance);
+    let rewardBalanceFiat = (zilPriceInFiatFloat * zrcTokenPriceInZil * rewardBalance);
     let totalAllLpRewardFiat = commafyNumberToString(rewardBalanceFiat, decimals);
     bindViewTotalRewardAllLpFiat(totalAllLpRewardFiat);
 }
@@ -98,6 +97,11 @@ if (typeof exports !== 'undefined') {
     if (typeof Duration === 'undefined') {
         TimeUtils = require('./time_utils.js');
         Duration = TimeUtils.Duration;
+    }
+
+    // This is just a mock stub to make the test run
+    if (typeof zilPriceInFiatFloat === 'undefined') {
+        zilPriceInFiatFloat = 0.2;
     }
 
     exports.onLpRewardNextEpochLoaded = onLpRewardNextEpochLoaded;
