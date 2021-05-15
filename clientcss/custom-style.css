@@ -133,3 +133,25 @@ body {
 .negative-red {
   color: var(--negative-red);
 }
+
+.tooltip-container {
+  border: 0;
+  border-radius: 10px 10px 0 0;
+  padding: 4px;
+}
+
+.tooltip-container:hover {
+  background-color: var(--light-alpha-10);
+  cursor: pointer;
+  transition: .05s linear;
+}
+
+.tooltip-content {
+  border: 0;
+  padding: 4px;
+  background-color: var(--light-alpha-10);
+}
+
+.tooltip-rounded {
+  border-radius: 10px;
+}
