@@ -570,4 +570,89 @@ describe('FormattingUtils', function () {
     });
   });
 
+  describe('#isStartsWithNegative()', function () {
+
+    it('starts with negative', function () {
+      let result = FormattingUtils.isStartsWithNegative("-43.453");
+      let expected = true;
+      assert.strictEqual(result, expected);
+    });
+
+    it('no negative', function () {
+      let result = FormattingUtils.isStartsWithNegative("436.12");
+      let expected = false;
+      assert.strictEqual(result, expected);
+    });
+
+    it('double negative', function () {
+      let result = FormattingUtils.isStartsWithNegative("--436.12");
+      let expected = true;
+      assert.strictEqual(result, expected);
+    });
+
+    it('zero, return false', function () {
+      let result = FormattingUtils.isStartsWithNegative("0");
+      let expected = false;
+      assert.strictEqual(result, expected);
+    });
+
+    it('not a string, return null', function () {
+      let result = FormattingUtils.isStartsWithNegative(123);
+      let expected = null;
+      assert.strictEqual(result, expected);
+    });
+
+    it('empty string, return null', function () {
+      let result = FormattingUtils.isStartsWithNegative("");
+      let expected = null;
+      assert.strictEqual(result, expected);
+    });
+  });
+
+
+  describe('#isStringZero()', function () {
+
+    it('starts with negative', function () {
+      let result = FormattingUtils.isStringZero("-43.453");
+      let expected = false;
+      assert.strictEqual(result, expected);
+    });
+
+    it('no negative', function () {
+      let result = FormattingUtils.isStringZero("436.12");
+      let expected = false;
+      assert.strictEqual(result, expected);
+    });
+
+    it('double negative', function () {
+      let result = FormattingUtils.isStringZero("--436.12");
+      let expected = false;
+      assert.strictEqual(result, expected);
+    });
+
+    it('zero, return true', function () {
+      let result = FormattingUtils.isStringZero("0");
+      let expected = true;
+      assert.strictEqual(result, expected);
+    });
+
+    it('zero floating point, return true', function () {
+      let result = FormattingUtils.isStringZero("0.000");
+      let expected = true;
+      assert.strictEqual(result, expected);
+    });
+
+    it('not a string, return null', function () {
+      let result = FormattingUtils.isStringZero(123);
+      let expected = null;
+      assert.strictEqual(result, expected);
+    });
+
+    it('empty string, return null', function () {
+      let result = FormattingUtils.isStringZero("");
+      let expected = null;
+      assert.strictEqual(result, expected);
+    });
+  });
+
 });

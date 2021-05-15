@@ -120,9 +120,26 @@ function censorBech32Address(bech32Address) {
     return firstFive + "..." + lastFive;
 }
 
+function isStartsWithNegative(stringVar) {
+    if (stringVar === null || typeof stringVar !== 'string' || stringVar.length === 0) {
+        return null;
+    }
+    return stringVar.charAt(0) === '-';
+}
+
+function isStringZero(stringVar) {
+    if (stringVar === null || typeof stringVar !== 'string' || stringVar.length === 0) {
+        return null;
+    }
+    return parseFloat(stringVar) === 0;
+}
+
 if (typeof exports !== 'undefined') {
     exports.parseFloatFromCommafiedNumberString = parseFloatFromCommafiedNumberString;
     exports.commafyNumberToString = commafyNumberToString;
     exports.convertNumberQaToDecimalString = convertNumberQaToDecimalString;
     exports.censorBech32Address = censorBech32Address;
+
+    exports.isStartsWithNegative = isStartsWithNegative;
+    exports.isStringZero = isStringZero;
 }

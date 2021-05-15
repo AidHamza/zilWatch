@@ -136,7 +136,9 @@ function getPercentChange(currentBalance, pastBalance) {
     if (typeof pastBalance !== 'number' && typeof pastBalance !== 'bigint') {
         return null;
     }
-
+    if (currentBalance === 0 && pastBalance === 0) {
+        return 0;
+    }
     let balanceDiff = currentBalance - pastBalance;
     return 100.0 * balanceDiff / pastBalance;
 }

@@ -24,6 +24,9 @@
     --green: #28a745;
     --teal: #20c997;
 
+    --lighter-red: #f6465d;
+    --lighter-green: #0ecb81;
+
     --cyan: #17a2b8;
     --cyan-focus-1: #138496; 
     --cyan-focus-2: #117a8b; 
@@ -121,6 +124,9 @@
 
     --text-dark: var(--gray-dark);
     --text-dark-focus: var(--gray-dark-focus-2);
+
+    --positive-green: var(--green);
+    --negative-red: var(--red);
 }
 
 :root.dark-mode {    
@@ -168,6 +174,9 @@
 
     --text-dark: var(--text-primary-white);
     --text-dark-focus: var(--text-primary-white-focus);
+
+    --positive-green: var(--lighter-green);
+    --negative-red: var(--lighter-red);
 }
 
 *, ::after, ::before {

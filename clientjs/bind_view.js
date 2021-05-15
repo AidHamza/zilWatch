@@ -236,6 +236,7 @@ function bindViewZrcTokenLpBalance24hAgo(poolSharePercent24hAgo, zilBalance24hAg
     $('#' + ticker + '_lp_token_balance_24h_ago').text(zrcBalance24hAgo);
     $('#' + ticker + '_lp_balance_zil_24h_ago').text(balanceInZil24hAgo);
     $('#' + ticker + '_lp_balance_zil_percent_change_24h').text(balanceInZilPercentChange24h);
+    bindViewPercentChangeColorContainer('#' + ticker + '_lp_balance_zil_percent_change_24h_container', balanceInZilPercentChange24h);
 }
 
 function bindViewZrcTokenLpBalance(poolSharePercent, zilBalance, zrcBalance, balanceInZil, ticker) {
@@ -299,6 +300,7 @@ function bindViewLpNextEpochCounter(timeDurationString) {
  function bindViewZilBalanceFiat24hAgo(zilBalanceFiat24hAgo, zilBalanceFiatPercentChange24h) {
     $('#zil_balance_fiat_24h_ago').text(zilBalanceFiat24hAgo);
     $('#zil_balance_fiat_percent_change_24h').text(zilBalanceFiatPercentChange24h);
+    bindViewPercentChangeColorContainer('#zil_balance_fiat_percent_change_24h_container', zilBalanceFiatPercentChange24h);
 }
 
 function bindViewZilBalanceFiat(zilBalanceFiat) {
@@ -308,6 +310,7 @@ function bindViewZilBalanceFiat(zilBalanceFiat) {
 function bindViewZrcTokenWalletBalanceZil24hAgo(zrcBalanceZil24hAgo, zrcBalanceZilPercentChange24h, ticker) {
     $('#' + ticker + '_balance_zil_24h_ago').text(zrcBalanceZil24hAgo);
     $('#' + ticker + '_balance_zil_percent_change_24h').text(zrcBalanceZilPercentChange24h);
+    bindViewPercentChangeColorContainer('#' + ticker + '_balance_zil_percent_change_24h_container', zrcBalanceZilPercentChange24h);
 }
 
 function bindViewZrcTokenWalletBalanceZil(zrcBalanceZil, ticker) {
@@ -317,6 +320,7 @@ function bindViewZrcTokenWalletBalanceZil(zrcBalanceZil, ticker) {
 function bindViewZrcTokenWalletBalanceFiat24hAgo(zrcBalanceFiat24hAgo, zrcBalanceFiatPercentChange24h, ticker) {
     $('#' + ticker + '_balance_fiat_24h_ago').text(zrcBalanceFiat24hAgo);
     $('#' + ticker + '_balance_fiat_percent_change_24h').text(zrcBalanceFiatPercentChange24h);
+    bindViewPercentChangeColorContainer('#' + ticker + '_balance_fiat_percent_change_24h_container', zrcBalanceFiatPercentChange24h);
 }
 
 function bindViewZrcTokenWalletBalanceFiat(zrcBalanceFiat, ticker) {
@@ -326,6 +330,7 @@ function bindViewZrcTokenWalletBalanceFiat(zrcBalanceFiat, ticker) {
 function bindViewTotalWalletBalanceZil24hAgo(totalWalletBalanceZil24hAgo, totalWalletBalanceZilPercentChange24h) {
     $('#wallet_balance_zil_24h_ago').text(totalWalletBalanceZil24hAgo);
     $('#wallet_balance_zil_percent_change_24h').text(totalWalletBalanceZilPercentChange24h);
+    bindViewPercentChangeColorContainer('#wallet_balance_zil_percent_change_24h_container', totalWalletBalanceZilPercentChange24h);
 }
 
 function bindViewTotalWalletBalanceZil(totalWalletBalanceZil) {
@@ -335,6 +340,7 @@ function bindViewTotalWalletBalanceZil(totalWalletBalanceZil) {
 function bindViewTotalWalletBalanceFiat24hAgo(totalWalletBalanceFiat24hAgo, totalWalletBalanceFiatPercentChange24h) {
     $('#wallet_balance_fiat_24h_ago').text(totalWalletBalanceFiat24hAgo);
     $('#wallet_balance_fiat_percent_change_24h').text(totalWalletBalanceFiatPercentChange24h);
+    bindViewPercentChangeColorContainer('#wallet_balance_fiat_percent_change_24h_container', totalWalletBalanceFiatPercentChange24h);
 }
 
 function bindViewTotalWalletBalanceFiat(totalWalletBalanceFiat) {
@@ -349,6 +355,7 @@ function bindViewZrcTokenLpTotalPoolBalanceFiat(lpTotalPoolBalanceFiat, ticker) 
 function bindViewZrcTokenLpBalanceFiat24hAgo(lpBalanceFiat24hAgo, lpBalanceFiatPercentChange24h, ticker) {
     $('#' + ticker + '_lp_balance_fiat_24h_ago').text(lpBalanceFiat24hAgo);
     $('#' + ticker + '_lp_balance_fiat_percent_change_24h').text(lpBalanceFiatPercentChange24h);
+    bindViewPercentChangeColorContainer('#' + ticker + '_lp_balance_fiat_percent_change_24h_container', lpBalanceFiatPercentChange24h);
 }
 
 function bindViewZrcTokenLpBalanceFiat(lpBalanceFiat, ticker) {
@@ -358,6 +365,7 @@ function bindViewZrcTokenLpBalanceFiat(lpBalanceFiat, ticker) {
 function bindViewTotalLpBalanceZil24hAgo(totalLpBalanceZil24hAgo, totalLpBalanceZilPercentChange24h) {
     $('#lp_balance_zil_24h_ago').text(totalLpBalanceZil24hAgo);
     $('#lp_balance_zil_percent_change_24h').text(totalLpBalanceZilPercentChange24h);
+    bindViewPercentChangeColorContainer('#lp_balance_zil_percent_change_24h_container', totalLpBalanceZilPercentChange24h);
 }
 
 function bindViewTotalLpBalanceZil(totalLpBalanceZil) {
@@ -367,6 +375,7 @@ function bindViewTotalLpBalanceZil(totalLpBalanceZil) {
 function bindViewTotalLpBalanceFiat24hAgo(totalLpBalanceFiat24hAgo, totalLpBalanceFiatPercentChange24h) {
     $('#lp_balance_fiat_24h_ago').text(totalLpBalanceFiat24hAgo);
     $('#lp_balance_fiat_percent_change_24h').text(totalLpBalanceFiatPercentChange24h);
+    bindViewPercentChangeColorContainer('#lp_balance_fiat_percent_change_24h_container', totalLpBalanceFiatPercentChange24h);
 }
 
 function bindViewTotalLpBalanceFiat(totalLpBalanceFiat) {
@@ -376,6 +385,7 @@ function bindViewTotalLpBalanceFiat(totalLpBalanceFiat) {
 function bindViewZilStakingBalanceFiat24hAgo(zilStakingBalanceFiat24hAgo, zilStakingBalanceFiatPercentChange24h, ssnAddress) {
     $('#' + ssnAddress + '_zil_staking_balance_fiat_24h_ago').text(zilStakingBalanceFiat24hAgo);
     $('#' + ssnAddress + '_zil_staking_balance_fiat_percent_change_24h').text(zilStakingBalanceFiatPercentChange24h);
+    bindViewPercentChangeColorContainer('#' + ssnAddress + '_zil_staking_balance_fiat_percent_change_24h_container', zilStakingBalanceFiatPercentChange24h);
 }
 
 function bindViewZilStakingBalanceFiat(zilStakingBalanceFiat, ssnAddress) {
@@ -385,6 +395,7 @@ function bindViewZilStakingBalanceFiat(zilStakingBalanceFiat, ssnAddress) {
 function bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo(zilStakingWithdrawalBalanceFiat24hAgo, zilStakingWithdrawalBalanceFiatPercentChange24h) {
     $('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(zilStakingWithdrawalBalanceFiat24hAgo);
     $('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text(zilStakingWithdrawalBalanceFiatPercentChange24h);
+    bindViewPercentChangeColorContainer('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h_container', zilStakingWithdrawalBalanceFiatPercentChange24h);
 }
 
 function bindViewZilStakingWithdrawalPendingBalanceFiat(zilStakingWithdrawalBalanceFiat) {
@@ -394,6 +405,7 @@ function bindViewZilStakingWithdrawalPendingBalanceFiat(zilStakingWithdrawalBala
 function bindViewCarbonStakingBalanceZil24hAgo(carbonStakingBalanceZil24hAgo, carbonStakingBalanceZilPercentChange24h) {
     $('#carbon_staking_balance_zil_24h_ago').text(carbonStakingBalanceZil24hAgo);
     $('#carbon_staking_balance_zil_percent_change_24h').text(carbonStakingBalanceZilPercentChange24h);
+    bindViewPercentChangeColorContainer('#carbon_staking_balance_zil_percent_change_24h_container', carbonStakingBalanceZilPercentChange24h);
 }
 
 function bindViewCarbonStakingBalanceZil(carbonStakingBalanceZil) {
@@ -403,6 +415,7 @@ function bindViewCarbonStakingBalanceZil(carbonStakingBalanceZil) {
 function bindViewCarbonStakingBalanceFiat24hAgo(carbonStakingBalanceFiat24hAgo, carbonStakingBalanceFiatPercentChange24h) {
     $('#carbon_staking_balance_fiat_24h_ago').text(carbonStakingBalanceFiat24hAgo);
     $('#carbon_staking_balance_fiat_percent_change_24h').text(carbonStakingBalanceFiatPercentChange24h);
+    bindViewPercentChangeColorContainer('#carbon_staking_balance_fiat_percent_change_24h_container', carbonStakingBalanceFiatPercentChange24h);
 }
 
 function bindViewCarbonStakingBalanceFiat(carbonStakingBalanceFiat) {
@@ -412,6 +425,7 @@ function bindViewCarbonStakingBalanceFiat(carbonStakingBalanceFiat) {
 function bindViewTotalStakingBalanceZil24hAgo(totalStakingBalanceZil24hAgo, totalStakingBalanceZilPercentChange24h) {
     $('#staking_balance_zil_24h_ago').text(totalStakingBalanceZil24hAgo);
     $('#staking_balance_zil_percent_change_24h').text(totalStakingBalanceZilPercentChange24h);
+    bindViewPercentChangeColorContainer('#staking_balance_zil_percent_change_24h_container', totalStakingBalanceZilPercentChange24h);
 }
 
 function bindViewTotalStakingBalanceZil(totalStakingBalanceZil) {
@@ -421,6 +435,7 @@ function bindViewTotalStakingBalanceZil(totalStakingBalanceZil) {
 function bindViewTotalStakingBalanceFiat24hAgo(totalStakingBalanceFiat24hAgo, totalStakingBalanceFiatPercentChange24h) {
     $('#staking_balance_fiat_24h_ago').text(totalStakingBalanceFiat24hAgo);
     $('#staking_balance_fiat_percent_change_24h').text(totalStakingBalanceFiatPercentChange24h);
+    bindViewPercentChangeColorContainer('#staking_balance_fiat_percent_change_24h_container', totalStakingBalanceFiatPercentChange24h);
 }
 
 function bindViewTotalStakingBalanceFiat(totalStakingBalanceFiat) {
@@ -430,6 +445,7 @@ function bindViewTotalStakingBalanceFiat(totalStakingBalanceFiat) {
 function bindViewTotalNetWorthZil24hAgo(totalNetWorthZil24hAgo, totalNetWorthZilPercentChange24h) {
     $('#net_worth_zil_24h_ago').text(totalNetWorthZil24hAgo);
     $('#net_worth_zil_percent_change_24h').text(totalNetWorthZilPercentChange24h);
+    bindViewPercentChangeColorContainer('#net_worth_zil_percent_change_24h_container', totalNetWorthZilPercentChange24h);
 }
 
 function bindViewTotalNetWorthZil(totalNetWorthZil) {
@@ -439,6 +455,7 @@ function bindViewTotalNetWorthZil(totalNetWorthZil) {
 function bindViewTotalNetWorthFiat24hAgo(totalNetWorthFiat24hAgo, totalNetWorthFiatPercentChange24h) {
     $('#net_worth_fiat_24h_ago').text(totalNetWorthFiat24hAgo);
     $('#net_worth_fiat_percent_change_24h').text(totalNetWorthFiatPercentChange24h);
+    bindViewPercentChangeColorContainer('#net_worth_fiat_percent_change_24h_container', totalNetWorthFiatPercentChange24h);
 }
 
 function bindViewTotalNetWorthFiat(totalNetWorthFiat) {
@@ -447,6 +464,24 @@ function bindViewTotalNetWorthFiat(totalNetWorthFiat) {
 
 function bindViewTotalRewardAllLpFiat(totalAllLpRewardFiat) {
     $('#total_all_lp_reward_next_epoch_fiat').text(totalAllLpRewardFiat);
+}
+
+/**
+ * --------------------------------------------------------------------------------
+ */
+
+function bindViewPercentChangeColorContainer(containerId, percentChangeValue) {
+    let isZeroResult = isStringZero(percentChangeValue);
+    if (isZeroResult === null || isZeroResult === true) {
+        $(containerId).removeClass('positive-green negative-red');
+        $(containerId).addClass('text-secondary');
+    } else if (isStartsWithNegative(percentChangeValue)) {
+        $(containerId).removeClass('text-secondary positive-green');
+        $(containerId).addClass('negative-red');
+    } else {
+        $(containerId).removeClass('text-secondary negative-red');
+        $(containerId).addClass('positive-green');
+    }
 }
 
 /**
@@ -477,6 +512,8 @@ if (typeof exports !== 'undefined') {
     if (typeof parseFloatFromCommafiedNumberString === 'undefined') {
         FormattingUtils = require('./formatting_utils.js');
         parseFloatFromCommafiedNumberString = FormattingUtils.parseFloatFromCommafiedNumberString;
+        isStringZero = FormattingUtils.isStringZero;
+        isStartsWithNegative = FormattingUtils.isStartsWithNegative;
     }
 
     exports.getNumberFromView = getNumberFromView;
@@ -544,4 +581,6 @@ if (typeof exports !== 'undefined') {
     exports.bindViewTotalNetWorthFiat24hAgo = bindViewTotalNetWorthFiat24hAgo;
     exports.bindViewTotalNetWorthFiat = bindViewTotalNetWorthFiat;
     exports.bindViewTotalRewardAllLpFiat = bindViewTotalRewardAllLpFiat;
+
+    exports.bindViewPercentChangeColorContainer = bindViewPercentChangeColorContainer;
 }

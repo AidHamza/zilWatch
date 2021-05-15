@@ -133,7 +133,7 @@ block content
         span(class='h4')
           span(class='currency_symbol mr-1')= '$'
           span(id='net_worth_fiat')= 'Loading...'
-        span(class='h6 text-secondary ml-3')
+        span(id='net_worth_fiat_percent_change_24h_container' class='h6 text-secondary ml-3')
           span(id='net_worth_fiat_24h_ago' style='display: none;')
           span(id='net_worth_fiat_percent_change_24h')
           span= ' %'
@@ -141,7 +141,7 @@ block content
         span(class='h6')
           span(id='net_worth_zil')= 'Loading...'
           span(class='ml-1')= 'ZIL'
-        span(class='h6 text-secondary ml-3')
+        span(id='net_worth_zil_percent_change_24h_container' class='h6 text-secondary ml-3')
           span(id='net_worth_zil_24h_ago' style='display: none;')
           span(id='net_worth_zil_percent_change_24h')
           span= ' %'
@@ -151,7 +151,7 @@ block content
         span(class='h4')
           span(class='currency_symbol mr-1')= '$'
           span(id='wallet_balance_fiat')= 'Loading...'
-        span(class='h6 text-secondary ml-3')
+        span(id='wallet_balance_fiat_percent_change_24h_container' class='h6 text-secondary ml-3')
           span(id='wallet_balance_fiat_24h_ago' style='display: none;')
           span(id='wallet_balance_fiat_percent_change_24h')
           span= ' %'
@@ -159,7 +159,7 @@ block content
         span(class='h6')
           span(id='wallet_balance_zil')= 'Loading...'
           span(class='ml-1')= 'ZIL'
-        span(class='h6 text-secondary ml-3')
+        span(id='wallet_balance_zil_percent_change_24h_container' class='h6 text-secondary ml-3')
           span(id='wallet_balance_zil_24h_ago' style='display: none;')
           span(id='wallet_balance_zil_percent_change_24h')
           span= ' %'
@@ -169,7 +169,7 @@ block content
         span(class='h4')
           span(class='currency_symbol mr-1')= '$'
           span(id='lp_balance_fiat')= 'Loading...'
-        span(class='h6 text-secondary ml-3')
+        span(id='lp_balance_fiat_percent_change_24h_container' class='h6 text-secondary ml-3')
           span(id='lp_balance_fiat_24h_ago' style='display: none;')
           span(id='lp_balance_fiat_percent_change_24h')
           span= ' %'
@@ -177,7 +177,7 @@ block content
         span(class='h6')
           span(id='lp_balance_zil')= 'Loading...'
           span(class='ml-1')= 'ZIL'
-        span(class='h6 text-secondary ml-3')
+        span(id='lp_balance_zil_percent_change_24h_container' class='h6 text-secondary ml-3')
           span(id='lp_balance_zil_24h_ago' style='display: none;')
           span(id='lp_balance_zil_percent_change_24h')
           span= ' %'
@@ -187,7 +187,7 @@ block content
         span(class='h4')
           span(class='currency_symbol mr-1')= '$'
           span(id='staking_balance_fiat')= 'Loading...'
-        span(class='h6 text-secondary ml-3')
+        span(id='staking_balance_fiat_percent_change_24h_container' class='h6 text-secondary ml-3')
           span(id='staking_balance_fiat_24h_ago' style='display: none;')
           span(id='staking_balance_fiat_percent_change_24h')
           span= ' %'
@@ -195,7 +195,7 @@ block content
         span(class='h6')
           span(id='staking_balance_zil')= 'Loading...'
           span(class='ml-1')= 'ZIL'
-        span(class='h6 text-secondary ml-3')
+        span(id='staking_balance_zil_percent_change_24h_container' class='h6 text-secondary ml-3')
           span(id='staking_balance_zil_24h_ago' style='display: none;')
           span(id='staking_balance_zil_percent_change_24h')
           span= ' %'
@@ -230,10 +230,10 @@ block content
                   td(style='text-align: right; white-space: nowrap; width: 40%;' )
                     span(class='currency_symbol mr-1')= '$'
                     span(id='zil_balance_fiat')= 'Loading...'
-                  td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                  td(id='zil_balance_fiat_percent_change_24h_container' class='text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
                     span(id='zil_balance_fiat_24h_ago' style='display: none')
-                    span(id='zil_balance_fiat_percent_change_24h' class='text-secondary')
-                    span(class='text-secondary')= '%'
+                    span(id='zil_balance_fiat_percent_change_24h')
+                    span= '%'
 
         each tokenProperties, key in zrcTokenPropertiesListMap
 
@@ -252,10 +252,10 @@ block content
                     td(style='text-align: right; white-space: nowrap; width: 40%;' )
                       span(id=tokenProperties.ticker+'_balance_zil')= 'Loading...'
                       span(class='ml-1')= 'ZIL'
-                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                    td(id=tokenProperties.ticker+'_balance_zil_percent_change_24h_container' class='text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
                       span(id=tokenProperties.ticker+'_balance_zil_24h_ago' style='display: none;')
-                      span(id=tokenProperties.ticker+'_balance_zil_percent_change_24h' class='text-secondary')
-                      span(class='text-secondary')= '%'
+                      span(id=tokenProperties.ticker+'_balance_zil_percent_change_24h')
+                      span= '%'
                   tr
                     td(scope='row' style='text-align: left; white-space: nowrap; width: 35%;' )
                       span(id=tokenProperties.ticker+'_balance')= 'Loading...'
@@ -263,10 +263,10 @@ block content
                     td(style='text-align: right; white-space: nowrap; width: 40%;' )
                       span(class='currency_symbol mr-1')= '$'
                       span(id=tokenProperties.ticker+'_balance_fiat')= 'Loading...'
-                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                    td(id=tokenProperties.ticker+'_balance_fiat_percent_change_24h_container' class='text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
                       span(id=tokenProperties.ticker+'_balance_fiat_24h_ago' style='display: none;')
-                      span(id=tokenProperties.ticker+'_balance_fiat_percent_change_24h' class='text-secondary')
-                      span(class='text-secondary')= '%'
+                      span(id=tokenProperties.ticker+'_balance_fiat_percent_change_24h')
+                      span= '%'
 
     hr
 
@@ -318,9 +318,9 @@ block content
                         span(id=tokenProperties.ticker+'_lp_balance_zil' class='ml-1')
                         span(class='ml-1')= 'ZIL'
 
-                      td(style='text-align: right; white-space: nowrap; width: 10%;' )
-                        span(id=tokenProperties.ticker+'_lp_balance_zil_percent_change_24h' class='text-secondary')
-                        span(class='text-secondary')= '%'
+                      td(id=tokenProperties.ticker+'_lp_balance_zil_percent_change_24h_container' class='text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                        span(id=tokenProperties.ticker+'_lp_balance_zil_percent_change_24h')
+                        span= '%'
                     tr
                       td(style='text-align: left; white-space: nowrap; width: 45%;' )
                         span(id=tokenProperties.ticker+'_lp_token_balance')
@@ -331,9 +331,9 @@ block content
                       td(style='text-align: right; white-space: nowrap; width: 40%;' )
                         span(class='currency_symbol mr-1')= '$'
                         span(id=tokenProperties.ticker+'_lp_balance_fiat')= 'Loading...'
-                      td(style='text-align: right; white-space: nowrap; width: 10%;' )
-                        span(id=tokenProperties.ticker+'_lp_balance_fiat_percent_change_24h' class='text-secondary')
-                        span(class='text-secondary')= '%'
+                      td(id=tokenProperties.ticker+'_lp_balance_fiat_percent_change_24h_container' class='text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                        span(id=tokenProperties.ticker+'_lp_balance_fiat_percent_change_24h')
+                        span= '%'
                     tr
                       td(class='text-secondary' style='text-align: left; white-space: nowrap; width: 45%;' )
                         span(id=tokenProperties.ticker+'_lp_pool_reward_zwap')
@@ -389,10 +389,10 @@ block content
                       td(style='text-align: right; white-space: nowrap; width: 40%;' )
                         span(class='currency_symbol mr-1')= '$'
                         span(id=ssnAddress+'_zil_staking_balance_fiat')= 'Loading...'
-                      td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                      td(id=ssnAddress+'_zil_staking_balance_fiat_percent_change_24h_container' class='text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
                         span(id=ssnAddress+'_zil_staking_balance_fiat_24h_ago' style='display: none')
-                        span(id=ssnAddress+'_zil_staking_balance_fiat_percent_change_24h' class='text-secondary')
-                        span(class='text-secondary')= '%'
+                        span(id=ssnAddress+'_zil_staking_balance_fiat_percent_change_24h')
+                        span= '%'
 
           div(id='zil_staking_withdrawal_pending_container' class='col-lg-6' style='padding: 0; display: none')
               div(class='box')
@@ -413,10 +413,10 @@ block content
                       td(style='text-align: right; white-space: nowrap; width: 40%;' )
                         span(class='currency_symbol mr-1')= '$'
                         span(id='zil_staking_withdrawal_pending_balance_fiat')= 'Loading...'
-                      td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                      td(id='zil_staking_withdrawal_pending_balance_fiat_percent_change_24h_container'  class='text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
                         span(id='zil_staking_withdrawal_pending_balance_fiat_24h_ago' style='display: none')
-                        span(id='zil_staking_withdrawal_pending_balance_fiat_percent_change_24h' class='text-secondary')
-                        span(class='text-secondary')= '%'
+                        span(id='zil_staking_withdrawal_pending_balance_fiat_percent_change_24h')
+                        span= '%'
 
           div(id='carbon_staking_container' class='col-lg-6' style='padding: 0; display: none')
             div(class='box')
@@ -432,10 +432,10 @@ block content
                     td(style='text-align: right; white-space: nowrap; width: 40%;' )
                       span(id='carbon_staking_balance_zil')= 'Loading...'
                       span(class='ml-1')= 'ZIL'
-                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                    td(id='carbon_staking_balance_zil_percent_change_24h_container' class='text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
                       span(id='carbon_staking_balance_zil_24h_ago' style='display: none')
-                      span(id='carbon_staking_balance_zil_percent_change_24h' class='text-secondary')
-                      span(class='text-secondary')= '%'
+                      span(id='carbon_staking_balance_zil_percent_change_24h')
+                      span= '%'
 
                   tr
                     td(style='text-align: left; white-space: nowrap; width: 35%;' )
@@ -444,10 +444,10 @@ block content
                     td(style='text-align: right; white-space: nowrap; width: 40%;' )
                       span(class='currency_symbol mr-1')= '$'
                       span(id='carbon_staking_balance_fiat')= 'Loading...'
-                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                    td(id='carbon_staking_balance_fiat_percent_change_24h_container' class='text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
                       span(id='carbon_staking_balance_fiat_24h_ago' style='display: none')
-                      span(id='carbon_staking_balance_fiat_percent_change_24h' class='text-secondary')
-                      span(class='text-secondary')= '%'
+                      span(id='carbon_staking_balance_fiat_percent_change_24h')
+                      span= '%'
       hr
 
 block script
