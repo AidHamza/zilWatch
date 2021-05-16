@@ -46,8 +46,8 @@ describe('ControllerLpReward', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 let currAddress = Constants.zrcTokenPropertiesListMap[ticker].address;
                 if (!contractAddressToRewardMap[currAddress]) {
-                    assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
-                    assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
+                    assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), 'No reward');
+                    assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), 'ZWAP');
                 } else {
                     let expectedRewardString = contractAddressToUserFriendlyRewardString[currAddress];
                     assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), expectedRewardString);
@@ -72,8 +72,14 @@ describe('ControllerLpReward', function () {
 
             // Assert
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
+                let currAddress = Constants.zrcTokenPropertiesListMap[ticker].address;
+                if (!contractAddressToRewardMap[currAddress]) {
+                    assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), 'No reward');
+                    assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), 'ZWAP');
+                } else {
+                    assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
+                    assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
+                }
             }
             assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), 'Loading...');
             assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'none');
@@ -92,8 +98,14 @@ describe('ControllerLpReward', function () {
 
             // Assert
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
+                let currAddress = Constants.zrcTokenPropertiesListMap[ticker].address;
+                if (!contractAddressToRewardMap[currAddress]) {
+                    assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), 'No reward');
+                    assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), 'ZWAP');
+                } else {
+                    assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
+                    assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
+                }
             }
             assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), 'Loading...');
             assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'none');
@@ -108,8 +120,8 @@ describe('ControllerLpReward', function () {
 
             // Assert
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), 'No reward');
+                assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), 'ZWAP');
             }
             assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), 'Loading...');
             assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'none');

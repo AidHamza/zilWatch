@@ -26,6 +26,8 @@
                     bindViewZwapRewardLp(zwapRewardString, ticker);
                 }
             }
+        } else {
+            bindViewZwapRewardLp('No reward', ticker);
         }
     }
 
