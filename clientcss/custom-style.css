@@ -140,10 +140,9 @@ body {
   padding: 4px;
 }
 
-.tooltip-container:hover {
+.tooltip-container:hover, .tooltip-container.hover-effect {
   background-color: var(--light-alpha-10);
   cursor: pointer;
-  transition: .05s linear;
 }
 
 .tooltip-content {
