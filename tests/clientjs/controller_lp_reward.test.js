@@ -3,6 +3,7 @@ var $ = indexJsdom.$;
 
 var Constants = require('../../constants.js');
 var ControllerLpReward = require('../../clientjs/controller_lp_reward.js');
+var fs = require('fs')
 var assert = require('assert');
 var sinon = require('sinon');
 
@@ -112,6 +113,51 @@ describe('ControllerLpReward', function () {
             }
             assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), 'Loading...');
             assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'none');
+        });
+    });
+
+    describe('#onLpRewardPastEpochLoaded()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#total_all_lp_reward_prev_epoch_zwap').text(), 'Loading...');
+            assert.strictEqual($('#total_all_lp_reward_prev_epoch_fiat').text(), 'Loading...');
+        });
+
+        it('Past LP reward loaded happy case', function () {
+            // Arrange
+            let dataString = fs.readFileSync('./tests/clientjs/stats_zilswap_distribution_data_20210516.txt', 'utf8')
+            let dataObject = JSON.parse(dataString);
+
+            // Act
+            ControllerLpReward.onLpRewardPastEpochLoaded(dataObject);
+
+            // Assert
+            assert.strictEqual($('#total_all_lp_reward_prev_epoch_zwap').text(), '0.09727');
+        });
+
+        it('No Past LP reward, show 0', function () {
+            // Arrange
+            let dataString = "[]";
+            let dataObject = JSON.parse(dataString);
+
+            // Act
+            ControllerLpReward.onLpRewardPastEpochLoaded(dataObject);
+
+            // Assert
+            assert.strictEqual($('#total_all_lp_reward_prev_epoch_zwap').text(), '0');
+            assert.strictEqual($('#total_all_lp_reward_prev_epoch_fiat').text(), '0');
+        });
+
+        it('Null Past LP reward, show 0', function () {
+            // Arrange
+            let dataObject = null;
+
+            // Act
+            ControllerLpReward.onLpRewardPastEpochLoaded(dataObject);
+
+            // Assert
+            assert.strictEqual($('#total_all_lp_reward_prev_epoch_zwap').text(), '0');
+            assert.strictEqual($('#total_all_lp_reward_prev_epoch_fiat').text(), '0');
         });
     });
 

@@ -119,8 +119,9 @@ function refreshMainContentData(account) {
     // (7) Get ZRC-2 tokens balances, async.
     computeZrcTokensBalance(account, zrcTokenPropertiesListMap, onZrcTokenWalletBalanceLoaded);
 
-    // (8) Get Potential LP reward next epoch and time duration counter to the next epoch, async
+    // (8) Get Potential LP reward next epoch and past epoch, async
     computeTotalLpRewardNextEpoch(account, onLpRewardNextEpochLoaded);
+    computeTotalLpRewardPastEpoch(account, onLpRewardPastEpochLoaded);
 
     // (9) Get ZIL staking balance, async
     computeZilStakingBalance(account, onZilStakingBalanceLoaded);

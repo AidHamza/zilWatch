@@ -37,6 +37,28 @@
     }
 }
 
+function onLpRewardPastEpochLoaded(pastRewardList) {
+    if (!pastRewardList || pastRewardList.length < 1) {
+        // If there is no data, it means user has no past reward, show 0 to user
+        bindViewPrevTotalRewardAllLpZwap('0');
+        bindViewPrevTotalRewardAllLpFiat('0');
+        return;
+    }
+    
+    let pastRewardListLastIndex = pastRewardList.length - 1;
+    let prevRewardMap = pastRewardList[pastRewardListLastIndex];
+    let prevZwapRewardQa = parseInt(prevRewardMap.amount);
+    if (!prevZwapRewardQa) {
+        return;
+    }
+
+    let prevTotalZwapRewardString = convertNumberQaToDecimalString(prevZwapRewardQa, zrcTokenPropertiesListMap['ZWAP'].decimals);
+    if (prevTotalZwapRewardString) {
+        bindViewPrevTotalRewardAllLpZwap(prevTotalZwapRewardString);
+        refreshPrevTotalLpRewardFiat();
+    }
+}
+
 function onLpCurrentEpochInfoLoaded(epochInfoData) {
     let nextEpochStartSeconds = parseInt(epochInfoData.next_epoch_start);
     if (!nextEpochStartSeconds) {
@@ -73,13 +95,38 @@ function refreshTotalLpRewardFiat() {
     bindViewTotalRewardAllLpFiat(totalAllLpRewardFiat);
 }
 
+function refreshPrevTotalLpRewardFiat() {
+    let ticker = 'ZWAP';
+
+    if (!zilPriceInFiatFloat) {
+        return;
+    }
+    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
+
+    let zrcTokenPriceInZil = getNumberFromView('.' + ticker + '_price_zil');
+    if (!zrcTokenPriceInZil) {
+        return;
+    }
+
+    let rewardBalance = getNumberFromView('#total_all_lp_reward_prev_epoch_zwap');
+    if (!rewardBalance) {
+        return;
+    }
+
+    let rewardBalanceFiat = (zilPriceInFiatFloat * zrcTokenPriceInZil * rewardBalance);
+    let prevTotalAllLpRewardFiat = commafyNumberToString(rewardBalanceFiat, decimals);
+    bindViewPrevTotalRewardAllLpFiat(prevTotalAllLpRewardFiat);
+}
+
 if (typeof exports !== 'undefined') {
     if (typeof bindViewZwapRewardLp === 'undefined') {
         BindView = require('./bind_view.js');
         bindViewZwapRewardLp = BindView.bindViewZwapRewardLp;
         bindViewTotalRewardAllLpZwap = BindView.bindViewTotalRewardAllLpZwap;
+        bindViewPrevTotalRewardAllLpZwap = BindView.bindViewPrevTotalRewardAllLpZwap;
         bindViewLpNextEpochCounter = BindView.bindViewLpNextEpochCounter;
         bindViewTotalRewardAllLpFiat = BindView.bindViewTotalRewardAllLpFiat
+        bindViewPrevTotalRewardAllLpFiat = BindView.bindViewPrevTotalRewardAllLpFiat
         getNumberFromView = BindView.getNumberFromView;
     }
 
@@ -105,5 +152,6 @@ if (typeof exports !== 'undefined') {
     }
 
     exports.onLpRewardNextEpochLoaded = onLpRewardNextEpochLoaded;
+    exports.onLpRewardPastEpochLoaded = onLpRewardPastEpochLoaded;
     exports.onLpCurrentEpochInfoLoaded = onLpCurrentEpochInfoLoaded;
 }

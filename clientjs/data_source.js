@@ -242,6 +242,24 @@ async function computeTotalLpRewardNextEpoch(account, onLpRewardNextEpochLoaded)
     });
 }
 
+async function computeTotalLpRewardPastEpoch(account, onLpRewardPastEpochLoaded) {
+    $.ajax({
+        type: "GET",
+        url: "https://stats.zilswap.org/distribution/data/" + account.bech32,
+        retryLimit: MAX_RETRY,
+        success: function (pastRewardList) {
+            onLpRewardPastEpochLoaded(pastRewardList);
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            if (this.retryLimit--) {
+                // Try again
+                $.ajax(this);
+                return;
+            }
+        }
+    });
+}
+
 async function computeLpEpochInfo(onLpCurrentEpochInfoLoaded) {
     if (zilswapDexEpochInfoData) {
         // Use cache if available.

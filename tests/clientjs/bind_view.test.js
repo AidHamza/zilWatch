@@ -777,6 +777,29 @@ describe('BindView', function () {
         });
     });
 
+    describe('#bindViewPrevTotalRewardAllLpZwap()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#total_all_lp_reward_prev_epoch_zwap').text(), 'Loading...');
+        });
+
+        it('bind view legit balance', function () {
+            // Act
+            BindView.bindViewPrevTotalRewardAllLpZwap('1234.4');
+
+            // Assert
+            assert.strictEqual($('#total_all_lp_reward_prev_epoch_zwap').text(), '1234.4');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewPrevTotalRewardAllLpZwap('asdf');
+
+            // Assert
+            assert.strictEqual($('#total_all_lp_reward_prev_epoch_zwap').text(), 'asdf');
+        });
+    });
+
     describe('#bindViewLpNextEpochCounter()', function () {
 
         beforeEach(function () {
@@ -1691,6 +1714,28 @@ describe('BindView', function () {
         });
     });
 
+    describe('#bindViewPrevTotalRewardAllLpFiat()', function () {
+
+        beforeEach(function () {
+            assert.strictEqual($('#total_all_lp_reward_prev_epoch_fiat').text(), 'Loading...');
+        });
+
+        it('bind view happy case', function () {
+            // Act
+            BindView.bindViewPrevTotalRewardAllLpFiat('1234.52');
+
+            // Assert
+            assert.strictEqual($('#total_all_lp_reward_prev_epoch_fiat').text(), '1234.52');
+        });
+
+        it('bind view random string', function () {
+            // Act
+            BindView.bindViewPrevTotalRewardAllLpFiat('asdf');
+
+            // Assert
+            assert.strictEqual($('#total_all_lp_reward_prev_epoch_fiat').text(), 'asdf');
+        });
+    });
 
     describe('#bindViewPercentChangeColorContainer()', function () {
 
@@ -1819,6 +1864,9 @@ function assertDefaultStateMainContent() {
     assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), 'Loading...');
     assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'none');
     assert.strictEqual($('#lp_container').css('display'), 'none');
+
+    // bindViewPrevTotalRewardAllLpZwap()
+    assert.strictEqual($('#total_all_lp_reward_prev_epoch_zwap').text(), 'Loading...');
 
     // bindViewLpNextEpochCounter(): Exception, no need refresh
 
@@ -1953,4 +2001,7 @@ function assertDefaultStateMainContent() {
 
     // bindViewTotalRewardAllLpFiat()
     assert.strictEqual($('#total_all_lp_reward_next_epoch_fiat').text(), 'Loading...');
+
+    // bindViewPrevTotalRewardAllLpFiat()
+    assert.strictEqual($('#total_all_lp_reward_prev_epoch_fiat').text(), 'Loading...');
 }

@@ -54,6 +54,7 @@ function onCoinFiatPriceLoaded(currencyCode, coinPriceCoingeckoDataObject) {
 
     // Lp reward
     refreshTotalLpRewardFiat();
+    refreshPrevTotalLpRewardFiat();
 
     // ZIL staking
     for (let ssnAddress in ssnListMap) {
@@ -151,6 +152,7 @@ function onZilswapSinglePairPublicStatusLoaded( /* nullable */ zilswapSinglePair
     // Lp reward
     if (ticker === 'ZWAP') {
         refreshTotalLpRewardFiat();
+        refreshPrevTotalLpRewardFiat();
     } else if (ticker === 'CARB') {
         // Staking Balance
         refreshCarbonStakingZilFiat();
@@ -178,6 +180,7 @@ function onZrcTokenWalletBalanceLoaded(zrcTokenBalanceNumberQa, zrcTokenProperti
 
 function onTotalLpRewardNextEpochLoaded() {
     refreshTotalLpRewardFiat();
+    refreshPrevTotalLpRewardFiat();
 }
 
 function onZrcTokenLpBalanceLoaded(/* nullable */ zilswapSinglePairPersonalStatus24hAgo, zilswapSinglePairPersonalStatus, ticker) {

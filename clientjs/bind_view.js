@@ -154,6 +154,8 @@ function resetMainContainerContent() {
 
     $('#total_all_lp_reward_next_epoch_zwap').text('Loading...');
     $('#total_all_lp_reward_next_epoch_fiat').text('Loading...');
+    $('#total_all_lp_reward_prev_epoch_zwap').text('Loading...');
+    $('#total_all_lp_reward_prev_epoch_fiat').text('Loading...');
 
     $('#wallet_balance_zil_24h_ago').text('');
     $('#wallet_balance_zil_percent_change_24h').text('');
@@ -285,6 +287,10 @@ function bindViewTotalRewardAllLpZwap(totalRewardZwapString) {
     $('#total_all_lp_reward_next_epoch_zwap').text(totalRewardZwapString);
     $('#total_all_lp_reward_next_epoch_container').show();
     $('#lp_container').show();
+}
+
+function bindViewPrevTotalRewardAllLpZwap(prevTotalRewardZwapString) {
+    $('#total_all_lp_reward_prev_epoch_zwap').text(prevTotalRewardZwapString);
 }
 
 // Exception, no need reset
@@ -466,6 +472,10 @@ function bindViewTotalRewardAllLpFiat(totalAllLpRewardFiat) {
     $('#total_all_lp_reward_next_epoch_fiat').text(totalAllLpRewardFiat);
 }
 
+function bindViewPrevTotalRewardAllLpFiat(prevTotalAllLpRewardFiat) {
+    $('#total_all_lp_reward_prev_epoch_fiat').text(prevTotalAllLpRewardFiat);
+}
+
 /**
  * --------------------------------------------------------------------------------
  */
@@ -544,6 +554,7 @@ if (typeof exports !== 'undefined') {
 
     exports.bindViewZwapRewardLp = bindViewZwapRewardLp;
     exports.bindViewTotalRewardAllLpZwap = bindViewTotalRewardAllLpZwap;
+    exports.bindViewPrevTotalRewardAllLpZwap = bindViewPrevTotalRewardAllLpZwap;
     exports.bindViewLpNextEpochCounter = bindViewLpNextEpochCounter;
 
 
@@ -581,6 +592,7 @@ if (typeof exports !== 'undefined') {
     exports.bindViewTotalNetWorthFiat24hAgo = bindViewTotalNetWorthFiat24hAgo;
     exports.bindViewTotalNetWorthFiat = bindViewTotalNetWorthFiat;
     exports.bindViewTotalRewardAllLpFiat = bindViewTotalRewardAllLpFiat;
+    exports.bindViewPrevTotalRewardAllLpFiat = bindViewPrevTotalRewardAllLpFiat;
 
     exports.bindViewPercentChangeColorContainer = bindViewPercentChangeColorContainer;
 }
