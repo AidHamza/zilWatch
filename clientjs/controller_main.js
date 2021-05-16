@@ -637,7 +637,7 @@ function refreshTotalStakingZilFiat() {
     }
 
     // ZIL staking withdrawal pending sum
-    let zilWithdrawalBalance24hAgo = getNumberFromView('#zil_staking_withdrawal_pending_balance_24h_ago');
+    let zilWithdrawalBalance24hAgo = getNumberFromView('#zil_staking_withdrawal_pending_balance');
     if (zilWithdrawalBalance24hAgo) {
         totalZil24hAgo += zilWithdrawalBalance24hAgo
     }
