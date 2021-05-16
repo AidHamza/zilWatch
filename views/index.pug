@@ -41,27 +41,30 @@ block content
             table(class='table table-sm table-borderless' width='100%')
               tbody
                 tr
-                  th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Token Name'
-                  th(style='text-align: right; white-space: nowrap; width: 15%;')= 'Symbol'
+                  th(colspan=2 style='text-align: left; white-space: nowrap; width: 15%;' )= 'Token Symbol'
                   th(style='text-align: right; white-space: nowrap; width: 25%;' )= 'Price (ZIL)'
+                  th(style='text-align: right; white-space: nowrap; width: 10%;' )= '24h (%)'
                   th(style='text-align: right; white-space: nowrap; width: 25%;' )
                     span= 'Price'
                     span= ' ('
                     span(class='currency_symbol')= '$'
                     span= ')'
+                  th(style='text-align: right; white-space: nowrap; width: 10%;' )= '24h (%)'
                 
                 each coinProperties, key in coinMap 
                   tr
                     td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
                       img(height='18' width='18' src=coinProperties.logo_url loading='lazy')
-                    td(style='text-align: left; white-space: nowrap; width: 35%;' )
-                      span= coinProperties.name
-                    td(style='text-align: right; white-space: nowrap; width: 15%;' )
+                    td(style='text-align: left; white-space: nowrap; width: 15%;' )
                       span= coinProperties.ticker
                     td(style='text-align: right; white-space: nowrap; width: 25%;' )
                       span(class=coinProperties.ticker+'_price_zil')= 'Loading...'
+                    td(id='public_'+coinProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span(id='public_'+coinProperties.ticker+'_price_zil_percent_change_24h')
                     td(style='text-align: right; white-space: nowrap; width: 25%;' )
                       span(class=coinProperties.ticker+'_price_fiat')= 'Loading...'
+                    td(id='public_'+coinProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span(id='public_'+coinProperties.ticker+'_price_fiat_percent_change_24h')
 
                 each tokenProperties, key in zrcTokenPropertiesListMap
                   - var trStyle = ''
@@ -71,14 +74,18 @@ block content
                   tr(style=trStyle)
                     td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
                       img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
-                    td(style='text-align: left; white-space: nowrap; width: 35%;' )
-                      span= tokenProperties.name
-                    td(style='text-align: right; white-space: nowrap; width: 15%;' )
+                    td(style='text-align: left; white-space: nowrap; width: 15%;' )
                       span= tokenProperties.ticker
                     td(style='text-align: right; white-space: nowrap; width: 25%;' )
                       span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
+                    td(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span(id='public_'+tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
+                      span(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h')
                     td(style='text-align: right; white-space: nowrap; width: 25%;' )
                       span(id='public_'+tokenProperties.ticker+'_price_fiat')= 'Loading...'
+                    td(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span(id='public_'+tokenProperties.ticker+'_price_fiat_24h_ago' style='display: none;')
+                      span(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h')
 
       div(class='col-lg-6' style='padding: 0;')
 

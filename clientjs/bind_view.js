@@ -191,9 +191,21 @@ function resetMainContainerContent() {
  */
 
 // Exception, no need to reset
+function bindViewCoinPriceInFiat24hAgo(coinPriceInFiatPercentChange24h, coinTicker) {
+    $("#public_" + coinTicker + "_price_fiat_percent_change_24h").text(coinPriceInFiatPercentChange24h);
+    bindViewPercentChangeColorContainer('#public_' + coinTicker + '_price_fiat_percent_change_24h_container', coinPriceInFiatPercentChange24h);
+}
+
+// Exception, no need to reset
 function bindViewCoinPriceInFiat(currencySymbol, coinPriceInFiat, coinTicker) {
     $("." + coinTicker + "_price_fiat").text(coinPriceInFiat);
     $(".currency_symbol").text(currencySymbol);
+}
+
+// Exception, no need to reset
+function bindViewCoinPriceInZil24hAgo(coinPriceInZilPercentChange24h, coinTicker) {
+    $("#public_" + coinTicker + "_price_zil_percent_change_24h").text(coinPriceInZilPercentChange24h);
+    bindViewPercentChangeColorContainer('#public_' + coinTicker + '_price_zil_percent_change_24h_container', coinPriceInZilPercentChange24h);
 }
 
 // Exception, no need to reset
@@ -206,14 +218,24 @@ function bindViewZilBalance(zilBalance) {
 }
 
 // Exception, no need to reset
-function bindViewZrcTokenPriceInZil24hAgo(zrcTokenPriceInZil24hAgo, ticker) {
+function bindViewZrcTokenPriceInZil24hAgo(zrcTokenPriceInZil24hAgo, publicZrcTokenPriceInZil24hAgo, publicZrcTokenPriceInZilPercentChange24h, ticker) {
     $('.' + ticker + '_price_zil_24h_ago').text(zrcTokenPriceInZil24hAgo);
+    $('#public_' + ticker + '_price_zil_24h_ago').text(publicZrcTokenPriceInZil24hAgo);
+    $('#public_' + ticker + '_price_zil_percent_change_24h').text(publicZrcTokenPriceInZilPercentChange24h);
+    bindViewPercentChangeColorContainer('#public_' + ticker + '_price_zil_percent_change_24h_container', publicZrcTokenPriceInZilPercentChange24h);
 }
 
 // Exception, no need to reset
-function bindViewZrcTokenPriceInZil(publicZrcTokenPriceInZil, zrcTokenPriceInZil, ticker) {
-    $('#public_' + ticker + '_price_zil').text(publicZrcTokenPriceInZil);
+function bindViewZrcTokenPriceInZil(zrcTokenPriceInZil, publicZrcTokenPriceInZil, ticker) {
     $('.' + ticker + '_price_zil').text(zrcTokenPriceInZil);
+    $('#public_' + ticker + '_price_zil').text(publicZrcTokenPriceInZil);
+}
+
+// Exception, no need to reset
+function bindViewZrcTokenPriceInFiat24hAgo(zrcTokenPriceInFiat24hAgo, zrcTokenPriceInFiatPercentChange24h, ticker) {
+    $('#public_' + ticker + '_price_fiat_24h_ago').text(zrcTokenPriceInFiat24hAgo);
+    $('#public_' + ticker + '_price_fiat_percent_change_24h').text(zrcTokenPriceInFiatPercentChange24h);
+    bindViewPercentChangeColorContainer('#public_' + ticker + '_price_fiat_percent_change_24h_container', zrcTokenPriceInFiatPercentChange24h);
 }
 
 // Exception, no need to reset
@@ -535,11 +557,14 @@ if (typeof exports !== 'undefined') {
     exports.bindViewMainContainer = bindViewMainContainer;
     exports.resetMainContainerContent = resetMainContainerContent;
 
+    exports.bindViewCoinPriceInFiat24hAgo = bindViewCoinPriceInFiat24hAgo;
     exports.bindViewCoinPriceInFiat = bindViewCoinPriceInFiat;
+    exports.bindViewCoinPriceInZil24hAgo = bindViewCoinPriceInZil24hAgo;
     exports.bindViewCoinPriceInZil = bindViewCoinPriceInZil;
     exports.bindViewZilBalance = bindViewZilBalance;
     exports.bindViewZrcTokenPriceInZil24hAgo = bindViewZrcTokenPriceInZil24hAgo;
     exports.bindViewZrcTokenPriceInZil = bindViewZrcTokenPriceInZil;
+    exports.bindViewZrcTokenPriceInFiat24hAgo = bindViewZrcTokenPriceInFiat24hAgo;
     exports.bindViewZrcTokenPriceInFiat = bindViewZrcTokenPriceInFiat;
     exports.bindViewZrcTokenWalletBalance = bindViewZrcTokenWalletBalance;
     exports.bindViewZrcTokenLpTotalPoolBalance = bindViewZrcTokenLpTotalPoolBalance;

@@ -231,6 +231,29 @@ describe('BindView', function () {
         });
     });
 
+    describe('#bindViewCoinPriceInFiat24hAgo()', function () {
+
+        it('bind view price in fiat', function () {
+            for (let coinTicker in Constants.coinMap) {
+                // Act
+                BindView.bindViewCoinPriceInFiat24hAgo('0.123', coinTicker);
+
+                // Assert
+                assert.strictEqual($('#public_' + coinTicker + '_price_fiat_percent_change_24h').text(), '0.123');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let coinTicker in Constants.coinMap) {
+                // Act
+                BindView.bindViewCoinPriceInFiat24hAgo('asdf', coinTicker);
+
+                // Assert
+                assert.strictEqual($('#public_' + coinTicker + '_price_fiat_percent_change_24h').text(), 'asdf');
+            }
+        });
+    });
+
     describe('#bindViewCoinPriceInFiat()', function () {
 
         it('bind view price in fiat', function () {
@@ -264,6 +287,29 @@ describe('BindView', function () {
         });
     });
 
+
+    describe('#bindViewCoinPriceInZil24hAgo()', function () {
+
+        it('bind view price in fiat', function () {
+            for (let coinTicker in Constants.coinMap) {
+                // Act
+                BindView.bindViewCoinPriceInZil24hAgo('0.123', coinTicker);
+
+                // Assert
+                assert.strictEqual($('#public_' + coinTicker + '_price_zil_percent_change_24h').text(), '0.123');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let coinTicker in Constants.coinMap) {
+                // Act
+                BindView.bindViewCoinPriceInZil24hAgo('asdf', coinTicker);
+
+                // Assert
+                assert.strictEqual($('#public_' + coinTicker + '_price_zil_percent_change_24h').text(), 'asdf');
+            }
+        });
+    });
 
     describe('#bindViewCoinPriceInZil()', function () {
 
@@ -319,27 +365,39 @@ describe('BindView', function () {
 
         beforeEach(function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('.' + ticker + '_price_zil_24h_ago').text(), '');
+                $('.' + ticker + '_price_zil_24h_ago').each(function () {
+                    assert.strictEqual($(this).text(), '');
+                });
+                assert.strictEqual($('#public_' + ticker + '_price_zil_24h_ago').text(), '');
+                assert.strictEqual($('#public_' + ticker + '_price_zil_percent_change_24h').text(), '');
             }
         });
 
         it('bind view happy case', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 // Act
-                BindView.bindViewZrcTokenPriceInZil24hAgo('1234.4', ticker);
+                BindView.bindViewZrcTokenPriceInZil24hAgo('1234.4', '123', '5.2', ticker);
 
                 // Assert
-                assert.strictEqual($('.' + ticker + '_price_zil_24h_ago').text(), '1234.4');
+                $('.' + ticker + '_price_zil_24h_ago').each(function () {
+                    assert.strictEqual($(this).text(), '1234.4');
+                });
+                assert.strictEqual($('#public_' + ticker + '_price_zil_24h_ago').text(), '123');
+                assert.strictEqual($('#public_' + ticker + '_price_zil_percent_change_24h').text(), '5.2');
             }
         });
 
         it('bind view random string', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 // Act
-                BindView.bindViewZrcTokenPriceInZil24hAgo('asdf', ticker);
+                BindView.bindViewZrcTokenPriceInZil24hAgo('asdf', 'qwer', 'rfb', ticker);
 
                 // Assert
-                assert.strictEqual($('.' + ticker + '_price_zil_24h_ago').text(), 'asdf');
+                $('.' + ticker + '_price_zil_24h_ago').each(function () {
+                    assert.strictEqual($(this).text(), 'asdf');
+                });
+                assert.strictEqual($('#public_' + ticker + '_price_zil_24h_ago').text(), 'qwer');
+                assert.strictEqual($('#public_' + ticker + '_price_zil_percent_change_24h').text(), 'rfb');
             }
         });
     });
@@ -348,36 +406,68 @@ describe('BindView', function () {
 
         beforeEach(function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#public_' + ticker + '_price_zil').text(), 'Loading...');
                 $('.' + ticker + '_price_zil').each(function () {
                     assert.strictEqual($(this).text(), 'Loading...');
                 });
+                assert.strictEqual($('#public_' + ticker + '_price_zil').text(), 'Loading...');
             }
         });
 
         it('bind view happy case', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 // Act
-                BindView.bindViewZrcTokenPriceInZil('12345.5', '1234.4', ticker);
+                BindView.bindViewZrcTokenPriceInZil('1234.4', '12345.5', ticker);
 
                 // Assert
-                assert.strictEqual($('#public_' + ticker + '_price_zil').text(), '12345.5');
                 $('.' + ticker + '_price_zil').each(function () {
                     assert.strictEqual($(this).text(), '1234.4');
                 });
+                assert.strictEqual($('#public_' + ticker + '_price_zil').text(), '12345.5');
             }
         });
 
         it('bind view random string', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 // Act
-                BindView.bindViewZrcTokenPriceInZil('qwer', 'asdf', ticker);
+                BindView.bindViewZrcTokenPriceInZil('asdf', 'qwer', ticker);
 
                 // Assert
-                assert.strictEqual($('#public_' + ticker + '_price_zil').text(), 'qwer');
                 $('.' + ticker + '_price_zil').each(function () {
                     assert.strictEqual($(this).text(), 'asdf');
                 });
+                assert.strictEqual($('#public_' + ticker + '_price_zil').text(), 'qwer');
+            }
+        });
+    });
+
+    describe('#bindViewZrcTokenPriceInFiat24hAgo()', function () {
+
+        beforeEach(function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#public_' + ticker + '_price_fiat_24h_ago').text(), '');
+                assert.strictEqual($('#public_' + ticker + '_price_fiat_percent_change_24h').text(), '');
+            }
+        });
+
+        it('bind view happy case', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenPriceInFiat24hAgo('1234.4', '4322', ticker);
+
+                // Assert
+                assert.strictEqual($('#public_' + ticker + '_price_fiat_24h_ago').text(), '1234.4');
+                assert.strictEqual($('#public_' + ticker + '_price_fiat_percent_change_24h').text(), '4322');
+            }
+        });
+
+        it('bind view random string', function () {
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // Act
+                BindView.bindViewZrcTokenPriceInFiat24hAgo('asdf', 'qwer', ticker);
+
+                // Assert
+                assert.strictEqual($('#public_' + ticker + '_price_fiat_24h_ago').text(), 'asdf');
+                assert.strictEqual($('#public_' + ticker + '_price_fiat_percent_change_24h').text(), 'qwer');
             }
         });
     });
@@ -1796,7 +1886,9 @@ describe('BindView', function () {
 });
 
 function assertDefaultStateMainContent() {
+    // bindViewCoinPriceInFiat24hAgo(): Exception, no need refresh
     // bindViewCoinPriceInFiat(): Exception, no need refresh
+    // bindViewCoinPriceInZil24hAgo(): Exception, no need refresh
     // bindViewCoinPriceInZil(): Exception, no need refresh
 
     // bindViewZilBalance()
@@ -1805,6 +1897,7 @@ function assertDefaultStateMainContent() {
     // bindViewZrcTokenPriceInZil24hAgo(): Exception, no need refresh
     // bindViewZrcTokenPriceInZil(): Exception, no need refresh
 
+    // bindViewZrcTokenPriceInFiat24hAgo(): Exception, no need refresh
     // bindViewZrcTokenPriceInFiat(): Exception, no need refresh
 
     // bindViewZrcTokenWalletBalance()

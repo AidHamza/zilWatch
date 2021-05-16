@@ -8,6 +8,9 @@ function onCoinFiatPriceLoaded(currencyCode, coinPriceCoingeckoDataObject) {
     if (!coinPriceCoingeckoDataObject) {
         return;
     }
+    if (!zilPriceInFiatFloat) {
+        return;
+    }
     let currencySymbol = currencyMap[currencyCode];
 
     for (let coinTicker in coinMap) {
@@ -19,6 +22,7 @@ function onCoinFiatPriceLoaded(currencyCode, coinPriceCoingeckoDataObject) {
                 continue;
             }
 
+            // Coin price in fiat
             let decimals = (zilPriceInFiatFloat > 1000) ? 0 : 2;
             let coinPriceInFiatString = commafyNumberToString(coinPriceInFiatFloat, decimals);
             if (coingeckoId === 'zilliqa') {
@@ -26,12 +30,26 @@ function onCoinFiatPriceLoaded(currencyCode, coinPriceCoingeckoDataObject) {
             }
             bindViewCoinPriceInFiat(currencySymbol, coinPriceInFiatString, coinTicker);
 
-            // Compute other coins in ZIL.
+            // Coin price in ZIL
             let coinPriceInZilFloat = 1.0 * coinPriceInFiatFloat / zilPriceInFiatFloat;
             if (!coinPriceInZilFloat) {
                 continue;
             }
             bindViewCoinPriceInZil(commafyNumberToString(coinPriceInZilFloat, 2), coinTicker);
+
+            // Coin percent change in Fiat
+            if (coinPriceCoingecko24hAgoData && zilPriceInFiat24hAgoFloat) {
+                let coinPriceInFiat24hAgoFloat = parseFloat(coinPriceCoingecko24hAgoData[coingeckoId][currencyCode]);
+                if (!coinPriceInFiat24hAgoFloat) {
+                    continue;
+                }
+                let coinPriceInFiatPercentChange24h = getPercentChange(coinPriceInFiatFloat, coinPriceInFiat24hAgoFloat).toFixed(1);
+                bindViewCoinPriceInFiat24hAgo(coinPriceInFiatPercentChange24h, coinTicker);
+
+                let coinPriceInZil24hAgoFloat = 1.0 * coinPriceInFiat24hAgoFloat / zilPriceInFiat24hAgoFloat;
+                let coinPriceInZilPercentChange24h = getPercentChange(coinPriceInZilFloat, coinPriceInZil24hAgoFloat).toFixed(1);
+                bindViewCoinPriceInZil24hAgo(coinPriceInZilPercentChange24h, coinTicker);
+            }
         }
     }
 
@@ -123,16 +141,19 @@ function onZilswapDexStatusLoaded(dataObject, walletAddressBase16 = null) {
 }
 
 function onZilswapSinglePairPublicStatusLoaded( /* nullable */ zilswapSinglePairPublicStatus24hAgo, zilswapSinglePairPublicStatus, ticker) {
+    let zrcTokenPriceInZilNumber = zilswapSinglePairPublicStatus.zrcTokenPriceInZil;
+    let userFriendlyZrcTokenPriceInZil = convertNumberQaToDecimalString(zrcTokenPriceInZilNumber, /* decimals= */ 0);
+    let publicUserFriendlyZrcTokenPriceInZil = commafyNumberToString(zrcTokenPriceInZilNumber, 2);
+    bindViewZrcTokenPriceInZil(userFriendlyZrcTokenPriceInZil, publicUserFriendlyZrcTokenPriceInZil, ticker)
+
     if (zilswapSinglePairPublicStatus24hAgo) {
         let zrcTokenPriceInZilNumber24hAgo = zilswapSinglePairPublicStatus24hAgo.zrcTokenPriceInZil;
         let userFriendlyZrcTokenPriceInZil24hAgo = convertNumberQaToDecimalString(zrcTokenPriceInZilNumber24hAgo, /* decimals= */ 0);
-        bindViewZrcTokenPriceInZil24hAgo(userFriendlyZrcTokenPriceInZil24hAgo, ticker);
+        let publicUserFriendlyZrcTokenPriceInZil24hAgo = commafyNumberToString(zrcTokenPriceInZilNumber24hAgo, 2);
+        let zrcTokenPriceInZilPercentChange24h = getPercentChange(zrcTokenPriceInZilNumber, zrcTokenPriceInZilNumber24hAgo).toFixed(1);
+        bindViewZrcTokenPriceInZil24hAgo(userFriendlyZrcTokenPriceInZil24hAgo, publicUserFriendlyZrcTokenPriceInZil24hAgo, zrcTokenPriceInZilPercentChange24h, ticker);
     }
 
-    let zrcTokenPriceInZilNumber = zilswapSinglePairPublicStatus.zrcTokenPriceInZil;
-    let publicUserFriendlyZrcTokenPriceInZil = commafyNumberToString(zrcTokenPriceInZilNumber, 2);
-    let userFriendlyZrcTokenPriceInZil = convertNumberQaToDecimalString(zrcTokenPriceInZilNumber, /* decimals= */ 0);
-    bindViewZrcTokenPriceInZil(publicUserFriendlyZrcTokenPriceInZil, userFriendlyZrcTokenPriceInZil, ticker)
     refreshZrcTokenPriceFiat()
 
     // public total pool container
@@ -323,6 +344,9 @@ function refreshZilWalletBalanceFiat() {
 }
 
 function refreshZrcTokenPriceFiat() {
+    if (!zilPriceInFiatFloat) {
+        return;
+    }
     let decimals = (zilPriceInFiatFloat > 1000) ? 0 : 2;
 
     for (let ticker in zrcTokenPropertiesListMap) {
@@ -332,7 +356,16 @@ function refreshZrcTokenPriceFiat() {
         }
         let zrcTokenPriceInFiat = 1.0 * zilPriceInFiatFloat * zrcTokenPriceInZil;
         let zrcTokenPriceInFiatString = commafyNumberToString(zrcTokenPriceInFiat, decimals);
+
         bindViewZrcTokenPriceInFiat(zrcTokenPriceInFiatString, ticker);
+
+        let zrcTokenPriceInZil24hAgo = getNumberFromView('.' + ticker + '_price_zil_24h_ago');
+        if (zilPriceInFiat24hAgoFloat && zrcTokenPriceInZil24hAgo) {
+            let zrcTokenPriceInFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zrcTokenPriceInZil24hAgo;
+            let zrcTokenPriceInFiat24hAgoString = commafyNumberToString(zrcTokenPriceInFiat24hAgo, decimals);
+            let zrcTokenPriceInFiatPercentChange24h = getPercentChange(zrcTokenPriceInFiat, zrcTokenPriceInFiat24hAgo).toFixed(1);
+            bindViewZrcTokenPriceInFiat24hAgo(zrcTokenPriceInFiat24hAgoString, zrcTokenPriceInFiatPercentChange24h, ticker);
+        }
     }
 }
 

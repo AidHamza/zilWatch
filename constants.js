@@ -31,6 +31,7 @@ const coinMap = {
   },
 }
 
+// IF changed, also change in zilWatch-backend/core/crawl_coingecko.py
 const currencyMap = {
   "usd": "$",
   "aed": "AED",
@@ -191,6 +192,7 @@ const ssnListMap = {
   },
 }
 
+// IF changed, also change in zilWatch-backend/core/crawl_zrc_contract_state.py
 const zrcTokenPropertiesListMap = {
   'gZIL': {
     "ticker": "gZIL",
