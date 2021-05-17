@@ -127,7 +127,7 @@ function onZilswapDexStatusLoaded(dataObject, walletAddressBase16 = null) {
         // To get ZilswapLp balance and Total pool status
         let walletShareRatio = getZilswapSinglePairShareRatio(dataObject, zrcTokenAddressBase16, walletAddressBase16);
         let zilswapSinglePairPersonalStatus = new ZilswapSinglePairPersonalStatus(walletShareRatio, zilswapSinglePairPublicStatus);
-        
+
         // To getZilswapLp balance and share ratio 24h ago
         let zilswapSinglePairPersonalStatus24hAgo = null;
         if (zilswapDexSmartContractState24hAgoData && zilswapDexSmartContractState24hAgoData.result && zilswapSinglePairPublicStatus24hAgo) {
@@ -204,7 +204,7 @@ function onTotalLpRewardNextEpochLoaded() {
     refreshPrevTotalLpRewardFiat();
 }
 
-function onZrcTokenLpBalanceLoaded(/* nullable */ zilswapSinglePairPersonalStatus24hAgo, zilswapSinglePairPersonalStatus, ticker) {
+function onZrcTokenLpBalanceLoaded( /* nullable */ zilswapSinglePairPersonalStatus24hAgo, zilswapSinglePairPersonalStatus, ticker) {
     if (!zilswapSinglePairPersonalStatus) {
         return;
     }
@@ -437,9 +437,12 @@ function refreshTotalWalletBalanceZilFiat() {
 
     let totalWalletBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
     bindViewTotalWalletBalanceZil(totalWalletBalanceZil);
-    let totalWalletBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
-    let totalWalletBalanceZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
-    bindViewTotalWalletBalanceZil24hAgo(totalWalletBalanceZil24hAgo, totalWalletBalanceZilPercentChange24h);
+
+    if (zilPriceInFiat24hAgoFloat) {
+        let totalWalletBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
+        let totalWalletBalanceZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
+        bindViewTotalWalletBalanceZil24hAgo(totalWalletBalanceZil24hAgo, totalWalletBalanceZilPercentChange24h);
+    }
 
     if (!zilPriceInFiatFloat) {
         return;
@@ -521,9 +524,12 @@ function refreshTotalLpBalanceZilFiat() {
     }
     let totalLpBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
     bindViewTotalLpBalanceZil(totalLpBalanceZil);
-    let totalLpBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
-    let totalLpBalanceZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
-    bindViewTotalLpBalanceZil24hAgo(totalLpBalanceZil24hAgo, totalLpBalanceZilPercentChange24h);
+
+    if (zilPriceInFiat24hAgoFloat) {
+        let totalLpBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
+        let totalLpBalanceZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
+        bindViewTotalLpBalanceZil24hAgo(totalLpBalanceZil24hAgo, totalLpBalanceZilPercentChange24h);
+    }
 
     // Sum balance in USD.
     if (!zilPriceInFiatFloat) {
@@ -681,9 +687,11 @@ function refreshTotalStakingZilFiat() {
         totalZil24hAgo += carbonStakingBalanceZil24hAgo
     }
 
-    let totalStakingBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
-    let totalStakingBalanceZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
-    bindViewTotalStakingBalanceZil24hAgo(totalStakingBalanceZil24hAgo, totalStakingBalanceZilPercentChange24h);
+    if (zilPriceInFiat24hAgoFloat) {
+        let totalStakingBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
+        let totalStakingBalanceZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
+        bindViewTotalStakingBalanceZil24hAgo(totalStakingBalanceZil24hAgo, totalStakingBalanceZilPercentChange24h);
+    }
 
     // -----------------------------------------------
     // Sum balance in USD.
@@ -729,26 +737,29 @@ function refreshNetWorthZilFiat() {
     bindViewTotalNetWorthZil(totalNetWorthZil);
 
     // -----------------------------------------------
-     // Sum balance in ZIL.
-     let totalZil24hAgo = 0;
+    // Sum balance in ZIL.
+    let totalZil24hAgo = 0;
 
-     let walletBalanceZil24hAgo = getNumberFromView('#wallet_balance_zil_24h_ago');
-     if (walletBalanceZil24hAgo) {
+    let walletBalanceZil24hAgo = getNumberFromView('#wallet_balance_zil_24h_ago');
+    if (walletBalanceZil24hAgo) {
         totalZil24hAgo += walletBalanceZil24hAgo;
-     }
- 
-     let lpBalanceZil24hAgo = getNumberFromView('#lp_balance_zil_24h_ago');
-     if (lpBalanceZil24hAgo) {
+    }
+
+    let lpBalanceZil24hAgo = getNumberFromView('#lp_balance_zil_24h_ago');
+    if (lpBalanceZil24hAgo) {
         totalZil24hAgo += lpBalanceZil24hAgo;
-     }
- 
-     let zilStakingBalanceZil24hAgo = getNumberFromView('#staking_balance_zil_24h_ago');
-     if (zilStakingBalanceZil24hAgo) {
+    }
+
+    let zilStakingBalanceZil24hAgo = getNumberFromView('#staking_balance_zil_24h_ago');
+    if (zilStakingBalanceZil24hAgo) {
         totalZil24hAgo += zilStakingBalanceZil;
-     }
-     let totalNetWorthZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
-     let totalNetWorthZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
-     bindViewTotalNetWorthZil24hAgo(totalNetWorthZil24hAgo, totalNetWorthZilPercentChange24h);
+    }
+
+    if (zilPriceInFiat24hAgoFloat) {
+        let totalNetWorthZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
+        let totalNetWorthZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
+        bindViewTotalNetWorthZil24hAgo(totalNetWorthZil24hAgo, totalNetWorthZilPercentChange24h);
+    }
 
     // Sum balance in USD.
 
