@@ -42,7 +42,7 @@
 function onLpRewardPastEpochLoaded(pastRewardList) {
     if (!pastRewardList || pastRewardList.length < 1) {
         // If there is no data, it means user has no past reward, show 0 to user
-        bindViewPrevTotalRewardAllLpZwap('0');
+        bindViewPrevTotalRewardAllLpZwap('-', '0');
         bindViewPrevTotalRewardAllLpFiat('0');
         return;
     }
@@ -56,9 +56,33 @@ function onLpRewardPastEpochLoaded(pastRewardList) {
 
     let prevTotalZwapRewardString = convertNumberQaToDecimalString(prevZwapRewardQa, zrcTokenPropertiesListMap['ZWAP'].decimals);
     if (prevTotalZwapRewardString) {
-        bindViewPrevTotalRewardAllLpZwap(prevTotalZwapRewardString);
+        bindViewPrevTotalRewardAllLpZwap(prevRewardMap.epoch_number, prevTotalZwapRewardString);
         refreshPrevTotalLpRewardFiat();
     }
+    
+    // Check if we have more past rewards from ZWAP, If there are no past rewards, return.
+    let pastRewardListIndex = pastRewardListLastIndex - 1;
+    if (pastRewardListIndex < 0) {
+        return;
+    }
+    
+    // If we have more past rewards, show them
+    enableTooltipPastTotalRewardAllLpZwap();
+    clearViewPastTotalRewardAllLpZwap();
+    while (pastRewardListIndex >= 0) {
+        let currRewardMap = pastRewardList[pastRewardListIndex];
+        let currZwapRewardQa = parseInt(currRewardMap.amount);
+        if (!currZwapRewardQa) {
+            continue;
+        }
+        let currZwapRewardString = convertNumberQaToDecimalString(currZwapRewardQa, zrcTokenPropertiesListMap['ZWAP'].decimals);
+        if (!currZwapRewardString) {
+            continue;
+        }
+        addViewPastTotalRewardAllLpZwap(currRewardMap.epoch_number, currZwapRewardString);
+        pastRewardListIndex--;
+    }
+    refreshPastTotalLpRewardFiat();
 }
 
 function onLpCurrentEpochInfoLoaded(epochInfoData) {
@@ -120,6 +144,26 @@ function refreshPrevTotalLpRewardFiat() {
     bindViewPrevTotalRewardAllLpFiat(prevTotalAllLpRewardFiat);
 }
 
+function refreshPastTotalLpRewardFiat() {
+    let ticker = 'ZWAP';
+
+    if (!zilPriceInFiatFloat) {
+        return;
+    }
+    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
+
+    let zrcTokenPriceInZil = getNumberFromView('.' + ticker + '_price_zil');
+    if (!zrcTokenPriceInZil) {
+        return;
+    }
+
+    bindViewPastTotalRewardAllLpFiat(function(rewardBalance) {
+        let rewardBalanceFiat = (zilPriceInFiatFloat * zrcTokenPriceInZil * rewardBalance);
+        let rewardBalanceFiatString = commafyNumberToString(rewardBalanceFiat, decimals);
+        return rewardBalanceFiatString;
+    });
+}
+
 if (typeof exports !== 'undefined') {
     if (typeof bindViewZwapRewardLp === 'undefined') {
         BindView = require('./bind_view.js');
@@ -127,8 +171,15 @@ if (typeof exports !== 'undefined') {
         bindViewTotalRewardAllLpZwap = BindView.bindViewTotalRewardAllLpZwap;
         bindViewPrevTotalRewardAllLpZwap = BindView.bindViewPrevTotalRewardAllLpZwap;
         bindViewLpNextEpochCounter = BindView.bindViewLpNextEpochCounter;
-        bindViewTotalRewardAllLpFiat = BindView.bindViewTotalRewardAllLpFiat
-        bindViewPrevTotalRewardAllLpFiat = BindView.bindViewPrevTotalRewardAllLpFiat
+        bindViewTotalRewardAllLpFiat = BindView.bindViewTotalRewardAllLpFiat;
+        bindViewPrevTotalRewardAllLpFiat = BindView.bindViewPrevTotalRewardAllLpFiat;
+
+        enableTooltipPastTotalRewardAllLpZwap = BindView.enableTooltipPastTotalRewardAllLpZwap;
+        disableTooltipPastTotalRewardAllLpZwap = BindView.disableTooltipPastTotalRewardAllLpZwap;
+        clearViewPastTotalRewardAllLpZwap = BindView.clearViewPastTotalRewardAllLpZwap;
+        addViewPastTotalRewardAllLpZwap = BindView.addViewPastTotalRewardAllLpZwap;
+        bindViewPastTotalRewardAllLpFiat = BindView.bindViewPastTotalRewardAllLpFiat;
+
         getNumberFromView = BindView.getNumberFromView;
     }
 

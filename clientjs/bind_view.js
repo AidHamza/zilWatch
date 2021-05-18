@@ -18,7 +18,7 @@ function getNumberFromView(viewId) {
 }
 
 /**
- * --------------------------------------------------------------------------------
+ * 1 --------------------------------------------------------------------------------
  */
 
 function setThemeLightMode() {
@@ -95,7 +95,6 @@ function resetMainContainerContent() {
     $('#staking_container').hide();
     $('#total_all_lp_reward_next_epoch_container').hide();
 
-    
     $('#zil_balance').text('Loading...');
     $('#zil_balance_fiat').text('Loading...');
     $('#zil_balance_fiat_24h_ago').text('');
@@ -156,6 +155,12 @@ function resetMainContainerContent() {
     $('#total_all_lp_reward_next_epoch_fiat').text('Loading...');
     $('#total_all_lp_reward_prev_epoch_zwap').text('Loading...');
     $('#total_all_lp_reward_prev_epoch_fiat').text('Loading...');
+    $('#total_all_lp_reward_prev_epoch_number').text('');
+
+    $('.tooltip-container').removeClass('hover-effect');
+    $('#total_all_lp_reward_past_epoch_container').removeClass('hover-effect');
+    disableTooltipPastTotalRewardAllLpZwap();
+    clearViewPastTotalRewardAllLpZwap();
 
     $('#wallet_balance_zil_24h_ago').text('');
     $('#wallet_balance_zil_percent_change_24h').text('');
@@ -187,7 +192,7 @@ function resetMainContainerContent() {
 }
 
 /**
- * --------------------------------------------------------------------------------
+ * 2 --------------------------------------------------------------------------------
  */
 
 // Exception, no need to reset
@@ -305,27 +310,11 @@ function bindViewZwapRewardLp(zwapRewardString, ticker) {
     $('#' + ticker + '_lp_pool_reward_zwap_unit').text('ZWAP');
 }
 
-function bindViewTotalRewardAllLpZwap(totalRewardZwapString) {
-    $('#total_all_lp_reward_next_epoch_zwap').text(totalRewardZwapString);
-    $('#total_all_lp_reward_next_epoch_container').show();
-    $('#lp_container').show();
-}
-
-function bindViewPrevTotalRewardAllLpZwap(prevTotalRewardZwapString) {
-    $('#total_all_lp_reward_prev_epoch_zwap').text(prevTotalRewardZwapString);
-}
-
-// Exception, no need reset
-function bindViewLpNextEpochCounter(timeDurationString) {
-    $('#lp_reward_next_epoch_duration_counter').text(timeDurationString);
-}
-
 /**
- * --------------------------------------------------------------------------------
+ * 3 --------------------------------------------------------------------------------
  */
 
-
- function bindViewZilBalanceFiat24hAgo(zilBalanceFiat24hAgo, zilBalanceFiatPercentChange24h) {
+function bindViewZilBalanceFiat24hAgo(zilBalanceFiat24hAgo, zilBalanceFiatPercentChange24h) {
     $('#zil_balance_fiat_24h_ago').text(zilBalanceFiat24hAgo);
     $('#zil_balance_fiat_percent_change_24h').text(zilBalanceFiatPercentChange24h);
     bindViewPercentChangeColorContainer('#zil_balance_fiat_percent_change_24h_container', zilBalanceFiatPercentChange24h);
@@ -489,13 +478,84 @@ function bindViewTotalNetWorthFiat24hAgo(totalNetWorthFiat24hAgo, totalNetWorthF
 function bindViewTotalNetWorthFiat(totalNetWorthFiat) {
     $('#net_worth_fiat').text(totalNetWorthFiat);
 }
+/**
+ * 4 --------------------------------------------------------------------------------
+ * This is mainly total ZWAP LP reward card
+ */
+
+function bindViewTotalRewardAllLpZwap(totalRewardZwapString) {
+    $('#total_all_lp_reward_next_epoch_zwap').text(totalRewardZwapString);
+    $('#total_all_lp_reward_next_epoch_container').show();
+    $('#lp_container').show();
+}
 
 function bindViewTotalRewardAllLpFiat(totalAllLpRewardFiat) {
     $('#total_all_lp_reward_next_epoch_fiat').text(totalAllLpRewardFiat);
 }
 
+function bindViewPrevTotalRewardAllLpZwap(prevEpochNumber, prevTotalRewardZwapString) {
+    $('#total_all_lp_reward_prev_epoch_number').text(prevEpochNumber);
+    $('#total_all_lp_reward_prev_epoch_zwap').text(prevTotalRewardZwapString);
+}
+
 function bindViewPrevTotalRewardAllLpFiat(prevTotalAllLpRewardFiat) {
     $('#total_all_lp_reward_prev_epoch_fiat').text(prevTotalAllLpRewardFiat);
+}
+
+function disableTooltipPastTotalRewardAllLpZwap() {
+    $('#total_all_lp_reward_past_epoch_container').removeClass('hover-effect');
+    $('#total_all_lp_reward_past_epoch_container').removeClass('tooltip-container');
+    $('#total_all_lp_reward_past_epoch_container').off('touchstart');
+    $('#total_all_lp_reward_past_epoch_container').off('mouseover');
+}
+
+function enableTooltipPastTotalRewardAllLpZwap() {
+    $('#total_all_lp_reward_past_epoch_container').addClass('tooltip-container');
+    $('#total_all_lp_reward_past_epoch_container').on('touchstart mouseover', onTouchStartOrMouseOverTooltipFunction );
+}
+
+function clearViewPastTotalRewardAllLpZwap() {
+    $('#total_all_lp_reward_past_epoch_tooltip_content').hide();
+    $('#total_all_lp_reward_past_epoch_tooltip_content').empty();
+}
+
+function addViewPastTotalRewardAllLpZwap(epochNumber, pastTotalRewardZwapString) {
+    let element =
+    "<tr>" +
+        "<td colspan='2' style='text-align: left; white-space: nowrap;' >" +
+        "<span>Epoch " + epochNumber + "</span>" +
+        "</td>" +
+        "<td class='text-secondary' style='text-align: right; white-space:'>" +
+        "<span id='total_all_lp_reward_epoch_" + epochNumber + "_zwap' class='ml-1'>" + pastTotalRewardZwapString + "</span>" +
+        "<span class='ml-1'>ZWAP</span>" +
+        "</td>" + 
+        "<td class='text-secondary' style='text-align: right; white-space: nowrap;'>" +
+        "<span class='currency_symbol mr-1'>$</span>" + 
+        "<span id='total_all_lp_reward_epoch_" +  epochNumber + "_fiat' class='past_lp_reward_fiat'/>" +
+        "</td>" +
+    "</tr>";
+
+    $('#total_all_lp_reward_past_epoch_tooltip_content').append(element);
+}
+
+function bindViewPastTotalRewardAllLpFiat(functionComputeRewardBalance) {
+    $('.past_lp_reward_fiat').each(function () {
+        let currentId = $(this).attr('id');
+        let zwapAmountId = currentId.replace("fiat", "zwap");
+
+        let rewardBalance = getNumberFromView('#' + zwapAmountId);
+        if (!rewardBalance) {
+            return;
+        }
+
+        let rewardBalanceFiatString = functionComputeRewardBalance(rewardBalance);
+        $(this).text(rewardBalanceFiatString);
+    });
+}
+
+// Exception, no need reset
+function bindViewLpNextEpochCounter(timeDurationString) {
+    $('#lp_reward_next_epoch_duration_counter').text(timeDurationString);
 }
 
 /**
@@ -548,6 +608,12 @@ if (typeof exports !== 'undefined') {
         isStartsWithNegative = FormattingUtils.isStartsWithNegative;
     }
 
+    if (typeof onTouchStartOrMouseOverTooltipFunction === 'undefined') {
+        TooltipTouchHover = require('./tooltip_touch_hover.js');
+        onTouchStartOrMouseOverTooltipFunction = TooltipTouchHover.onTouchStartOrMouseOverTooltipFunction;
+    }
+
+    // 1
     exports.getNumberFromView = getNumberFromView;
 
     exports.setThemeLightMode = setThemeLightMode;
@@ -557,6 +623,7 @@ if (typeof exports !== 'undefined') {
     exports.bindViewMainContainer = bindViewMainContainer;
     exports.resetMainContainerContent = resetMainContainerContent;
 
+    // 2
     exports.bindViewCoinPriceInFiat24hAgo = bindViewCoinPriceInFiat24hAgo;
     exports.bindViewCoinPriceInFiat = bindViewCoinPriceInFiat;
     exports.bindViewCoinPriceInZil24hAgo = bindViewCoinPriceInZil24hAgo;
@@ -578,11 +645,8 @@ if (typeof exports !== 'undefined') {
     exports.bindViewTotalTradeVolumeFiat = bindViewTotalTradeVolumeFiat;
 
     exports.bindViewZwapRewardLp = bindViewZwapRewardLp;
-    exports.bindViewTotalRewardAllLpZwap = bindViewTotalRewardAllLpZwap;
-    exports.bindViewPrevTotalRewardAllLpZwap = bindViewPrevTotalRewardAllLpZwap;
-    exports.bindViewLpNextEpochCounter = bindViewLpNextEpochCounter;
 
-
+    // 3
     exports.bindViewZilBalanceFiat24hAgo = bindViewZilBalanceFiat24hAgo;
     exports.bindViewZilBalanceFiat = bindViewZilBalanceFiat;
     exports.bindViewZrcTokenWalletBalanceZil24hAgo = bindViewZrcTokenWalletBalanceZil24hAgo;
@@ -616,8 +680,21 @@ if (typeof exports !== 'undefined') {
     exports.bindViewTotalNetWorthZil = bindViewTotalNetWorthZil;
     exports.bindViewTotalNetWorthFiat24hAgo = bindViewTotalNetWorthFiat24hAgo;
     exports.bindViewTotalNetWorthFiat = bindViewTotalNetWorthFiat;
+
+    // 4
+    exports.bindViewTotalRewardAllLpZwap = bindViewTotalRewardAllLpZwap;
     exports.bindViewTotalRewardAllLpFiat = bindViewTotalRewardAllLpFiat;
+
+    exports.bindViewPrevTotalRewardAllLpZwap = bindViewPrevTotalRewardAllLpZwap;
     exports.bindViewPrevTotalRewardAllLpFiat = bindViewPrevTotalRewardAllLpFiat;
+
+    exports.enableTooltipPastTotalRewardAllLpZwap = enableTooltipPastTotalRewardAllLpZwap;
+    exports.disableTooltipPastTotalRewardAllLpZwap = disableTooltipPastTotalRewardAllLpZwap;
+    exports.clearViewPastTotalRewardAllLpZwap = clearViewPastTotalRewardAllLpZwap;
+    exports.addViewPastTotalRewardAllLpZwap = addViewPastTotalRewardAllLpZwap;
+    exports.bindViewPastTotalRewardAllLpFiat = bindViewPastTotalRewardAllLpFiat;
+    
+    exports.bindViewLpNextEpochCounter = bindViewLpNextEpochCounter;
 
     exports.bindViewPercentChangeColorContainer = bindViewPercentChangeColorContainer;
 }

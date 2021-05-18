@@ -142,9 +142,21 @@ describe('ControllerLpReward', function () {
 
             // Act
             ControllerLpReward.onLpRewardPastEpochLoaded(dataObject);
+            $('#total_all_lp_reward_past_epoch_container').trigger('mouseover');
 
             // Assert
             assert.strictEqual($('#total_all_lp_reward_prev_epoch_zwap').text(), '0.09727');
+            assert.strictEqual($('#total_all_lp_reward_epoch_14_zwap').text(), '0.06738');
+            assert.strictEqual($('#total_all_lp_reward_epoch_13_zwap').text(), '0.06741');
+            assert.strictEqual($('#total_all_lp_reward_epoch_12_zwap').text(), '0.04986');
+            assert.strictEqual($('#total_all_lp_reward_epoch_11_zwap').text(), '0.007002');
+            assert.strictEqual($('#total_all_lp_reward_epoch_10_zwap').length, 0);
+            assert.strictEqual($('.past_lp_reward_fiat').length, 4);
+
+            // Assert tooltip shown and displayed
+            assert.strictEqual($('#total_all_lp_reward_past_epoch_container').hasClass('tooltip-container'), true);
+            assert.strictEqual($('#total_all_lp_reward_past_epoch_container').hasClass('hover-effect'), true);
+            assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').css('display'), 'table-row-group');
         });
 
         it('No Past LP reward, show 0', function () {
@@ -156,6 +168,7 @@ describe('ControllerLpReward', function () {
             ControllerLpReward.onLpRewardPastEpochLoaded(dataObject);
 
             // Assert
+            assert.strictEqual($('#total_all_lp_reward_prev_epoch_number').text(), '-');
             assert.strictEqual($('#total_all_lp_reward_prev_epoch_zwap').text(), '0');
             assert.strictEqual($('#total_all_lp_reward_prev_epoch_fiat').text(), '0');
         });
@@ -168,6 +181,7 @@ describe('ControllerLpReward', function () {
             ControllerLpReward.onLpRewardPastEpochLoaded(dataObject);
 
             // Assert
+            assert.strictEqual($('#total_all_lp_reward_prev_epoch_number').text(), '-');
             assert.strictEqual($('#total_all_lp_reward_prev_epoch_zwap').text(), '0');
             assert.strictEqual($('#total_all_lp_reward_prev_epoch_fiat').text(), '0');
         });

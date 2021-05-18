@@ -343,14 +343,14 @@ block content
               table(class='table table-sm table-borderless')
                 tbody
                   tr
-                    td(scope='row' rowspan='4' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                      img(height='32' width='32' src=zrcTokenPropertiesListMap['ZWAP'].logo_url loading='lazy')
+                    td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                      img(height='18' width='18' src=zrcTokenPropertiesListMap['ZWAP'].logo_url loading='lazy')
                     td(colspan='2' style='text-align: left; white-space: nowrap; width: 50%;' )
                       span(class='font-weight-bold')= 'Est. reward'
                     td(style='text-align: right; white-space: nowrap; width: 25%;' )
                       span(id='lp_reward_next_epoch_duration_counter' class='font-weight-normal')
                   tr
-                    td(style='text-align: left; white-space: nowrap; width: 25%;' )
+                    td(colspan='2' style='text-align: left; white-space: nowrap; width: 25%;' )
                       span= 'Next epoch'
                     td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
                       span(id='total_all_lp_reward_next_epoch_zwap' class='ml-1')= 'Loading...'
@@ -358,15 +358,20 @@ block content
                     td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
                       span(class='currency_symbol mr-1')= '$'
                       span(id='total_all_lp_reward_next_epoch_fiat')= 'Loading...'
-                  tr
-                    td(style='text-align: left; white-space: nowrap; width: 25%;' )
+                  tr(id='total_all_lp_reward_past_epoch_container')
+                    td(colspan='2' style='text-align: left; white-space: nowrap; width: 25%;' )
                       span= 'Prev epoch'
+                      span= ' ('
+                      span(id='total_all_lp_reward_prev_epoch_number')
+                      span= ')'
                     td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
                       span(id='total_all_lp_reward_prev_epoch_zwap' class='ml-1')= 'Loading...'
                       span(class='ml-1')= zrcTokenPropertiesListMap['ZWAP'].ticker
                     td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
                       span(class='currency_symbol mr-1')= '$'
                       span(id='total_all_lp_reward_prev_epoch_fiat')= 'Loading...'
+
+                  tbody(id='total_all_lp_reward_past_epoch_tooltip_content' class='tooltip-content' style='display: none')
 
           each tokenProperties, key in zrcTokenPropertiesListMap
 

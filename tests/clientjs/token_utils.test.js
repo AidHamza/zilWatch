@@ -93,7 +93,7 @@ describe('TokenUtils', function () {
                   /* zrcTokenPriceInZil= */ 1727.5817248410563
             );
                 
-            assert.notStrictEqual(result, expected);
+            assert.deepStrictEqual(result, expected);
         });
 
         it('ZWAP', function () {
@@ -107,7 +107,7 @@ describe('TokenUtils', function () {
                 /* totalPoolZrcTokenAmount= */ 55003.09484344847,
                 /* zrcTokenPriceInZil= */ 3799.198264240309
             );
-            assert.notStrictEqual(result, expected);
+            assert.deepStrictEqual(result, expected);
         });
 
         it('zrc token contract address not found: null', function () {
@@ -194,8 +194,8 @@ describe('TokenUtils', function () {
             let walletAddressBase16 = "0x123458f13a4cb142e44dde38aba8d8c0190bcb85";
 
             let result = TokenUtils.getZilswapSinglePairShareRatio(dataObject, zrcTokenAddressBase16, walletAddressBase16);
-            let expected = 0;
-            assert.notStrictEqual(result, expected);
+            let expected = NaN;
+            assert.deepStrictEqual(result, expected);
         });
 
         it('dataObject not object: null', function () {
@@ -226,8 +226,8 @@ describe('TokenUtils', function () {
             let walletAddressBase16 = 1234;
 
             let result = TokenUtils.getZilswapSinglePairShareRatio(dataObject, zrcTokenAddressBase16, walletAddressBase16);
-            let expected = 0;
-            assert.notStrictEqual(result, expected);
+            let expected = null;
+            assert.strictEqual(result, expected);
         });
     });
 
@@ -243,9 +243,12 @@ describe('TokenUtils', function () {
             let shareRatio = 0.000008920285612975195;
             let zilswapSinglePairPersonalStatus = new TokenUtils.ZilswapSinglePairPersonalStatus(shareRatio, zilswapSinglePairPublicStatus);
 
-            let expected = new TokenUtils.ZilswapSinglePairPersonalStatus(shareRatio, /* zilAmount= */ 1221.7136013601405, /* zrcTokenAmount= */ 0.7071813644431453);
-            
-            assert.notStrictEqual(zilswapSinglePairPersonalStatus, expected);
+            let expectedShareRatio = shareRatio;
+            let expectedZilAmount = 1221.7136013601405;
+            let expectedZrcTokenAmount = 0.7071813644431453;
+            assert.strictEqual(zilswapSinglePairPersonalStatus.shareRatio, expectedShareRatio);
+            assert.strictEqual(zilswapSinglePairPersonalStatus.zilAmount, expectedZilAmount);
+            assert.strictEqual(zilswapSinglePairPersonalStatus.zrcTokenAmount, expectedZrcTokenAmount);
         });
 
         it('ZWAP', function () {
@@ -257,8 +260,12 @@ describe('TokenUtils', function () {
             let shareRatio = 0.000006507178204554463;
             let zilswapSinglePairPersonalStatus = new TokenUtils.ZilswapSinglePairPersonalStatus(shareRatio, zilswapSinglePairPublicStatus);
 
-            let expected = new TokenUtils.ZilswapSinglePairPersonalStatus(shareRatio, /* zilAmount= */ 1359.7898185973693, /* zrcTokenAmount= */ 0.35791493994832985);
-            assert.notStrictEqual(zilswapSinglePairPersonalStatus, expected);
+            let expectedShareRatio = shareRatio;
+            let expectedZilAmount = 1359.7898185973693;
+            let expectedZrcTokenAmount = 0.35791493994832985;
+            assert.strictEqual(zilswapSinglePairPersonalStatus.shareRatio, expectedShareRatio);
+            assert.strictEqual(zilswapSinglePairPersonalStatus.zilAmount, expectedZilAmount);
+            assert.strictEqual(zilswapSinglePairPersonalStatus.zrcTokenAmount, expectedZrcTokenAmount);
         });
     });
 

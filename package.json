@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "npm run uglifyjs && npm run uglifycss && node ./bin/www",
-    "test": "nyc mocha tests/**/*.js",
+    "test": "nyc mocha --parallel tests/**/*.js",
     "uglifyjs": "uglifyjs clientjs/*.js --compress --mangle --output public/javascripts/main.min.js",
     "uglifycss": "uglifycss clientcss/*.css --ugly-comments --output public/stylesheets/main.min.css"
   },
