@@ -25,12 +25,18 @@ app.render('index', {
 }, function (err, html) {
     // Deep copy and keep html result;
     indexHtml = html.slice();
-    
-    let { JSDOM } = require( 'jsdom' );
-    let { window } = new JSDOM( html );
-    let { document } = window;
+
+    let {
+        JSDOM
+    } = require('jsdom');
+    let {
+        window
+    } = new JSDOM(html);
+    let {
+        document
+    } = window;
     global.window = window;
-    global.document = document;  
+    global.document = document;
 });
 
 // This requires indexHtml and document to be already set up.
@@ -51,14 +57,14 @@ function resetHtmlView(done) {
     } else {
         // indexHtml is not set yet, means the pug conversion to html string is not done yet.
         // We wait for 1 second hoping the setup above is completed. (this is a hack).
-        setTimeout(function() {
+        setTimeout(function () {
             innerResetHtmlView();
             done();
         }, 1000);
     }
 }
 
-const $ = require( 'jquery' );
+const $ = require('jquery');
 var assert = require('assert');
 
 function assertDefaultStateMainContent() {
@@ -294,6 +300,32 @@ function assertDefaultStateMainContent() {
     assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').css('display'), 'none');
 
     // bindViewLpNextEpochCounter(): Exception, no need refresh
+
+    // 5 -------------------------------------------------- 5
+
+    // decrementShowSpinnerWalletBalance()
+    // incrementShowSpinnerWalletBalance()
+    $('.wallet-balance-spinner').each(function () {
+        assert.strictEqual($(this).css('display'), 'none');
+    });
+
+    // decrementShowSpinnerLpBalance()
+    // incrementShowSpinnerLpBalance()
+    $('.lp-balance-spinner').each(function () {
+        assert.strictEqual($(this).css('display'), 'none');
+    });
+
+    // decrementShowSpinnerStakingBalance()
+    // incrementShowSpinnerStakingBalance()
+    $('.staking-balance-spinner').each(function () {
+        assert.strictEqual($(this).css('display'), 'none');
+    });
+
+    // incrementShowSpinnerNetWorth()
+    // decrementShowSpinnerNetWorth()
+    $('.net-worth-spinner').each(function () {
+        assert.strictEqual($(this).css('display'), 'none');
+    });
 }
 
 module.exports = {

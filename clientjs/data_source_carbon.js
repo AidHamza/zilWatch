@@ -2,12 +2,14 @@ const CarbonStakingImplementationAddress = 'zil18r37xks4r3rj7rzydujcckzlylftdy2q
 
 /** Private async function, to compute ZIL staking balance */
 async function computeCarbonStakingBalance(account, onCarbonStakingBalanceLoaded) {
+    incrementShowSpinnerStakingBalance();
     computeCarbonStakingBalanceWithRetry(account, onCarbonStakingBalanceLoaded, MAX_RETRY);
 }
 
 function computeCarbonStakingBalanceWithRetry(account, onCarbonStakingBalanceLoaded, retryRemaining) {
     if (retryRemaining <= 0) {
         console.log("computeCarbonStakingBalanceWithRetry failed! Out of retries!");
+        decrementShowSpinnerStakingBalance();
         return;
     }
     let walletAddressBase16 = account.base16.toLowerCase();
@@ -20,6 +22,7 @@ function computeCarbonStakingBalanceWithRetry(account, onCarbonStakingBalanceLoa
                     onCarbonStakingBalanceLoaded(stakedCarbonBalance);
                 }
             }
+            decrementShowSpinnerStakingBalance();
         })
         .catch(function () {
             console.log("computeCarbonStakingBalanceWithRetry failed! %s", retryRemaining);

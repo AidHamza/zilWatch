@@ -9,17 +9,20 @@ const MAX_RETRY = 10;
 
 /** Void function. invokes onZilWalletBalanceLoaded(string balance) function after computation is done. */
 async function computeZilBalance(account, onZilWalletBalanceLoaded) {
+    incrementShowSpinnerWalletBalance();
     computeZilBalanceWithRetry(account, onZilWalletBalanceLoaded, MAX_RETRY);
 }
 
 function computeZilBalanceWithRetry(account, onZilWalletBalanceLoaded, retryRemaining) {
     if (retryRemaining <= 0) {
         console.log("computeZilBalanceWithRetry failed! Out of retries!");
+        decrementShowSpinnerWalletBalance();
         return;
     }
     window.zilPay.blockchain.getBalance(account.bech32)
         .then(function (data) {
             onZilWalletBalanceLoaded(data.result.balance);
+            decrementShowSpinnerWalletBalance();
         })
         .catch(function () {
             console.log("computeZilBalanceWithRetry failed! %s", retryRemaining);
@@ -38,8 +41,10 @@ async function computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded
             onZilswapDexStatusLoaded(zilswapDexSmartContractStateData, walletAddressBase16);
             return;
         }
+        incrementShowSpinnerLpBalance();
         computeZilswapDexPersonalSubStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, MAX_RETRY);
     } else {
+        incrementShowSpinnerLpBalance();
         computeZilswapDexStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, MAX_RETRY);
     }
 }
@@ -47,6 +52,7 @@ async function computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded
 function computeZilswapDexPersonalSubStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, retryRemaining) {
     if (retryRemaining <= 0) {
         console.log("computeZilswapDexPersonalSubStateWithRetry failed! Out of retries!");
+        decrementShowSpinnerLpBalance();
         return;
     }
     
@@ -56,6 +62,7 @@ function computeZilswapDexPersonalSubStateWithRetry(onZilswapDexStatusLoaded, wa
                 zilswapDexSmartContractStateData.result.balances = data.result.balances;
                 onZilswapDexStatusLoaded(zilswapDexSmartContractStateData, walletAddressBase16);
             }
+            decrementShowSpinnerLpBalance();
         })
         .catch(function () {
             console.log("computeZilswapDexPersonalSubStateWithRetry failed! %s", retryRemaining);
@@ -66,12 +73,14 @@ function computeZilswapDexPersonalSubStateWithRetry(onZilswapDexStatusLoaded, wa
 function computeZilswapDexStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, retryRemaining) {
     if (retryRemaining <= 0) {
         console.log("computeZilswapDexStateWithRetry failed! Out of retries!");
+        decrementShowSpinnerLpBalance();
         return;
     }
     window.zilPay.blockchain.getSmartContractState(ZilSwapDexAddress)
         .then(function (data) {
             zilswapDexSmartContractStateData = data;
             onZilswapDexStatusLoaded(zilswapDexSmartContractStateData, walletAddressBase16);
+            decrementShowSpinnerLpBalance();
         })
         .catch(function () {
             console.log("computeZilswapDexStateWithRetry failed! %s", retryRemaining);
@@ -96,18 +105,21 @@ async function computeZrcTokensBalance(account, zrcTokenPropertiesListMap, onZrc
 
 /** Private async function, to compute a single zrcToken. */
 async function computeSingleZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded) {
+    incrementShowSpinnerWalletBalance();
     computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded, MAX_RETRY);
 }
 
 function computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded, retryRemaining) {
     if (retryRemaining <= 0) {
         console.log("computeSingleZrcTokenBalanceWithRetry failed! Out of retries!");
+        decrementShowSpinnerWalletBalance();
         return;
     }
     window.zilPay.blockchain.getSmartContractSubState(zrcTokenProperties.address, "balances", [walletAddressBase16])
         .then(function (data) {
             let zrcTokenBalanceNumberQa = parseZrcTokenBalanceNumberQaFromGetSmartContractSubState(data, walletAddressBase16);
             onZrcTokenWalletBalanceLoaded(zrcTokenBalanceNumberQa, zrcTokenProperties);
+            decrementShowSpinnerWalletBalance();
         })
         .catch(function () {
             console.log("computeSingleZrcTokenBalanceWithRetry(%s) failed! %s", zrcTokenProperties.ticker, retryRemaining);
@@ -121,12 +133,14 @@ function computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddress
 
 /** Private async function, to compute ZIL staking balance */
 async function computeZilStakingBalance(account, onZilStakingBalanceLoaded) {
+    incrementShowSpinnerStakingBalance();
     computeZilStakingBalanceWithRetry(account, onZilStakingBalanceLoaded, MAX_RETRY);
 }
 
 function computeZilStakingBalanceWithRetry(account, onZilStakingBalanceLoaded, retryRemaining) {
     if (retryRemaining <= 0) {
         console.log("computeZilStakingBalanceWithRetry failed! Out of retries!");
+        decrementShowSpinnerStakingBalance();
         return;
     }
     let walletAddressBase16 = account.base16.toLowerCase();
@@ -141,6 +155,7 @@ function computeZilStakingBalanceWithRetry(account, onZilStakingBalanceLoaded, r
                     }
                 }
             }
+            decrementShowSpinnerStakingBalance();
         })
         .catch(function () {
             console.log("computeZilStakingBalanceWithRetry failed! %s",retryRemaining);
@@ -150,12 +165,14 @@ function computeZilStakingBalanceWithRetry(account, onZilStakingBalanceLoaded, r
 
 /** Private async function, to compute ZIL pending withdrawal balance */
 async function computeZilStakingWithdrawalPendingBalance(account, onZilStakingWithdrawalPendingBalanceLoaded) {
+    incrementShowSpinnerStakingBalance();
     computeZilStakingWithdrawalPendingBalanceWithRetry(account, onZilStakingWithdrawalPendingBalanceLoaded, MAX_RETRY);
 }
 
 function computeZilStakingWithdrawalPendingBalanceWithRetry(account, onZilStakingWithdrawalPendingBalanceLoaded, retryRemaining) {
     if (retryRemaining <= 0) {
         console.log("computeZilStakingWithdrawalPendingBalanceWithRetry failed! Out of retries!");
+        decrementShowSpinnerStakingBalance();
         return;
     }
     let walletAddressBase16 = account.base16.toLowerCase();
@@ -168,6 +185,7 @@ function computeZilStakingWithdrawalPendingBalanceWithRetry(account, onZilStakin
                     onZilStakingWithdrawalPendingBalanceLoaded(blockNumberToBalanceMap);
                 }
             }
+            decrementShowSpinnerStakingBalance();
         })
         .catch(function () {
             console.log("computeZilStakingWithdrawalPendingBalanceWithRetry failed! %s",retryRemaining);

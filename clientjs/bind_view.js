@@ -189,6 +189,17 @@ function resetMainContainerContent() {
     $('#net_worth_fiat_percent_change_24h').text('');
     $('#net_worth_zil').text('Loading...');
     $('#net_worth_fiat').text('Loading...');
+
+    // Spinner
+    $('.wallet-balance-spinner').hide();
+    $('.lp-balance-spinner').hide();
+    $('.staking-balance-spinner').hide();
+    $('.net-worth-spinner').hide();
+
+    walletBalanceProcessingCounter = 0;
+    lpBalanceProcessingCounter = 0;
+    stakingBalanceProcessingCounter = 0;
+    netWorthProcessingCounter = 0;
 }
 
 /**
@@ -577,8 +588,85 @@ function bindViewPercentChangeColorContainer(containerId, percentChangeValue) {
 }
 
 /**
+ * 5 ----------------------------------------------------------------------------- 5
+ */
+
+// Global cache spinner counter 
+var walletBalanceProcessingCounter = 0;
+var lpBalanceProcessingCounter = 0;
+var stakingBalanceProcessingCounter = 0;
+var netWorthProcessingCounter = 0;
+
+function incrementShowSpinnerWalletBalance() {
+    walletBalanceProcessingCounter++;
+    if (walletBalanceProcessingCounter > 0) {
+        $('.wallet-balance-spinner').show();
+    }
+    incrementShowSpinnerNetWorth();
+}
+
+function decrementShowSpinnerWalletBalance() {
+    walletBalanceProcessingCounter--;
+    if (walletBalanceProcessingCounter <= 0) {
+        walletBalanceProcessingCounter = 0;
+        $('.wallet-balance-spinner').hide();
+    }
+    decrementShowSpinnerNetWorth();
+}
+
+function incrementShowSpinnerLpBalance() {
+    lpBalanceProcessingCounter++;
+    if (lpBalanceProcessingCounter > 0) {
+        $('.lp-balance-spinner').show();
+    }
+    incrementShowSpinnerNetWorth();
+}
+
+function decrementShowSpinnerLpBalance() {
+    lpBalanceProcessingCounter--;
+    if (lpBalanceProcessingCounter <= 0) {
+        lpBalanceProcessingCounter = 0;
+        $('.lp-balance-spinner').hide();
+    }
+    decrementShowSpinnerNetWorth();
+}
+
+function incrementShowSpinnerStakingBalance() {
+    stakingBalanceProcessingCounter++;
+    if (stakingBalanceProcessingCounter > 0) {
+        $('.staking-balance-spinner').show();
+    }
+    incrementShowSpinnerNetWorth();
+}
+
+function decrementShowSpinnerStakingBalance() {
+    stakingBalanceProcessingCounter--;
+    if (stakingBalanceProcessingCounter <= 0) {
+        stakingBalanceProcessingCounter = 0;
+        $('.staking-balance-spinner').hide();
+    }
+    decrementShowSpinnerNetWorth();
+}
+
+function incrementShowSpinnerNetWorth() {
+    netWorthProcessingCounter++;
+    if (netWorthProcessingCounter > 0) {
+        $('.net-worth-spinner').show();
+    }
+}
+
+function decrementShowSpinnerNetWorth() {
+    netWorthProcessingCounter--;
+    if (netWorthProcessingCounter <= 0) {
+        netWorthProcessingCounter = 0;
+        $('.net-worth-spinner').hide();
+    }
+}
+
+/**
  * --------------------------------------------------------------------------------
  */
+
 
 if (typeof exports !== 'undefined') {
 
@@ -697,4 +785,14 @@ if (typeof exports !== 'undefined') {
     exports.bindViewLpNextEpochCounter = bindViewLpNextEpochCounter;
 
     exports.bindViewPercentChangeColorContainer = bindViewPercentChangeColorContainer;
+
+    // 5
+    exports.incrementShowSpinnerWalletBalance = incrementShowSpinnerWalletBalance;
+    exports.decrementShowSpinnerWalletBalance = decrementShowSpinnerWalletBalance;
+    exports.incrementShowSpinnerLpBalance = incrementShowSpinnerLpBalance;
+    exports.decrementShowSpinnerLpBalance = decrementShowSpinnerLpBalance;
+    exports.incrementShowSpinnerStakingBalance = incrementShowSpinnerStakingBalance;
+    exports.decrementShowSpinnerStakingBalance = decrementShowSpinnerStakingBalance;
+    exports.incrementShowSpinnerNetWorth = incrementShowSpinnerNetWorth;
+    exports.decrementShowSpinnerNetWorth = decrementShowSpinnerNetWorth;
 }
