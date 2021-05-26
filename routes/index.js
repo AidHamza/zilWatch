@@ -21,7 +21,9 @@ router.get('/', function (req, res, next) {
       "zilswap_dex_24h_trade_volume_timestamp_seconds",
       "zilswap_dex_24h_trade_volume",
       "zilswap_dex_epoch_info_timestamp_seconds",
-      "zilswap_dex_epoch_info"
+      "zilswap_dex_epoch_info",
+      "zrc_tokens_total_supply",
+      "zrc_tokens_circulating_supply"
     ],
     function (err, reply) {
       let currZilswapDexSmartContractStateTimestampSeconds = null; // 0
@@ -38,35 +40,57 @@ router.get('/', function (req, res, next) {
       let currZilswapDexEpochInfoTimestampSeconds = null; // 8
       let currZilswapDexEpochInfo = null; // 9
 
+      let currZrcTokensTotalSupply = constants.emptyZrcTokensSupply; // 10
+      let currZrcTokensCirculatingSupply = constants.emptyZrcTokensSupply; // 11
+
       let currentDate = new Date();
       let currentTimeSeconds = currentDate.getTime() / 1000;
 
       if (!err && reply) {
         try {
-          currZilswapDexSmartContractStateTimestampSeconds = parseInt(reply[0]);
-          // Only use the cache if it's within 20 seconds.
-          if (currentTimeSeconds - currZilswapDexSmartContractStateTimestampSeconds <= 20) {
-            currZilswapDexSmartContractState = JSON.parse(reply[1]);
+          if (reply[0]) {
+            currZilswapDexSmartContractStateTimestampSeconds = parseInt(reply[0]);
+            // Only use the cache if it's within 20 seconds.
+            if (currentTimeSeconds - currZilswapDexSmartContractStateTimestampSeconds <= 20 && reply[1]) {
+              currZilswapDexSmartContractState = JSON.parse(reply[1]);
+            }
           }
-          currZilswapDexSmartContractState24hAgo = JSON.parse(reply[2]);
+          if (reply[2]) {
+            currZilswapDexSmartContractState24hAgo = JSON.parse(reply[2]);
+          }
 
-          currCoinPriceCoingeckoTimestampSeconds = parseInt(reply[3]);
-          // Only use the cache if it's within 200 seconds.
-          if (currentTimeSeconds - currCoinPriceCoingeckoTimestampSeconds <= 200) {
-            currCoinPriceCoingecko = JSON.parse(reply[4]);
+          if (reply[3]) {
+            currCoinPriceCoingeckoTimestampSeconds = parseInt(reply[3]);
+            // Only use the cache if it's within 200 seconds.
+            if (currentTimeSeconds - currCoinPriceCoingeckoTimestampSeconds <= 200 && reply[4]) {
+              currCoinPriceCoingecko = JSON.parse(reply[4]);
+            }
           }
-          currCoinPriceCoingecko24hAgo = JSON.parse(reply[5]);
+          if (reply[5]) {
+            currCoinPriceCoingecko24hAgo = JSON.parse(reply[5]);
+          }
           
-          currZilswapDex24hTradeVolumeTimestampSeconds = parseInt(reply[6]);
-          // Only use the cache if it's within 200 seconds.
-          if (currentTimeSeconds - currZilswapDex24hTradeVolumeTimestampSeconds <= 200) {
-            currZilswapDex24hTradeVolume = JSON.parse(reply[7]);
+          if (reply[6]) {
+            currZilswapDex24hTradeVolumeTimestampSeconds = parseInt(reply[6]);
+            // Only use the cache if it's within 200 seconds.
+            if (currentTimeSeconds - currZilswapDex24hTradeVolumeTimestampSeconds <= 200 && reply[7]) {
+              currZilswapDex24hTradeVolume = JSON.parse(reply[7]);
+            }
           }
 
-          currZilswapDexEpochInfoTimestampSeconds = parseInt(reply[8]);
-          // Only use the cache if it's within 300 seconds.
-          if (currentTimeSeconds - currZilswapDexEpochInfoTimestampSeconds <= 300) {
-            currZilswapDexEpochInfo = JSON.parse(reply[9]);
+          if (reply[8]) {
+            currZilswapDexEpochInfoTimestampSeconds = parseInt(reply[8]);
+            // Only use the cache if it's within 300 seconds.
+            if (currentTimeSeconds - currZilswapDexEpochInfoTimestampSeconds <= 300 && reply[9]) {
+              currZilswapDexEpochInfo = JSON.parse(reply[9]);
+            }
+          }
+          
+          if (reply[10]) {
+            currZrcTokensTotalSupply = JSON.parse(reply[10]);
+          }
+          if (reply[11]) {
+            currZrcTokensCirculatingSupply = JSON.parse(reply[11]);
           }
 
         } catch (ex) {
@@ -86,6 +110,8 @@ router.get('/', function (req, res, next) {
         coinPriceCoingecko24hAgo: currCoinPriceCoingecko24hAgo,
         zilswapDex24hTradeVolume: currZilswapDex24hTradeVolume,
         zilswapDexEpochInfo: currZilswapDexEpochInfo,
+        zrcTokensTotalSupply: currZrcTokensTotalSupply,
+        zrcTokensCirculatingSupply: currZrcTokensCirculatingSupply
       });
     });
 });

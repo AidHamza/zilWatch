@@ -21,7 +21,9 @@ app.render('index', {
     coinMap: Constants.coinMap,
     currencyMap: Constants.currencyMap,
     zrcTokenPropertiesListMap: Constants.zrcTokenPropertiesListMap,
-    ssnListMap: Constants.ssnListMap
+    ssnListMap: Constants.ssnListMap,
+    zrcTokensTotalSupply: Constants.emptyZrcTokensSupply,
+    zrcTokensCirculatingSupply: Constants.emptyZrcTokensSupply
 }, function (err, html) {
     // Deep copy and keep html result;
     indexHtml = html.slice();
@@ -136,6 +138,11 @@ function assertDefaultStateMainContent() {
         assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
         assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
     }
+
+    // bindViewZrcTokenCirculatingSupply(): Exception, no need refresh
+    // bindViewZrcTokenCirculatingSupplyFiat(): Exception, no need refresh
+    // bindViewZrcTokenTotalSupply(): Exception, no need refresh
+    // bindViewZrcTokenTotalSupplyFiat(): Exception, no need refresh
 
     // 3 --------------------------------------- 3
 

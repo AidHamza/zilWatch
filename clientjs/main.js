@@ -25,6 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // So don't need to reload.
     computeZrcTokensPriceInZil(onZilswapDexStatusLoaded);
     compute24hLpTradeVolume(onLpTradeVolumeLoaded);
+    onZrcTokensTotalSupplyLoaded();
+    onZrcTokensCirculatingSupplyLoaded();
 
     computeLpEpochInfo(onLpCurrentEpochInfoLoaded);
 });

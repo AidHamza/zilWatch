@@ -364,6 +364,30 @@ const zrcTokenPropertiesListMap = {
   },
 }
 
+const emptyZrcTokensSupply = {
+  'gZIL': '0',
+  'XSGD': '0',
+  'ZWAP': '0',
+  'PORT': '0',
+  'XPORT': '0',
+  'ZLP': '0',
+  'REDC': '0',
+  'CARB': '0',
+  'SCO': '0',
+  'SRV': '0',
+  'DUCK': '0',
+  'ELONS': '0',
+  'ZCH': '0',
+  'BOLT': '0',
+  'ZYRO': '0',
+  'ZLF': '0',
+  'GARY': '0',
+  'RECAP': '0',
+  'AXT': '0',
+  'GOD': '0',
+  'SHRK': '0',
+}
+
 module.exports = {
   title: title,
   description: description,
@@ -371,4 +395,5 @@ module.exports = {
   currencyMap: currencyMap,
   ssnListMap: ssnListMap,
   zrcTokenPropertiesListMap: zrcTokenPropertiesListMap,
+  emptyZrcTokensSupply: emptyZrcTokensSupply,
 };

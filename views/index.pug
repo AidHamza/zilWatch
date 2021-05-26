@@ -66,7 +66,8 @@ block content
                     td(id='public_'+coinProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap; width: 10%;' )
                       span(id='public_'+coinProperties.ticker+'_price_fiat_percent_change_24h')
 
-                each tokenProperties, key in zrcTokenPropertiesListMap
+                each circulatingSupply, ticker in zrcTokensCirculatingSupply
+                  - let tokenProperties = zrcTokenPropertiesListMap[ticker]
                   - var trStyle = ''
                   if tokenProperties.ticker === 'XPORT'
                     - trStyle = 'display: none;'
@@ -107,7 +108,8 @@ block content
                     span= ' ('
                     span(class='currency_symbol')= '$'
                     span= ')'
-                each tokenProperties, key in zrcTokenPropertiesListMap
+                each circulatingSupply, ticker in zrcTokensCirculatingSupply
+                  - let tokenProperties = zrcTokenPropertiesListMap[ticker]
                   - var trStyle = ''
                   if tokenProperties.ticker === 'XPORT'
                     - trStyle = 'display: none;'
@@ -128,6 +130,73 @@ block content
                       span(id=tokenProperties.ticker+'_lp_total_pool_zrc')= 'Loading...'
                     td(style='text-align: right; white-space: nowrap; width: 25%;' )
                       span(id=tokenProperties.ticker+'_lp_total_pool_fiat')= 'Loading...'
+    
+      div(class='col-lg-6' style='padding: 0;')
+
+        div(class='box-public')
+          div(id='circulating_supply_content_header_container' class='card-header' data-toggle='collapse' href='#circulating_supply_content_container')
+            a(id='circulating_supply_content_header_title' class='card-title font-weight-bold')= 'Circulating Supply & Market Cap'
+          div(id='circulating_supply_content_container' class='card-body collapse show')
+            table(class='table table-sm table-borderless' width='100%')
+              tbody
+                tr
+                  th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Token Symbol'
+                  th(style='text-align: right; white-space: nowrap; width: 25%;')
+                    span= 'Circ. Supply (ZRC)'
+                  th(style='text-align: right; white-space: nowrap; width: 25%;')
+                    span= 'Market Cap'
+                    span= ' ('
+                    span(class='currency_symbol')= '$'
+                    span= ')'
+                each circulatingSupply, ticker in zrcTokensCirculatingSupply
+                  - let tokenProperties = zrcTokenPropertiesListMap[ticker]
+                  - var trStyle = ''
+                  if tokenProperties.ticker === 'XPORT'
+                    - trStyle = 'display: none;'
+
+                  tr(style=trStyle)
+                    td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                      img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
+                    td(style='text-align: left; white-space: nowrap; width: 25%;' )
+                      span= tokenProperties.ticker
+                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                      span(id=tokenProperties.ticker+'_circulating_supply_zrc')= '0'
+                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                      span(id=tokenProperties.ticker+'_circulating_supply_fiat')= '0'
+
+      div(class='col-lg-6' style='padding: 0;')
+
+        div(class='box-public')
+          div(id='total_supply_content_header_container' class='card-header' data-toggle='collapse' href='#total_supply_content_container')
+            a(id='total_supply_content_header_title' class='card-title font-weight-bold')= 'Total Supply'
+          div(id='total_supply_content_container' class='card-body collapse show')
+            table(class='table table-sm table-borderless' width='100%')
+              tbody
+                tr
+                  th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Token Symbol'
+                  th(style='text-align: right; white-space: nowrap; width: 25%;')
+                    span= 'Total Supply (ZRC)'
+                  th(style='text-align: right; white-space: nowrap; width: 25%;')
+                    span= 'Total Supply'
+                    span= ' ('
+                    span(class='currency_symbol')= '$'
+                    span= ')'
+
+                each circulatingSupply, ticker in zrcTokensCirculatingSupply
+                  - let tokenProperties = zrcTokenPropertiesListMap[ticker]
+                  - var trStyle = ''
+                  if tokenProperties.ticker === 'XPORT'
+                    - trStyle = 'display: none;'
+
+                  tr(style=trStyle)
+                    td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                      img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
+                    td(style='text-align: left; white-space: nowrap; width: 25%;' )
+                      span= tokenProperties.ticker
+                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                      span(id=tokenProperties.ticker+'_total_supply_zrc')= '0'
+                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                      span(id=tokenProperties.ticker+'_total_supply_fiat')= '0'
     
     hr
 
@@ -294,7 +363,8 @@ block content
                     span(id='zil_balance_fiat_24h_ago')
                   td(style='text-align: right; white-space: nowrap;' )
 
-        each tokenProperties, key in zrcTokenPropertiesListMap
+        each circulatingSupply, ticker in zrcTokensCirculatingSupply
+          - let tokenProperties = zrcTokenPropertiesListMap[ticker]
 
           div(id=tokenProperties.ticker+'_container' class='col-lg-6' style='padding: 0; display: none')
             div(class='box')
@@ -389,7 +459,8 @@ block content
 
                   tbody(id='total_all_lp_reward_past_epoch_tooltip_content' class='tooltip-content' style='display: none')
 
-          each tokenProperties, key in zrcTokenPropertiesListMap
+          each circulatingSupply, ticker in zrcTokensCirculatingSupply
+            - let tokenProperties = zrcTokenPropertiesListMap[ticker]
 
             div(id=tokenProperties.ticker+'_lp_container' class='col-lg-6' style='padding: 0; display: none')
               div(class='box')
@@ -593,6 +664,8 @@ block script
     var zilswapDexSmartContractState24hAgoData = !{JSON.stringify(zilswapDexSmartContractState24hAgo)};
     var zilswapDex24hTradeVolumeData = !{JSON.stringify(zilswapDex24hTradeVolume)};
     var zilswapDexEpochInfoData = !{JSON.stringify(zilswapDexEpochInfo)};
+    var zrcTokensTotalSupplyData = !{JSON.stringify(zrcTokensTotalSupply)};
+    var zrcTokensCirculatingSupplyData = !{JSON.stringify(zrcTokensCirculatingSupply)};
 
     // Global cache for zilliqa price in fiat
     var zilPriceInFiatFloat = null;

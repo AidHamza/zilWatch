@@ -67,6 +67,10 @@ function onCoinFiatPriceLoaded(currencyCode, coinPriceCoingeckoDataObject) {
         refreshTotalTradeVolumeFiat(ticker);
         refreshZrcTokenLpTotalPoolBalanceFiat(ticker);
         refreshZrcTokenLpBalanceFiat(ticker);
+
+        // Total supply
+        refreshZrcTokenCirculatingSupplyZilFiat(ticker);
+        refreshZrcTokenTotalSupplyZilFiat(ticker);
     }
     refreshTotalLpBalanceZilFiat();
 
@@ -171,6 +175,10 @@ function onZilswapSinglePairPublicStatusLoaded( /* nullable */ zilswapSinglePair
     refreshZrcTokenLpBalanceFiat(ticker)
     refreshTotalLpBalanceZilFiat();
 
+    // Total supply
+    refreshZrcTokenCirculatingSupplyZilFiat(ticker);
+    refreshZrcTokenTotalSupplyZilFiat(ticker);
+    
     // Lp reward
     if (ticker === 'ZWAP') {
         refreshTotalLpRewardFiat();
@@ -316,6 +324,74 @@ function onLpTradeVolumeLoaded(poolVolumeArray) {
             refreshTotalTradeVolumeFiat(ticker);
         }
     }
+}
+
+/**
+ * --------------------------------------------------------------------------------
+ */
+
+function onZrcTokensCirculatingSupplyLoaded() {
+    if (!zrcTokensCirculatingSupplyData) {
+        return;
+    }
+
+    for (let ticker in zrcTokensCirculatingSupplyData) {
+        let zrcTokenString = convertNumberQaToDecimalString(parseInt(zrcTokensCirculatingSupplyData[ticker]), zrcTokenPropertiesListMap[ticker].decimals);
+        bindViewZrcTokenCirculatingSupply(zrcTokenString, ticker);
+
+        // Circulating supply
+        refreshZrcTokenCirculatingSupplyZilFiat(ticker);
+    }
+}
+
+function onZrcTokensTotalSupplyLoaded() {
+    if (!zrcTokensTotalSupplyData) {
+        return;
+    }
+
+    for (let ticker in zrcTokensTotalSupplyData) {
+        let zrcTokenString = convertNumberQaToDecimalString(parseInt(zrcTokensTotalSupplyData[ticker]), zrcTokenPropertiesListMap[ticker].decimals);
+        bindViewZrcTokenTotalSupply(zrcTokenString, ticker);
+
+        // Total supply
+        refreshZrcTokenTotalSupplyZilFiat(ticker);
+    }
+}
+
+function refreshZrcTokenCirculatingSupplyZilFiat(ticker) {
+    let zrcCirculatingSupply = getNumberFromView('#' + ticker + '_circulating_supply_zrc');
+    if (!zrcCirculatingSupply) {
+        return;
+    }
+    let zrcTokenPriceInZil = getNumberFromView('.' + ticker + '_price_zil');
+    if (!zrcTokenPriceInZil) {
+        return;
+    }
+    if (!zilPriceInFiatFloat) {
+        return;
+    }
+
+    let zrcCirculatingSupplyInFiat = 1.0 * zrcCirculatingSupply * zrcTokenPriceInZil * zilPriceInFiatFloat;
+    let zrcCirculatingSupplyInFiatString = commafyNumberToString(zrcCirculatingSupplyInFiat, /* decimals= */ 0);
+    bindViewZrcTokenCirculatingSupplyFiat(zrcCirculatingSupplyInFiatString, ticker);
+}
+
+function refreshZrcTokenTotalSupplyZilFiat(ticker) {
+    let zrcTotalSupply = getNumberFromView('#' + ticker + '_total_supply_zrc');
+    if (!zrcTotalSupply) {
+        return;
+    }
+    let zrcTokenPriceInZil = getNumberFromView('.' + ticker + '_price_zil');
+    if (!zrcTokenPriceInZil) {
+        return;
+    }
+    if (!zilPriceInFiatFloat) {
+        return;
+    }
+
+    let zrcTotalSupplyInFiat = 1.0 * zrcTotalSupply * zrcTokenPriceInZil * zilPriceInFiatFloat;
+    let zrcTotalSupplyInFiatString = commafyNumberToString(zrcTotalSupplyInFiat, /* decimals= */ 0);
+    bindViewZrcTokenTotalSupplyFiat(zrcTotalSupplyInFiatString, ticker);
 }
 
 /**
