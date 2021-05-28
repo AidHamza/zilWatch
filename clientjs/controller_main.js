@@ -431,7 +431,7 @@ function refreshZrcTokenPriceFiat() {
     for (let ticker in zrcTokenPropertiesListMap) {
         let zrcTokenPriceInZil = getNumberFromView('.' + ticker + '_price_zil');
         if (!zrcTokenPriceInZil) {
-            return;
+            continue;
         }
         let zrcTokenPriceInFiat = 1.0 * zilPriceInFiatFloat * zrcTokenPriceInZil;
         let zrcTokenPriceInFiatString = commafyNumberToString(zrcTokenPriceInFiat, decimals);
