@@ -96,9 +96,18 @@ function collapsePublicCards() {
     $('.card-body').removeClass('show');
 }
 
+// Global var to keep track of the current active wallet being shown to the screen.
+var currentActiveAccountBech32 = null;
+
 function refreshMainContentData(account) {
     let walletAddressBase16 = account.base16.toLowerCase();
     let walletAddressBech32 = account.bech32;
+
+    // If the wallet to be refreshed is the same wallet, do not invoke refresh content.
+    if (currentActiveAccountBech32 === walletAddressBech32) {
+        return;
+    }
+    currentActiveAccountBech32 = walletAddressBech32;
 
     // (1) Collapse all public cards.
     collapsePublicCards();
