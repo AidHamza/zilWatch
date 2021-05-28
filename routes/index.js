@@ -23,7 +23,8 @@ router.get('/', function (req, res, next) {
       "zilswap_dex_epoch_info_timestamp_seconds",
       "zilswap_dex_epoch_info",
       "zrc_tokens_total_supply",
-      "zrc_tokens_circulating_supply"
+      "zrc_tokens_circulating_supply",
+      "zilswap_dex_reward_and_apr"
     ],
     function (err, reply) {
       let currZilswapDexSmartContractStateTimestampSeconds = null; // 0
@@ -42,6 +43,8 @@ router.get('/', function (req, res, next) {
 
       let currZrcTokensTotalSupply = constants.emptyZrcTokensSupply; // 10
       let currZrcTokensCirculatingSupply = constants.emptyZrcTokensSupply; // 11
+
+      let currZilswapDexReward = null; // 12
 
       let currentDate = new Date();
       let currentTimeSeconds = currentDate.getTime() / 1000;
@@ -92,6 +95,9 @@ router.get('/', function (req, res, next) {
           if (reply[11]) {
             currZrcTokensCirculatingSupply = JSON.parse(reply[11]);
           }
+          if (reply[12]) {
+            currZilswapDexReward = JSON.parse(reply[12]);
+          }
 
         } catch (ex) {
           console.log(ex);
@@ -111,7 +117,8 @@ router.get('/', function (req, res, next) {
         zilswapDex24hTradeVolume: currZilswapDex24hTradeVolume,
         zilswapDexEpochInfo: currZilswapDexEpochInfo,
         zrcTokensTotalSupply: currZrcTokensTotalSupply,
-        zrcTokensCirculatingSupply: currZrcTokensCirculatingSupply
+        zrcTokensCirculatingSupply: currZrcTokensCirculatingSupply,
+        zilswapDexReward: currZilswapDexReward
       });
     });
 });
