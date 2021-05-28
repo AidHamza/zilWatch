@@ -98,12 +98,13 @@ function collapsePublicCards() {
 
 function refreshMainContentData(account) {
     let walletAddressBase16 = account.base16.toLowerCase();
+    let walletAddressBech32 = account.bech32;
 
     // (1) Collapse all public cards.
     collapsePublicCards();
 
     // (2) Refresh login button state
-    bindViewLoggedInButton(censorBech32Address(account.bech32));
+    bindViewLoggedInButton(censorBech32Address(walletAddressBech32));
 
     // (3) Reset main content
     resetMainContainerContent();
@@ -112,23 +113,23 @@ function refreshMainContentData(account) {
     bindViewMainContainer(ZilpayStatus.connected);
 
     // (5) Get ZIL balance, async.
-    computeZilBalance(account, onZilWalletBalanceLoaded);
+    computeZilBalance(walletAddressBase16, onZilWalletBalanceLoaded);
 
     // (6) Get ZRC-2 tokens price & ZRC-2 tokens LP balances in Zilswap, async.
     // Do this together because they are one API call, using the same data.
     computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded, walletAddressBase16);
 
     // (7) Get ZRC-2 tokens balances, async.
-    computeZrcTokensBalance(account, zrcTokenPropertiesListMap, onZrcTokenWalletBalanceLoaded);
+    computeZrcTokensBalance(walletAddressBase16, zrcTokenPropertiesListMap, onZrcTokenWalletBalanceLoaded);
 
     // (8) Get Potential LP reward next epoch and past epoch, async
-    computeTotalLpRewardNextEpoch(account, onLpRewardNextEpochLoaded);
-    computeTotalLpRewardPastEpoch(account, onLpRewardPastEpochLoaded);
+    computeTotalLpRewardNextEpoch(walletAddressBech32, onLpRewardNextEpochLoaded);
+    computeTotalLpRewardPastEpoch(walletAddressBech32, onLpRewardPastEpochLoaded);
 
     // (9) Get ZIL staking balance, async
-    computeZilStakingBalance(account, onZilStakingBalanceLoaded);
-    computeZilStakingWithdrawalPendingBalance(account, onZilStakingWithdrawalPendingBalanceLoaded);
+    computeZilStakingBalance(walletAddressBase16, onZilStakingBalanceLoaded);
+    computeZilStakingWithdrawalPendingBalance(walletAddressBase16, onZilStakingWithdrawalPendingBalanceLoaded);
 
     // (10) Get CARBON stakin balance, async
-    computeCarbonStakingBalance(account, onCarbonStakingBalanceLoaded);
+    computeCarbonStakingBalance(walletAddressBase16, onCarbonStakingBalanceLoaded);
 }

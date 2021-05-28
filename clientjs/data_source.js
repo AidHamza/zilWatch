@@ -1,32 +1,111 @@
 const ZilSwapDexAddress = "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w";
 const ZilSwapDexAddressBase16 = "Ba11eB7bCc0a02e947ACF03Cc651Bfaf19C9EC00";
-const ZilSeedNodeStakingImplementationAddress = "zil15lr86jwg937urdeayvtypvhy6pnp6d7p8n5z09";
-const MAX_RETRY = 10;
+const ZilSeedNodeStakingImplementationAddress = "zil15lr86jwg937urdeayvtypvhy6pnp6d7p8n5z09"; // v 1.1
+const ZilSeedNodeStakingImplementationAddressBase16 = "a7C67D49C82c7dc1B73D231640B2e4d0661D37c1"; // v 1.1
+const CarbonStakingImplementationAddress = 'zil18r37xks4r3rj7rzydujcckzlylftdy2qerszne';
+const CarbonStakingImplementationAddressBase16 = '38e3e35a151C472f0c446f258c585F27d2B69140';
+
+const MAX_RETRY = 5;
+const AJAX_TIMEOUT_MS = 30000; // 30s
+const ZILLIQA_API_URL = "https://api.zilliqa.com/";
+
+/**
+ * ===============================================================================
+ */
+
+/**
+ * Wrapper to GET query via ajax.
+ * @param {string} method the string to pass to the "method" in the POST query
+ * @param {array} params the params to pass to the "params" in the POST query
+ * @param {function?} successCallback optional function to execute upon success. function is in the form of successCallback(data);
+ * @param {function?} errorCallback optional function to execute upon failure. function is in the form of errorCallback();
+ */
+async function queryUrlGet(urlToGet, successCallback, errorCallback) {
+    $.ajax({
+        type: "GET",
+        url: urlToGet,
+        retryLimit: MAX_RETRY,
+        success: function (data) {
+            successCallback(data);
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            console.log("Failed query! ", urlToGet, xhr.responseText, textStatus, errorThrown);
+
+            if (this.retryLimit--) {
+                console.log("Retrying..." + "(" + this.retryLimit + ")");
+                // Try again
+                $.ajax(this);
+                return;
+            }
+            console.log("No retries left!");
+
+            errorCallback();
+        },
+        timeout: AJAX_TIMEOUT_MS
+    });
+}
+
+/**
+ * Wrapper to query Zilliqa API via ajax.
+ * @param {string} method the string to pass to the "method" in the POST query
+ * @param {array} params the params to pass to the "params" in the POST query
+ * @param {function?} successCallback optional function to execute upon success. function is in the form of successCallback(data);
+ * @param {function?} errorCallback optional function to execute upon failure. function is in the form of errorCallback();
+ */
+async function queryZilliqaApi(method, params, successCallback, errorCallback) {
+    $.ajax({
+        type: "POST",
+        url: ZILLIQA_API_URL,
+        data: JSON.stringify({
+            "id": "1",
+            "jsonrpc": "2.0",
+            "method": method,
+            "params": params
+        }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        retryLimit: MAX_RETRY,
+        success: function (data) {
+            successCallback(data);
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            console.log("Failed query! ", method, xhr.responseText, textStatus, errorThrown);
+
+            if (this.retryLimit--) {
+                console.log("Retrying..." + "(" + this.retryLimit + ")");
+                // Try again
+                $.ajax(this);
+                return;
+            }
+            console.log("No retries left!");
+
+            errorCallback();
+        },
+        timeout: AJAX_TIMEOUT_MS
+    });
+}
 
 /**
  * ===============================================================================
  */
 
 /** Void function. invokes onZilWalletBalanceLoaded(string balance) function after computation is done. */
-async function computeZilBalance(account, onZilWalletBalanceLoaded) {
+function computeZilBalance(walletAddressBase16, onZilWalletBalanceLoaded) {
     incrementShowSpinnerWalletBalance();
-    computeZilBalanceWithRetry(account, onZilWalletBalanceLoaded, MAX_RETRY);
-}
 
-function computeZilBalanceWithRetry(account, onZilWalletBalanceLoaded, retryRemaining) {
-    if (retryRemaining <= 0) {
-        console.log("computeZilBalanceWithRetry failed! Out of retries!");
-        decrementShowSpinnerWalletBalance();
-        return;
-    }
-    window.zilPay.blockchain.getBalance(account.bech32)
-        .then(function (data) {
+    queryZilliqaApi(
+        /* method= */
+        "GetBalance",
+        /* params= */
+        [walletAddressBase16.substring(2)],
+        /* successCallback= */
+        function (data) {
             onZilWalletBalanceLoaded(data.result.balance);
             decrementShowSpinnerWalletBalance();
-        })
-        .catch(function () {
-            console.log("computeZilBalanceWithRetry failed! %s", retryRemaining);
-            computeZilBalanceWithRetry(account, onZilWalletBalanceLoaded, retryRemaining - 1);
+        },
+        /* errorCallback= */
+        function () {
+            decrementShowSpinnerWalletBalance();
         });
 }
 
@@ -34,7 +113,7 @@ function computeZilBalanceWithRetry(account, onZilWalletBalanceLoaded, retryRema
  * --------------------------------------------------------------------------------
  */
 
-async function computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded, walletAddressBase16) {
+function computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded, walletAddressBase16) {
     if (zilswapDexSmartContractStateData) {
         // Use cache if available.
         if (zilswapDexSmartContractStateData.result.balances) {
@@ -42,50 +121,44 @@ async function computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded
             return;
         }
         incrementShowSpinnerLpBalance();
-        computeZilswapDexPersonalSubStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, MAX_RETRY);
+
+        queryZilliqaApi(
+            /* method= */
+            "GetSmartContractSubState",
+            /* params= */
+            [ZilSwapDexAddressBase16, "balances", []],
+            /* successCallback= */
+            function (data) {
+                if (data.result.balances) {
+                    zilswapDexSmartContractStateData.result.balances = data.result.balances;
+                    onZilswapDexStatusLoaded(zilswapDexSmartContractStateData, walletAddressBase16);
+                }
+                decrementShowSpinnerLpBalance();
+            },
+            /* errorCallback= */
+            function () {
+                decrementShowSpinnerLpBalance();
+            });
+
     } else {
         incrementShowSpinnerLpBalance();
-        computeZilswapDexStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, MAX_RETRY);
-    }
-}
 
-function computeZilswapDexPersonalSubStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, retryRemaining) {
-    if (retryRemaining <= 0) {
-        console.log("computeZilswapDexPersonalSubStateWithRetry failed! Out of retries!");
-        decrementShowSpinnerLpBalance();
-        return;
-    }
-    
-    window.zilPay.blockchain.getSmartContractSubState(ZilSwapDexAddress, "balances", [])
-        .then(function (data) {
-            if (data.result.balances) {
-                zilswapDexSmartContractStateData.result.balances = data.result.balances;
+        queryZilliqaApi(
+            /* method= */
+            "GetSmartContractState",
+            /* params= */
+            [ZilSwapDexAddressBase16],
+            /* successCallback= */
+            function (data) {
+                zilswapDexSmartContractStateData = data;
                 onZilswapDexStatusLoaded(zilswapDexSmartContractStateData, walletAddressBase16);
-            }
-            decrementShowSpinnerLpBalance();
-        })
-        .catch(function () {
-            console.log("computeZilswapDexPersonalSubStateWithRetry failed! %s", retryRemaining);
-            computeZilswapDexPersonalSubStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, retryRemaining - 1);
-        });
-}
-
-function computeZilswapDexStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, retryRemaining) {
-    if (retryRemaining <= 0) {
-        console.log("computeZilswapDexStateWithRetry failed! Out of retries!");
-        decrementShowSpinnerLpBalance();
-        return;
+                decrementShowSpinnerLpBalance();
+            },
+            /* errorCallback= */
+            function () {
+                decrementShowSpinnerLpBalance();
+            });
     }
-    window.zilPay.blockchain.getSmartContractState(ZilSwapDexAddress)
-        .then(function (data) {
-            zilswapDexSmartContractStateData = data;
-            onZilswapDexStatusLoaded(zilswapDexSmartContractStateData, walletAddressBase16);
-            decrementShowSpinnerLpBalance();
-        })
-        .catch(function () {
-            console.log("computeZilswapDexStateWithRetry failed! %s", retryRemaining);
-            computeZilswapDexStateWithRetry(onZilswapDexStatusLoaded, walletAddressBase16, retryRemaining - 1);
-        });
 }
 
 /**
@@ -93,37 +166,33 @@ function computeZilswapDexStateWithRetry(onZilswapDexStatusLoaded, walletAddress
  */
 
 /** Void function. invokes onZrcTokenWalletBalanceLoaded(number zrcBalanceQa, string ticker) function after computation is done. */
-async function computeZrcTokensBalance(account, zrcTokenPropertiesListMap, onZrcTokenWalletBalanceLoaded) {
+function computeZrcTokensBalance(walletAddressBase16, zrcTokenPropertiesListMap, onZrcTokenWalletBalanceLoaded) {
     for (const key in zrcTokenPropertiesListMap) {
         let zrcTokenProperties = zrcTokenPropertiesListMap[key];
-        let walletAddressBase16 = account.base16.toLowerCase();
 
         // Ignore Promise result, not important.
         computeSingleZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded);
     }
 }
 
-/** Private async function, to compute a single zrcToken. */
-async function computeSingleZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded) {
+/** Private function, to compute a single zrcToken. */
+function computeSingleZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded) {
     incrementShowSpinnerWalletBalance();
-    computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded, MAX_RETRY);
-}
 
-function computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded, retryRemaining) {
-    if (retryRemaining <= 0) {
-        console.log("computeSingleZrcTokenBalanceWithRetry failed! Out of retries!");
-        decrementShowSpinnerWalletBalance();
-        return;
-    }
-    window.zilPay.blockchain.getSmartContractSubState(zrcTokenProperties.address, "balances", [walletAddressBase16])
-        .then(function (data) {
+    queryZilliqaApi(
+        /* method= */
+        "GetSmartContractSubState",
+        /* params= */
+        [zrcTokenProperties.address_base16.substring(2), "balances", [walletAddressBase16]],
+        /* successCallback= */
+        function (data) {
             let zrcTokenBalanceNumberQa = parseZrcTokenBalanceNumberQaFromGetSmartContractSubState(data, walletAddressBase16);
             onZrcTokenWalletBalanceLoaded(zrcTokenBalanceNumberQa, zrcTokenProperties);
             decrementShowSpinnerWalletBalance();
-        })
-        .catch(function () {
-            console.log("computeSingleZrcTokenBalanceWithRetry(%s) failed! %s", zrcTokenProperties.ticker, retryRemaining);
-            computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded, retryRemaining - 1);
+        },
+        /* errorCallback= */
+        function () {
+            decrementShowSpinnerWalletBalance();
         });
 }
 
@@ -131,22 +200,17 @@ function computeSingleZrcTokenBalanceWithRetry(zrcTokenProperties, walletAddress
  * --------------------------------------------------------------------------------
  */
 
-/** Private async function, to compute ZIL staking balance */
-async function computeZilStakingBalance(account, onZilStakingBalanceLoaded) {
+/** Private function, to compute ZIL staking balance */
+function computeZilStakingBalance(walletAddressBase16, onZilStakingBalanceLoaded) {
     incrementShowSpinnerStakingBalance();
-    computeZilStakingBalanceWithRetry(account, onZilStakingBalanceLoaded, MAX_RETRY);
-}
 
-function computeZilStakingBalanceWithRetry(account, onZilStakingBalanceLoaded, retryRemaining) {
-    if (retryRemaining <= 0) {
-        console.log("computeZilStakingBalanceWithRetry failed! Out of retries!");
-        decrementShowSpinnerStakingBalance();
-        return;
-    }
-    let walletAddressBase16 = account.base16.toLowerCase();
-
-    window.zilPay.blockchain.getSmartContractSubState(ZilSeedNodeStakingImplementationAddress, "deposit_amt_deleg", [walletAddressBase16])
-        .then(function (data) {
+    queryZilliqaApi(
+        /* method= */
+        "GetSmartContractSubState",
+        /* params= */
+        [ZilSeedNodeStakingImplementationAddressBase16, "deposit_amt_deleg", [walletAddressBase16]],
+        /* successCallback= */
+        function (data) {
             if (data.result && data.result.deposit_amt_deleg) {
                 let ssnToBalanceMap = data.result.deposit_amt_deleg[walletAddressBase16];
                 if (ssnToBalanceMap) {
@@ -156,29 +220,24 @@ function computeZilStakingBalanceWithRetry(account, onZilStakingBalanceLoaded, r
                 }
             }
             decrementShowSpinnerStakingBalance();
-        })
-        .catch(function () {
-            console.log("computeZilStakingBalanceWithRetry failed! %s",retryRemaining);
-            computeZilStakingBalanceWithRetry(account, onZilStakingBalanceLoaded, retryRemaining - 1);
+        },
+        /* errorCallback= */
+        function () {
+            decrementShowSpinnerStakingBalance();
         });
 }
 
-/** Private async function, to compute ZIL pending withdrawal balance */
-async function computeZilStakingWithdrawalPendingBalance(account, onZilStakingWithdrawalPendingBalanceLoaded) {
+/** Private function, to compute ZIL pending withdrawal balance */
+function computeZilStakingWithdrawalPendingBalance(walletAddressBase16, onZilStakingWithdrawalPendingBalanceLoaded) {
     incrementShowSpinnerStakingBalance();
-    computeZilStakingWithdrawalPendingBalanceWithRetry(account, onZilStakingWithdrawalPendingBalanceLoaded, MAX_RETRY);
-}
 
-function computeZilStakingWithdrawalPendingBalanceWithRetry(account, onZilStakingWithdrawalPendingBalanceLoaded, retryRemaining) {
-    if (retryRemaining <= 0) {
-        console.log("computeZilStakingWithdrawalPendingBalanceWithRetry failed! Out of retries!");
-        decrementShowSpinnerStakingBalance();
-        return;
-    }
-    let walletAddressBase16 = account.base16.toLowerCase();
-
-    window.zilPay.blockchain.getSmartContractSubState(ZilSeedNodeStakingImplementationAddress, "withdrawal_pending", [walletAddressBase16])
-        .then(function (data) {
+    queryZilliqaApi(
+        /* method= */
+        "GetSmartContractSubState",
+        /* params= */
+        [ZilSeedNodeStakingImplementationAddressBase16, "withdrawal_pending", [walletAddressBase16]],
+        /* successCallback= */
+        function (data) {
             if (data.result && data.result.withdrawal_pending) {
                 let blockNumberToBalanceMap = data.result.withdrawal_pending[walletAddressBase16];
                 if (blockNumberToBalanceMap) {
@@ -186,10 +245,39 @@ function computeZilStakingWithdrawalPendingBalanceWithRetry(account, onZilStakin
                 }
             }
             decrementShowSpinnerStakingBalance();
-        })
-        .catch(function () {
-            console.log("computeZilStakingWithdrawalPendingBalanceWithRetry failed! %s",retryRemaining);
-            computeZilStakingWithdrawalPendingBalanceWithRetry(account, onZilStakingWithdrawalPendingBalanceLoaded, retryRemaining - 1);
+        },
+        /* errorCallback= */
+        function () {
+            decrementShowSpinnerStakingBalance();
+        });
+}
+
+/**
+ * --------------------------------------------------------------------------------
+ */
+
+/** Private function, to compute ZIL staking balance */
+function computeCarbonStakingBalance(walletAddressBase16, onCarbonStakingBalanceLoaded) {
+    incrementShowSpinnerStakingBalance();
+
+    queryZilliqaApi(
+        /* method= */
+        "GetSmartContractSubState",
+        /* params= */
+        [CarbonStakingImplementationAddressBase16, "stakers", [walletAddressBase16]],
+        /* successCallback= */
+        function (data) {
+            if (data.result && data.result.stakers) {
+                let stakedCarbonBalance = data.result.stakers[walletAddressBase16];
+                if (stakedCarbonBalance) {
+                    onCarbonStakingBalanceLoaded(stakedCarbonBalance);
+                }
+            }
+            decrementShowSpinnerStakingBalance();
+        },
+        /* errorCallback= */
+        function () {
+            decrementShowSpinnerStakingBalance();
         });
 }
 
@@ -197,7 +285,7 @@ function computeZilStakingWithdrawalPendingBalanceWithRetry(account, onZilStakin
  * ===============================================================================
  */
 
-async function computeCoinPriceInFiat(currencyCode, onCoinFiatPriceLoaded) {
+function computeCoinPriceInFiat(currencyCode, onCoinFiatPriceLoaded) {
     // Update cache for computation
     if (coinPriceCoingecko24hAgoData && coinPriceCoingecko24hAgoData.zilliqa && coinPriceCoingecko24hAgoData.zilliqa[currencyCode]) {
         zilPriceInFiat24hAgoFloat = parseFloat(coinPriceCoingecko24hAgoData.zilliqa[currencyCode]);
@@ -222,87 +310,63 @@ async function computeCoinPriceInFiat(currencyCode, onCoinFiatPriceLoaded) {
         allCoinsCode += ',' + coinMap[coinCode].coingecko_id;
     }
 
-    $.ajax({
-        type: "GET",
-        url: "https://api.coingecko.com/api/v3/simple/price?ids=" + allCoinsCode + "&vs_currencies=" + allCurrenciesCode,
-        retryLimit: MAX_RETRY,
-        success: function (data) {
+    queryUrlGet(
+        /* urlToGet= */
+        "https://api.coingecko.com/api/v3/simple/price?ids=" + allCoinsCode + "&vs_currencies=" + allCurrenciesCode,
+        /* successCallback= */
+        function (data) {
             if (data.zilliqa && data.zilliqa[currencyCode]) {
                 zilPriceInFiatFloat = parseFloat(data.zilliqa[currencyCode]);
             }
             onCoinFiatPriceLoaded(currencyCode, data);
         },
-        error: function (xhr, textStatus, errorThrown) {
-            if (this.retryLimit--) {
-                // Try again
-                $.ajax(this);
-                return;
-            }
-        }
-    });
+        /* errorCallback= */
+        function () {});
 }
 
-async function computeTotalLpRewardNextEpoch(account, onLpRewardNextEpochLoaded) {
-    $.ajax({
-        type: "GET",
-        url: "https://stats.zilswap.org/distribution/current/" + account.bech32,
-        retryLimit: MAX_RETRY,
-        success: function (contractAddressToRewardMap) {
-            onLpRewardNextEpochLoaded(contractAddressToRewardMap);
+function computeTotalLpRewardNextEpoch(walletAddressBech32, onLpRewardNextEpochLoaded) {
+    queryUrlGet(
+        /* urlToGet= */
+        "https://stats.zilswap.org/distribution/current/" + walletAddressBech32,
+        /* successCallback= */
+        function (data) {
+            onLpRewardNextEpochLoaded(data);
         },
-        error: function (xhr, textStatus, errorThrown) {
-            if (this.retryLimit--) {
-                // Try again
-                $.ajax(this);
-                return;
-            }
-        }
-    });
+        /* errorCallback= */
+        function () {});
 }
 
-async function computeTotalLpRewardPastEpoch(account, onLpRewardPastEpochLoaded) {
-    $.ajax({
-        type: "GET",
-        url: "https://stats.zilswap.org/distribution/data/" + account.bech32,
-        retryLimit: MAX_RETRY,
-        success: function (pastRewardList) {
-            onLpRewardPastEpochLoaded(pastRewardList);
+function computeTotalLpRewardPastEpoch(walletAddressBech32, onLpRewardPastEpochLoaded) {
+    queryUrlGet(
+        /* urlToGet= */
+        "https://stats.zilswap.org/distribution/data/" + walletAddressBech32,
+        /* successCallback= */
+        function (data) {
+            onLpRewardPastEpochLoaded(data);
         },
-        error: function (xhr, textStatus, errorThrown) {
-            if (this.retryLimit--) {
-                // Try again
-                $.ajax(this);
-                return;
-            }
-        }
-    });
+        /* errorCallback= */
+        function () {});
 }
 
-async function computeLpEpochInfo(onLpCurrentEpochInfoLoaded) {
+function computeLpEpochInfo(onLpCurrentEpochInfoLoaded) {
     if (zilswapDexEpochInfoData) {
         // Use cache if available.
         onLpCurrentEpochInfoLoaded(zilswapDexEpochInfoData);
         return;
     }
 
-    $.ajax({
-        type: "GET",
-        url: "https://stats.zilswap.org/epoch/info",
-        retryLimit: MAX_RETRY,
-        success: function (epochInfoData) {
-            onLpCurrentEpochInfoLoaded(epochInfoData);
+    queryUrlGet(
+        /* urlToGet= */
+        "https://stats.zilswap.org/epoch/info",
+        /* successCallback= */
+        function (data) {
+            onLpCurrentEpochInfoLoaded(data);
         },
-        error: function (xhr, textStatus, errorThrown) {
-            if (this.retryLimit--) {
-                // Try again
-                $.ajax(this);
-                return;
-            }
-        }
-    });
+        /* errorCallback= */
+        function () {});
 }
 
-async function compute24hLpTradeVolume(onLpTradeVolumeLoaded) {
+function compute24hLpTradeVolume(onLpTradeVolumeLoaded) {
     if (zilswapDex24hTradeVolumeData) {
         // Use cache if available.
         onLpTradeVolumeLoaded(zilswapDex24hTradeVolumeData);
@@ -311,53 +375,34 @@ async function compute24hLpTradeVolume(onLpTradeVolumeLoaded) {
 
     let currentDate = new Date();
     let currentTimeSeconds = currentDate.getTime() / 1000;
-    let oneDayAgoSeconds =  currentTimeSeconds - (60 * 60 * 24);
+    let oneDayAgoSeconds = currentTimeSeconds - (60 * 60 * 24);
 
-    $.ajax({
-        type: "GET",
-        url: "https://stats.zilswap.org/volume?from=" + oneDayAgoSeconds.toFixed(0),
-        retryLimit: MAX_RETRY,
-        success: function (data) {
+    queryUrlGet(
+        /* urlToGet= */
+        "https://stats.zilswap.org/volume?from=" + oneDayAgoSeconds.toFixed(0),
+        /* successCallback= */
+        function (data) {
             onLpTradeVolumeLoaded(data);
         },
-        error: function (xhr, textStatus, errorThrown) {
-            if (this.retryLimit--) {
-                // Try again
-                $.ajax(this);
-                return;
-            }
-        }
-    });
+        /* errorCallback= */
+        function () {});
 }
 
-async function computeZrcTokensPriceInZil(onZilswapDexStatusLoaded) {
+function computeZrcTokensPriceInZil(onZilswapDexStatusLoaded) {
     if (zilswapDexSmartContractStateData) {
         // Use cache if available.
         onZilswapDexStatusLoaded(zilswapDexSmartContractStateData);
         return;
     }
-
-    $.ajax({
-        type: "POST",
-        url: "https://api.zilliqa.com/",
-        data: JSON.stringify({
-            "id": "1",
-            "jsonrpc": "2.0",
-            "method": "GetSmartContractSubState",
-            "params": [ZilSwapDexAddressBase16, "pools", []]
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        retryLimit: MAX_RETRY,
-        success: function (data) {
+    queryZilliqaApi(
+        /* method= */
+        "GetSmartContractSubState",
+        /* params= */
+        [ZilSwapDexAddressBase16, "pools", []],
+        /* successCallback= */
+        function (data) {
             onZilswapDexStatusLoaded(data);
         },
-        error: function (xhr, textStatus, errorThrown) {
-            if (this.retryLimit--) {
-                // Try again
-                $.ajax(this);
-                return;
-            }
-        }
-    });
+        /* errorCallback= */
+        function () {});
 }
