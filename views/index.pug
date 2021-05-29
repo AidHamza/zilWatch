@@ -88,39 +88,75 @@ block content
                       span(id='public_'+tokenProperties.ticker+'_price_fiat_24h_ago' style='display: none;')
                       span(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h')
 
-      if zilswapDexReward
+      if zilswapDexReward || zilStakingReward
         div(class='col-lg-6' style='padding: 0;')
 
           div(class='box-public')
             div(id='farming_info_content_header_container' class='card-header' data-toggle='collapse' href='#farming_info_content_container')
               a(id='farming_info_content_header_title' class='card-title font-weight-bold')= 'Farming Information'
             div(id='farming_info_content_container' class='card-body collapse show')
-              table(class='table table-sm table-borderless' width='100%')
-                tbody
-                  tr
-                    th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Zilswap LP'
-                    th(style='text-align: right; white-space: nowrap; width: 25%;')
-                      span= 'Weekly (ZWAP)'
-                    th(style='text-align: right; white-space: nowrap; width: 20%;')
-                      span= 'Daily %'
-                    th(style='text-align: right; white-space: nowrap; width: 20%;')
-                      span= 'APR %'
 
-                  each circulatingSupply, ticker in zrcTokensCirculatingSupply
-                    if zilswapDexReward[ticker] && ticker !== 'XPORT'
-                      - let tokenProperties = zrcTokenPropertiesListMap[ticker]
+              if zilStakingReward
+                table(class='table table-sm table-borderless' width='100%')
+                  tbody
+                    tr
+                      th(colspan=2 style='text-align: left; white-space: nowrap; width: 25%;' )= 'Token Staking'
+                      th(style='text-align: right; white-space: nowrap; width: 25%;')
+                        span= 'Unbond'
+                      th(style='text-align: right; white-space: nowrap; width: 25%;')
+                        span= 'Daily %'
+                      th(style='text-align: right; white-space: nowrap; width: 25%;')
+                        span= 'APR %'
 
-                      tr
-                        td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                          img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
-                        td(style='text-align: left; white-space: nowrap; width: 25%;' )
-                          span= tokenProperties.ticker + '-ZIL'
-                        td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                          span= zilswapDexReward[ticker].zwap_reward
-                        td(style='text-align: right; white-space: nowrap; width: 20%;' )
-                          span= zilswapDexReward[ticker].daily_percent
-                        td(style='text-align: right; white-space: nowrap; width: 20%;' )
-                          span= zilswapDexReward[ticker].apr_percent
+                    tr
+                      td(rowspan=2 scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                        img(height='18' width='18' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
+                      td(rowspan=2 style='display:table-cell; vertical-align: middle; text-align: left; white-space: nowrap;' )
+                        span= 'Zilliqa'
+                      td(rowspan=2 style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap;' )
+                        span= zilStakingReward.unbonding_period_days + ' days'
+                      td(style='text-align: right; white-space: nowrap;' )
+                        span(class='text-secondary mr-1')= '(ZIL)'
+                        span= zilStakingReward.zil_reward_daily_percent
+                      td(style='text-align: right; white-space: nowrap;' )
+                        span(class='text-secondary mr-1')= '(ZIL)'
+                        span= zilStakingReward.zil_reward_apr_percent
+
+                    tr
+                      td(style='text-align: right; white-space: nowrap;' )
+                        span(class='text-secondary mr-1')= '(gZIL)'
+                        span= zilStakingReward.gzil_reward_daily_percent
+                      td(style='text-align: right; white-space: nowrap;' )
+                        span(class='text-secondary mr-1')= '(gZIL)'
+                        span= zilStakingReward.gzil_reward_apr_percent
+                        
+              if zilswapDexReward
+                table(class='table table-sm table-borderless' width='100%')
+                  tbody
+                    tr
+                      th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Zilswap LP'
+                      th(style='text-align: right; white-space: nowrap; width: 25%;')
+                        span= 'Weekly (ZWAP)'
+                      th(style='text-align: right; white-space: nowrap; width: 20%;')
+                        span= 'Daily %'
+                      th(style='text-align: right; white-space: nowrap; width: 20%;')
+                        span= 'APR %'
+
+                    each circulatingSupply, ticker in zrcTokensCirculatingSupply
+                      if zilswapDexReward[ticker] && ticker !== 'XPORT'
+                        - let tokenProperties = zrcTokenPropertiesListMap[ticker]
+
+                        tr
+                          td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                            img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
+                          td(style='text-align: left; white-space: nowrap; width: 25%;' )
+                            span= tokenProperties.ticker + '-ZIL'
+                          td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                            span= zilswapDexReward[ticker].zwap_reward
+                          td(style='text-align: right; white-space: nowrap; width: 20%;' )
+                            span= zilswapDexReward[ticker].daily_percent
+                          td(style='text-align: right; white-space: nowrap; width: 20%;' )
+                            span= zilswapDexReward[ticker].apr_percent
 
       div(class='col-lg-6' style='padding: 0;')
 
