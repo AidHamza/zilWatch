@@ -91,10 +91,20 @@ function onCoinFiatPriceLoaded(currencyCode, coinPriceCoingeckoDataObject) {
     refreshNetWorthZilFiat();
 }
 
-function onZilWalletBalanceLoaded(zilBalanceQa) {
-    var userFriendlyZilBalance = convertNumberQaToDecimalString(parseInt(zilBalanceQa), /* decimals= */ 12);
-    if (!userFriendlyZilBalance) {
+function onZilWalletBalanceLoaded(dataObject) {
+    if (!dataObject) {
         return;
+    }
+    let zilBalanceQa = 0.0;
+    let userFriendlyZilBalance = "0";
+
+    // Even if the data doesn't exist, we don't return, we set as 0 instead.
+    // We don't hide basic ZIL card in wallet balance.
+    if (dataObject.result && dataObject.result.balance) {
+        zilBalanceQa = parseInt(dataObject.result.balance);
+    }
+    if (zilBalanceQa > 0) {
+        userFriendlyZilBalance = convertNumberQaToDecimalString(zilBalanceQa, /* decimals= */ 12);
     }
     bindViewZilBalance(userFriendlyZilBalance);
 
@@ -360,11 +370,11 @@ function onZrcTokensTotalSupplyLoaded() {
 
 function refreshZrcTokenCirculatingSupplyZilFiat(ticker) {
     let zrcCirculatingSupply = getNumberFromView('#' + ticker + '_circulating_supply_zrc');
-    if (!zrcCirculatingSupply) {
+    if (Number.isNaN(zrcCirculatingSupply)) {
         return;
     }
     let zrcTokenPriceInZil = getNumberFromView('.' + ticker + '_price_zil');
-    if (!zrcTokenPriceInZil) {
+    if (Number.isNaN(zrcTokenPriceInZil)) {
         return;
     }
     if (!zilPriceInFiatFloat) {
@@ -378,11 +388,11 @@ function refreshZrcTokenCirculatingSupplyZilFiat(ticker) {
 
 function refreshZrcTokenTotalSupplyZilFiat(ticker) {
     let zrcTotalSupply = getNumberFromView('#' + ticker + '_total_supply_zrc');
-    if (!zrcTotalSupply) {
+    if (Number.isNaN(zrcTotalSupply)) {
         return;
     }
     let zrcTokenPriceInZil = getNumberFromView('.' + ticker + '_price_zil');
-    if (!zrcTokenPriceInZil) {
+    if (Number.isNaN(zrcTokenPriceInZil)) {
         return;
     }
     if (!zilPriceInFiatFloat) {
@@ -406,7 +416,7 @@ function refreshZilWalletBalanceFiat() {
     let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
     let zilBalance = getNumberFromView('#zil_balance');
-    if (!zilBalance) {
+    if (Number.isNaN(zilBalance)) {
         return;
     }
 
@@ -430,7 +440,7 @@ function refreshZrcTokenPriceFiat() {
 
     for (let ticker in zrcTokenPropertiesListMap) {
         let zrcTokenPriceInZil = getNumberFromView('.' + ticker + '_price_zil');
-        if (!zrcTokenPriceInZil) {
+        if (Number.isNaN(zrcTokenPriceInZil)) {
             continue;
         }
         let zrcTokenPriceInFiat = 1.0 * zilPriceInFiatFloat * zrcTokenPriceInZil;
@@ -451,12 +461,12 @@ function refreshZrcTokenPriceFiat() {
 function refreshZrcTokenWalletBalanceZilFiat(ticker) {
 
     let zrcTokenPriceInZil = getNumberFromView('.' + ticker + '_price_zil');
-    if (!zrcTokenPriceInZil) {
+    if (Number.isNaN(zrcTokenPriceInZil)) {
         return;
     }
 
     let zrcTokenBalance = getNumberFromView('#' + ticker + '_balance');
-    if (!zrcTokenBalance) {
+    if (Number.isNaN(zrcTokenBalance)) {
         return;
     }
 
@@ -467,7 +477,7 @@ function refreshZrcTokenWalletBalanceZilFiat(ticker) {
     // Set token wallet balance in ZIL 24h ago
     let zrcTokenPriceInZil24hAgo = getNumberFromView('.' + ticker + '_price_zil_24h_ago');
     let zrcTokenBalanceZil24hAgo = null;
-    if (zrcTokenPriceInZil24hAgo) {
+    if (!Number.isNaN(zrcTokenPriceInZil24hAgo)) {
         zrcTokenBalanceZil24hAgo = 1.0 * zrcTokenPriceInZil24hAgo * zrcTokenBalance;
         let zrcTokenBalanceZil24hAgoString = convertNumberQaToDecimalString(zrcTokenBalanceZil24hAgo, /* decimals= */ 0);
         let zrcTokenInZilPercentChange24h = getPercentChange(zrcTokenBalanceZil, zrcTokenBalanceZil24hAgo);
@@ -498,18 +508,18 @@ function refreshTotalWalletBalanceZilFiat() {
     let totalZil24hAgo = 0;
 
     let zil = getNumberFromView('#zil_balance');
-    if (zil) {
+    if (!Number.isNaN(zil)) {
         totalZil += zil;
         totalZil24hAgo += zil;
     }
 
     for (let ticker in zrcTokenPropertiesListMap) {
         let zrcZil = getNumberFromView('#' + ticker + '_balance_zil');
-        if (zrcZil) {
+        if (!Number.isNaN(zrcZil)) {
             totalZil += zrcZil;
         }
         let zrcZil24hAgo = getNumberFromView('#' + ticker + '_balance_zil_24h_ago');
-        if (zrcZil24hAgo) {
+        if (!Number.isNaN(zrcZil24hAgo)) {
             totalZil24hAgo += zrcZil24hAgo;
         }
     }
@@ -548,7 +558,7 @@ function refreshZrcTokenLpTotalPoolBalanceFiat(ticker) {
     }
 
     let zilLpBalance = getNumberFromView('#' + ticker + '_lp_total_pool_zil');
-    if (!zilLpBalance) {
+    if (Number.isNaN(zilLpBalance)) {
         return;
     }
 
@@ -566,7 +576,7 @@ function refreshZrcTokenLpBalanceFiat(ticker) {
     let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
     let lpBalanceInZil = getNumberFromView('#' + ticker + '_lp_balance_zil');
-    if (!lpBalanceInZil) {
+    if (Number.isNaN(lpBalanceInZil)) {
         return;
     }
 
@@ -576,7 +586,7 @@ function refreshZrcTokenLpBalanceFiat(ticker) {
 
     if (zilPriceInFiat24hAgoFloat) {
         let lpBalanceInZil24hAgo = getNumberFromView('#' + ticker + '_lp_balance_zil_24h_ago');
-        if (!lpBalanceInZil24hAgo) {
+        if (Number.isNaN(lpBalanceInZil24hAgo)) {
             return;
         }
         let lpBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * lpBalanceInZil24hAgo;
@@ -593,11 +603,11 @@ function refreshTotalLpBalanceZilFiat() {
     let totalZil24hAgo = 0;
     for (let ticker in zrcTokenPropertiesListMap) {
         let lpZil = getNumberFromView('#' + ticker + '_lp_balance_zil');
-        if (lpZil) {
+        if (!Number.isNaN(lpZil)) {
             totalZil += lpZil;
         }
         let lpZil24hAgo = getNumberFromView('#' + ticker + '_lp_balance_zil_24h_ago');
-        if (lpZil24hAgo) {
+        if (!Number.isNaN(lpZil24hAgo)) {
             totalZil24hAgo += lpZil24hAgo;
         }
     }
@@ -635,7 +645,7 @@ function refreshZilStakingFiat(ssnAddress) {
     let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
     let zilStakingBalance = getNumberFromView('#' + ssnAddress + '_zil_staking_balance');
-    if (!zilStakingBalance) {
+    if (Number.isNaN(zilStakingBalance)) {
         return;
     }
 
@@ -659,7 +669,7 @@ function refreshZilStakingWithdrawalPendingFiat() {
     let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
     let zilStakingWithdrawalBalance = getNumberFromView('#zil_staking_withdrawal_pending_balance');
-    if (!zilStakingWithdrawalBalance) {
+    if (Number.isNaN(zilStakingWithdrawalBalance)) {
         return;
     }
 
@@ -678,12 +688,12 @@ function refreshZilStakingWithdrawalPendingFiat() {
 function refreshCarbonStakingZilFiat() {
 
     let carbonPriceInZil = getNumberFromView('.' + zrcTokenPropertiesListMap['CARB'].ticker + '_price_zil');
-    if (!carbonPriceInZil) {
+    if (Number.isNaN(carbonPriceInZil)) {
         return;
     }
 
     let carbonStakingBalance = getNumberFromView('#carbon_staking_balance');
-    if (!carbonStakingBalance) {
+    if (Number.isNaN(carbonStakingBalance)) {
         return;
     }
 
@@ -693,7 +703,7 @@ function refreshCarbonStakingZilFiat() {
 
     // Balance in ZIL 24h hour ago
     let carbonPriceInZil24hAgo = getNumberFromView('.' + zrcTokenPropertiesListMap['CARB'].ticker + '_price_zil_24h_ago');
-    if (carbonPriceInZil24hAgo) {
+    if (!Number.isNaN(carbonPriceInZil24hAgo)) {
         let carbonStakingBalanceZil24hAgo = 1.0 * carbonPriceInZil24hAgo * carbonStakingBalance;
         let carbonStakingBalanceZil24hAgoString = convertNumberQaToDecimalString(carbonStakingBalanceZil24hAgo, /* decimals= */ 0);
         let carbonStakingBalanceZilPercentChange24h = getPercentChange(carbonStakingBalanceZil, carbonStakingBalanceZil24hAgo).toFixed(1);
@@ -723,21 +733,21 @@ function refreshTotalStakingZilFiat() {
     let totalZil = 0;
     for (let ssnAddress in ssnListMap) {
         let stakingZil = getNumberFromView('#' + ssnAddress + '_zil_staking_balance');
-        if (stakingZil) {
+        if (!Number.isNaN(stakingZil)) {
             totalZil += stakingZil;
         }
     }
 
     // ZIL staking withdrawal pending sum
     let zilWithdrawalBalance = getNumberFromView('#zil_staking_withdrawal_pending_balance');
-    if (zilWithdrawalBalance) {
-        totalZil += zilWithdrawalBalance
+    if (!Number.isNaN(zilWithdrawalBalance)) {
+        totalZil += zilWithdrawalBalance;
     }
 
     // Carbon staking
     let carbonStakingBalanceZil = getNumberFromView('#carbon_staking_balance_zil');
-    if (carbonStakingBalanceZil) {
-        totalZil += carbonStakingBalanceZil
+    if (!Number.isNaN(carbonStakingBalanceZil)) {
+        totalZil += carbonStakingBalanceZil;
     }
 
     let totalStakingBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
@@ -749,20 +759,20 @@ function refreshTotalStakingZilFiat() {
     let totalZil24hAgo = 0;
     for (let ssnAddress in ssnListMap) {
         let stakingZil24hAgo = getNumberFromView('#' + ssnAddress + '_zil_staking_balance');
-        if (stakingZil24hAgo) {
+        if (!Number.isNaN(stakingZil24hAgo)) {
             totalZil24hAgo += stakingZil24hAgo;
         }
     }
 
     // ZIL staking withdrawal pending sum
     let zilWithdrawalBalance24hAgo = getNumberFromView('#zil_staking_withdrawal_pending_balance');
-    if (zilWithdrawalBalance24hAgo) {
+    if (!Number.isNaN(zilWithdrawalBalance24hAgo)) {
         totalZil24hAgo += zilWithdrawalBalance24hAgo
     }
 
     // Carbon staking
     let carbonStakingBalanceZil24hAgo = getNumberFromView('#carbon_staking_balance_zil_24h_ago');
-    if (carbonStakingBalanceZil24hAgo) {
+    if (!Number.isNaN(carbonStakingBalanceZil24hAgo)) {
         totalZil24hAgo += carbonStakingBalanceZil24hAgo
     }
 
@@ -799,17 +809,17 @@ function refreshNetWorthZilFiat() {
     let totalZil = 0;
 
     let walletBalanceZil = getNumberFromView('#wallet_balance_zil');
-    if (walletBalanceZil) {
+    if (!Number.isNaN(walletBalanceZil)) {
         totalZil += walletBalanceZil;
     }
 
     let lpBalanceZil = getNumberFromView('#lp_balance_zil');
-    if (lpBalanceZil) {
+    if (!Number.isNaN(lpBalanceZil)) {
         totalZil += lpBalanceZil;
     }
 
     let zilStakingBalanceZil = getNumberFromView('#staking_balance_zil');
-    if (zilStakingBalanceZil) {
+    if (!Number.isNaN(zilStakingBalanceZil)) {
         totalZil += zilStakingBalanceZil;
     }
     let totalNetWorthZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
@@ -820,17 +830,17 @@ function refreshNetWorthZilFiat() {
     let totalZil24hAgo = 0;
 
     let walletBalanceZil24hAgo = getNumberFromView('#wallet_balance_zil_24h_ago');
-    if (walletBalanceZil24hAgo) {
+    if (!Number.isNaN(walletBalanceZil24hAgo)) {
         totalZil24hAgo += walletBalanceZil24hAgo;
     }
 
     let lpBalanceZil24hAgo = getNumberFromView('#lp_balance_zil_24h_ago');
-    if (lpBalanceZil24hAgo) {
+    if (!Number.isNaN(lpBalanceZil24hAgo)) {
         totalZil24hAgo += lpBalanceZil24hAgo;
     }
 
     let zilStakingBalanceZil24hAgo = getNumberFromView('#staking_balance_zil_24h_ago');
-    if (zilStakingBalanceZil24hAgo) {
+    if (!Number.isNaN(zilStakingBalanceZil24hAgo)) {
         totalZil24hAgo += zilStakingBalanceZil;
     }
 
@@ -871,7 +881,7 @@ function refreshTotalTradeVolumeFiat(ticker) {
     }
 
     let totalVolumeZil = getNumberFromView('#' + ticker + '_lp_total_volume_zil');
-    if (!totalVolumeZil) {
+    if (Number.isNaN(totalVolumeZil)) {
         return;
     }
 

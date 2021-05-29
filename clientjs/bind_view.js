@@ -10,11 +10,7 @@
  */
 function getNumberFromView(viewId) {
     let viewContent = $(viewId + ":first").text();
-    let contentInNumber = parseFloatFromCommafiedNumberString(viewContent);
-    if (!contentInNumber) {
-        return null;
-    }
-    return contentInNumber;
+    return parseFloatFromCommafiedNumberString(viewContent);
 }
 
 /**

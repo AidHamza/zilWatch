@@ -100,7 +100,7 @@ function computeZilBalance(walletAddressBase16, onZilWalletBalanceLoaded) {
         [walletAddressBase16.substring(2)],
         /* successCallback= */
         function (data) {
-            onZilWalletBalanceLoaded(data.result.balance);
+            onZilWalletBalanceLoaded(data);
             decrementShowSpinnerWalletBalance();
         },
         /* errorCallback= */
