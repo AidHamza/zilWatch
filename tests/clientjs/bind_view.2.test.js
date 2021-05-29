@@ -324,8 +324,8 @@ describe('BindView2', function () {
 
         beforeEach(function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_total_pool_zil').text(), 'Loading...');
-                assert.strictEqual($('#' + ticker + '_lp_total_pool_zrc').text(), 'Loading...');
+                assert.strictEqual($('#' + ticker + '_lp_total_pool_zil').text(), '0');
+                assert.strictEqual($('#' + ticker + '_lp_total_pool_zrc').text(), '0');
             }
         });
 

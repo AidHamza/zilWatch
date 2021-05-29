@@ -120,18 +120,24 @@ function onZilswapDexStatusLoaded(dataObject, walletAddressBase16 = null) {
     if (!dataObject) {
         return;
     }
-    for (const key in zrcTokenPropertiesListMap) {
+    for (let key in zrcTokenPropertiesListMap) {
         let zrcTokenProperties = zrcTokenPropertiesListMap[key];
         let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();
+
+        // To get pool status and zrc token price in ZIL
+        let zilswapSinglePairPublicStatus = getZilswapSinglePairPublicStatusFromDexState(dataObject, zrcTokenAddressBase16, zrcTokenProperties.decimals);
+
+        // If the token is not present in Zilswap dex, we can stop processing this token.
+        if (!zilswapSinglePairPublicStatus) {
+            bindViewZrcTokenPriceInZil("0", "0", zrcTokenProperties.ticker)
+            continue;
+        }
 
         // To get pool status and zrc token price in ZIL, for values 24h ago
         let zilswapSinglePairPublicStatus24hAgo = null;
         if (zilswapDexSmartContractState24hAgoData) {
             zilswapSinglePairPublicStatus24hAgo = getZilswapSinglePairPublicStatusFromDexState(zilswapDexSmartContractState24hAgoData, zrcTokenAddressBase16, zrcTokenProperties.decimals);
         }
-
-        // To get pool status and zrc token price in ZIL
-        let zilswapSinglePairPublicStatus = getZilswapSinglePairPublicStatusFromDexState(dataObject, zrcTokenAddressBase16, zrcTokenProperties.decimals);
 
         onZilswapSinglePairPublicStatusLoaded(zilswapSinglePairPublicStatus24hAgo, zilswapSinglePairPublicStatus, zrcTokenProperties.ticker);
 
@@ -140,8 +146,11 @@ function onZilswapDexStatusLoaded(dataObject, walletAddressBase16 = null) {
         }
 
         // To get ZilswapLp balance and Total pool status
+        let zilswapSinglePairPersonalStatus = null;
         let walletShareRatio = getZilswapSinglePairShareRatio(dataObject, zrcTokenAddressBase16, walletAddressBase16);
-        let zilswapSinglePairPersonalStatus = new ZilswapSinglePairPersonalStatus(walletShareRatio, zilswapSinglePairPublicStatus);
+        if (walletShareRatio) {
+            zilswapSinglePairPersonalStatus = new ZilswapSinglePairPersonalStatus(walletShareRatio, zilswapSinglePairPublicStatus);
+        }
 
         // To getZilswapLp balance and share ratio 24h ago
         let zilswapSinglePairPersonalStatus24hAgo = null;
@@ -155,7 +164,11 @@ function onZilswapDexStatusLoaded(dataObject, walletAddressBase16 = null) {
     }
 }
 
-function onZilswapSinglePairPublicStatusLoaded( /* nullable */ zilswapSinglePairPublicStatus24hAgo, zilswapSinglePairPublicStatus, ticker) {
+function onZilswapSinglePairPublicStatusLoaded( /* nullable */ zilswapSinglePairPublicStatus24hAgo, /* nullable */  zilswapSinglePairPublicStatus, ticker) {
+    if (!zilswapSinglePairPublicStatus) {
+        return;
+    }
+    
     let zrcTokenPriceInZilNumber = zilswapSinglePairPublicStatus.zrcTokenPriceInZil;
     let userFriendlyZrcTokenPriceInZil = convertNumberQaToDecimalString(zrcTokenPriceInZilNumber, /* decimals= */ 0);
     let publicUserFriendlyZrcTokenPriceInZil = commafyNumberToString(zrcTokenPriceInZilNumber, 2);
@@ -225,7 +238,7 @@ function onTotalLpRewardNextEpochLoaded() {
     refreshPastTotalLpRewardFiat();
 }
 
-function onZrcTokenLpBalanceLoaded( /* nullable */ zilswapSinglePairPersonalStatus24hAgo, zilswapSinglePairPersonalStatus, ticker) {
+function onZrcTokenLpBalanceLoaded( /* nullable */ zilswapSinglePairPersonalStatus24hAgo, /* nullable */ zilswapSinglePairPersonalStatus, ticker) {
     if (!zilswapSinglePairPersonalStatus) {
         return;
     }

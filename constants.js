@@ -192,7 +192,7 @@ const ssnListMap = {
   },
 }
 
-// IF changed, also change in zilWatch-backend/core/crawl_zrc_contract_state.py
+// IF changed, also change in zilWatch-backend/core/constants.py
 const zrcTokenPropertiesListMap = {
   'gZIL': {
     "ticker": "gZIL",
@@ -362,8 +362,17 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil17tsmlqgnzlfxsq4evm6n26txm2xlp5hele0kew/logo",
     "decimals": 6,
   },
+  'XCAD': {
+      "ticker": "XCAD",
+      "name": "XCAD Network",
+      "address": "zil1h63h5rlg7avatnlzhfnfzwn8vfspwkapzdy2aw",
+      "address_base16": "0xBeA37A0Fe8F759D5CFE2Ba66913a676260175Ba1",
+      "logo_url": "https://meta.viewblock.io/ZIL.zil1h63h5rlg7avatnlzhfnfzwn8vfspwkapzdy2aw/logo",
+      "decimals": 6,
+  },
 }
 
+// IF changed, also change in zilWatch-backend/core/constants.py
 const emptyZrcTokensSupply = {
   'gZIL': '0',
   'XSGD': '0',
@@ -386,6 +395,7 @@ const emptyZrcTokensSupply = {
   'AXT': '0',
   'GOD': '0',
   'SHRK': '0',
+  'XCAD': '0',
 }
 
 module.exports = {
