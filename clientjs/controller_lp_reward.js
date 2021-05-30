@@ -51,14 +51,19 @@ function onLpRewardPastEpochLoaded(pastRewardList) {
     let prevRewardMap = pastRewardList[pastRewardListLastIndex];
     let prevZwapRewardQa = parseInt(prevRewardMap.amount);
     if (!prevZwapRewardQa) {
+        bindViewPrevTotalRewardAllLpZwap(prevRewardMap.epoch_number, '0');
+        bindViewPrevTotalRewardAllLpFiat('0');
         return;
     }
 
     let prevTotalZwapRewardString = convertNumberQaToDecimalString(prevZwapRewardQa, zrcTokenPropertiesListMap['ZWAP'].decimals);
-    if (prevTotalZwapRewardString) {
-        bindViewPrevTotalRewardAllLpZwap(prevRewardMap.epoch_number, prevTotalZwapRewardString);
-        refreshPrevTotalLpRewardFiat();
+    if (!prevTotalZwapRewardString) {
+        bindViewPrevTotalRewardAllLpZwap(prevRewardMap.epoch_number, '0');
+        bindViewPrevTotalRewardAllLpFiat('0');
+        return;
     }
+    bindViewPrevTotalRewardAllLpZwap(prevRewardMap.epoch_number, prevTotalZwapRewardString);
+    refreshPrevTotalLpRewardFiat();
     
     // Check if we have more past rewards from ZWAP, If there are no past rewards, return.
     let pastRewardListIndex = pastRewardListLastIndex - 1;
@@ -70,7 +75,8 @@ function onLpRewardPastEpochLoaded(pastRewardList) {
     enableTooltipPastTotalRewardAllLpZwap();
     clearViewPastTotalRewardAllLpZwap();
     while (pastRewardListIndex >= 0) {
-        let currRewardMap = pastRewardList[pastRewardListIndex];
+        // Need to decrement the counter immediately to prevent infinite loop.
+        let currRewardMap = pastRewardList[pastRewardListIndex--];
         let currZwapRewardQa = parseInt(currRewardMap.amount);
         if (!currZwapRewardQa) {
             continue;
@@ -80,7 +86,6 @@ function onLpRewardPastEpochLoaded(pastRewardList) {
             continue;
         }
         addViewPastTotalRewardAllLpZwap(currRewardMap.epoch_number, currZwapRewardString);
-        pastRewardListIndex--;
     }
     refreshPastTotalLpRewardFiat();
 }
