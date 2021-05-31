@@ -139,6 +139,26 @@ function refreshMainContentData(account) {
     computeZilStakingBalance(walletAddressBase16, onZilStakingBalanceLoaded);
     computeZilStakingWithdrawalPendingBalance(walletAddressBase16, onZilStakingWithdrawalPendingBalanceLoaded);
 
-    // (10) Get CARBON stakin balance, async
-    computeCarbonStakingBalance(walletAddressBase16, onCarbonStakingBalanceLoaded);
+    // (10) Get CARBON staking balance, async
+    computeCarbonStakingBalance(walletAddressBech32, walletAddressBase16);
+}
+
+function computeCarbonStakingBalance(walletAddressBech32, walletAddressBase16) {
+    let stakingCarbonStatus = new StakingCarbonStatus(walletAddressBech32, walletAddressBase16);
+    stakingCarbonStatus.computeBalanceRpc(
+        /* beforeRpcCallback= */
+        function() {
+            incrementShowSpinnerStakingBalance();
+        },
+        /* onSuccessCallback= */
+        function() {
+            decrementShowSpinnerStakingBalance();
+            if (stakingCarbonStatus.carbonBalance) {
+                onCarbonStakingBalanceLoaded(stakingCarbonStatus.carbonBalanceFormattedString);
+            }
+        },
+        /* onErrorCallback= */
+        function() {
+            decrementShowSpinnerStakingBalance();
+        });
 }

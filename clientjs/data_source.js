@@ -2,8 +2,6 @@ const ZilSwapDexAddress = "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w";
 const ZilSwapDexAddressBase16 = "Ba11eB7bCc0a02e947ACF03Cc651Bfaf19C9EC00";
 const ZilSeedNodeStakingImplementationAddress = "zil15lr86jwg937urdeayvtypvhy6pnp6d7p8n5z09"; // v 1.1
 const ZilSeedNodeStakingImplementationAddressBase16 = "a7C67D49C82c7dc1B73D231640B2e4d0661D37c1"; // v 1.1
-const CarbonStakingImplementationAddress = 'zil18r37xks4r3rj7rzydujcckzlylftdy2qerszne';
-const CarbonStakingImplementationAddressBase16 = '38e3e35a151C472f0c446f258c585F27d2B69140';
 
 const MAX_RETRY = 5;
 const AJAX_TIMEOUT_MS = 30000; // 30s
@@ -52,7 +50,7 @@ async function queryUrlGet(urlToGet, successCallback, errorCallback) {
  * @param {function?} successCallback optional function to execute upon success. function is in the form of successCallback(data);
  * @param {function?} errorCallback optional function to execute upon failure. function is in the form of errorCallback();
  */
-async function queryZilliqaApi(method, params, successCallback, errorCallback) {
+async function queryZilliqaApiAjax(method, params, successCallback, errorCallback) {
     $.ajax({
         type: "POST",
         url: ZILLIQA_API_URL,
@@ -93,7 +91,7 @@ async function queryZilliqaApi(method, params, successCallback, errorCallback) {
 function computeZilBalance(walletAddressBase16, onZilWalletBalanceLoaded) {
     incrementShowSpinnerWalletBalance();
 
-    queryZilliqaApi(
+    queryZilliqaApiAjax(
         /* method= */
         "GetBalance",
         /* params= */
@@ -122,7 +120,7 @@ function computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded, wall
         }
         incrementShowSpinnerLpBalance();
 
-        queryZilliqaApi(
+        queryZilliqaApiAjax(
             /* method= */
             "GetSmartContractSubState",
             /* params= */
@@ -143,7 +141,7 @@ function computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded, wall
     } else {
         incrementShowSpinnerLpBalance();
 
-        queryZilliqaApi(
+        queryZilliqaApiAjax(
             /* method= */
             "GetSmartContractState",
             /* params= */
@@ -179,7 +177,7 @@ function computeZrcTokensBalance(walletAddressBase16, zrcTokenPropertiesListMap,
 function computeSingleZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded) {
     incrementShowSpinnerWalletBalance();
 
-    queryZilliqaApi(
+    queryZilliqaApiAjax(
         /* method= */
         "GetSmartContractSubState",
         /* params= */
@@ -204,7 +202,7 @@ function computeSingleZrcTokenBalance(zrcTokenProperties, walletAddressBase16, o
 function computeZilStakingBalance(walletAddressBase16, onZilStakingBalanceLoaded) {
     incrementShowSpinnerStakingBalance();
 
-    queryZilliqaApi(
+    queryZilliqaApiAjax(
         /* method= */
         "GetSmartContractSubState",
         /* params= */
@@ -231,7 +229,7 @@ function computeZilStakingBalance(walletAddressBase16, onZilStakingBalanceLoaded
 function computeZilStakingWithdrawalPendingBalance(walletAddressBase16, onZilStakingWithdrawalPendingBalanceLoaded) {
     incrementShowSpinnerStakingBalance();
 
-    queryZilliqaApi(
+    queryZilliqaApiAjax(
         /* method= */
         "GetSmartContractSubState",
         /* params= */
@@ -242,35 +240,6 @@ function computeZilStakingWithdrawalPendingBalance(walletAddressBase16, onZilSta
                 let blockNumberToBalanceMap = data.result.withdrawal_pending[walletAddressBase16];
                 if (blockNumberToBalanceMap) {
                     onZilStakingWithdrawalPendingBalanceLoaded(blockNumberToBalanceMap);
-                }
-            }
-            decrementShowSpinnerStakingBalance();
-        },
-        /* errorCallback= */
-        function () {
-            decrementShowSpinnerStakingBalance();
-        });
-}
-
-/**
- * --------------------------------------------------------------------------------
- */
-
-/** Private function, to compute ZIL staking balance */
-function computeCarbonStakingBalance(walletAddressBase16, onCarbonStakingBalanceLoaded) {
-    incrementShowSpinnerStakingBalance();
-
-    queryZilliqaApi(
-        /* method= */
-        "GetSmartContractSubState",
-        /* params= */
-        [CarbonStakingImplementationAddressBase16, "stakers", [walletAddressBase16]],
-        /* successCallback= */
-        function (data) {
-            if (data.result && data.result.stakers) {
-                let stakedCarbonBalance = data.result.stakers[walletAddressBase16];
-                if (stakedCarbonBalance) {
-                    onCarbonStakingBalanceLoaded(stakedCarbonBalance);
                 }
             }
             decrementShowSpinnerStakingBalance();
@@ -394,7 +363,7 @@ function computeZrcTokensPriceInZil(onZilswapDexStatusLoaded) {
         onZilswapDexStatusLoaded(zilswapDexSmartContractStateData);
         return;
     }
-    queryZilliqaApi(
+    queryZilliqaApiAjax(
         /* method= */
         "GetSmartContractSubState",
         /* params= */
