@@ -254,45 +254,6 @@ function computeZilStakingWithdrawalPendingBalance(walletAddressBase16, onZilSta
  * ===============================================================================
  */
 
-function computeCoinPriceInFiat(currencyCode, onCoinFiatPriceLoaded) {
-    // Update cache for computation
-    if (coinPriceCoingecko24hAgoData && coinPriceCoingecko24hAgoData.zilliqa && coinPriceCoingecko24hAgoData.zilliqa[currencyCode]) {
-        zilPriceInFiat24hAgoFloat = parseFloat(coinPriceCoingecko24hAgoData.zilliqa[currencyCode]);
-    }
-    if (coinPriceCoingeckoData && coinPriceCoingeckoData.zilliqa && coinPriceCoingeckoData.zilliqa[currencyCode]) {
-        zilPriceInFiatFloat = parseFloat(coinPriceCoingeckoData.zilliqa[currencyCode]);
-    }
-
-    if (coinPriceCoingeckoData) {
-        // Use cache if available
-        onCoinFiatPriceLoaded(currencyCode, coinPriceCoingeckoData);
-        return;
-    }
-
-    let allCurrenciesCode = 'usd';
-    for (let code in currencyMap) {
-        allCurrenciesCode += ',' + code;
-    }
-
-    let allCoinsCode = 'zilliqa';
-    for (let coinCode in coinMap) {
-        allCoinsCode += ',' + coinMap[coinCode].coingecko_id;
-    }
-
-    queryUrlGetAjax(
-        /* urlToGet= */
-        "https://api.coingecko.com/api/v3/simple/price?ids=" + allCoinsCode + "&vs_currencies=" + allCurrenciesCode,
-        /* successCallback= */
-        function (data) {
-            if (data.zilliqa && data.zilliqa[currencyCode]) {
-                zilPriceInFiatFloat = parseFloat(data.zilliqa[currencyCode]);
-            }
-            onCoinFiatPriceLoaded(currencyCode, data);
-        },
-        /* errorCallback= */
-        function () {});
-}
-
 function computeTotalLpRewardNextEpoch(walletAddressBech32, onLpRewardNextEpochLoaded) {
     queryUrlGetAjax(
         /* urlToGet= */

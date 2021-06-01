@@ -737,7 +737,4 @@ block script
     var zrcTokensTotalSupplyData = !{JSON.stringify(zrcTokensTotalSupply)};
     var zrcTokensCirculatingSupplyData = !{JSON.stringify(zrcTokensCirculatingSupply)};
 
-    // Global cache for zilliqa price in fiat
-    var zilPriceInFiatFloat = null;
-    // Global cache for zilliqa price in fiat, 24h ago
-    var zilPriceInFiat24hAgoFloat = null;
+    const coinPriceStatus = new CoinPriceStatus(coinMap, currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);

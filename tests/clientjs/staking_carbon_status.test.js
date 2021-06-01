@@ -13,7 +13,9 @@ describe('StakingCarbonStatus', function () {
             assert.strictEqual(stakingCarbonStatus.carbonBalance, null);
             assert.strictEqual(stakingCarbonStatus.carbonBalanceFormattedString, null);
         });
+    });
 
+    describe('#methods()', function () {
         it('set proper data', function () {
             // Arrange
             let stakingCarbonStatus = new StakingCarbonStatus.StakingCarbonStatus('ziladdress', '0x278598f13a4cb142e44dde38aba8d8c0190bcb85');

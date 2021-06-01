@@ -72,11 +72,6 @@ var assert = require('assert');
 function assertDefaultStateMainContent() {
     // 2 --------------------------------------------------- 2
 
-    // bindViewCoinPriceInFiat24hAgo(): Exception, no need refresh
-    // bindViewCoinPriceInFiat(): Exception, no need refresh
-    // bindViewCoinPriceInZil24hAgo(): Exception, no need refresh
-    // bindViewCoinPriceInZil(): Exception, no need refresh
-
     // bindViewZilBalance()
     assert.strictEqual($('#zil_balance').text(), 'Loading...');
 

@@ -35,6 +35,7 @@ function refreshCarbonStakingZilFiat() {
         bindViewCarbonStakingBalanceZil24hAgo(carbonStakingBalanceZil24hAgoString, carbonStakingBalanceZilPercentChange24h);
     }
 
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -44,10 +45,12 @@ function refreshCarbonStakingZilFiat() {
     let carbonStakingBalanceFiatString = commafyNumberToString(carbonStakingBalanceFiat, decimals);
     bindViewCarbonStakingBalanceFiat(carbonStakingBalanceFiatString);
 
-    if (zilPriceInFiat24hAgoFloat) {
-        let carbonStakingBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * carbonStakingBalanceZil;
-        let carbonStakingBalanceFiat24hAgoString = commafyNumberToString(carbonStakingBalanceFiat24hAgo, decimals);
-        let carbonStakingBalanceFiatPercentChange24h = getPercentChange(carbonStakingBalanceFiat, carbonStakingBalanceFiat24hAgo).toFixed(1);
-        bindViewCarbonStakingBalanceFiat24hAgo(carbonStakingBalanceFiat24hAgoString, carbonStakingBalanceFiatPercentChange24h);
+    let zilPriceInFiat24hAgoFloat = coinPriceStatus.getCoinPriceFiat24hAgo('ZIL');
+    if (!zilPriceInFiat24hAgoFloat) {
+        return;
     }
+    let carbonStakingBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * carbonStakingBalanceZil;
+    let carbonStakingBalanceFiat24hAgoString = commafyNumberToString(carbonStakingBalanceFiat24hAgo, decimals);
+    let carbonStakingBalanceFiatPercentChange24h = getPercentChange(carbonStakingBalanceFiat, carbonStakingBalanceFiat24hAgo).toFixed(1);
+    bindViewCarbonStakingBalanceFiat24hAgo(carbonStakingBalanceFiat24hAgoString, carbonStakingBalanceFiatPercentChange24h);
 }

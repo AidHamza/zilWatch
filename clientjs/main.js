@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     $(".currency_symbol").text(currencySymbol);
     
     // Public information
-    computeCoinPriceInFiat(currentCurrencyCode, onCoinFiatPriceLoaded);
+    computeCoinPriceStatus(currentCurrencyCode);
 
     // This is unrelated to balance and the APIs used for personalized dashboard
     // So don't need to reload.
@@ -87,7 +87,7 @@ $("#toggle_theme_btn").click(function() {
 
 $( "#currency_selector" ).change(function() {
     let currencyCode = $(this).val();
-    computeCoinPriceInFiat( currencyCode, onCoinFiatPriceLoaded);
+    computeCoinPriceStatus(currencyCode);
     localStorage.setItem("currency", currencyCode);
 });
 
@@ -141,6 +141,21 @@ function refreshMainContentData(account) {
 
     // (10) Get CARBON staking balance, async
     computeCarbonStakingBalance(walletAddressBech32, walletAddressBase16);
+}
+
+function computeCoinPriceStatus(currencyCode) {
+    coinPriceStatus.setActiveCurrencyCode(currencyCode);
+    coinPriceStatus.computeDataRpcIfDataNoExist(
+        /* beforeRpcCallback= */
+        function() {
+        },
+        /* onSuccessCallback= */
+        function() {
+            onCoinFiatPriceLoaded();
+        },
+        /* onErrorCallback= */
+        function() {
+        });
 }
 
 function computeCarbonStakingBalance(walletAddressBech32, walletAddressBase16) {

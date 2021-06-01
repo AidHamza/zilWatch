@@ -4,93 +4,6 @@
  * --------------------------------------------------------------------------------
  */
 
-function onCoinFiatPriceLoaded(currencyCode, coinPriceCoingeckoDataObject) {
-    if (!coinPriceCoingeckoDataObject) {
-        return;
-    }
-    if (!zilPriceInFiatFloat) {
-        return;
-    }
-    let currencySymbol = currencyMap[currencyCode];
-
-    for (let coinTicker in coinMap) {
-        let coingeckoId = coinMap[coinTicker].coingecko_id;
-        if (coinPriceCoingeckoDataObject[coingeckoId] && coinPriceCoingeckoDataObject[coingeckoId][currencyCode]) {
-            let coinPriceInFiatFloat = parseFloat(coinPriceCoingeckoDataObject[coingeckoId][currencyCode]);
-
-            if (!coinPriceInFiatFloat) {
-                continue;
-            }
-
-            // Coin price in fiat
-            let decimals = (zilPriceInFiatFloat > 1000) ? 0 : 2;
-            let coinPriceInFiatString = commafyNumberToString(coinPriceInFiatFloat, decimals);
-            if (coingeckoId === 'zilliqa') {
-                coinPriceInFiatString = convertNumberQaToDecimalString(coinPriceInFiatFloat, /* decimals= */ 0);
-            }
-            bindViewCoinPriceInFiat(currencySymbol, coinPriceInFiatString, coinTicker);
-
-            // Coin price in ZIL
-            let coinPriceInZilFloat = 1.0 * coinPriceInFiatFloat / zilPriceInFiatFloat;
-            if (!coinPriceInZilFloat) {
-                continue;
-            }
-            bindViewCoinPriceInZil(commafyNumberToString(coinPriceInZilFloat, 2), coinTicker);
-
-            // Coin percent change in Fiat
-            if (coinPriceCoingecko24hAgoData && zilPriceInFiat24hAgoFloat) {
-                let coinPriceInFiat24hAgoFloat = parseFloat(coinPriceCoingecko24hAgoData[coingeckoId][currencyCode]);
-                if (!coinPriceInFiat24hAgoFloat) {
-                    continue;
-                }
-                let coinPriceInFiatPercentChange24h = getPercentChange(coinPriceInFiatFloat, coinPriceInFiat24hAgoFloat).toFixed(1);
-                bindViewCoinPriceInFiat24hAgo(coinPriceInFiatPercentChange24h, coinTicker);
-
-                let coinPriceInZil24hAgoFloat = 1.0 * coinPriceInFiat24hAgoFloat / zilPriceInFiat24hAgoFloat;
-                let coinPriceInZilPercentChange24h = getPercentChange(coinPriceInZilFloat, coinPriceInZil24hAgoFloat).toFixed(1);
-                bindViewCoinPriceInZil24hAgo(coinPriceInZilPercentChange24h, coinTicker);
-            }
-        }
-    }
-
-    // Wallet Balance
-    refreshZilWalletBalanceFiat();
-    for (let ticker in zrcTokenPropertiesListMap) {
-        refreshZrcTokenWalletBalanceZilFiat(ticker);
-    }
-    refreshTotalWalletBalanceZilFiat();
-
-    // Lp balance
-    for (let ticker in zrcTokenPropertiesListMap) {
-        refreshZrcTokenPriceFiat(ticker);
-
-        refreshTotalTradeVolumeFiat(ticker);
-        refreshZrcTokenLpTotalPoolBalanceFiat(ticker);
-        refreshZrcTokenLpBalanceFiat(ticker);
-
-        // Total supply
-        refreshZrcTokenCirculatingSupplyZilFiat(ticker);
-        refreshZrcTokenTotalSupplyZilFiat(ticker);
-    }
-    refreshTotalLpBalanceZilFiat();
-
-    // Lp reward
-    refreshTotalLpRewardFiat();
-    refreshPrevTotalLpRewardFiat();
-    refreshPastTotalLpRewardFiat();
-
-    // ZIL staking
-    for (let ssnAddress in ssnListMap) {
-        refreshZilStakingFiat(ssnAddress);
-    }
-    refreshZilStakingWithdrawalPendingFiat();
-    refreshCarbonStakingZilFiat();
-    refreshTotalStakingZilFiat();
-
-    // Net worth
-    refreshNetWorthZilFiat();
-}
-
 function onZilWalletBalanceLoaded(dataObject) {
     if (!dataObject) {
         return;
@@ -376,6 +289,7 @@ function refreshZrcTokenCirculatingSupplyZilFiat(ticker) {
     if (Number.isNaN(zrcTokenPriceInZil)) {
         return;
     }
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -394,6 +308,7 @@ function refreshZrcTokenTotalSupplyZilFiat(ticker) {
     if (Number.isNaN(zrcTokenPriceInZil)) {
         return;
     }
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -409,6 +324,7 @@ function refreshZrcTokenTotalSupplyZilFiat(ticker) {
 
 function refreshZilWalletBalanceFiat() {
 
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -423,15 +339,18 @@ function refreshZilWalletBalanceFiat() {
     bindViewZilBalanceFiat(commafyNumberToString(zilBalanceFiat, decimals));
 
     // Set token wallet balance in fiat 24h ago
-    if (zilPriceInFiat24hAgoFloat) {
-        let zilBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zilBalance;
-        let zilBalanceFiat24hAgoString = commafyNumberToString(zilBalanceFiat24hAgo, decimals);
-        let zilBalanceFiatPercentChange24h = getPercentChange(zilBalanceFiat, zilBalanceFiat24hAgo).toFixed(1);
-        bindViewZilBalanceFiat24hAgo(zilBalanceFiat24hAgoString, zilBalanceFiatPercentChange24h);
+    let zilPriceInFiat24hAgoFloat = coinPriceStatus.getCoinPriceFiat24hAgo('ZIL');
+    if (!zilPriceInFiat24hAgoFloat) {
+        return;
     }
+    let zilBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zilBalance;
+    let zilBalanceFiat24hAgoString = commafyNumberToString(zilBalanceFiat24hAgo, decimals);
+    let zilBalanceFiatPercentChange24h = getPercentChange(zilBalanceFiat, zilBalanceFiat24hAgo).toFixed(1);
+    bindViewZilBalanceFiat24hAgo(zilBalanceFiat24hAgoString, zilBalanceFiatPercentChange24h);
 }
 
 function refreshZrcTokenPriceFiat(ticker) {
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -447,12 +366,14 @@ function refreshZrcTokenPriceFiat(ticker) {
     bindViewZrcTokenPriceInFiat(zrcTokenPriceInFiatString, ticker);
 
     let zrcTokenPriceInZil24hAgo = getNumberFromView('.' + ticker + '_price_zil_24h_ago');
-    if (zilPriceInFiat24hAgoFloat && zrcTokenPriceInZil24hAgo) {
-        let zrcTokenPriceInFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zrcTokenPriceInZil24hAgo;
-        let zrcTokenPriceInFiat24hAgoString = commafyNumberToString(zrcTokenPriceInFiat24hAgo, decimals);
-        let zrcTokenPriceInFiatPercentChange24h = getPercentChange(zrcTokenPriceInFiat, zrcTokenPriceInFiat24hAgo).toFixed(1);
-        bindViewZrcTokenPriceInFiat24hAgo(zrcTokenPriceInFiat24hAgoString, zrcTokenPriceInFiatPercentChange24h, ticker);
+    let zilPriceInFiat24hAgoFloat = coinPriceStatus.getCoinPriceFiat24hAgo('ZIL');
+    if (!zilPriceInFiat24hAgoFloat || !zrcTokenPriceInZil24hAgo) {
+        return;
     }
+    let zrcTokenPriceInFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zrcTokenPriceInZil24hAgo;
+    let zrcTokenPriceInFiat24hAgoString = commafyNumberToString(zrcTokenPriceInFiat24hAgo, decimals);
+    let zrcTokenPriceInFiatPercentChange24h = getPercentChange(zrcTokenPriceInFiat, zrcTokenPriceInFiat24hAgo).toFixed(1);
+    bindViewZrcTokenPriceInFiat24hAgo(zrcTokenPriceInFiat24hAgoString, zrcTokenPriceInFiatPercentChange24h, ticker);
 }
 
 function refreshZrcTokenWalletBalanceZilFiat(ticker) {
@@ -481,6 +402,7 @@ function refreshZrcTokenWalletBalanceZilFiat(ticker) {
         bindViewZrcTokenWalletBalanceZil24hAgo(zrcTokenBalanceZil24hAgoString, zrcTokenInZilPercentChange24h.toFixed(1), ticker);
     }
 
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -491,12 +413,14 @@ function refreshZrcTokenWalletBalanceZilFiat(ticker) {
     bindViewZrcTokenWalletBalanceFiat(zrcTokenBalanceFiatString, ticker);
 
     // Set token wallet balance in fiat 24h ago
-    if (zilPriceInFiat24hAgoFloat && zrcTokenBalanceZil24hAgo) {
-        let zrcTokenBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zrcTokenBalanceZil24hAgo;
-        let zrcTokenBalanceFiat24hAgoString = commafyNumberToString(zrcTokenBalanceFiat24hAgo, decimals);
-        let zrcTokenBalanceFiatPercentChange24h = getPercentChange(zrcTokenBalanceFiat, zrcTokenBalanceFiat24hAgo);
-        bindViewZrcTokenWalletBalanceFiat24hAgo(zrcTokenBalanceFiat24hAgoString, zrcTokenBalanceFiatPercentChange24h.toFixed(1), ticker);
+    let zilPriceInFiat24hAgoFloat = coinPriceStatus.getCoinPriceFiat24hAgo('ZIL');
+    if (!zilPriceInFiat24hAgoFloat || !zrcTokenBalanceZil24hAgo) {
+        return;
     }
+    let zrcTokenBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zrcTokenBalanceZil24hAgo;
+    let zrcTokenBalanceFiat24hAgoString = commafyNumberToString(zrcTokenBalanceFiat24hAgo, decimals);
+    let zrcTokenBalanceFiatPercentChange24h = getPercentChange(zrcTokenBalanceFiat, zrcTokenBalanceFiat24hAgo);
+    bindViewZrcTokenWalletBalanceFiat24hAgo(zrcTokenBalanceFiat24hAgoString, zrcTokenBalanceFiatPercentChange24h.toFixed(1), ticker);
 }
 
 function refreshTotalWalletBalanceZilFiat() {
@@ -524,12 +448,7 @@ function refreshTotalWalletBalanceZilFiat() {
     let totalWalletBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
     bindViewTotalWalletBalanceZil(totalWalletBalanceZil);
 
-    if (zilPriceInFiat24hAgoFloat) {
-        let totalWalletBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
-        let totalWalletBalanceZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
-        bindViewTotalWalletBalanceZil24hAgo(totalWalletBalanceZil24hAgo, totalWalletBalanceZilPercentChange24h);
-    }
-
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -540,16 +459,23 @@ function refreshTotalWalletBalanceZilFiat() {
     let totalWalletBalanceFiat = commafyNumberToString(totalFiat, decimals);
     bindViewTotalWalletBalanceFiat(totalWalletBalanceFiat);
 
-    if (zilPriceInFiat24hAgoFloat) {
-        let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
-        let totalWalletBalanceFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
-        let totalWalletBalanceFiatPercentChange24h = getPercentChange(totalFiat, totalFiat24hAgo).toFixed(1);
-        bindViewTotalWalletBalanceFiat24hAgo(totalWalletBalanceFiat24hAgo, totalWalletBalanceFiatPercentChange24h);
+    let zilPriceInFiat24hAgoFloat = coinPriceStatus.getCoinPriceFiat24hAgo('ZIL');
+    if (!zilPriceInFiat24hAgoFloat) {
+        return;
     }
+    let totalWalletBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
+    let totalWalletBalanceZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
+    bindViewTotalWalletBalanceZil24hAgo(totalWalletBalanceZil24hAgo, totalWalletBalanceZilPercentChange24h);
+
+    let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
+    let totalWalletBalanceFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
+    let totalWalletBalanceFiatPercentChange24h = getPercentChange(totalFiat, totalFiat24hAgo).toFixed(1);
+    bindViewTotalWalletBalanceFiat24hAgo(totalWalletBalanceFiat24hAgo, totalWalletBalanceFiatPercentChange24h);
 }
 
 function refreshZrcTokenLpTotalPoolBalanceFiat(ticker) {
 
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -567,6 +493,7 @@ function refreshZrcTokenLpTotalPoolBalanceFiat(ticker) {
 }
 
 function refreshZrcTokenLpBalanceFiat(ticker) {
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -581,16 +508,18 @@ function refreshZrcTokenLpBalanceFiat(ticker) {
     let lpBalanceFiatString = commafyNumberToString(lpBalanceFiat, decimals);
     bindViewZrcTokenLpBalanceFiat(lpBalanceFiatString, ticker);
 
-    if (zilPriceInFiat24hAgoFloat) {
-        let lpBalanceInZil24hAgo = getNumberFromView('#' + ticker + '_lp_balance_zil_24h_ago');
-        if (Number.isNaN(lpBalanceInZil24hAgo)) {
-            return;
-        }
-        let lpBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * lpBalanceInZil24hAgo;
-        let lpBalanceFiat24hAgoString = commafyNumberToString(lpBalanceFiat24hAgo, decimals);
-        let lpBalanceFiatPercentChange24h = getPercentChange(lpBalanceFiat, lpBalanceFiat24hAgo).toFixed(1);
-        bindViewZrcTokenLpBalanceFiat24hAgo(lpBalanceFiat24hAgoString, lpBalanceFiatPercentChange24h, ticker);
+    let zilPriceInFiat24hAgoFloat = coinPriceStatus.getCoinPriceFiat24hAgo('ZIL');
+    if (!zilPriceInFiat24hAgoFloat) {
+        return;
     }
+    let lpBalanceInZil24hAgo = getNumberFromView('#' + ticker + '_lp_balance_zil_24h_ago');
+    if (Number.isNaN(lpBalanceInZil24hAgo)) {
+        return;
+    }
+    let lpBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * lpBalanceInZil24hAgo;
+    let lpBalanceFiat24hAgoString = commafyNumberToString(lpBalanceFiat24hAgo, decimals);
+    let lpBalanceFiatPercentChange24h = getPercentChange(lpBalanceFiat, lpBalanceFiat24hAgo).toFixed(1);
+    bindViewZrcTokenLpBalanceFiat24hAgo(lpBalanceFiat24hAgoString, lpBalanceFiatPercentChange24h, ticker);
 }
 
 
@@ -611,13 +540,9 @@ function refreshTotalLpBalanceZilFiat() {
     let totalLpBalanceZil = convertNumberQaToDecimalString(totalZil, /* decimals= */ 0);
     bindViewTotalLpBalanceZil(totalLpBalanceZil);
 
-    if (zilPriceInFiat24hAgoFloat) {
-        let totalLpBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
-        let totalLpBalanceZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
-        bindViewTotalLpBalanceZil24hAgo(totalLpBalanceZil24hAgo, totalLpBalanceZilPercentChange24h);
-    }
 
     // Sum balance in USD.
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -627,15 +552,23 @@ function refreshTotalLpBalanceZilFiat() {
     let totalLpBalanceFiat = commafyNumberToString(totalFiat, decimals);
     bindViewTotalLpBalanceFiat(totalLpBalanceFiat);
 
-    if (zilPriceInFiat24hAgoFloat) {
-        let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
-        let totalLpBalanceFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
-        let totalLpBalanceFiatPercentChange24h = getPercentChange(totalFiat, totalFiat24hAgo).toFixed(1);
-        bindViewTotalLpBalanceFiat24hAgo(totalLpBalanceFiat24hAgo, totalLpBalanceFiatPercentChange24h);
+    let zilPriceInFiat24hAgoFloat = coinPriceStatus.getCoinPriceFiat24hAgo('ZIL');
+    if (!zilPriceInFiat24hAgoFloat) {
+        return;
     }
+    let totalLpBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
+    let totalLpBalanceZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
+    bindViewTotalLpBalanceZil24hAgo(totalLpBalanceZil24hAgo, totalLpBalanceZilPercentChange24h);
+    
+    let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
+    let totalLpBalanceFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
+    let totalLpBalanceFiatPercentChange24h = getPercentChange(totalFiat, totalFiat24hAgo).toFixed(1);
+    bindViewTotalLpBalanceFiat24hAgo(totalLpBalanceFiat24hAgo, totalLpBalanceFiatPercentChange24h);
+    
 }
 
 function refreshZilStakingFiat(ssnAddress) {
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -650,16 +583,19 @@ function refreshZilStakingFiat(ssnAddress) {
     let zilStakingBalanceFiatString = commafyNumberToString(zilStakingBalanceFiat, decimals);
     bindViewZilStakingBalanceFiat(zilStakingBalanceFiatString, ssnAddress);
 
-    if (zilPriceInFiat24hAgoFloat) {
-        let zilStakingBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zilStakingBalance;
-        let zilStakingBalanceFiat24hAgoString = commafyNumberToString(zilStakingBalanceFiat24hAgo, decimals);
-        let zilStakingBalanceFiatPercentChange24h = getPercentChange(zilStakingBalanceFiat, zilStakingBalanceFiat24hAgo).toFixed(1);
-        bindViewZilStakingBalanceFiat24hAgo(zilStakingBalanceFiat24hAgoString, zilStakingBalanceFiatPercentChange24h, ssnAddress);
+    let zilPriceInFiat24hAgoFloat = coinPriceStatus.getCoinPriceFiat24hAgo('ZIL');
+    if (!zilPriceInFiat24hAgoFloat) {
+        return;
     }
+    let zilStakingBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zilStakingBalance;
+    let zilStakingBalanceFiat24hAgoString = commafyNumberToString(zilStakingBalanceFiat24hAgo, decimals);
+    let zilStakingBalanceFiatPercentChange24h = getPercentChange(zilStakingBalanceFiat, zilStakingBalanceFiat24hAgo).toFixed(1);
+    bindViewZilStakingBalanceFiat24hAgo(zilStakingBalanceFiat24hAgoString, zilStakingBalanceFiatPercentChange24h, ssnAddress);
 }
 
 function refreshZilStakingWithdrawalPendingFiat() {
 
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -674,12 +610,14 @@ function refreshZilStakingWithdrawalPendingFiat() {
     let zilStakingWithdrawalBalanceFiatString = commafyNumberToString(zilStakingWithdrawalBalanceFiat, decimals);
     bindViewZilStakingWithdrawalPendingBalanceFiat(zilStakingWithdrawalBalanceFiatString);
 
-    if (zilPriceInFiat24hAgoFloat) {
-        let zilStakingWithdrawalBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zilStakingWithdrawalBalance;
-        let zilStakingWithdrawalBalanceFiat24hAgoString = commafyNumberToString(zilStakingWithdrawalBalanceFiat24hAgo, decimals);
-        let zilStakingWithdrawalBalanceFiatPercentChange24h = getPercentChange(zilStakingWithdrawalBalanceFiat, zilStakingWithdrawalBalanceFiat24hAgo).toFixed(1);
-        bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo(zilStakingWithdrawalBalanceFiat24hAgoString, zilStakingWithdrawalBalanceFiatPercentChange24h);
+    let zilPriceInFiat24hAgoFloat = coinPriceStatus.getCoinPriceFiat24hAgo('ZIL');
+    if (!zilPriceInFiat24hAgoFloat) {
+        return;
     }
+    let zilStakingWithdrawalBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zilStakingWithdrawalBalance;
+    let zilStakingWithdrawalBalanceFiat24hAgoString = commafyNumberToString(zilStakingWithdrawalBalanceFiat24hAgo, decimals);
+    let zilStakingWithdrawalBalanceFiatPercentChange24h = getPercentChange(zilStakingWithdrawalBalanceFiat, zilStakingWithdrawalBalanceFiat24hAgo).toFixed(1);
+    bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo(zilStakingWithdrawalBalanceFiat24hAgoString, zilStakingWithdrawalBalanceFiatPercentChange24h);
 }
 
 function refreshTotalStakingZilFiat() {
@@ -731,15 +669,10 @@ function refreshTotalStakingZilFiat() {
         totalZil24hAgo += carbonStakingBalanceZil24hAgo
     }
 
-    if (zilPriceInFiat24hAgoFloat) {
-        let totalStakingBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
-        let totalStakingBalanceZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
-        bindViewTotalStakingBalanceZil24hAgo(totalStakingBalanceZil24hAgo, totalStakingBalanceZilPercentChange24h);
-    }
-
     // -----------------------------------------------
     // Sum balance in USD.
 
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -750,12 +683,19 @@ function refreshTotalStakingZilFiat() {
     bindViewTotalStakingBalanceFiat(totalStakingBalanceFiat);
 
     // -----------------------------------------------
-    if (zilPriceInFiat24hAgoFloat) {
-        let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
-        let totalStakingBalanceFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
-        let totalStakingBalanceFiatPercentChange24h = getPercentChange(totalFiat, totalFiat24hAgo).toFixed(1);
-        bindViewTotalStakingBalanceFiat24hAgo(totalStakingBalanceFiat24hAgo, totalStakingBalanceFiatPercentChange24h);
+    let zilPriceInFiat24hAgoFloat = coinPriceStatus.getCoinPriceFiat24hAgo('ZIL');
+    if (!zilPriceInFiat24hAgoFloat) {
+        return;
     }
+    let totalStakingBalanceZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
+    let totalStakingBalanceZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
+    bindViewTotalStakingBalanceZil24hAgo(totalStakingBalanceZil24hAgo, totalStakingBalanceZilPercentChange24h);
+    
+    let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
+    let totalStakingBalanceFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
+    let totalStakingBalanceFiatPercentChange24h = getPercentChange(totalFiat, totalFiat24hAgo).toFixed(1);
+    bindViewTotalStakingBalanceFiat24hAgo(totalStakingBalanceFiat24hAgo, totalStakingBalanceFiatPercentChange24h);
+
 }
 
 function refreshNetWorthZilFiat() {
@@ -798,15 +738,9 @@ function refreshNetWorthZilFiat() {
     if (!Number.isNaN(zilStakingBalanceZil24hAgo)) {
         totalZil24hAgo += zilStakingBalanceZil;
     }
-
-    if (zilPriceInFiat24hAgoFloat) {
-        let totalNetWorthZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
-        let totalNetWorthZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
-        bindViewTotalNetWorthZil24hAgo(totalNetWorthZil24hAgo, totalNetWorthZilPercentChange24h);
-    }
-
     // Sum balance in USD.
 
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -817,12 +751,18 @@ function refreshNetWorthZilFiat() {
     bindViewTotalNetWorthFiat(totalNetWorthFiat);
 
     // -----------------------------------------------
-    if (zilPriceInFiat24hAgoFloat) {
-        let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
-        let totalNetWorthFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
-        let totalNetWorthFiatPercentChange24h = getPercentChange(totalFiat, totalFiat24hAgo).toFixed(1);
-        bindViewTotalNetWorthFiat24hAgo(totalNetWorthFiat24hAgo, totalNetWorthFiatPercentChange24h);
+    let zilPriceInFiat24hAgoFloat = coinPriceStatus.getCoinPriceFiat24hAgo('ZIL');
+    if (!zilPriceInFiat24hAgoFloat) {
+        return;
     }
+    let totalNetWorthZil24hAgo = convertNumberQaToDecimalString(totalZil24hAgo, /* decimals= */ 0);
+    let totalNetWorthZilPercentChange24h = getPercentChange(totalZil, totalZil24hAgo).toFixed(1);
+    bindViewTotalNetWorthZil24hAgo(totalNetWorthZil24hAgo, totalNetWorthZilPercentChange24h);
+
+    let totalFiat24hAgo = 1.0 * totalZil24hAgo * zilPriceInFiat24hAgoFloat;
+    let totalNetWorthFiat24hAgo = commafyNumberToString(totalFiat24hAgo, decimals);
+    let totalNetWorthFiatPercentChange24h = getPercentChange(totalFiat, totalFiat24hAgo).toFixed(1);
+    bindViewTotalNetWorthFiat24hAgo(totalNetWorthFiat24hAgo, totalNetWorthFiatPercentChange24h);
 }
 
 /**
@@ -831,6 +771,7 @@ function refreshNetWorthZilFiat() {
 
 function refreshTotalTradeVolumeFiat(ticker) {
 
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }

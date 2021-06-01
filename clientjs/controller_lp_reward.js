@@ -106,6 +106,7 @@ function onLpCurrentEpochInfoLoaded(epochInfoData) {
 function refreshTotalLpRewardFiat() {
     let ticker = 'ZWAP';
 
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -129,6 +130,7 @@ function refreshTotalLpRewardFiat() {
 function refreshPrevTotalLpRewardFiat() {
     let ticker = 'ZWAP';
 
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -152,6 +154,7 @@ function refreshPrevTotalLpRewardFiat() {
 function refreshPastTotalLpRewardFiat() {
     let ticker = 'ZWAP';
 
+    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
     if (!zilPriceInFiatFloat) {
         return;
     }
@@ -204,9 +207,13 @@ if (typeof exports !== 'undefined') {
         Duration = TimeUtils.Duration;
     }
 
-    // This is just a mock stub to make the test run
-    if (typeof zilPriceInFiatFloat === 'undefined') {
-        zilPriceInFiatFloat = 0.2;
+    if (typeof coinPriceStatus === 'undefined') {
+        CoinPriceStatus = require('./coin_price_status.js');
+        let Constants = require('../constants.js');
+
+        let dataString = '{"zilliqa":{"usd":0.11819}}';
+        let dataObject = JSON.parse(dataString);
+        coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', dataObject, null);
     }
 
     exports.onLpRewardNextEpochLoaded = onLpRewardNextEpochLoaded;

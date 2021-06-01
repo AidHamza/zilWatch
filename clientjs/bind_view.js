@@ -202,29 +202,6 @@ function resetMainContainerContent() {
  * 2 --------------------------------------------------------------------------------
  */
 
-// Exception, no need to reset
-function bindViewCoinPriceInFiat24hAgo(coinPriceInFiatPercentChange24h, coinTicker) {
-    $("#public_" + coinTicker + "_price_fiat_percent_change_24h").text(coinPriceInFiatPercentChange24h);
-    bindViewPercentChangeColorContainer('#public_' + coinTicker + '_price_fiat_percent_change_24h_container', coinPriceInFiatPercentChange24h);
-}
-
-// Exception, no need to reset
-function bindViewCoinPriceInFiat(currencySymbol, coinPriceInFiat, coinTicker) {
-    $("." + coinTicker + "_price_fiat").text(coinPriceInFiat);
-    $(".currency_symbol").text(currencySymbol);
-}
-
-// Exception, no need to reset
-function bindViewCoinPriceInZil24hAgo(coinPriceInZilPercentChange24h, coinTicker) {
-    $("#public_" + coinTicker + "_price_zil_percent_change_24h").text(coinPriceInZilPercentChange24h);
-    bindViewPercentChangeColorContainer('#public_' + coinTicker + '_price_zil_percent_change_24h_container', coinPriceInZilPercentChange24h);
-}
-
-// Exception, no need to reset
-function bindViewCoinPriceInZil(coinPriceInZil, coinTicker) {
-    $("." + coinTicker + "_price_zil").text(coinPriceInZil);
-}
-
 function bindViewZilBalance(zilBalance) {
     $('#zil_balance').text(zilBalance);
 }
@@ -728,10 +705,6 @@ if (typeof exports !== 'undefined') {
     exports.resetMainContainerContent = resetMainContainerContent;
 
     // 2
-    exports.bindViewCoinPriceInFiat24hAgo = bindViewCoinPriceInFiat24hAgo;
-    exports.bindViewCoinPriceInFiat = bindViewCoinPriceInFiat;
-    exports.bindViewCoinPriceInZil24hAgo = bindViewCoinPriceInZil24hAgo;
-    exports.bindViewCoinPriceInZil = bindViewCoinPriceInZil;
     exports.bindViewZilBalance = bindViewZilBalance;
     exports.bindViewZrcTokenPriceInZil24hAgo = bindViewZrcTokenPriceInZil24hAgo;
     exports.bindViewZrcTokenPriceInZil = bindViewZrcTokenPriceInZil;
