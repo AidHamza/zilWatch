@@ -18,7 +18,7 @@ const ZILLIQA_API_URL = "https://api.zilliqa.com/";
  * @param {function?} successCallback optional function to execute upon success. function is in the form of successCallback(data);
  * @param {function?} errorCallback optional function to execute upon failure. function is in the form of errorCallback();
  */
-async function queryUrlGet(urlToGet, successCallback, errorCallback) {
+async function queryUrlGetAjax(urlToGet, successCallback, errorCallback) {
     $.ajax({
         type: "GET",
         url: urlToGet,
@@ -279,7 +279,7 @@ function computeCoinPriceInFiat(currencyCode, onCoinFiatPriceLoaded) {
         allCoinsCode += ',' + coinMap[coinCode].coingecko_id;
     }
 
-    queryUrlGet(
+    queryUrlGetAjax(
         /* urlToGet= */
         "https://api.coingecko.com/api/v3/simple/price?ids=" + allCoinsCode + "&vs_currencies=" + allCurrenciesCode,
         /* successCallback= */
@@ -294,7 +294,7 @@ function computeCoinPriceInFiat(currencyCode, onCoinFiatPriceLoaded) {
 }
 
 function computeTotalLpRewardNextEpoch(walletAddressBech32, onLpRewardNextEpochLoaded) {
-    queryUrlGet(
+    queryUrlGetAjax(
         /* urlToGet= */
         "https://stats.zilswap.org/distribution/current/" + walletAddressBech32,
         /* successCallback= */
@@ -306,7 +306,7 @@ function computeTotalLpRewardNextEpoch(walletAddressBech32, onLpRewardNextEpochL
 }
 
 function computeTotalLpRewardPastEpoch(walletAddressBech32, onLpRewardPastEpochLoaded) {
-    queryUrlGet(
+    queryUrlGetAjax(
         /* urlToGet= */
         "https://stats.zilswap.org/distribution/data/" + walletAddressBech32,
         /* successCallback= */
@@ -324,7 +324,7 @@ function computeLpEpochInfo(onLpCurrentEpochInfoLoaded) {
         return;
     }
 
-    queryUrlGet(
+    queryUrlGetAjax(
         /* urlToGet= */
         "https://stats.zilswap.org/epoch/info",
         /* successCallback= */
@@ -346,7 +346,7 @@ function compute24hLpTradeVolume(onLpTradeVolumeLoaded) {
     let currentTimeSeconds = currentDate.getTime() / 1000;
     let oneDayAgoSeconds = currentTimeSeconds - (60 * 60 * 24);
 
-    queryUrlGet(
+    queryUrlGetAjax(
         /* urlToGet= */
         "https://stats.zilswap.org/volume?from=" + oneDayAgoSeconds.toFixed(0),
         /* successCallback= */
