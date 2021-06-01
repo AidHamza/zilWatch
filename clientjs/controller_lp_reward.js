@@ -85,7 +85,8 @@ function onLpRewardPastEpochLoaded(pastRewardList) {
         if (!currZwapRewardString) {
             continue;
         }
-        addViewPastTotalRewardAllLpZwap(currRewardMap.epoch_number, currZwapRewardString);
+        let viewElement = getViewPastTotalRewardAllLpZwap(currRewardMap.epoch_number, currZwapRewardString);
+        addViewPastTotalRewardAllLpZwap(viewElement);
     }
     refreshPastTotalLpRewardFiat();
 }
@@ -172,6 +173,22 @@ function refreshPastTotalLpRewardFiat() {
     });
 }
 
+function getViewPastTotalRewardAllLpZwap(epochNumber, pastTotalRewardZwapString) {
+    return "<tr>" +
+        "<td colspan='2' style='text-align: left; white-space: nowrap;' >" +
+        "<span>Epoch " + epochNumber + "</span>" +
+        "</td>" +
+        "<td class='text-secondary' style='text-align: right; white-space:'>" +
+        "<span id='total_all_lp_reward_epoch_" + epochNumber + "_zwap' class='ml-1'>" + pastTotalRewardZwapString + "</span>" +
+        "<span class='ml-1'>ZWAP</span>" +
+        "</td>" + 
+        "<td class='text-secondary' style='text-align: right; white-space: nowrap;'>" +
+        "<span class='currency_symbol mr-1'>" + coinPriceStatus.getCurrentActiveDollarSymbol() + "</span>" + 
+        "<span id='total_all_lp_reward_epoch_" +  epochNumber + "_fiat' class='past_lp_reward_fiat'/>" +
+        "</td>" +
+    "</tr>";
+}
+
 if (typeof exports !== 'undefined') {
     if (typeof bindViewZwapRewardLp === 'undefined') {
         BindView = require('./bind_view.js');
@@ -219,4 +236,5 @@ if (typeof exports !== 'undefined') {
     exports.onLpRewardNextEpochLoaded = onLpRewardNextEpochLoaded;
     exports.onLpRewardPastEpochLoaded = onLpRewardPastEpochLoaded;
     exports.onLpCurrentEpochInfoLoaded = onLpCurrentEpochInfoLoaded;
+    exports.getViewPastTotalRewardAllLpZwap = getViewPastTotalRewardAllLpZwap;
 }

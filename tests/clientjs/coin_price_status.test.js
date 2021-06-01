@@ -204,6 +204,7 @@ describe('CoinPriceStatus', function () {
             coinPriceStatus.setActiveCurrencyCode('krw');
 
             // Assert getter (default 'usd')
+            assert.strictEqual(coinPriceStatus.getCurrentActiveDollarSymbol(), '₩');
             assert.strictEqual(coinPriceStatus.getCoinPriceFiat('ZIL'), null);
             assert.strictEqual(coinPriceStatus.getCoinPriceFiat24hAgo('ZIL'), null);
             assert.strictEqual(coinPriceStatus.getCoinPriceFiat('ETH'), null);

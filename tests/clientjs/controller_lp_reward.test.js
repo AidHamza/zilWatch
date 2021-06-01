@@ -187,6 +187,34 @@ describe('ControllerLpReward', function () {
         });
     });
 
+    describe('#getViewPastTotalRewardAllLpZwap()', function () {
+
+        it('happy case', function () {
+           
+            let epochNumber = '12345';
+            let pastTotalRewardZwapString = 'qwertyuiop';
+
+            let epochNumber2 = '54321';
+            let pastTotalRewardZwapString2 = 'asdfghjkl';
+
+            // Act
+            let viewElementString = ControllerLpReward.getViewPastTotalRewardAllLpZwap(epochNumber, pastTotalRewardZwapString);
+
+            // Assert
+            assert.notStrictEqual(viewElementString, '');
+            assert.strictEqual(viewElementString.includes(pastTotalRewardZwapString), true);
+            assert.strictEqual(viewElementString.includes(epochNumber), true);
+
+            // Act
+            let viewElementString2 = ControllerLpReward.getViewPastTotalRewardAllLpZwap(epochNumber2, pastTotalRewardZwapString2);
+
+            // Assert
+            assert.notStrictEqual(viewElementString2, '');
+            assert.strictEqual(viewElementString2.includes(pastTotalRewardZwapString2), true);
+            assert.strictEqual(viewElementString2.includes(epochNumber2), true);
+        });
+    });
+
     describe('#onLpCurrentEpochInfoLoaded()', function () {
 
         beforeEach(function () {

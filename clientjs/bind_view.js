@@ -523,22 +523,7 @@ function clearViewPastTotalRewardAllLpZwap() {
     $('#total_all_lp_reward_past_epoch_tooltip_content').empty();
 }
 
-function addViewPastTotalRewardAllLpZwap(epochNumber, pastTotalRewardZwapString) {
-    let element =
-    "<tr>" +
-        "<td colspan='2' style='text-align: left; white-space: nowrap;' >" +
-        "<span>Epoch " + epochNumber + "</span>" +
-        "</td>" +
-        "<td class='text-secondary' style='text-align: right; white-space:'>" +
-        "<span id='total_all_lp_reward_epoch_" + epochNumber + "_zwap' class='ml-1'>" + pastTotalRewardZwapString + "</span>" +
-        "<span class='ml-1'>ZWAP</span>" +
-        "</td>" + 
-        "<td class='text-secondary' style='text-align: right; white-space: nowrap;'>" +
-        "<span class='currency_symbol mr-1'>$</span>" + 
-        "<span id='total_all_lp_reward_epoch_" +  epochNumber + "_fiat' class='past_lp_reward_fiat'/>" +
-        "</td>" +
-    "</tr>";
-
+function addViewPastTotalRewardAllLpZwap(element) {
     $('#total_all_lp_reward_past_epoch_tooltip_content').append(element);
 }
 

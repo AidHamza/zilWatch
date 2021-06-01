@@ -234,41 +234,33 @@ describe('BindView4', function () {
         });
 
         it('addView, 2x, view appended', function () {
-            let epochNumber = '12345';
-            let pastTotalRewardZwapString = 'qwertyuiop';
-
-            let epochNumber2 = '54321';
-            let pastTotalRewardZwapString2 = 'asdfghjkl';
+            let viewElement = "<div>hehe</div>";
+            let viewElement2 = "<div>hihi</div>";
+            let combinedElement = viewElement + viewElement2;
 
             // Act
-            BindView.addViewPastTotalRewardAllLpZwap(epochNumber, pastTotalRewardZwapString);
+            BindView.addViewPastTotalRewardAllLpZwap(viewElement);
 
             // Assert
             assert.notStrictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html(), '');
-            assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html().includes(pastTotalRewardZwapString), true);
-            assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html().includes(epochNumber), true);
+            assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html(), viewElement);
 
             // Act
-            BindView.addViewPastTotalRewardAllLpZwap(epochNumber2, pastTotalRewardZwapString2);
+            BindView.addViewPastTotalRewardAllLpZwap(viewElement2);
 
             // Assert
             assert.notStrictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html(), '');
-            assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html().includes(pastTotalRewardZwapString), true);
-            assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html().includes(epochNumber), true);
-            assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html().includes(pastTotalRewardZwapString2), true);
-            assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html().includes(epochNumber2), true);
+            assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html(), combinedElement);
         });
 
         it('addView 2x, clearView, empty', function () {
-            let epochNumber = '12345';
-            let pastTotalRewardZwapString = 'qwertyuiop';
-
-            let epochNumber2 = '54321';
-            let pastTotalRewardZwapString2 = 'asdfghjkl';
+            let viewElement = "<div>hehe</div>";
+            let viewElement2 = "<div>hihi</div>";
+            let combinedElement = viewElement + viewElement2;
 
             // Act
-            BindView.addViewPastTotalRewardAllLpZwap(epochNumber, pastTotalRewardZwapString);
-            BindView.addViewPastTotalRewardAllLpZwap(epochNumber2, pastTotalRewardZwapString2);
+            BindView.addViewPastTotalRewardAllLpZwap(viewElement);
+            BindView.addViewPastTotalRewardAllLpZwap(viewElement2);
             BindView.clearViewPastTotalRewardAllLpZwap();
 
             // Assert
@@ -276,7 +268,6 @@ describe('BindView4', function () {
             assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').css('display'), 'none');
         });
     });
-
 
     describe('#bindViewPastTotalRewardAllLpFiat()', function () {
 
@@ -287,31 +278,26 @@ describe('BindView4', function () {
         });
 
         it('2 rows, bindViewPastTotalRewardAllLpFiat', function () {
-            let epochNumber = '12345';
-            let pastTotalRewardZwapString = '1000.5';
+            let zwapString = '1000.5';
+            let zwapString2 = '9500.2';
 
-            let epochNumber2 = '54321';
-            let pastTotalRewardZwapString2 = '9500.2';
+            let viewElement = "<div id='lala_zwap'>" + zwapString + "</div><div id='lala_fiat' class='past_lp_reward_fiat'>0</div>";
+            let viewElement2 = "<div id='lala_2_zwap'>" + zwapString2 + "</div><div id='lala_2_fiat' class='past_lp_reward_fiat'>0</div>";
 
-            BindView.addViewPastTotalRewardAllLpZwap(epochNumber, pastTotalRewardZwapString);
+            BindView.addViewPastTotalRewardAllLpZwap(viewElement);
 
             // Assert
-            assert.notStrictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html(), '');
-            assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html().includes(pastTotalRewardZwapString), true);
-            assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html().includes(epochNumber), true);
-            assert.strictEqual($('#total_all_lp_reward_epoch_' + epochNumber + '_fiat').text(), '');
+            assert.strictEqual($('#lala_zwap').text(), zwapString);
+            assert.strictEqual($('#lala_fiat').text(), '0');
             assert.strictEqual($('.past_lp_reward_fiat').length, 1);
 
-            BindView.addViewPastTotalRewardAllLpZwap(epochNumber2, pastTotalRewardZwapString2);
+            BindView.addViewPastTotalRewardAllLpZwap(viewElement2);
 
             // Assert
-            assert.notStrictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html(), '');
-            assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html().includes(pastTotalRewardZwapString), true);
-            assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html().includes(epochNumber), true);
-            assert.strictEqual($('#total_all_lp_reward_epoch_' + epochNumber + '_fiat').text(), '');
-            assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html().includes(pastTotalRewardZwapString2), true);
-            assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html().includes(epochNumber2), true);
-            assert.strictEqual($('#total_all_lp_reward_epoch_' + epochNumber2 + '_fiat').text(), '');
+            assert.strictEqual($('#lala_zwap').text(), zwapString);
+            assert.strictEqual($('#lala_fiat').text(), '0');
+            assert.strictEqual($('#lala_2_zwap').text(), zwapString2);
+            assert.strictEqual($('#lala_2_fiat').text(), '0');
             assert.strictEqual($('.past_lp_reward_fiat').length, 2);
 
             function doubleReward(zwapReward) {
@@ -321,10 +307,10 @@ describe('BindView4', function () {
             BindView.bindViewPastTotalRewardAllLpFiat(doubleReward);
             
             // Assert
-            let expectedPastRewardFiat = doubleReward(pastTotalRewardZwapString).toString();
-            assert.strictEqual($('#total_all_lp_reward_epoch_' + epochNumber + '_fiat').text(), expectedPastRewardFiat);
-            let expectedPastRewardFiat2 = doubleReward(pastTotalRewardZwapString2).toString();
-            assert.strictEqual($('#total_all_lp_reward_epoch_' + epochNumber2 + '_fiat').text(), expectedPastRewardFiat2);
+            let expectedPastRewardFiat = doubleReward(zwapString).toString();
+            assert.strictEqual($('#lala_fiat').text(), expectedPastRewardFiat);
+            let expectedPastRewardFiat2 = doubleReward(zwapString2).toString();
+            assert.strictEqual($('#lala_2_fiat').text(), expectedPastRewardFiat2);
         });
     });
 
