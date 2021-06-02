@@ -126,7 +126,7 @@ function refreshMainContentData(account) {
 
     // (6) Get ZRC-2 tokens price & ZRC-2 tokens LP balances in Zilswap, async.
     // Do this together because they are one API call, using the same data.
-    computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded, walletAddressBase16);
+    computeZilswapDexPersonalStatus(walletAddressBase16);
 
     // (7) Get ZRC-2 tokens balances, async.
     computeZrcTokensBalance(walletAddressBase16, zrcTokenPropertiesListMap, onZrcTokenWalletBalanceLoaded);
@@ -141,6 +141,27 @@ function refreshMainContentData(account) {
 
     // (10) Get CARBON staking balance, async
     computeCarbonStakingBalance(walletAddressBech32, walletAddressBase16);
+}
+
+function computeZilswapDexPersonalStatus(walletAddressBase16) {
+    zilswapDexStatus.computeDataRpcIfBalanceDataNoExist(
+        /* beforeRpcCallback= */
+        function() {
+            incrementShowSpinnerLpBalance();
+        },
+        /* onSuccessCallback= */
+        function() {
+            zilswapDexStatus.bindViewPersonalDataIfDataExist(walletAddressBase16);
+
+            onZilswapSinglePairPublicStatusLoaded();
+            onZrcTokenLpBalanceLoaded();
+            
+            decrementShowSpinnerLpBalance();
+        },
+        /* onErrorCallback= */
+        function() {
+            decrementShowSpinnerLpBalance();
+        });
 }
 
 function computeZilswapDexStatus() {

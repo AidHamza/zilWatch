@@ -109,58 +109,6 @@ function computeZilBalance(walletAddressBase16, onZilWalletBalanceLoaded) {
  * --------------------------------------------------------------------------------
  */
 
-function computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded, walletAddressBase16) {
-    if (zilswapDexSmartContractStateData) {
-        // Use cache if available.
-        if (zilswapDexSmartContractStateData.result.balances) {
-            onZilswapDexStatusLoaded(zilswapDexSmartContractStateData, walletAddressBase16);
-            return;
-        }
-        incrementShowSpinnerLpBalance();
-
-        queryZilliqaApiAjax(
-            /* method= */
-            "GetSmartContractSubState",
-            /* params= */
-            ["Ba11eB7bCc0a02e947ACF03Cc651Bfaf19C9EC00", "balances", []],
-            /* successCallback= */
-            function (data) {
-                if (data.result.balances) {
-                    zilswapDexSmartContractStateData.result.balances = data.result.balances;
-                    onZilswapDexStatusLoaded(zilswapDexSmartContractStateData, walletAddressBase16);
-                }
-                decrementShowSpinnerLpBalance();
-            },
-            /* errorCallback= */
-            function () {
-                decrementShowSpinnerLpBalance();
-            });
-
-    } else {
-        incrementShowSpinnerLpBalance();
-
-        queryZilliqaApiAjax(
-            /* method= */
-            "GetSmartContractState",
-            /* params= */
-            ["Ba11eB7bCc0a02e947ACF03Cc651Bfaf19C9EC00"],
-            /* successCallback= */
-            function (data) {
-                zilswapDexSmartContractStateData = data;
-                onZilswapDexStatusLoaded(zilswapDexSmartContractStateData, walletAddressBase16);
-                decrementShowSpinnerLpBalance();
-            },
-            /* errorCallback= */
-            function () {
-                decrementShowSpinnerLpBalance();
-            });
-    }
-}
-
-/**
- * --------------------------------------------------------------------------------
- */
-
 /** Void function. invokes onZrcTokenWalletBalanceLoaded(number zrcBalanceQa, string ticker) function after computation is done. */
 function computeZrcTokensBalance(walletAddressBase16, zrcTokenPropertiesListMap, onZrcTokenWalletBalanceLoaded) {
     for (const key in zrcTokenPropertiesListMap) {

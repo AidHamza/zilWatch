@@ -6,7 +6,6 @@ function onZilswapSinglePairPublicStatusLoaded() {
         refreshTotalWalletBalanceZilFiat();
 
         // Lp balance
-        refreshZrcTokenLpBalanceFiat(ticker)
         refreshTotalLpBalanceZilFiat();
 
         // Total supply
@@ -24,6 +23,14 @@ function onZilswapSinglePairPublicStatusLoaded() {
             refreshTotalStakingZilFiat();
         }
     }
+
+    // Net worth
+    refreshNetWorthZilFiat();
+}
+
+function onZrcTokenLpBalanceLoaded() {
+    // Lp balance
+    refreshTotalLpBalanceZilFiat();
 
     // Net worth
     refreshNetWorthZilFiat();

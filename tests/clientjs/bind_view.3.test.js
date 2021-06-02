@@ -289,67 +289,6 @@ describe('BindView3', function () {
         });
     });
 
-    describe('#bindViewZrcTokenLpBalanceFiat24hAgo()', function () {
-
-        beforeEach(function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_24h_ago').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_24h').text(), '');
-            }
-        });
-
-        it('bind view happy case', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewZrcTokenLpBalanceFiat24hAgo('1234.4' , '2.3', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_24h_ago').text(), '1234.4');
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_24h').text(), '2.3');
-            }
-        });
-
-        it('bind view random string', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewZrcTokenLpBalanceFiat24hAgo('asdf', 'fdew', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_24h_ago').text(), 'asdf');
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_24h').text(), 'fdew');
-            }
-        });
-    });
-
-    describe('#bindViewZrcTokenLpBalanceFiat()', function () {
-
-        beforeEach(function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), 'Loading...');
-            }
-        });
-
-        it('bind view happy case', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewZrcTokenLpBalanceFiat('1234.4', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), '1234.4');
-            }
-        });
-
-        it('bind view random string', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewZrcTokenLpBalanceFiat('asdf', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), 'asdf');
-            }
-        });
-    });
-
     describe('#bindViewTotalLpBalanceZil24hAgo()', function () {
 
         beforeEach(function () {

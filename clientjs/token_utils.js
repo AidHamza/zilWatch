@@ -156,9 +156,13 @@ class ZilswapSinglePairPublicStatus {
 class ZilswapSinglePairPersonalStatus {
     constructor(shareRatio, zilswapSingleTokenPublicStatus) {
         this.shareRatio = shareRatio;
-        this.zilAmount =  zilswapSingleTokenPublicStatus.totalPoolZilAmount * shareRatio;
+        this.zilAmount = zilswapSingleTokenPublicStatus.totalPoolZilAmount * shareRatio;
         this.zrcTokenAmount = zilswapSingleTokenPublicStatus.totalPoolZrcTokenAmount * shareRatio;
     }
+}
+
+function getZilswapSinglePairPersonalStatus(shareRatio, zilswapSingleTokenPublicStatus) {
+    return new ZilswapSinglePairPersonalStatus(shareRatio, zilswapSingleTokenPublicStatus);
 }
 
 if (typeof exports !== 'undefined') {
@@ -168,4 +172,5 @@ if (typeof exports !== 'undefined') {
     exports.getPercentChange = getPercentChange;
     exports.ZilswapSinglePairPublicStatus = ZilswapSinglePairPublicStatus;
     exports.ZilswapSinglePairPersonalStatus = ZilswapSinglePairPersonalStatus;
+    exports.getZilswapSinglePairPersonalStatus = getZilswapSinglePairPersonalStatus;
 }
