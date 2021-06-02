@@ -75,20 +75,11 @@ function assertDefaultStateMainContent() {
     // bindViewZilBalance()
     assert.strictEqual($('#zil_balance').text(), 'Loading...');
 
-    // bindViewZrcTokenPriceInZil24hAgo(): Exception, no need refresh
-    // bindViewZrcTokenPriceInZil(): Exception, no need refresh
-
-    // bindViewZrcTokenPriceInFiat24hAgo(): Exception, no need refresh
-    // bindViewZrcTokenPriceInFiat(): Exception, no need refresh
-
     // bindViewZrcTokenWalletBalance()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {
         assert.strictEqual($('#' + ticker + '_balance').text(), 'Loading...');
         assert.strictEqual($('#' + ticker + '_container').css('display'), 'none');
     }
-
-    // bindViewZrcTokenLpTotalPoolBalance(): Exception, no need refresh
-
 
     // bindViewZrcTokenLpBalance24hAgo()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {
@@ -182,8 +173,6 @@ function assertDefaultStateMainContent() {
 
     // bindViewTotalWalletBalanceFiat()
     assert.strictEqual($('#wallet_balance_fiat').text(), 'Loading...');
-
-    // bindViewZrcTokenLpTotalPoolBalanceFiat(): Exception, no need refresh
 
     // bindViewZrcTokenLpBalanceFiat24hAgo()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {

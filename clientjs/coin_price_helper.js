@@ -8,10 +8,7 @@ function onCoinFiatPriceLoaded() {
 
     // Lp balance
     for (let ticker in zrcTokenPropertiesListMap) {
-        refreshZrcTokenPriceFiat(ticker);
-
         refreshTotalTradeVolumeFiat(ticker);
-        refreshZrcTokenLpTotalPoolBalanceFiat(ticker);
         refreshZrcTokenLpBalanceFiat(ticker);
 
         // Total supply

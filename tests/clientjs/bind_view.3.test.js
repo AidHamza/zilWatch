@@ -289,35 +289,6 @@ describe('BindView3', function () {
         });
     });
 
-    describe('#bindViewZrcTokenLpTotalPoolBalanceFiat()', function () {
-
-        beforeEach(function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_total_pool_fiat').text(), 'Loading...');
-            }
-        });
-
-        it('bind view happy case', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewZrcTokenLpTotalPoolBalanceFiat('1234.4', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_lp_total_pool_fiat').text(), '1234.4');
-            }
-        });
-
-        it('bind view random string', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewZrcTokenLpTotalPoolBalanceFiat('asdf', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_lp_total_pool_fiat').text(), 'asdf');
-            }
-        });
-    });
-
     describe('#bindViewZrcTokenLpBalanceFiat24hAgo()', function () {
 
         beforeEach(function () {

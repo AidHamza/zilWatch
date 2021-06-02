@@ -194,10 +194,6 @@ block content
                       span(id=tokenProperties.ticker+'_lp_total_volume_zil')= '0'
                     td(style='text-align: right; white-space: nowrap; width: 25%;' )
                       span(id=tokenProperties.ticker+'_lp_total_volume_fiat')= '0'
-                    //- Just a placeholder
-                    td(style='display: none;' )
-                      span(id=tokenProperties.ticker+'_lp_total_pool_zil')= '0'
-                      span(id=tokenProperties.ticker+'_lp_total_pool_zrc')= '0'
                     td(style='text-align: right; white-space: nowrap; width: 25%;' )
                       span(id=tokenProperties.ticker+'_lp_total_pool_fiat')= 'Loading...'
     
@@ -738,3 +734,4 @@ block script
     var zrcTokensCirculatingSupplyData = !{JSON.stringify(zrcTokensCirculatingSupply)};
 
     const coinPriceStatus = new CoinPriceStatus(coinMap, currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
+    const zilswapDexStatus = new ZilswapDexStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexSmartContractStateData,  zilswapDexSmartContractState24hAgoData);

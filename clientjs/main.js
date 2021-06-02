@@ -20,10 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Public information
     computeCoinPriceStatus(currentCurrencyCode);
+    computeZilswapDexStatus();
 
     // This is unrelated to balance and the APIs used for personalized dashboard
     // So don't need to reload.
-    computeZrcTokensPriceInZil(onZilswapDexStatusLoaded);
     compute24hLpTradeVolume(onLpTradeVolumeLoaded);
     onZrcTokensTotalSupplyLoaded();
     onZrcTokensCirculatingSupplyLoaded();
@@ -143,6 +143,20 @@ function refreshMainContentData(account) {
     computeCarbonStakingBalance(walletAddressBech32, walletAddressBase16);
 }
 
+function computeZilswapDexStatus() {
+    zilswapDexStatus.computeDataRpcIfDataNoExist(
+        /* beforeRpcCallback= */
+        function() {
+        },
+        /* onSuccessCallback= */
+        function() {
+            onZilswapSinglePairPublicStatusLoaded();
+        },
+        /* onErrorCallback= */
+        function() {
+        });
+}
+
 function computeCoinPriceStatus(currencyCode) {
     coinPriceStatus.setActiveCurrencyCode(currencyCode);
     coinPriceStatus.computeDataRpcIfDataNoExist(
@@ -152,6 +166,7 @@ function computeCoinPriceStatus(currencyCode) {
         /* onSuccessCallback= */
         function() {
             onCoinFiatPriceLoaded();
+            zilswapDexStatus.onCoinPriceStatusChange();
         },
         /* onErrorCallback= */
         function() {

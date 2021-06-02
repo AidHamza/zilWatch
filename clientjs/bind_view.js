@@ -206,41 +206,9 @@ function bindViewZilBalance(zilBalance) {
     $('#zil_balance').text(zilBalance);
 }
 
-// Exception, no need to reset
-function bindViewZrcTokenPriceInZil24hAgo(zrcTokenPriceInZil24hAgo, publicZrcTokenPriceInZil24hAgo, publicZrcTokenPriceInZilPercentChange24h, ticker) {
-    $('.' + ticker + '_price_zil_24h_ago').text(zrcTokenPriceInZil24hAgo);
-    $('#public_' + ticker + '_price_zil_24h_ago').text(publicZrcTokenPriceInZil24hAgo);
-    $('#public_' + ticker + '_price_zil_percent_change_24h').text(publicZrcTokenPriceInZilPercentChange24h);
-    bindViewPercentChangeColorContainer('#public_' + ticker + '_price_zil_percent_change_24h_container', publicZrcTokenPriceInZilPercentChange24h);
-}
-
-// Exception, no need to reset
-function bindViewZrcTokenPriceInZil(zrcTokenPriceInZil, publicZrcTokenPriceInZil, ticker) {
-    $('.' + ticker + '_price_zil').text(zrcTokenPriceInZil);
-    $('#public_' + ticker + '_price_zil').text(publicZrcTokenPriceInZil);
-}
-
-// Exception, no need to reset
-function bindViewZrcTokenPriceInFiat24hAgo(zrcTokenPriceInFiat24hAgo, zrcTokenPriceInFiatPercentChange24h, ticker) {
-    $('#public_' + ticker + '_price_fiat_24h_ago').text(zrcTokenPriceInFiat24hAgo);
-    $('#public_' + ticker + '_price_fiat_percent_change_24h').text(zrcTokenPriceInFiatPercentChange24h);
-    bindViewPercentChangeColorContainer('#public_' + ticker + '_price_fiat_percent_change_24h_container', zrcTokenPriceInFiatPercentChange24h);
-}
-
-// Exception, no need to reset
-function bindViewZrcTokenPriceInFiat(zrcTokenPriceInFiat, ticker) {
-    $('#public_' + ticker + '_price_fiat').text(zrcTokenPriceInFiat);
-}
-
 function bindViewZrcTokenWalletBalance(zrcTokenBalance, ticker) {
     $('#' + ticker + '_balance').text(zrcTokenBalance);
     $('#' + ticker + '_container').show();
-}
-
-// Exception, no need to reset
-function bindViewZrcTokenLpTotalPoolBalance(totalPoolZilBalance, totalPoolZrcBalance, ticker) {
-    $('#' + ticker + '_lp_total_pool_zil').text(totalPoolZilBalance);
-    $('#' + ticker + '_lp_total_pool_zrc').text(totalPoolZrcBalance);
 }
 
 function bindViewZrcTokenLpBalance24hAgo(poolSharePercent24hAgo, zilBalance24hAgo, zrcBalance24hAgo, balanceInZil24hAgo, balanceInZilPercentChange24h, ticker) {
@@ -366,11 +334,6 @@ function bindViewTotalWalletBalanceFiat24hAgo(totalWalletBalanceFiat24hAgo, tota
 
 function bindViewTotalWalletBalanceFiat(totalWalletBalanceFiat) {
     $('#wallet_balance_fiat').text(totalWalletBalanceFiat);
-}
-
-// Exception, no need to reset
-function bindViewZrcTokenLpTotalPoolBalanceFiat(lpTotalPoolBalanceFiat, ticker) {
-    $('#' + ticker + '_lp_total_pool_fiat').text(lpTotalPoolBalanceFiat);
 }
 
 function bindViewZrcTokenLpBalanceFiat24hAgo(lpBalanceFiat24hAgo, lpBalanceFiatPercentChange24h, ticker) {
@@ -691,12 +654,7 @@ if (typeof exports !== 'undefined') {
 
     // 2
     exports.bindViewZilBalance = bindViewZilBalance;
-    exports.bindViewZrcTokenPriceInZil24hAgo = bindViewZrcTokenPriceInZil24hAgo;
-    exports.bindViewZrcTokenPriceInZil = bindViewZrcTokenPriceInZil;
-    exports.bindViewZrcTokenPriceInFiat24hAgo = bindViewZrcTokenPriceInFiat24hAgo;
-    exports.bindViewZrcTokenPriceInFiat = bindViewZrcTokenPriceInFiat;
     exports.bindViewZrcTokenWalletBalance = bindViewZrcTokenWalletBalance;
-    exports.bindViewZrcTokenLpTotalPoolBalance = bindViewZrcTokenLpTotalPoolBalance;
     exports.bindViewZrcTokenLpBalance24hAgo = bindViewZrcTokenLpBalance24hAgo;
     exports.bindViewZrcTokenLpBalance = bindViewZrcTokenLpBalance;
     exports.bindViewZilStakingBalance = bindViewZilStakingBalance;
@@ -724,7 +682,6 @@ if (typeof exports !== 'undefined') {
     exports.bindViewTotalWalletBalanceZil = bindViewTotalWalletBalanceZil;
     exports.bindViewTotalWalletBalanceFiat24hAgo = bindViewTotalWalletBalanceFiat24hAgo;
     exports.bindViewTotalWalletBalanceFiat = bindViewTotalWalletBalanceFiat;
-    exports.bindViewZrcTokenLpTotalPoolBalanceFiat = bindViewZrcTokenLpTotalPoolBalanceFiat;
     exports.bindViewZrcTokenLpBalanceFiat24hAgo = bindViewZrcTokenLpBalanceFiat24hAgo;
     exports.bindViewZrcTokenLpBalanceFiat = bindViewZrcTokenLpBalanceFiat;
     exports.bindViewTotalLpBalanceZil24hAgo = bindViewTotalLpBalanceZil24hAgo;

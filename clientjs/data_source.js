@@ -1,5 +1,3 @@
-const ZilSwapDexAddress = "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w";
-const ZilSwapDexAddressBase16 = "Ba11eB7bCc0a02e947ACF03Cc651Bfaf19C9EC00";
 const ZilSeedNodeStakingImplementationAddress = "zil15lr86jwg937urdeayvtypvhy6pnp6d7p8n5z09"; // v 1.1
 const ZilSeedNodeStakingImplementationAddressBase16 = "a7C67D49C82c7dc1B73D231640B2e4d0661D37c1"; // v 1.1
 
@@ -124,7 +122,7 @@ function computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded, wall
             /* method= */
             "GetSmartContractSubState",
             /* params= */
-            [ZilSwapDexAddressBase16, "balances", []],
+            ["Ba11eB7bCc0a02e947ACF03Cc651Bfaf19C9EC00", "balances", []],
             /* successCallback= */
             function (data) {
                 if (data.result.balances) {
@@ -145,7 +143,7 @@ function computeZrcTokensPriceAndZilswapLpBalance(onZilswapDexStatusLoaded, wall
             /* method= */
             "GetSmartContractState",
             /* params= */
-            [ZilSwapDexAddressBase16],
+            ["Ba11eB7bCc0a02e947ACF03Cc651Bfaf19C9EC00"],
             /* successCallback= */
             function (data) {
                 zilswapDexSmartContractStateData = data;
@@ -313,25 +311,6 @@ function compute24hLpTradeVolume(onLpTradeVolumeLoaded) {
         /* successCallback= */
         function (data) {
             onLpTradeVolumeLoaded(data);
-        },
-        /* errorCallback= */
-        function () {});
-}
-
-function computeZrcTokensPriceInZil(onZilswapDexStatusLoaded) {
-    if (zilswapDexSmartContractStateData) {
-        // Use cache if available.
-        onZilswapDexStatusLoaded(zilswapDexSmartContractStateData);
-        return;
-    }
-    queryZilliqaApiAjax(
-        /* method= */
-        "GetSmartContractSubState",
-        /* params= */
-        [ZilSwapDexAddressBase16, "pools", []],
-        /* successCallback= */
-        function (data) {
-            onZilswapDexStatusLoaded(data);
         },
         /* errorCallback= */
         function () {});
