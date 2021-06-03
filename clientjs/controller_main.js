@@ -4,46 +4,6 @@
  * --------------------------------------------------------------------------------
  */
 
-function onZilWalletBalanceLoaded(dataObject) {
-    if (!dataObject) {
-        return;
-    }
-    let zilBalanceQa = 0.0;
-    let userFriendlyZilBalance = "0";
-
-    // Even if the data doesn't exist, we don't return, we set as 0 instead.
-    // We don't hide basic ZIL card in wallet balance.
-    if (dataObject.result && dataObject.result.balance) {
-        zilBalanceQa = parseInt(dataObject.result.balance);
-    }
-    if (zilBalanceQa > 0) {
-        userFriendlyZilBalance = convertNumberQaToDecimalString(zilBalanceQa, /* decimals= */ 12);
-    }
-    bindViewZilBalance(userFriendlyZilBalance);
-
-    // Wallet Balance
-    refreshZilWalletBalanceFiat();
-    refreshTotalWalletBalanceZilFiat();
-
-    // Net worth
-    refreshNetWorthZilFiat();
-}
-
-function onZrcTokenWalletBalanceLoaded(zrcTokenBalanceNumberQa, zrcTokenProperties) {
-    let userFriendlyZrcTokenBalanceString = convertNumberQaToDecimalString(zrcTokenBalanceNumberQa, zrcTokenProperties.decimals);
-    if (!userFriendlyZrcTokenBalanceString) {
-        return;
-    }
-    bindViewZrcTokenWalletBalance(userFriendlyZrcTokenBalanceString, zrcTokenProperties.ticker);
-
-    // Wallet Balance
-    refreshZrcTokenWalletBalanceZilFiat(zrcTokenProperties.ticker);
-    refreshTotalWalletBalanceZilFiat();
-
-    // Net worth
-    refreshNetWorthZilFiat();
-}
-
 function onZilStakingBalanceLoaded(zilBalanceQa, ssnAddress) {
     let userFriendlyZilStakingBalanceString = convertNumberQaToDecimalString(parseInt(zilBalanceQa), /* decimals= */ 12);
     if (!userFriendlyZilStakingBalanceString) {
@@ -178,80 +138,6 @@ function refreshZrcTokenTotalSupplyZilFiat(ticker) {
 /**
  * --------------------------------------------------------------------------------
  */
-
-function refreshZilWalletBalanceFiat() {
-
-    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
-    if (!zilPriceInFiatFloat) {
-        return;
-    }
-    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
-
-    let zilBalance = getNumberFromView('#zil_balance');
-    if (Number.isNaN(zilBalance)) {
-        return;
-    }
-
-    let zilBalanceFiat = (zilPriceInFiatFloat * zilBalance);
-    bindViewZilBalanceFiat(commafyNumberToString(zilBalanceFiat, decimals));
-
-    // Set token wallet balance in fiat 24h ago
-    let zilPriceInFiat24hAgoFloat = coinPriceStatus.getCoinPriceFiat24hAgo('ZIL');
-    if (!zilPriceInFiat24hAgoFloat) {
-        return;
-    }
-    let zilBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zilBalance;
-    let zilBalanceFiat24hAgoString = commafyNumberToString(zilBalanceFiat24hAgo, decimals);
-    let zilBalanceFiatPercentChange24h = getPercentChange(zilBalanceFiat, zilBalanceFiat24hAgo).toFixed(1);
-    bindViewZilBalanceFiat24hAgo(zilBalanceFiat24hAgoString, zilBalanceFiatPercentChange24h);
-}
-
-function refreshZrcTokenWalletBalanceZilFiat(ticker) {
-
-    let zrcTokenPriceInZil = getNumberFromView('.' + ticker + '_price_zil');
-    if (Number.isNaN(zrcTokenPriceInZil)) {
-        return;
-    }
-
-    let zrcTokenBalance = getNumberFromView('#' + ticker + '_balance');
-    if (Number.isNaN(zrcTokenBalance)) {
-        return;
-    }
-
-    let zrcTokenBalanceZil = 1.0 * zrcTokenPriceInZil * zrcTokenBalance;
-    let zrcTokenBalanceZilString = convertNumberQaToDecimalString(zrcTokenBalanceZil, /* decimals= */ 0);
-    bindViewZrcTokenWalletBalanceZil(zrcTokenBalanceZilString, ticker);
-
-    // Set token wallet balance in ZIL 24h ago
-    let zrcTokenPriceInZil24hAgo = getNumberFromView('.' + ticker + '_price_zil_24h_ago');
-    let zrcTokenBalanceZil24hAgo = null;
-    if (!Number.isNaN(zrcTokenPriceInZil24hAgo)) {
-        zrcTokenBalanceZil24hAgo = 1.0 * zrcTokenPriceInZil24hAgo * zrcTokenBalance;
-        let zrcTokenBalanceZil24hAgoString = convertNumberQaToDecimalString(zrcTokenBalanceZil24hAgo, /* decimals= */ 0);
-        let zrcTokenInZilPercentChange24h = getPercentChange(zrcTokenBalanceZil, zrcTokenBalanceZil24hAgo);
-        bindViewZrcTokenWalletBalanceZil24hAgo(zrcTokenBalanceZil24hAgoString, zrcTokenInZilPercentChange24h.toFixed(1), ticker);
-    }
-
-    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
-    if (!zilPriceInFiatFloat) {
-        return;
-    }
-    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
-
-    let zrcTokenBalanceFiat = 1.0 * zilPriceInFiatFloat * zrcTokenBalanceZil;
-    let zrcTokenBalanceFiatString = commafyNumberToString(zrcTokenBalanceFiat, decimals);
-    bindViewZrcTokenWalletBalanceFiat(zrcTokenBalanceFiatString, ticker);
-
-    // Set token wallet balance in fiat 24h ago
-    let zilPriceInFiat24hAgoFloat = coinPriceStatus.getCoinPriceFiat24hAgo('ZIL');
-    if (!zilPriceInFiat24hAgoFloat || !zrcTokenBalanceZil24hAgo) {
-        return;
-    }
-    let zrcTokenBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zrcTokenBalanceZil24hAgo;
-    let zrcTokenBalanceFiat24hAgoString = commafyNumberToString(zrcTokenBalanceFiat24hAgo, decimals);
-    let zrcTokenBalanceFiatPercentChange24h = getPercentChange(zrcTokenBalanceFiat, zrcTokenBalanceFiat24hAgo);
-    bindViewZrcTokenWalletBalanceFiat24hAgo(zrcTokenBalanceFiat24hAgoString, zrcTokenBalanceFiatPercentChange24h.toFixed(1), ticker);
-}
 
 function refreshTotalWalletBalanceZilFiat() {
     // Sum balance in ZIL.

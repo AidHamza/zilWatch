@@ -1,13 +1,6 @@
 
 function onZilswapSinglePairPublicStatusLoaded() {
     for (let ticker in zrcTokenPropertiesListMap) {
-        // Wallet Balance
-        refreshZrcTokenWalletBalanceZilFiat(ticker);
-        refreshTotalWalletBalanceZilFiat();
-
-        // Lp balance
-        refreshTotalLpBalanceZilFiat();
-
         // Total supply
         refreshZrcTokenCirculatingSupplyZilFiat(ticker);
         refreshZrcTokenTotalSupplyZilFiat(ticker);
@@ -23,6 +16,11 @@ function onZilswapSinglePairPublicStatusLoaded() {
             refreshTotalStakingZilFiat();
         }
     }
+    // Wallet Balance
+    refreshTotalWalletBalanceZilFiat();
+
+    // Lp balance
+    refreshTotalLpBalanceZilFiat();
 
     // Net worth
     refreshNetWorthZilFiat();

@@ -2,37 +2,6 @@
 // No dependencies
 
 /**
- * Parse data returned by Zilliqa API call getSmartContractSubState() and return the ZRC token balance
- * for the given walletAddressBase16. 
- * 
- * If the given wallet has a balance, it will return the balance in number type.
- * 
- * If the balance for the address is not found or there are any other illegal states, return null.
- *
- * @param {Object} dataObject required The data object returned by the getSmartContractSubState(zrcAddress, "balances", walletAddressBase16)
- * @param {string} walletAddressBase16 required The wallet address to obtain the balance from
- * @returns {number} The number representation of the balance owned by the wallet address in QA unit
- */
-function parseZrcTokenBalanceNumberQaFromGetSmartContractSubState(dataObject, walletAddressBase16) {
-    if (dataObject === null || typeof dataObject !== 'object') {
-        return null;
-    }
-    if (typeof walletAddressBase16 !== 'string') {
-        return null;
-    }
-
-    if (dataObject && dataObject.result && dataObject.result.balances) {
-        let zrcTokenBalanceQa = dataObject.result.balances[walletAddressBase16.toLowerCase()];
-        let zrcTokenBalanceNumberQa = parseInt(zrcTokenBalanceQa);
-        // Only return if integer is successfully parsed.
-        if (zrcTokenBalanceNumberQa) {
-            return zrcTokenBalanceNumberQa;
-        }
-    }
-    return null;
-}
-
-/**
  * Parse data returned by ZIL API call getSmartContractState() for Zilswap DEX and return the price
  * of ZRC token in ZIL for the ZRC token defined in zrcTokenAddressBase16.
  * 
@@ -166,7 +135,6 @@ function getZilswapSinglePairPersonalStatus(shareRatio, zilswapSingleTokenPublic
 }
 
 if (typeof exports !== 'undefined') {
-    exports.parseZrcTokenBalanceNumberQaFromGetSmartContractSubState = parseZrcTokenBalanceNumberQaFromGetSmartContractSubState;
     exports.getZilswapSinglePairPublicStatusFromDexState = getZilswapSinglePairPublicStatusFromDexState;
     exports.getZilswapSinglePairShareRatio = getZilswapSinglePairShareRatio;
     exports.getPercentChange = getPercentChange;

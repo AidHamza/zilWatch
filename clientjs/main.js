@@ -121,27 +121,44 @@ function refreshMainContentData(account) {
     // (4) show main screen
     bindViewMainContainer(ZilpayStatus.connected);
 
-    // (5) Get ZIL balance, async.
-    computeZilBalance(walletAddressBase16, onZilWalletBalanceLoaded);
+    // (5) Get ZIL and ZRC walletbalance, async.
+    computeWalletBalanceStatus(walletAddressBase16);
 
     // (6) Get ZRC-2 tokens price & ZRC-2 tokens LP balances in Zilswap, async.
     // Do this together because they are one API call, using the same data.
     computeZilswapDexPersonalStatus(walletAddressBase16);
 
-    // (7) Get ZRC-2 tokens balances, async.
-    computeZrcTokensBalance(walletAddressBase16, zrcTokenPropertiesListMap, onZrcTokenWalletBalanceLoaded);
-
-    // (8) Get Potential LP reward next epoch and past epoch, async
+    // (7) Get Potential LP reward next epoch and past epoch, async
     computeTotalLpRewardNextEpoch(walletAddressBech32, onLpRewardNextEpochLoaded);
     computeTotalLpRewardPastEpoch(walletAddressBech32, onLpRewardPastEpochLoaded);
 
-    // (9) Get ZIL staking balance, async
+    // (8) Get ZIL staking balance, async
     computeZilStakingBalance(walletAddressBase16, onZilStakingBalanceLoaded);
     computeZilStakingWithdrawalPendingBalance(walletAddressBase16, onZilStakingWithdrawalPendingBalanceLoaded);
 
-    // (10) Get CARBON staking balance, async
+    // (9) Get CARBON staking balance, async
     computeCarbonStakingBalance(walletAddressBech32, walletAddressBase16);
 }
+
+
+function computeWalletBalanceStatus(walletAddressBase16) {
+    walletBalanceStatus.setWalletAddressBase16(walletAddressBase16);
+    walletBalanceStatus.computeDataRpc(
+        /* beforeRpcCallback= */
+        function() {
+            incrementShowSpinnerWalletBalance();
+        },
+        /* onSuccessCallback= */
+        function() {
+            onWalletBalanceLoaded();
+            decrementShowSpinnerWalletBalance();
+        },
+        /* onErrorCallback= */
+        function() {
+            decrementShowSpinnerWalletBalance();
+        });
+}
+
 
 function computeZilswapDexPersonalStatus(walletAddressBase16) {
     zilswapDexStatus.computeDataRpcIfBalanceDataNoExist(
@@ -155,8 +172,10 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
 
             onZilswapSinglePairPublicStatusLoaded();
             onZrcTokenLpBalanceLoaded();
+            walletBalanceStatus.onZilswapDexStatusChange();
             
             decrementShowSpinnerLpBalance();
+            
         },
         /* onErrorCallback= */
         function() {
@@ -188,6 +207,7 @@ function computeCoinPriceStatus(currencyCode) {
         function() {
             onCoinFiatPriceLoaded();
             zilswapDexStatus.onCoinPriceStatusChange();
+            walletBalanceStatus.onCoinPriceStatusChange();
         },
         /* onErrorCallback= */
         function() {

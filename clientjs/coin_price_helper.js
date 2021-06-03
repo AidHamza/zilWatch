@@ -1,9 +1,5 @@
 function onCoinFiatPriceLoaded() {
-        // Wallet Balance
-    refreshZilWalletBalanceFiat();
-    for (let ticker in zrcTokenPropertiesListMap) {
-        refreshZrcTokenWalletBalanceZilFiat(ticker);
-    }
+    // Wallet Balance
     refreshTotalWalletBalanceZilFiat();
 
     // Lp balance

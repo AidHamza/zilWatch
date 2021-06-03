@@ -202,14 +202,6 @@ function resetMainContainerContent() {
  * 2 --------------------------------------------------------------------------------
  */
 
-function bindViewZilBalance(zilBalance) {
-    $('#zil_balance').text(zilBalance);
-}
-
-function bindViewZrcTokenWalletBalance(zrcTokenBalance, ticker) {
-    $('#' + ticker + '_balance').text(zrcTokenBalance);
-    $('#' + ticker + '_container').show();
-}
 
 function bindViewZilStakingBalance(zilStakingBalance, ssnAddress) {
     $('#' + ssnAddress + '_zil_staking_balance').text(zilStakingBalance);
@@ -267,36 +259,6 @@ function bindViewZrcTokenTotalSupplyFiat(zrcTokenTotalSupplyFiat, ticker) {
 /**
  * 3 --------------------------------------------------------------------------------
  */
-
-function bindViewZilBalanceFiat24hAgo(zilBalanceFiat24hAgo, zilBalanceFiatPercentChange24h) {
-    $('#zil_balance_fiat_24h_ago').text(zilBalanceFiat24hAgo);
-    $('#zil_balance_fiat_percent_change_24h').text(zilBalanceFiatPercentChange24h);
-    bindViewPercentChangeColorContainer('#zil_balance_fiat_percent_change_24h_container', zilBalanceFiatPercentChange24h);
-}
-
-function bindViewZilBalanceFiat(zilBalanceFiat) {
-    $('#zil_balance_fiat').text(zilBalanceFiat);
-}
-
-function bindViewZrcTokenWalletBalanceZil24hAgo(zrcBalanceZil24hAgo, zrcBalanceZilPercentChange24h, ticker) {
-    $('#' + ticker + '_balance_zil_24h_ago').text(zrcBalanceZil24hAgo);
-    $('#' + ticker + '_balance_zil_percent_change_24h').text(zrcBalanceZilPercentChange24h);
-    bindViewPercentChangeColorContainer('#' + ticker + '_balance_zil_percent_change_24h_container', zrcBalanceZilPercentChange24h);
-}
-
-function bindViewZrcTokenWalletBalanceZil(zrcBalanceZil, ticker) {
-    $('#' + ticker + '_balance_zil').text(zrcBalanceZil);
-}
-
-function bindViewZrcTokenWalletBalanceFiat24hAgo(zrcBalanceFiat24hAgo, zrcBalanceFiatPercentChange24h, ticker) {
-    $('#' + ticker + '_balance_fiat_24h_ago').text(zrcBalanceFiat24hAgo);
-    $('#' + ticker + '_balance_fiat_percent_change_24h').text(zrcBalanceFiatPercentChange24h);
-    bindViewPercentChangeColorContainer('#' + ticker + '_balance_fiat_percent_change_24h_container', zrcBalanceFiatPercentChange24h);
-}
-
-function bindViewZrcTokenWalletBalanceFiat(zrcBalanceFiat, ticker) {
-    $('#' + ticker + '_balance_fiat').text(zrcBalanceFiat);
-}
 
 function bindViewTotalWalletBalanceZil24hAgo(totalWalletBalanceZil24hAgo, totalWalletBalanceZilPercentChange24h) {
     $('#wallet_balance_zil_24h_ago').text(totalWalletBalanceZil24hAgo);
@@ -625,8 +587,6 @@ if (typeof exports !== 'undefined') {
     exports.resetMainContainerContent = resetMainContainerContent;
 
     // 2
-    exports.bindViewZilBalance = bindViewZilBalance;
-    exports.bindViewZrcTokenWalletBalance = bindViewZrcTokenWalletBalance;
     exports.bindViewZilStakingBalance = bindViewZilStakingBalance;
     exports.bindViewZilStakingWithdrawalPendingBalance = bindViewZilStakingWithdrawalPendingBalance;
     exports.bindViewCarbonStakingBalance = bindViewCarbonStakingBalance;
@@ -642,12 +602,6 @@ if (typeof exports !== 'undefined') {
     exports.bindViewZrcTokenTotalSupplyFiat = bindViewZrcTokenTotalSupplyFiat;
 
     // 3
-    exports.bindViewZilBalanceFiat24hAgo = bindViewZilBalanceFiat24hAgo;
-    exports.bindViewZilBalanceFiat = bindViewZilBalanceFiat;
-    exports.bindViewZrcTokenWalletBalanceZil24hAgo = bindViewZrcTokenWalletBalanceZil24hAgo;
-    exports.bindViewZrcTokenWalletBalanceZil = bindViewZrcTokenWalletBalanceZil;
-    exports.bindViewZrcTokenWalletBalanceFiat = bindViewZrcTokenWalletBalanceFiat;
-    exports.bindViewZrcTokenWalletBalanceFiat24hAgo = bindViewZrcTokenWalletBalanceFiat24hAgo;
     exports.bindViewTotalWalletBalanceZil24hAgo = bindViewTotalWalletBalanceZil24hAgo;
     exports.bindViewTotalWalletBalanceZil = bindViewTotalWalletBalanceZil;
     exports.bindViewTotalWalletBalanceFiat24hAgo = bindViewTotalWalletBalanceFiat24hAgo;

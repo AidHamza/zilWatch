@@ -735,3 +735,5 @@ block script
 
     const coinPriceStatus = new CoinPriceStatus(coinMap, currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
     const zilswapDexStatus = new ZilswapDexStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexSmartContractStateData,  zilswapDexSmartContractState24hAgoData);
+    const walletBalanceStatus = new WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* nullable= */ null, /* nullable= */ null, /* nullable= */ null);
+    

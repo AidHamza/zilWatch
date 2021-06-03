@@ -85,65 +85,6 @@ async function queryZilliqaApiAjax(method, params, successCallback, errorCallbac
  * ===============================================================================
  */
 
-/** Void function. invokes onZilWalletBalanceLoaded(string balance) function after computation is done. */
-function computeZilBalance(walletAddressBase16, onZilWalletBalanceLoaded) {
-    incrementShowSpinnerWalletBalance();
-
-    queryZilliqaApiAjax(
-        /* method= */
-        "GetBalance",
-        /* params= */
-        [walletAddressBase16.substring(2)],
-        /* successCallback= */
-        function (data) {
-            onZilWalletBalanceLoaded(data);
-            decrementShowSpinnerWalletBalance();
-        },
-        /* errorCallback= */
-        function () {
-            decrementShowSpinnerWalletBalance();
-        });
-}
-
-/**
- * --------------------------------------------------------------------------------
- */
-
-/** Void function. invokes onZrcTokenWalletBalanceLoaded(number zrcBalanceQa, string ticker) function after computation is done. */
-function computeZrcTokensBalance(walletAddressBase16, zrcTokenPropertiesListMap, onZrcTokenWalletBalanceLoaded) {
-    for (const key in zrcTokenPropertiesListMap) {
-        let zrcTokenProperties = zrcTokenPropertiesListMap[key];
-
-        // Ignore Promise result, not important.
-        computeSingleZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded);
-    }
-}
-
-/** Private function, to compute a single zrcToken. */
-function computeSingleZrcTokenBalance(zrcTokenProperties, walletAddressBase16, onZrcTokenWalletBalanceLoaded) {
-    incrementShowSpinnerWalletBalance();
-
-    queryZilliqaApiAjax(
-        /* method= */
-        "GetSmartContractSubState",
-        /* params= */
-        [zrcTokenProperties.address_base16.substring(2), "balances", [walletAddressBase16]],
-        /* successCallback= */
-        function (data) {
-            let zrcTokenBalanceNumberQa = parseZrcTokenBalanceNumberQaFromGetSmartContractSubState(data, walletAddressBase16);
-            onZrcTokenWalletBalanceLoaded(zrcTokenBalanceNumberQa, zrcTokenProperties);
-            decrementShowSpinnerWalletBalance();
-        },
-        /* errorCallback= */
-        function () {
-            decrementShowSpinnerWalletBalance();
-        });
-}
-
-/**
- * --------------------------------------------------------------------------------
- */
-
 /** Private function, to compute ZIL staking balance */
 function computeZilStakingBalance(walletAddressBase16, onZilStakingBalanceLoaded) {
     incrementShowSpinnerStakingBalance();

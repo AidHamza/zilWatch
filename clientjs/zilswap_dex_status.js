@@ -42,7 +42,7 @@ class ZilswapDexStatus {
      */
     onCoinPriceStatusChange() {
         this.bindViewZrcTokenPriceFiat();
-        this.bindViewPersonalDataFiat(/* walletAddressBase16= */ null);
+        this.bindViewPersonalDataFiat();
     }
 
     computeZilswapPairPublicStatusMap() {
@@ -231,6 +231,7 @@ class ZilswapDexStatus {
             });
     }
 
+    /** Private method */
     bindViewPersonalDataIfDataExist(walletAddressBase16) {
         this.lastBindedWalletAddressBase16_ = walletAddressBase16;
         if (!this.hasBalanceData()) {
@@ -239,7 +240,7 @@ class ZilswapDexStatus {
         for (let ticker in this.zrcTokenPropertiesListMap_) {
             
             // To get ZilswapLp balance and Total pool status
-            let zilswapSinglePairPersonalStatus = this.getZilswapPairPersonalStatus(ticker, walletAddressBase16);
+            let zilswapSinglePairPersonalStatus = this.getZilswapPairPersonalStatus(ticker, this.lastBindedWalletAddressBase16_);
             if (!zilswapSinglePairPersonalStatus) {
                 continue;
             }
@@ -254,7 +255,7 @@ class ZilswapDexStatus {
             this.bindViewZrcTokenLpBalance(poolSharePercent, zilAmount, zrcTokenAmount, balanceInZilAmount, ticker);
 
             // If there is a 24h ago data
-            let zilswapSinglePairPersonalStatus24hAgo = this.getZilswapPairPersonalStatus24hAgo(ticker, walletAddressBase16);
+            let zilswapSinglePairPersonalStatus24hAgo = this.getZilswapPairPersonalStatus24hAgo(ticker, this.lastBindedWalletAddressBase16_);
             if (!zilswapSinglePairPersonalStatus24hAgo) {
                 continue;
             }
@@ -269,15 +270,12 @@ class ZilswapDexStatus {
             }
             this.bindViewZrcTokenLpBalance24hAgo(poolSharePercent24hAgo, zilAmount24hAgo, zrcTokenAmount24hAgo, balanceInZilAmount24hAgo, balanceInZilPercentChange24h, ticker);
         }
-        this.bindViewPersonalDataFiat(walletAddressBase16);
+        this.bindViewPersonalDataFiat();
     }
 
     /** Private method */
-    bindViewPersonalDataFiat(walletAddressBase16) {
-        if (!walletAddressBase16 && this.lastBindedWalletAddressBase16_) {
-            walletAddressBase16 = this.lastBindedWalletAddressBase16_;
-        }
-        if (!walletAddressBase16) {
+    bindViewPersonalDataFiat() {
+        if (!this.lastBindedWalletAddressBase16_) {
             return;
         }
         let zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
@@ -289,7 +287,7 @@ class ZilswapDexStatus {
 
         for (let ticker in zrcTokenPropertiesListMap) {
 
-            let zilswapSinglePairPersonalStatus = this.getZilswapPairPersonalStatus(ticker, walletAddressBase16);
+            let zilswapSinglePairPersonalStatus = this.getZilswapPairPersonalStatus(ticker, this.lastBindedWalletAddressBase16_);
             if (!zilswapSinglePairPersonalStatus) {
                 continue;
             }
@@ -304,7 +302,7 @@ class ZilswapDexStatus {
             if (!zilPriceInFiat24hAgoFloat) {
                 continue;
             }
-            let zilswapSinglePairPersonalStatus24hAgo = this.getZilswapPairPersonalStatus24hAgo(ticker, walletAddressBase16);
+            let zilswapSinglePairPersonalStatus24hAgo = this.getZilswapPairPersonalStatus24hAgo(ticker, this.lastBindedWalletAddressBase16_);
             if (!zilswapSinglePairPersonalStatus24hAgo) {
                 continue;
             }

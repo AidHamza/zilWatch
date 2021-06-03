@@ -17,61 +17,6 @@ describe('BindView2', function () {
         indexJsdom.assertDefaultStateMainContent();
     });
 
-    describe('#bindViewZilBalance()', function () {
-
-        beforeEach(function () {
-            assert.strictEqual($('#zil_balance').text(), 'Loading...');
-        });
-
-        it('bind view legit balance', function () {
-            // Act
-            BindView.bindViewZilBalance('1234.4');
-
-            // Assert
-            assert.strictEqual($('#zil_balance').text(), '1234.4');
-        });
-
-        it('bind view random string', function () {
-            // Act
-            BindView.bindViewZilBalance('asdf');
-
-            // Assert
-            assert.strictEqual($('#zil_balance').text(), 'asdf');
-        });
-    });
-
-    describe('#bindViewZrcTokenWalletBalance()', function () {
-
-        beforeEach(function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_balance').text(), 'Loading...');
-                assert.strictEqual($('#' + ticker + '_container').css('display'), 'none');
-            }
-        });
-
-        it('bind view happy case', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewZrcTokenWalletBalance('1234.4', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_balance').text(), '1234.4');
-                assert.strictEqual($('#' + ticker + '_container').css('display'), 'block');
-            }
-        });
-
-        it('bind view random string', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewZrcTokenWalletBalance('asdf', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_balance').text(), 'asdf');
-                assert.strictEqual($('#' + ticker + '_container').css('display'), 'block');
-            }
-        });
-    });
-
     describe('#bindViewCarbonStakingBalance()', function () {
 
         beforeEach(function () {
