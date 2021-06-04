@@ -18,7 +18,6 @@ function onCoinFiatPriceLoaded() {
     refreshPastTotalLpRewardFiat();
 
     // ZIL staking
-    refreshCarbonStakingZilFiat();
     refreshTotalStakingZilFiat();
 
     // Net worth

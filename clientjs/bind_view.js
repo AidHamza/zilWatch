@@ -202,12 +202,6 @@ function resetMainContainerContent() {
  * 2 --------------------------------------------------------------------------------
  */
 
-function bindViewCarbonStakingBalance(carbonStakingBalance) {
-    $('#carbon_staking_balance').text(carbonStakingBalance);
-    $('#carbon_staking_container').show();
-    $('#staking_container').show();
-}
-
 // Exception, no need reset
 function bindViewTotalTradeVolumeZil(totalVolumeZil, ticker) {
     $('#' + ticker + '_lp_total_volume_zil').text(totalVolumeZil);
@@ -287,26 +281,6 @@ function bindViewTotalLpBalanceFiat(totalLpBalanceFiat) {
     $('#lp_balance_fiat').text(totalLpBalanceFiat);
 }
 
-function bindViewCarbonStakingBalanceZil24hAgo(carbonStakingBalanceZil24hAgo, carbonStakingBalanceZilPercentChange24h) {
-    $('#carbon_staking_balance_zil_24h_ago').text(carbonStakingBalanceZil24hAgo);
-    $('#carbon_staking_balance_zil_percent_change_24h').text(carbonStakingBalanceZilPercentChange24h);
-    bindViewPercentChangeColorContainer('#carbon_staking_balance_zil_percent_change_24h_container', carbonStakingBalanceZilPercentChange24h);
-}
-
-function bindViewCarbonStakingBalanceZil(carbonStakingBalanceZil) {
-    $('#carbon_staking_balance_zil').text(carbonStakingBalanceZil);
-}
-
-function bindViewCarbonStakingBalanceFiat24hAgo(carbonStakingBalanceFiat24hAgo, carbonStakingBalanceFiatPercentChange24h) {
-    $('#carbon_staking_balance_fiat_24h_ago').text(carbonStakingBalanceFiat24hAgo);
-    $('#carbon_staking_balance_fiat_percent_change_24h').text(carbonStakingBalanceFiatPercentChange24h);
-    bindViewPercentChangeColorContainer('#carbon_staking_balance_fiat_percent_change_24h_container', carbonStakingBalanceFiatPercentChange24h);
-}
-
-function bindViewCarbonStakingBalanceFiat(carbonStakingBalanceFiat) {
-    $('#carbon_staking_balance_fiat').text(carbonStakingBalanceFiat);
-}
-
 function bindViewTotalStakingBalanceZil24hAgo(totalStakingBalanceZil24hAgo, totalStakingBalanceZilPercentChange24h) {
     $('#staking_balance_zil_24h_ago').text(totalStakingBalanceZil24hAgo);
     $('#staking_balance_zil_percent_change_24h').text(totalStakingBalanceZilPercentChange24h);
@@ -379,7 +353,7 @@ function disableTooltipPastTotalRewardAllLpZwap() {
 
 function enableTooltipPastTotalRewardAllLpZwap() {
     $('#total_all_lp_reward_past_epoch_container').addClass('tooltip-container');
-    $('#total_all_lp_reward_past_epoch_container').on('touchstart mouseover', onTouchStartOrMouseOverTooltipFunction );
+    $('#total_all_lp_reward_past_epoch_container').on('touchstart mouseover', onTouchStartOrMouseOverTooltipFunction);
 }
 
 function clearViewPastTotalRewardAllLpZwap() {
@@ -554,8 +528,6 @@ if (typeof exports !== 'undefined') {
     exports.resetMainContainerContent = resetMainContainerContent;
 
     // 2
-    exports.bindViewCarbonStakingBalance = bindViewCarbonStakingBalance;
-
     exports.bindViewTotalTradeVolumeZil = bindViewTotalTradeVolumeZil;
     exports.bindViewTotalTradeVolumeFiat = bindViewTotalTradeVolumeFiat;
 
@@ -575,10 +547,6 @@ if (typeof exports !== 'undefined') {
     exports.bindViewTotalLpBalanceZil = bindViewTotalLpBalanceZil;
     exports.bindViewTotalLpBalanceFiat24hAgo = bindViewTotalLpBalanceFiat24hAgo;
     exports.bindViewTotalLpBalanceFiat = bindViewTotalLpBalanceFiat;
-    exports.bindViewCarbonStakingBalanceZil24hAgo = bindViewCarbonStakingBalanceZil24hAgo;
-    exports.bindViewCarbonStakingBalanceZil = bindViewCarbonStakingBalanceZil;
-    exports.bindViewCarbonStakingBalanceFiat24hAgo = bindViewCarbonStakingBalanceFiat24hAgo;
-    exports.bindViewCarbonStakingBalanceFiat = bindViewCarbonStakingBalanceFiat;
     exports.bindViewTotalStakingBalanceZil24hAgo = bindViewTotalStakingBalanceZil24hAgo;
     exports.bindViewTotalStakingBalanceZil = bindViewTotalStakingBalanceZil;
     exports.bindViewTotalStakingBalanceFiat24hAgo = bindViewTotalStakingBalanceFiat24hAgo;
@@ -600,7 +568,7 @@ if (typeof exports !== 'undefined') {
     exports.clearViewPastTotalRewardAllLpZwap = clearViewPastTotalRewardAllLpZwap;
     exports.addViewPastTotalRewardAllLpZwap = addViewPastTotalRewardAllLpZwap;
     exports.bindViewPastTotalRewardAllLpFiat = bindViewPastTotalRewardAllLpFiat;
-    
+
     exports.bindViewLpNextEpochCounter = bindViewLpNextEpochCounter;
 
     exports.bindViewPercentChangeColorContainer = bindViewPercentChangeColorContainer;

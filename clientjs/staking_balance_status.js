@@ -1,8 +1,7 @@
-
 /** A class to represent global wallet balance status.  */
 class StakingBalanceStatus {
-    
-    constructor(zrcTokenPropertiesListMap, ssnListMap, /* nullable= */ coinPriceStatus, /* nullable= */ walletAddressBase16, /* nullable= */ zilStakingBalanceData, /* nullable= */ zilStakingWithdrawalBalanceData) {
+
+    constructor(zrcTokenPropertiesListMap, ssnListMap, /* nullable= */ coinPriceStatus, /* nullable= */ walletAddressBase16, /* nullable= */ zilStakingBalanceData, /* nullable= */ zilStakingWithdrawalBalanceData, /* nullable= */ stakingCarbonStatus) {
         // Constants
         this.zilSeedNodeStakingImplementationAddress_ = "zil15lr86jwg937urdeayvtypvhy6pnp6d7p8n5z09"; // v 1.1
         this.zilSeedNodeStakingImplementationAddressBase16_ = "a7C67D49C82c7dc1B73D231640B2e4d0661D37c1"; // v 1.1
@@ -16,10 +15,20 @@ class StakingBalanceStatus {
         this.walletAddressBase16_ = walletAddressBase16;
         this.zilStakingBalanceData_ = zilStakingBalanceData;
         this.zilStakingWithdrawalBalanceData_ = zilStakingWithdrawalBalanceData;
+        this.stakingCarbonStatus_ = stakingCarbonStatus;
 
         // Private derived variable
         this.zilStakingBalanceMap_ = {};
         this.zilStakingWithdrawalBalance_ = null;
+    }
+
+    /**
+     * Callback method to be executed if any properties in zilswapDexStatus_ is changed.
+     */
+    onZilswapDexStatusChange() {
+        if (this.stakingCarbonStatus_) {
+            this.stakingCarbonStatus_.onZilswapDexStatusChange();
+        }
     }
 
     /**
@@ -28,6 +37,9 @@ class StakingBalanceStatus {
     onCoinPriceStatusChange() {
         this.bindViewStakingBalanceFiat();
         this.bindViewStakingWithdrawalBalanceFiat();
+        if (this.stakingCarbonStatus_) {
+            this.stakingCarbonStatus_.onCoinPriceStatusChange();
+        }
     }
 
     reset() {
@@ -35,12 +47,18 @@ class StakingBalanceStatus {
         this.zilStakingWithdrawalBalanceData_ = null;
         this.zilStakingBalanceMap_ = {};
         this.zilStakingWithdrawalBalance_ = null;
+        if (this.stakingCarbonStatus_) {
+            this.stakingCarbonStatus_.reset();
+        }
     }
 
     setWalletAddressBase16(walletAddressBase16) {
         // Need to reset the attributes when wallet is changed.
         this.reset();
         this.walletAddressBase16_ = walletAddressBase16;
+        if (this.stakingCarbonStatus_) {
+            this.stakingCarbonStatus_.setWalletAddressBase16(walletAddressBase16);
+        }
     }
 
     /**
@@ -80,7 +98,7 @@ class StakingBalanceStatus {
                 return;
             }
             for (let ssnAddress in ssnToBalanceMap) {
-                let zilAmount = ssnToBalanceMap[ssnAddress] / Math.pow(10,12);
+                let zilAmount = ssnToBalanceMap[ssnAddress] / Math.pow(10, 12);
                 this.zilStakingBalanceMap_[ssnAddress] = zilAmount;
             }
         }
@@ -107,14 +125,14 @@ class StakingBalanceStatus {
                 }
             }
 
-            this.zilStakingWithdrawalBalance_ = totalZilQa / Math.pow(10,12);
+            this.zilStakingWithdrawalBalance_ = totalZilQa / Math.pow(10, 12);
         }
     }
 
     /**
      * This will perform RPC and fetch data no matter if data has already exists.
      * This can only be called if walletAddressBase16_ has been set. Else it's a no-op.
-    */
+     */
     computeDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
         if (!this.walletAddressBase16_) {
             return;
@@ -156,6 +174,10 @@ class StakingBalanceStatus {
             function () {
                 onErrorCallback();
             });
+
+        if (this.stakingCarbonStatus_) {
+            this.stakingCarbonStatus_.computeDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback);
+        }
     }
 
     bindViewStakingBalance() {
@@ -204,7 +226,7 @@ class StakingBalanceStatus {
         if (!zilStakingWithdrawalBalance) {
             return;
         }
-    
+
         let zilStakingWithdrawalBalanceString = convertNumberQaToDecimalString(zilStakingWithdrawalBalance, /* decimals= */ 0);
         this.bindViewZilStakingWithdrawalPendingBalance(zilStakingWithdrawalBalanceString);
 

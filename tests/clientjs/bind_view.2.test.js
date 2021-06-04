@@ -17,35 +17,6 @@ describe('BindView2', function () {
         indexJsdom.assertDefaultStateMainContent();
     });
 
-    describe('#bindViewCarbonStakingBalance()', function () {
-
-        beforeEach(function () {
-            assert.strictEqual($('#carbon_staking_balance').text(), 'Loading...');
-            assert.strictEqual($('#carbon_staking_container').css('display'), 'none');
-            assert.strictEqual($('#staking_container').css('display'), 'none');
-        });
-
-        it('bind view happy case', function () {
-            // Act
-            BindView.bindViewCarbonStakingBalance('1234.4');
-
-            // Assert
-            assert.strictEqual($($('#carbon_staking_balance')).text(), '1234.4');
-            assert.strictEqual($('#carbon_staking_container').css('display'), 'block');
-            assert.strictEqual($('#staking_container').css('display'), 'block');
-        });
-
-        it('bind view random string', function () {
-            // Act
-            BindView.bindViewCarbonStakingBalance('asdf');
-
-            // Assert
-            assert.strictEqual($($('#carbon_staking_balance')).text(), 'asdf');
-            assert.strictEqual($('#carbon_staking_container').css('display'), 'block');
-            assert.strictEqual($('#staking_container').css('display'), 'block');
-        });
-    });
-    
     describe('#bindViewTotalTradeVolumeZil()', function () {
 
         beforeEach(function () {

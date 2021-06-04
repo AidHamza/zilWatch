@@ -3,8 +3,10 @@ var fs = require('fs')
 var $ = indexJsdom.$;
 
 var assert = require('assert');
+var ZilswapDexStatus = require('../../clientjs/zilswap_dex_status.js');
 var CoinPriceStatus = require('../../clientjs/coin_price_status.js');
 var StakingBalanceStatus = require('../../clientjs/staking_balance_status.js');
+var StakingCarbonStatus = require('../../clientjs/staking_carbon_status.js');
 var Constants = require('../../constants.js');
 
 describe('StakingBalanceStatus', function () {
@@ -327,6 +329,56 @@ describe('StakingBalanceStatus', function () {
                 assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'block');
                 assert.strictEqual($('#staking_container').css('display'), 'block');
             }
+        });
+    });
+
+    describe('#methods(), with 24h ago, in idr, with carb staking', function () {
+
+        var walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
+        var coinPriceStatus;
+        var stakingCarbonStatus;
+        var stakingBalanceStatus;
+
+        beforeEach(function () {
+            // Arrange
+            let coinPriceCoingeckoData = JSON.parse('{"zilliqa":{"usd":0.11819,"idr":1612}}');
+            let coinPriceCoingecko24hAgoData = JSON.parse('{"zilliqa":{"usd":0.10519,"idr":1498}}');
+            coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
+
+            let zilStakingBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"deposit_amt_deleg":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":{"0xbf4e5001339dec3cda012f471f4f2d9e8bed2f5b":"2300000000000000", "0x82b82c65213e0b2b206492d3d8a2a679e7fe52e0":"7063107679853089"}}}}');
+            let zilStakingBalanceWithdrawalData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"withdrawal_pending":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":{"1037958":"14063107679853089", "1137958":"7063107679853089"}}}}');
+            
+
+            let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8'));
+            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexSmartContractStateData,  zilswapDexSmartContractStateData24hAgo);
+            let carbonBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"stakers":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":"9036430995"}}}');
+            stakingCarbonStatus = new StakingCarbonStatus.StakingCarbonStatus(coinPriceStatus, zilswapDexStatus, walletAddressBase16, carbonBalanceData);
+
+            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData, stakingCarbonStatus);
+        });
+
+        it('compute, wallet set, bindView(), assertView', function () {
+            // Act
+            stakingCarbonStatus.computeCarbonBalance();
+            stakingCarbonStatus.bindViewStakingBalance();
+            stakingBalanceStatus.computeStakingBalanceMap();
+            stakingBalanceStatus.computeStakingWithdrawalBalance();
+
+            // Change currency
+            coinPriceStatus.setActiveCurrencyCode('idr');
+            stakingBalanceStatus.onCoinPriceStatusChange();
+
+            // Assert IDR
+            assert.strictEqual($('#carbon_staking_balance').text(), '90.36');
+            assert.strictEqual($('#carbon_staking_balance_zil').text(), '1,371');
+            assert.strictEqual($('#carbon_staking_balance_zil_24h_ago').text(), '1,533');
+            assert.strictEqual($('#carbon_staking_balance_zil_percent_change_24h').text(), '-10.6');
+            assert.strictEqual($('#carbon_staking_balance_fiat').text(), '2,209,430');
+            assert.strictEqual($('#carbon_staking_balance_fiat_24h_ago').text(), '2,296,506');
+            assert.strictEqual($('#carbon_staking_balance_fiat_percent_change_24h').text(), '-3.8');
+            assert.strictEqual($('#carbon_staking_container').css('display'), 'block');
+            assert.strictEqual($('#staking_container').css('display'), 'block');
         });
     });
 

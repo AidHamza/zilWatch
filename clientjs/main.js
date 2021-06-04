@@ -114,6 +114,8 @@ function refreshMainContentData(account) {
 
     // (3) Reset main content
     resetMainContainerContent();
+    walletBalanceStatus.reset();
+    stakingBalanceStatus.reset();
 
     // (4) show main screen
     bindViewMainContainer(ZilpayStatus.connected);
@@ -129,11 +131,8 @@ function refreshMainContentData(account) {
     computeTotalLpRewardNextEpoch(walletAddressBech32, onLpRewardNextEpochLoaded);
     computeTotalLpRewardPastEpoch(walletAddressBech32, onLpRewardPastEpochLoaded);
 
-    // (8) Get ZIL staking balance, async
+    // (8) Get staking balance (ZIL, CARB), async
     computeStakingBalanceStatus(walletAddressBase16);
-
-    // (9) Get CARBON staking balance, async
-    computeCarbonStakingBalance(walletAddressBech32, walletAddressBase16);
 }
 
 function computeStakingBalanceStatus(walletAddressBase16) {
@@ -186,6 +185,7 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
             onZilswapSinglePairPublicStatusLoaded();
             onZrcTokenLpBalanceLoaded();
             walletBalanceStatus.onZilswapDexStatusChange();
+            stakingBalanceStatus.onZilswapDexStatusChange();
             
             decrementShowSpinnerLpBalance();
             
@@ -225,25 +225,5 @@ function computeCoinPriceStatus(currencyCode) {
         },
         /* onErrorCallback= */
         function() {
-        });
-}
-
-function computeCarbonStakingBalance(walletAddressBech32, walletAddressBase16) {
-    let stakingCarbonStatus = new StakingCarbonStatus(walletAddressBech32, walletAddressBase16);
-    stakingCarbonStatus.computeBalanceRpc(
-        /* beforeRpcCallback= */
-        function() {
-            incrementShowSpinnerStakingBalance();
-        },
-        /* onSuccessCallback= */
-        function() {
-            decrementShowSpinnerStakingBalance();
-            if (stakingCarbonStatus.carbonBalance) {
-                onCarbonStakingBalanceLoaded(stakingCarbonStatus.carbonBalanceFormattedString);
-            }
-        },
-        /* onErrorCallback= */
-        function() {
-            decrementShowSpinnerStakingBalance();
         });
 }

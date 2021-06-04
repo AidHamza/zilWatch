@@ -1,7 +1,6 @@
-
 /** A class to represent global wallet balance status.  */
 class WalletBalanceStatus {
-    
+
     constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ walletAddressBase16, /* nullable= */ zilBalanceData, /* nullable= */ zrcBalanceDataMap) {
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
@@ -74,12 +73,12 @@ class WalletBalanceStatus {
             if (this.zilBalanceData_ && this.zilBalanceData_.result && this.zilBalanceData_.result.balance) {
                 let zilBalance = parseInt(this.zilBalanceData_.result.balance);
                 if (!Number.isNaN(zilBalance)) {
-                    this.tokenBalanceMap_['ZIL'] = zilBalance / Math.pow(10,12);
+                    this.tokenBalanceMap_['ZIL'] = zilBalance / Math.pow(10, 12);
                 }
             }
             return;
         }
-        
+
         // ZRC tokens process here
         if (!this.zrcTokenPropertiesListMap_[coinSymbol]) {
             return;
@@ -98,7 +97,7 @@ class WalletBalanceStatus {
     /**
      * This will perform RPC and fetch data no matter if data has already exists.
      * This can only be called if walletAddressBase16_ has been set. Else it's a no-op.
-    */
+     */
     computeDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
         if (!this.walletAddressBase16_) {
             return;
@@ -125,7 +124,7 @@ class WalletBalanceStatus {
                 onErrorCallback();
             });
 
-        
+
         for (let ticker in this.zrcTokenPropertiesListMap_) {
             let zrcTokenProperties = this.zrcTokenPropertiesListMap_[ticker];
 
@@ -166,7 +165,7 @@ class WalletBalanceStatus {
         if (!zrcBalance) {
             return;
         }
-        let zrcBalanceString = convertNumberQaToDecimalString(zrcBalance,  /* decimals= */ 0);
+        let zrcBalanceString = convertNumberQaToDecimalString(zrcBalance, /* decimals= */ 0);
         if (!zrcBalanceString) {
             return;
         }
@@ -175,9 +174,6 @@ class WalletBalanceStatus {
 
     bindViewDataFiat(coinSymbol) {
         let zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
-        if (!zilPriceInFiatFloat) {
-            return;
-        }
         let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
         let zilPriceInFiat24hAgoFloat = this.coinPriceStatus_.getCoinPriceFiat24hAgo('ZIL');
 
@@ -185,6 +181,9 @@ class WalletBalanceStatus {
         if (coinSymbol === 'ZIL') {
             let zilBalance = this.getTokenBalance('ZIL');
             if (!zilBalance) {
+                return;
+            }
+            if (!zilPriceInFiatFloat) {
                 return;
             }
             let zilBalanceFiat = (zilPriceInFiatFloat * zilBalance);
@@ -220,6 +219,9 @@ class WalletBalanceStatus {
         this.bindViewZrcTokenWalletBalanceZil(zrcBalanceInZilString, coinSymbol);
 
         // Process ZRC in fiat
+        if (!zilPriceInFiatFloat) {
+            return;
+        }
         let zrcBalanceFiat = 1.0 * zilPriceInFiatFloat * zrcBalanceInZil;
         let zrcBalanceFiatString = commafyNumberToString(zrcBalanceFiat, decimals);
         this.bindViewZrcTokenWalletBalanceFiat(zrcBalanceFiatString, coinSymbol);

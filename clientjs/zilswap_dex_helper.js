@@ -12,7 +12,6 @@ function onZilswapSinglePairPublicStatusLoaded() {
             refreshPastTotalLpRewardFiat();
         } else if (ticker === 'CARB') {
             // Staking Balance
-            refreshCarbonStakingZilFiat();
             refreshTotalStakingZilFiat();
         }
     }
