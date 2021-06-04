@@ -346,14 +346,6 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil1rk9vdfu2xsp7y4h24qg78n6ss23mxxge5slsv2/logo",
     "decimals": 6,
   },
-  'GOD': {
-    "ticker": "GOD",
-    "name": "Gods Hinduism",
-    "address": "zil105lwcl5ckrrl2ljhq8v2360vhy30wy85wgvmym",
-    "address_base16": "0x7d3eeC7e98b0c7f57e5701d8a8E9eCb922f710f4",
-    "logo_url": "https://meta.viewblock.io/ZIL.zil105lwcl5ckrrl2ljhq8v2360vhy30wy85wgvmym/logo",
-    "decimals": 0,
-  },
   'SHRK': {
     "ticker": "SHRK",
     "name": "Shark",
@@ -393,7 +385,6 @@ const emptyZrcTokensSupply = {
   'GARY': '0',
   'RECAP': '0',
   'AXT': '0',
-  'GOD': '0',
   'SHRK': '0',
   'XCAD': '0',
 }
