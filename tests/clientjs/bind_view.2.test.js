@@ -45,74 +45,7 @@ describe('BindView2', function () {
             assert.strictEqual($('#staking_container').css('display'), 'block');
         });
     });
-
-
-    describe('#bindViewZilStakingBalance()', function () {
-
-        beforeEach(function () {
-            for (let ssnAddress in Constants.ssnListMap) {
-                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance').text(), 'Loading...');
-                assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'none');
-            }
-            assert.strictEqual($('#staking_container').css('display'), 'none');
-        });
-
-        it('bind view happy case', function () {
-            for (let ssnAddress in Constants.ssnListMap) {
-                // Act
-                BindView.bindViewZilStakingBalance('1234.4', ssnAddress);
-
-                // Assert
-
-                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance').text(), '1234.4');
-                assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'block');
-                assert.strictEqual($('#staking_container').css('display'), 'block');
-            }
-        });
-
-        it('bind view random string', function () {
-            for (let ssnAddress in Constants.ssnListMap) {
-                // Act
-                BindView.bindViewZilStakingBalance('asdf', ssnAddress);
-
-                // Assert
-                assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance').text(), 'asdf');
-                assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'block');
-                assert.strictEqual($('#staking_container').css('display'), 'block');
-            }
-        });
-    });
-
-
-    describe('#bindViewZilStakingWithdrawalPendingBalance()', function () {
-
-        beforeEach(function () {
-            assert.strictEqual($('#zil_staking_withdrawal_pending_balance').text(), 'Loading...');
-            assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'none');
-            assert.strictEqual($('#staking_container').css('display'), 'none');
-        });
-
-        it('bind view happy case', function () {
-            // Act
-            BindView.bindViewZilStakingWithdrawalPendingBalance('1234.4');
-
-            // Assert
-            assert.strictEqual($('#zil_staking_withdrawal_pending_balance').text(), '1234.4');
-            assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'block');
-            assert.strictEqual($('#staking_container').css('display'), 'block');
-        });
-
-        it('bind view random string', function () {
-            // Act
-            BindView.bindViewZilStakingWithdrawalPendingBalance('asdf');
-
-            // Assert
-            assert.strictEqual($('#zil_staking_withdrawal_pending_balance').text(), 'asdf');
-            assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'block');
-            assert.strictEqual($('#staking_container').css('display'), 'block');
-        });
-    });
-
+    
     describe('#bindViewTotalTradeVolumeZil()', function () {
 
         beforeEach(function () {

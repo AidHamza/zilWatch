@@ -52,7 +52,7 @@ class WalletBalanceStatus {
     }
 
     /**
-     * Returns coin price in fiat, number data type.
+     * Returns token balance in fiat, number data type.
      * 
      * Any error will result in returning null.
      */

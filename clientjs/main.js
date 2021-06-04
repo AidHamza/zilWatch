@@ -1,6 +1,3 @@
-// Assumes zrcTokenPropertiesListMap is declared
-// Assumes ssnListMap is declared
-
 document.addEventListener("DOMContentLoaded", () => {
     // Get the user's theme preference from local storage, if it's available
     let currentTheme = localStorage.getItem("theme");
@@ -133,13 +130,30 @@ function refreshMainContentData(account) {
     computeTotalLpRewardPastEpoch(walletAddressBech32, onLpRewardPastEpochLoaded);
 
     // (8) Get ZIL staking balance, async
-    computeZilStakingBalance(walletAddressBase16, onZilStakingBalanceLoaded);
-    computeZilStakingWithdrawalPendingBalance(walletAddressBase16, onZilStakingWithdrawalPendingBalanceLoaded);
+    computeStakingBalanceStatus(walletAddressBase16);
 
     // (9) Get CARBON staking balance, async
     computeCarbonStakingBalance(walletAddressBech32, walletAddressBase16);
 }
 
+function computeStakingBalanceStatus(walletAddressBase16) {
+    stakingBalanceStatus.setWalletAddressBase16(walletAddressBase16);
+    stakingBalanceStatus.computeDataRpc(
+        /* beforeRpcCallback= */
+        function() {
+            incrementShowSpinnerStakingBalance();
+        },
+        /* onSuccessCallback= */
+        function() {
+            onStakingBalanceLoaded();
+
+            decrementShowSpinnerStakingBalance();
+        },
+        /* onErrorCallback= */
+        function() {
+            decrementShowSpinnerStakingBalance();
+        });
+}
 
 function computeWalletBalanceStatus(walletAddressBase16) {
     walletBalanceStatus.setWalletAddressBase16(walletAddressBase16);
@@ -158,7 +172,6 @@ function computeWalletBalanceStatus(walletAddressBase16) {
             decrementShowSpinnerWalletBalance();
         });
 }
-
 
 function computeZilswapDexPersonalStatus(walletAddressBase16) {
     zilswapDexStatus.computeDataRpcIfBalanceDataNoExist(
@@ -208,6 +221,7 @@ function computeCoinPriceStatus(currencyCode) {
             onCoinFiatPriceLoaded();
             zilswapDexStatus.onCoinPriceStatusChange();
             walletBalanceStatus.onCoinPriceStatusChange();
+            stakingBalanceStatus.onCoinPriceStatusChange();
         },
         /* onErrorCallback= */
         function() {

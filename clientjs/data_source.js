@@ -1,5 +1,3 @@
-const ZilSeedNodeStakingImplementationAddress = "zil15lr86jwg937urdeayvtypvhy6pnp6d7p8n5z09"; // v 1.1
-const ZilSeedNodeStakingImplementationAddressBase16 = "a7C67D49C82c7dc1B73D231640B2e4d0661D37c1"; // v 1.1
 
 const MAX_RETRY = 5;
 const AJAX_TIMEOUT_MS = 30000; // 30s
@@ -79,62 +77,6 @@ async function queryZilliqaApiAjax(method, params, successCallback, errorCallbac
         },
         timeout: AJAX_TIMEOUT_MS
     });
-}
-
-/**
- * ===============================================================================
- */
-
-/** Private function, to compute ZIL staking balance */
-function computeZilStakingBalance(walletAddressBase16, onZilStakingBalanceLoaded) {
-    incrementShowSpinnerStakingBalance();
-
-    queryZilliqaApiAjax(
-        /* method= */
-        "GetSmartContractSubState",
-        /* params= */
-        [ZilSeedNodeStakingImplementationAddressBase16, "deposit_amt_deleg", [walletAddressBase16]],
-        /* successCallback= */
-        function (data) {
-            if (data.result && data.result.deposit_amt_deleg) {
-                let ssnToBalanceMap = data.result.deposit_amt_deleg[walletAddressBase16];
-                if (ssnToBalanceMap) {
-                    for (let ssnAddress in ssnToBalanceMap) {
-                        onZilStakingBalanceLoaded(ssnToBalanceMap[ssnAddress], ssnAddress);
-                    }
-                }
-            }
-            decrementShowSpinnerStakingBalance();
-        },
-        /* errorCallback= */
-        function () {
-            decrementShowSpinnerStakingBalance();
-        });
-}
-
-/** Private function, to compute ZIL pending withdrawal balance */
-function computeZilStakingWithdrawalPendingBalance(walletAddressBase16, onZilStakingWithdrawalPendingBalanceLoaded) {
-    incrementShowSpinnerStakingBalance();
-
-    queryZilliqaApiAjax(
-        /* method= */
-        "GetSmartContractSubState",
-        /* params= */
-        [ZilSeedNodeStakingImplementationAddressBase16, "withdrawal_pending", [walletAddressBase16]],
-        /* successCallback= */
-        function (data) {
-            if (data.result && data.result.withdrawal_pending) {
-                let blockNumberToBalanceMap = data.result.withdrawal_pending[walletAddressBase16];
-                if (blockNumberToBalanceMap) {
-                    onZilStakingWithdrawalPendingBalanceLoaded(blockNumberToBalanceMap);
-                }
-            }
-            decrementShowSpinnerStakingBalance();
-        },
-        /* errorCallback= */
-        function () {
-            decrementShowSpinnerStakingBalance();
-        });
 }
 
 /**

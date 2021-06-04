@@ -4,41 +4,6 @@
  * --------------------------------------------------------------------------------
  */
 
-function onZilStakingBalanceLoaded(zilBalanceQa, ssnAddress) {
-    let userFriendlyZilStakingBalanceString = convertNumberQaToDecimalString(parseInt(zilBalanceQa), /* decimals= */ 12);
-    if (!userFriendlyZilStakingBalanceString) {
-        return;
-    }
-    bindViewZilStakingBalance(userFriendlyZilStakingBalanceString, ssnAddress);
-
-    // Staking balance
-    refreshZilStakingFiat(ssnAddress)
-    refreshTotalStakingZilFiat();
-
-    // Net worth
-    refreshNetWorthZilFiat();
-}
-
-function onZilStakingWithdrawalPendingBalanceLoaded(blockNumberToBalanceMap) {
-    let totalZilQa = 0;
-    for (let blockNumber in blockNumberToBalanceMap) {
-        let zilBalanceQa = parseInt(blockNumberToBalanceMap[blockNumber]);
-        if (zilBalanceQa) {
-            totalZilQa += zilBalanceQa;
-        }
-    }
-
-    let userFriendlyZilWithdrawalString = convertNumberQaToDecimalString(totalZilQa, /* decimals= */ 12);
-    bindViewZilStakingWithdrawalPendingBalance(userFriendlyZilWithdrawalString);
-
-    // Staking balance
-    refreshZilStakingWithdrawalPendingFiat();
-    refreshTotalStakingZilFiat();
-
-    // Net worth
-    refreshNetWorthZilFiat();
-}
-
 function onLpTradeVolumeLoaded(poolVolumeArray) {
     if (!poolVolumeArray) {
         return;
@@ -231,59 +196,6 @@ function refreshTotalLpBalanceZilFiat() {
     let totalLpBalanceFiatPercentChange24h = getPercentChange(totalFiat, totalFiat24hAgo).toFixed(1);
     bindViewTotalLpBalanceFiat24hAgo(totalLpBalanceFiat24hAgo, totalLpBalanceFiatPercentChange24h);
     
-}
-
-function refreshZilStakingFiat(ssnAddress) {
-    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
-    if (!zilPriceInFiatFloat) {
-        return;
-    }
-    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
-
-    let zilStakingBalance = getNumberFromView('#' + ssnAddress + '_zil_staking_balance');
-    if (Number.isNaN(zilStakingBalance)) {
-        return;
-    }
-
-    let zilStakingBalanceFiat = 1.0 * zilPriceInFiatFloat * zilStakingBalance;
-    let zilStakingBalanceFiatString = commafyNumberToString(zilStakingBalanceFiat, decimals);
-    bindViewZilStakingBalanceFiat(zilStakingBalanceFiatString, ssnAddress);
-
-    let zilPriceInFiat24hAgoFloat = coinPriceStatus.getCoinPriceFiat24hAgo('ZIL');
-    if (!zilPriceInFiat24hAgoFloat) {
-        return;
-    }
-    let zilStakingBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zilStakingBalance;
-    let zilStakingBalanceFiat24hAgoString = commafyNumberToString(zilStakingBalanceFiat24hAgo, decimals);
-    let zilStakingBalanceFiatPercentChange24h = getPercentChange(zilStakingBalanceFiat, zilStakingBalanceFiat24hAgo).toFixed(1);
-    bindViewZilStakingBalanceFiat24hAgo(zilStakingBalanceFiat24hAgoString, zilStakingBalanceFiatPercentChange24h, ssnAddress);
-}
-
-function refreshZilStakingWithdrawalPendingFiat() {
-
-    let zilPriceInFiatFloat = coinPriceStatus.getCoinPriceFiat('ZIL');
-    if (!zilPriceInFiatFloat) {
-        return;
-    }
-    let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
-
-    let zilStakingWithdrawalBalance = getNumberFromView('#zil_staking_withdrawal_pending_balance');
-    if (Number.isNaN(zilStakingWithdrawalBalance)) {
-        return;
-    }
-
-    let zilStakingWithdrawalBalanceFiat = 1.0 * zilPriceInFiatFloat * zilStakingWithdrawalBalance;
-    let zilStakingWithdrawalBalanceFiatString = commafyNumberToString(zilStakingWithdrawalBalanceFiat, decimals);
-    bindViewZilStakingWithdrawalPendingBalanceFiat(zilStakingWithdrawalBalanceFiatString);
-
-    let zilPriceInFiat24hAgoFloat = coinPriceStatus.getCoinPriceFiat24hAgo('ZIL');
-    if (!zilPriceInFiat24hAgoFloat) {
-        return;
-    }
-    let zilStakingWithdrawalBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zilStakingWithdrawalBalance;
-    let zilStakingWithdrawalBalanceFiat24hAgoString = commafyNumberToString(zilStakingWithdrawalBalanceFiat24hAgo, decimals);
-    let zilStakingWithdrawalBalanceFiatPercentChange24h = getPercentChange(zilStakingWithdrawalBalanceFiat, zilStakingWithdrawalBalanceFiat24hAgo).toFixed(1);
-    bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo(zilStakingWithdrawalBalanceFiat24hAgoString, zilStakingWithdrawalBalanceFiatPercentChange24h);
 }
 
 function refreshTotalStakingZilFiat() {

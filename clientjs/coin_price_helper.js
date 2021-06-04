@@ -18,10 +18,6 @@ function onCoinFiatPriceLoaded() {
     refreshPastTotalLpRewardFiat();
 
     // ZIL staking
-    for (let ssnAddress in ssnListMap) {
-        refreshZilStakingFiat(ssnAddress);
-    }
-    refreshZilStakingWithdrawalPendingFiat();
     refreshCarbonStakingZilFiat();
     refreshTotalStakingZilFiat();
 
