@@ -104,6 +104,9 @@ class StakingCarbonStatus {
     }
 
     bindViewStakingBalanceZilFiat() {
+        if (!this.coinPriceStatus_) {
+            return;
+        }
         let zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
         let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
         let zilPriceInFiat24hAgoFloat = this.coinPriceStatus_.getCoinPriceFiat24hAgo('ZIL');

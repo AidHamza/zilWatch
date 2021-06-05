@@ -178,7 +178,7 @@ let expectedPersonalBalanceWith24hAgoMap = {
     'AXT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'GOD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'SHRK': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'XCAD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],    
+    'XCAD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 let expectedPersonalBalanceWith24hAgoIdrMap = {
@@ -216,14 +216,17 @@ describe('ZilswapDexStatus', function () {
 
         it('create plain object', function () {
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ null, /* coinPriceCoingecko24hAgoData= */ null);
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
 
             assert.strictEqual(zilswapDexStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
             assert.strictEqual(zilswapDexStatus.coinPriceStatus_, coinPriceStatus);
+            assert.strictEqual(zilswapDexStatus.walletAddressBase16_, null);
             assert.strictEqual(zilswapDexStatus.zilswapDexSmartContractStateData_, null);
             assert.strictEqual(zilswapDexStatus.zilswapDexSmartContractState24hAgoData_, null);
-            assert.strictEqual(zilswapDexStatus.zilswapPairPublicStatusMap_, null);
-            assert.strictEqual(zilswapDexStatus.zilswapPairPublicStatus24hAgoMap_, null);
+            assert.deepStrictEqual(zilswapDexStatus.zilswapPairPublicStatusMap_, {});
+            assert.deepStrictEqual(zilswapDexStatus.zilswapPairPublicStatus24hAgoMap_, {});
+            assert.deepStrictEqual(zilswapDexStatus.zilswapPairPublicStatusMap_, {});
+            assert.deepStrictEqual(zilswapDexStatus.zilswapPairPublicStatus24hAgoMap_, {});
         });
     });
 
@@ -236,16 +239,23 @@ describe('ZilswapDexStatus', function () {
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
 
             // Act
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexSmartContractStateData,  /* zilswapDexSmartContractState24hAgoData= */ null);
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
 
             // Assert
             let zilswapSinglePairPublicStatusGzil = new TokenUtils.ZilswapSinglePairPublicStatus(
-                /* totalPoolZilAmount= */ 66488850.966800526,
-                /* totalPoolZrcTokenAmount= */ 51815.94955267148,
-                /* zrcTokenPriceInZil= */ 1283.1734541352732
+                /* totalPoolZilAmount= */
+                66488850.966800526,
+                /* totalPoolZrcTokenAmount= */
+                51815.94955267148,
+                /* zrcTokenPriceInZil= */
+                1283.1734541352732
             );
+
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPublicStatus('gZIL'), zilswapSinglePairPublicStatusGzil);
-            assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus('random'), null);
+            assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus('random'), undefined);
+
+            assert.strictEqual(zilswapDexStatus.getZilswapPairPersonalStatus('gZIL'), undefined);
+            assert.strictEqual(zilswapDexStatus.getZilswapPairPersonalStatus('random'), undefined);
 
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 $('.' + ticker + '_price_zil_24h_ago').each(function () {
@@ -275,16 +285,22 @@ describe('ZilswapDexStatus', function () {
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
 
             // Act
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexSmartContractStateData,  zilswapDexSmartContractStateData24hAgo);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
 
             // Assert
             let zilswapSinglePairPublicStatusZwap24hAgo = new TokenUtils.ZilswapSinglePairPublicStatus(
-                /* totalPoolZilAmount= */ 208967662.45707452,
-                /* totalPoolZrcTokenAmount= */ 55003.09484344847,
-                /* zrcTokenPriceInZil= */ 3799.198264240309
+                /* totalPoolZilAmount= */
+                208967662.45707452,
+                /* totalPoolZrcTokenAmount= */
+                55003.09484344847,
+                /* zrcTokenPriceInZil= */
+                3799.198264240309
             );
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('ZWAP'), zilswapSinglePairPublicStatusZwap24hAgo);
-            assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('random'), null);
+            assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('random'), undefined);
+
+            assert.strictEqual(zilswapDexStatus.getZilswapPairPersonalStatus('ZWAP'), undefined);
+            assert.strictEqual(zilswapDexStatus.getZilswapPairPersonalStatus('random'), undefined);
 
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 $('.' + ticker + '_price_zil_24h_ago').each(function () {
@@ -312,7 +328,7 @@ describe('ZilswapDexStatus', function () {
 
             let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8'));
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexSmartContractStateData,  zilswapDexSmartContractStateData24hAgo);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
 
             // Act
             coinPriceStatus.setActiveCurrencyCode('idr');
@@ -349,27 +365,29 @@ describe('ZilswapDexStatus', function () {
             let walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
 
             let zilswapSinglePairPublicStatusZlp = new TokenUtils.ZilswapSinglePairPublicStatus(
-                /* totalPoolZilAmount= */  10152543.808845125,
-                /* totalPoolZrcTokenAmount= */ 529716.7651811893,
-                /* zrcTokenPriceInZil= */ 9.165985440110536,
+                /* totalPoolZilAmount= */
+                10152543.808845125,
+                /* totalPoolZrcTokenAmount= */
+                529716.7651811893,
+                /* zrcTokenPriceInZil= */
+                9.165985440110536,
             );
             let shareRatio = 0.00008895090398508389;
             let zilswapSinglePairPersonalStatusZlp = new TokenUtils.ZilswapSinglePairPersonalStatus(shareRatio, zilswapSinglePairPublicStatusZlp);
 
-
             // Act
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexSmartContractStateData,  /* zilswapDexSmartContractState24hAgoData= */ null);
-            zilswapDexStatus.bindViewPersonalDataIfDataExist(walletAddressBase16);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, walletAddressBase16, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
+            zilswapDexStatus.bindViewPersonalDataIfDataExist();
 
             // Assert
             // Public
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPublicStatus('ZLP'), zilswapSinglePairPublicStatusZlp);
-            assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus('random'), null);
+            assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus('random'), undefined);
 
             // Personal
             assert.strictEqual(zilswapDexStatus.hasBalanceData(), true);
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPersonalStatus('ZLP', walletAddressBase16), zilswapSinglePairPersonalStatusZlp);
-            assert.strictEqual(zilswapDexStatus.getZilswapPairPersonalStatus('random'), null);
+            assert.strictEqual(zilswapDexStatus.getZilswapPairPersonalStatus('random'), undefined);
 
             // Public
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
@@ -427,28 +445,31 @@ describe('ZilswapDexStatus', function () {
 
             // Prepare expected values
             let walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
-            
+
             let zilswapSinglePairPublicStatusZlp24hAgo = new TokenUtils.ZilswapSinglePairPublicStatus(
-                /* totalPoolZilAmount= */  12082076.770067781,
-                /* totalPoolZrcTokenAmount= */ 373028.3471918095,
-                /* zrcTokenPriceInZil= */ 32.389165223025884,
+                /* totalPoolZilAmount= */
+                12082076.770067781,
+                /* totalPoolZrcTokenAmount= */
+                373028.3471918095,
+                /* zrcTokenPriceInZil= */
+                32.389165223025884,
             );
             let shareRatio = 0.00009658347940140957;
             let zilswapSinglePairPersonalStatusZlp24hAgo = new TokenUtils.ZilswapSinglePairPersonalStatus(shareRatio, zilswapSinglePairPublicStatusZlp24hAgo);
 
             // Act
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexSmartContractStateData,  zilswapDexSmartContractStateData24hAgo);
-            zilswapDexStatus.bindViewPersonalDataIfDataExist(walletAddressBase16);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, walletAddressBase16, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
+            zilswapDexStatus.bindViewPersonalDataIfDataExist();
 
             // Assert
             // Public
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('ZLP'), zilswapSinglePairPublicStatusZlp24hAgo);
-            assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('random'), null);
+            assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('random'), undefined);
 
             // Personal
             assert.strictEqual(zilswapDexStatus.hasBalanceData(), true);
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPersonalStatus24hAgo('ZLP', walletAddressBase16), zilswapSinglePairPersonalStatusZlp24hAgo);
-            assert.strictEqual(zilswapDexStatus.getZilswapPairPersonalStatus24hAgo('random'), null);
+            assert.strictEqual(zilswapDexStatus.getZilswapPairPersonalStatus24hAgo('random'), undefined);
 
             // Public
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
@@ -504,10 +525,10 @@ describe('ZilswapDexStatus', function () {
 
             let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8'));
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexSmartContractStateData,  zilswapDexSmartContractStateData24hAgo);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, walletAddressBase16, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
 
             // Act
-            zilswapDexStatus.bindViewPersonalDataIfDataExist(walletAddressBase16);
+            zilswapDexStatus.bindViewPersonalDataIfDataExist();
             coinPriceStatus.setActiveCurrencyCode('idr');
             zilswapDexStatus.onCoinPriceStatusChange();
 
@@ -561,6 +582,12 @@ describe('ZilswapDexStatus', function () {
 
     describe('bindViewPersonal', function () {
 
+        var zilswapDexStatus;
+
+        beforeEach(function () {
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
+        });
+
         describe('#bindViewZrcTokenLpBalance24hAgo()', function () {
 
             beforeEach(function () {
@@ -574,7 +601,6 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view happy case', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenLpBalance24hAgo( /* poolSharePercent= */ '0.0012', /* zilBalance= */ '1234.4', /* zrcBalance = */ '54.43', /* balanceZil= */ '2468.8', /* percentChange= */ '5.8', ticker);
@@ -589,7 +615,6 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view random string', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenLpBalance24hAgo( /* poolSharePercent= */ 'asdf', /* zilBalance= */ 'hjkl', /* zrcBalance = */ 'qwer', /* balanceZil= */ 'ert', /* percentChange= */ 'abcd', ticker);
@@ -618,7 +643,6 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view happy case', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenLpBalance( /* poolSharePercent= */ '0.0012', /* zilBalance= */ '1234.4', /* zrcBalance = */ '54.43', /* balanceZil= */ '2468.8', ticker);
@@ -634,7 +658,6 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view random string', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenLpBalance( /* poolSharePercent= */ 'asdf', /* zilBalance= */ 'hjkl', /* zrcBalance = */ 'qwer', /* balanceZil= */ 'ert', ticker);
@@ -660,10 +683,9 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view happy case', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
-                    zilswapDexStatus.bindViewZrcTokenLpBalanceFiat24hAgo('1234.4' , '2.3', ticker);
+                    zilswapDexStatus.bindViewZrcTokenLpBalanceFiat24hAgo('1234.4', '2.3', ticker);
 
                     // Assert
                     assert.strictEqual($('#' + ticker + '_lp_balance_fiat_24h_ago').text(), '1234.4');
@@ -672,7 +694,6 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view random string', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenLpBalanceFiat24hAgo('asdf', 'fdew', ticker);
@@ -693,7 +714,6 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view happy case', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenLpBalanceFiat('1234.4', ticker);
@@ -704,7 +724,6 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view random string', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenLpBalanceFiat('asdf', ticker);
@@ -717,6 +736,12 @@ describe('ZilswapDexStatus', function () {
     });
 
     describe('bindViewPublic', function () {
+        var zilswapDexStatus;
+
+        beforeEach(function () {
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
+        });
+
         describe('#bindViewZrcTokenPriceInZil24hAgo()', function () {
 
             beforeEach(function () {
@@ -730,7 +755,6 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view happy case', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenPriceInZil24hAgo('1234.4', '123', '5.2', ticker);
@@ -745,7 +769,6 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view random string', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenPriceInZil24hAgo('asdf', 'qwer', 'rfb', ticker);
@@ -765,14 +788,13 @@ describe('ZilswapDexStatus', function () {
             beforeEach(function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     $('.' + ticker + '_price_zil').each(function () {
-                        assert.strictEqual($(this).text(), 'Loading...');
+                        assert.strictEqual($(this).text(), '0');
                     });
-                    assert.strictEqual($('#public_' + ticker + '_price_zil').text(), 'Loading...');
+                    assert.strictEqual($('#public_' + ticker + '_price_zil').text(), '0');
                 }
             });
 
             it('bind view happy case', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenPriceInZil('1234.4', '12345.5', ticker);
@@ -786,7 +808,6 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view random string', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenPriceInZil('asdf', 'qwer', ticker);
@@ -810,7 +831,6 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view happy case', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenPriceInFiat24hAgo('1234.4', '4322', ticker);
@@ -822,7 +842,6 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view random string', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenPriceInFiat24hAgo('asdf', 'qwer', ticker);
@@ -838,12 +857,11 @@ describe('ZilswapDexStatus', function () {
 
             beforeEach(function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                    assert.strictEqual($('#public_' + ticker + '_price_fiat').text(), 'Loading...');
+                    assert.strictEqual($('#public_' + ticker + '_price_fiat').text(), '0');
                 }
             });
 
             it('bind view happy case', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenPriceInFiat('1234.4', ticker);
@@ -854,7 +872,6 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view random string', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenPriceInFiat('asdf', ticker);
@@ -874,7 +891,6 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view happy case', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenLpTotalPoolBalanceFiat('1234.4', ticker);
@@ -885,7 +901,6 @@ describe('ZilswapDexStatus', function () {
             });
 
             it('bind view random string', function () {
-                let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
                     zilswapDexStatus.bindViewZrcTokenLpTotalPoolBalanceFiat('asdf', ticker);

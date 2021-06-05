@@ -1,7 +1,7 @@
 /** A class to represent Zilswap DEX status.  */
 class ZilswapDexStatus {
 
-    constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexSmartContractStateData, /* nullable= */ zilswapDexSmartContractState24hAgoData) {
+    constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ walletAddressBase16, /* nullable= */ zilswapDexSmartContractStateData, /* nullable= */ zilswapDexSmartContractState24hAgoData) {
         // Constants
         this.zilswapDexAddress_ = "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w";
         this.zilswapDexAddressBase16_ = "Ba11eB7bCc0a02e947ACF03Cc651Bfaf19C9EC00";
@@ -13,13 +13,16 @@ class ZilswapDexStatus {
         this.zilswapDexSmartContractState24hAgoData_ = zilswapDexSmartContractState24hAgoData;
 
         // Private derived variable
-        this.zilswapPairPublicStatusMap_ = null; // Null to indicate unset
-        this.zilswapPairPublicStatus24hAgoMap_ = null; // Null to indicate unset
+        this.zilswapPairPublicStatusMap_ = {};
+        this.zilswapPairPublicStatus24hAgoMap_ = {};
+
+        this.zilswapPairPersonalStatusMap_ = {}; 
+        this.zilswapPairPersonalStatus24hAgoMap_ = {};
 
         // private variable
-        this.lastBindedWalletAddressBase16_ = null;
+        this.walletAddressBase16_ = walletAddressBase16;
 
-        this.computeZilswapPairPublicStatusMap();
+        this.computeZilswapPairPublicPersonalStatusMap();
         this.bindViewIfDataExist();
     }
 
@@ -37,6 +40,19 @@ class ZilswapDexStatus {
         return false;
     }
 
+    resetPersonal() {
+        this.zilswapPairPersonalStatusMap_ = {}; 
+        this.zilswapPairPersonalStatus24hAgoMap_ = {};
+
+        // this.resetPersonalView();
+    }
+
+    setWalletAddressBase16(walletAddressBase16) {
+        // Need to reset the attributes when wallet is changed.
+        this.resetPersonal();
+        this.walletAddressBase16_ = walletAddressBase16;
+    }
+
     /**
      * Callback method to be executed if any properties in coinPriceStatus_ is changed.
      */
@@ -45,27 +61,67 @@ class ZilswapDexStatus {
         this.bindViewPersonalDataFiat();
     }
 
-    computeZilswapPairPublicStatusMap() {
-        // Return if there is no raw data.
+    computeZilswapPairPublicPersonalStatusMap() {
+        // Current data
         if (!this.zilswapDexSmartContractStateData_) {
             return;
         }
-        this.zilswapPairPublicStatusMap_ = {};
-        this.zilswapPairPublicStatus24hAgoMap_ = {};
-
+        let hasBalanceData = this.hasBalanceData();
         for (let key in this.zrcTokenPropertiesListMap_) {
             let zrcTokenProperties = this.zrcTokenPropertiesListMap_[key];
             let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();
 
             // To get pool status and zrc token price in ZIL
             let zilswapSinglePairPublicStatus = getZilswapSinglePairPublicStatusFromDexState(this.zilswapDexSmartContractStateData_, zrcTokenAddressBase16, zrcTokenProperties.decimals);
-            if (zilswapSinglePairPublicStatus) {
-                this.zilswapPairPublicStatusMap_[key] = zilswapSinglePairPublicStatus;
+            if (!zilswapSinglePairPublicStatus) {
+                continue;
             }
+            // Set public data
+            this.zilswapPairPublicStatusMap_[key] = zilswapSinglePairPublicStatus;
+            
+            // Compute personal status
+            if (!hasBalanceData || !this.walletAddressBase16_) {
+                continue;
+            }
+            let walletShareRatio = getZilswapSinglePairShareRatio(this.zilswapDexSmartContractStateData_, zrcTokenAddressBase16, this.walletAddressBase16_);
+            if (!walletShareRatio) {
+                continue;
+            }
+
+            // Set personal data
+            this.zilswapPairPersonalStatusMap_[key] = getZilswapSinglePairPersonalStatus(walletShareRatio, zilswapSinglePairPublicStatus);
+        }
+
+        // 24h Ago data
+        if (!this.zilswapDexSmartContractState24hAgoData_) {
+            return;
+        }
+        if (hasBalanceData) {
+            // This is to assume user have the same liquidity contribution amount 24h ago
+            this.zilswapDexSmartContractState24hAgoData_.result.balances = this.zilswapDexSmartContractStateData_.result.balances;
+        }
+        for (let key in this.zrcTokenPropertiesListMap_) {
+            let zrcTokenProperties = this.zrcTokenPropertiesListMap_[key];
+            let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();
+
             let zilswapSinglePairPublicStatus24hAgo = getZilswapSinglePairPublicStatusFromDexState(this.zilswapDexSmartContractState24hAgoData_, zrcTokenAddressBase16, zrcTokenProperties.decimals);
-            if (zilswapSinglePairPublicStatus24hAgo) {
-                this.zilswapPairPublicStatus24hAgoMap_[key] = zilswapSinglePairPublicStatus24hAgo;
+            if (!zilswapSinglePairPublicStatus24hAgo) {
+                continue;
             }
+            // Set public data
+            this.zilswapPairPublicStatus24hAgoMap_[key] = zilswapSinglePairPublicStatus24hAgo;
+
+            if (!hasBalanceData || !this.walletAddressBase16_) {
+                continue;
+            }
+
+            let walletShareRatio24hAgo = getZilswapSinglePairShareRatio(this.zilswapDexSmartContractState24hAgoData_, zrcTokenAddressBase16, this.walletAddressBase16_);
+            if (!walletShareRatio24hAgo) {
+                continue;
+            }
+
+            // Set personal data
+            this.zilswapPairPersonalStatus24hAgoMap_[key] = getZilswapSinglePairPersonalStatus(walletShareRatio24hAgo, zilswapSinglePairPublicStatus24hAgo);
         }
     }
 
@@ -76,17 +132,6 @@ class ZilswapDexStatus {
      * Any error will result in returning null.
      */
     getZilswapPairPublicStatus(zrcSymbol) {
-        // If data doesn't exist.
-        if (!this.zilswapDexSmartContractStateData_) {
-            return null;
-        }
-        // If zrc token symbol is not supported.
-        if (!this.zrcTokenPropertiesListMap_[zrcSymbol]) {
-            return null;
-        }
-        if (!this.zilswapPairPublicStatusMap_) {
-            return null;
-        }
         return this.zilswapPairPublicStatusMap_[zrcSymbol];
     }
 
@@ -97,17 +142,6 @@ class ZilswapDexStatus {
      * Any error will result in returning null.
      */
     getZilswapPairPublicStatus24hAgo(zrcSymbol) {
-        // If data doesn't exist.
-        if (!this.zilswapDexSmartContractState24hAgoData_) {
-            return null;
-        }
-        // If zrc token symbol is not supported.
-        if (!this.zrcTokenPropertiesListMap_[zrcSymbol]) {
-            return null;
-        }
-        if (!this.zilswapPairPublicStatus24hAgoMap_) {
-            return null;
-        }
         return this.zilswapPairPublicStatus24hAgoMap_[zrcSymbol];
     }
 
@@ -117,25 +151,8 @@ class ZilswapDexStatus {
      * 
      * Any error will result in returning null.
      */
-     getZilswapPairPersonalStatus(zrcSymbol, walletAddressBase16) {
-        if (!this.hasBalanceData()) {
-            return null;
-        }
-        // If zrc token symbol is not supported.
-        if (!this.zrcTokenPropertiesListMap_[zrcSymbol]) {
-            return null;
-        }
-        let zilswapSinglePairPublicStatus = this.getZilswapPairPublicStatus(zrcSymbol);
-        if (!zilswapSinglePairPublicStatus) {
-            return null;
-        }
-
-        let zrcTokenAddressBase16 = this.zrcTokenPropertiesListMap_[zrcSymbol].address_base16.toLowerCase();
-        let walletShareRatio = getZilswapSinglePairShareRatio(this.zilswapDexSmartContractStateData_, zrcTokenAddressBase16, walletAddressBase16);
-        if (!walletShareRatio) {
-            return null;
-        }
-        return getZilswapSinglePairPersonalStatus(walletShareRatio, zilswapSinglePairPublicStatus);
+     getZilswapPairPersonalStatus(zrcSymbol) {
+        return this.zilswapPairPersonalStatusMap_[zrcSymbol];
     }
 
     /**
@@ -144,31 +161,8 @@ class ZilswapDexStatus {
      * 
      * Any error will result in returning null.
      */
-    getZilswapPairPersonalStatus24hAgo(zrcSymbol, walletAddressBase16) {
-        if (!this.hasBalanceData()) {
-            return null;
-        }
-        if (!this.zilswapDexSmartContractState24hAgoData_) {
-            return null;
-        }
-        // If zrc token symbol is not supported.
-        if (!this.zrcTokenPropertiesListMap_[zrcSymbol]) {
-            return null;
-        }
-        let zilswapSinglePairPublicStatus24hAgo = this.getZilswapPairPublicStatus24hAgo(zrcSymbol);
-        if (!zilswapSinglePairPublicStatus24hAgo) {
-            return null;
-        }
-        
-        // This is to assume we have the same liquidity contribution amount 24h ago
-        this.zilswapDexSmartContractState24hAgoData_.result.balances = this.zilswapDexSmartContractStateData_.result.balances;
-
-        let zrcTokenAddressBase16 = this.zrcTokenPropertiesListMap_[zrcSymbol].address_base16.toLowerCase();
-        let walletShareRatio24hAgo = getZilswapSinglePairShareRatio(this.zilswapDexSmartContractState24hAgoData_, zrcTokenAddressBase16, walletAddressBase16);
-        if (!walletShareRatio24hAgo) {
-            return null;
-        }
-        return getZilswapSinglePairPersonalStatus(walletShareRatio24hAgo, zilswapSinglePairPublicStatus24hAgo);
+    getZilswapPairPersonalStatus24hAgo(zrcSymbol) {
+        return this.zilswapPairPersonalStatus24hAgoMap_[zrcSymbol];
     }
 
     computeDataRpcIfBalanceDataNoExist(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
@@ -176,8 +170,9 @@ class ZilswapDexStatus {
 
         // If data is already loaded, do not perform RPC.
         if (this.hasBalanceData()) {
-            this.computeZilswapPairPublicStatusMap();
+            this.computeZilswapPairPublicPersonalStatusMap();
             this.bindViewIfDataExist();
+            this.bindViewPersonalDataIfDataExist();
             onSuccessCallback(); // Call success callback as if the RPC is successful.
             return;
         }
@@ -191,8 +186,9 @@ class ZilswapDexStatus {
             /* successCallback= */
             function (data) {
                 self.zilswapDexSmartContractStateData_ = data;
-                self.computeZilswapPairPublicStatusMap();
+                self.computeZilswapPairPublicPersonalStatusMap();
                 self.bindViewIfDataExist();
+                self.bindViewPersonalDataIfDataExist();
                 onSuccessCallback();
             },
             /* errorCallback= */
@@ -206,7 +202,7 @@ class ZilswapDexStatus {
 
         // If data is already loaded, do not perform RPC.
         if (this.zilswapDexSmartContractStateData_) {
-            this.computeZilswapPairPublicStatusMap();
+            this.computeZilswapPairPublicPersonalStatusMap();
             this.bindViewIfDataExist();
             onSuccessCallback(); // Call success callback as if the RPC is successful.
             return;
@@ -221,7 +217,7 @@ class ZilswapDexStatus {
             /* successCallback= */
             function (data) {
                 self.zilswapDexSmartContractStateData_ = data;
-                self.computeZilswapPairPublicStatusMap();
+                self.computeZilswapPairPublicPersonalStatusMap();
                 self.bindViewIfDataExist();
                 onSuccessCallback();
             },
@@ -232,15 +228,11 @@ class ZilswapDexStatus {
     }
 
     /** Private method */
-    bindViewPersonalDataIfDataExist(walletAddressBase16) {
-        this.lastBindedWalletAddressBase16_ = walletAddressBase16;
-        if (!this.hasBalanceData()) {
-            return;
-        }
+    bindViewPersonalDataIfDataExist() {
         for (let ticker in this.zrcTokenPropertiesListMap_) {
             
             // To get ZilswapLp balance and Total pool status
-            let zilswapSinglePairPersonalStatus = this.getZilswapPairPersonalStatus(ticker, this.lastBindedWalletAddressBase16_);
+            let zilswapSinglePairPersonalStatus = this.getZilswapPairPersonalStatus(ticker);
             if (!zilswapSinglePairPersonalStatus) {
                 continue;
             }
@@ -255,7 +247,7 @@ class ZilswapDexStatus {
             this.bindViewZrcTokenLpBalance(poolSharePercent, zilAmount, zrcTokenAmount, balanceInZilAmount, ticker);
 
             // If there is a 24h ago data
-            let zilswapSinglePairPersonalStatus24hAgo = this.getZilswapPairPersonalStatus24hAgo(ticker, this.lastBindedWalletAddressBase16_);
+            let zilswapSinglePairPersonalStatus24hAgo = this.getZilswapPairPersonalStatus24hAgo(ticker);
             if (!zilswapSinglePairPersonalStatus24hAgo) {
                 continue;
             }
@@ -275,7 +267,7 @@ class ZilswapDexStatus {
 
     /** Private method */
     bindViewPersonalDataFiat() {
-        if (!this.lastBindedWalletAddressBase16_) {
+        if (!this.coinPriceStatus_) {
             return;
         }
         let zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
@@ -287,7 +279,7 @@ class ZilswapDexStatus {
 
         for (let ticker in zrcTokenPropertiesListMap) {
 
-            let zilswapSinglePairPersonalStatus = this.getZilswapPairPersonalStatus(ticker, this.lastBindedWalletAddressBase16_);
+            let zilswapSinglePairPersonalStatus = this.getZilswapPairPersonalStatus(ticker);
             if (!zilswapSinglePairPersonalStatus) {
                 continue;
             }
@@ -302,7 +294,7 @@ class ZilswapDexStatus {
             if (!zilPriceInFiat24hAgoFloat) {
                 continue;
             }
-            let zilswapSinglePairPersonalStatus24hAgo = this.getZilswapPairPersonalStatus24hAgo(ticker, this.lastBindedWalletAddressBase16_);
+            let zilswapSinglePairPersonalStatus24hAgo = this.getZilswapPairPersonalStatus24hAgo(ticker);
             if (!zilswapSinglePairPersonalStatus24hAgo) {
                 continue;
             }
@@ -318,10 +310,6 @@ class ZilswapDexStatus {
     }
 
     bindViewIfDataExist() {
-        if (!this.zilswapPairPublicStatusMap_) {
-            return;
-        }
-
         for (let key in this.zrcTokenPropertiesListMap_) {
             let zrcTokenProperties = this.zrcTokenPropertiesListMap_[key];
 
@@ -356,6 +344,9 @@ class ZilswapDexStatus {
 
     /** Private method */
     bindViewZrcTokenPriceFiat() {
+        if (!this.coinPriceStatus_) {
+            return;
+        }
         let zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
         if (!zilPriceInFiatFloat) {
             return;

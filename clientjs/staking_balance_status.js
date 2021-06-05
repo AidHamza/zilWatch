@@ -195,6 +195,9 @@ class StakingBalanceStatus {
     }
 
     bindViewStakingBalanceFiat() {
+        if (!this.coinPriceStatus_) {
+            return;
+        }
         let zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
         if (!zilPriceInFiatFloat) {
             return;
@@ -235,6 +238,9 @@ class StakingBalanceStatus {
     }
 
     bindViewStakingWithdrawalBalanceFiat() {
+        if (!this.coinPriceStatus_) {
+            return;
+        }
         let zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
         if (!zilPriceInFiatFloat) {
             return;

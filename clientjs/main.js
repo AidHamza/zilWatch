@@ -173,6 +173,7 @@ function computeWalletBalanceStatus(walletAddressBase16) {
 }
 
 function computeZilswapDexPersonalStatus(walletAddressBase16) {
+    zilswapDexStatus.setWalletAddressBase16(walletAddressBase16);
     zilswapDexStatus.computeDataRpcIfBalanceDataNoExist(
         /* beforeRpcCallback= */
         function() {
@@ -180,15 +181,12 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
         },
         /* onSuccessCallback= */
         function() {
-            zilswapDexStatus.bindViewPersonalDataIfDataExist(walletAddressBase16);
-
             onZilswapSinglePairPublicStatusLoaded();
             onZrcTokenLpBalanceLoaded();
             walletBalanceStatus.onZilswapDexStatusChange();
             stakingBalanceStatus.onZilswapDexStatusChange();
-            
+
             decrementShowSpinnerLpBalance();
-            
         },
         /* onErrorCallback= */
         function() {
@@ -204,6 +202,8 @@ function computeZilswapDexStatus() {
         /* onSuccessCallback= */
         function() {
             onZilswapSinglePairPublicStatusLoaded();
+            walletBalanceStatus.onZilswapDexStatusChange();
+            stakingBalanceStatus.onZilswapDexStatusChange();
         },
         /* onErrorCallback= */
         function() {
