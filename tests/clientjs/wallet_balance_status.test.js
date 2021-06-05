@@ -12,6 +12,44 @@ describe('WalletBalanceStatus', function () {
 
     beforeEach(function (done) {
         indexJsdom.resetHtmlView(done);
+
+        // bindViewZilBalance()
+        assert.strictEqual($('#zil_balance').text(), 'Loading...');
+
+        // bindViewZrcTokenWalletBalance()
+        for (let ticker in Constants.zrcTokenPropertiesListMap) {
+            assert.strictEqual($('#' + ticker + '_balance').text(), 'Loading...');
+            assert.strictEqual($('#' + ticker + '_container').css('display'), 'none');
+        }
+
+        // bindViewZilBalanceFiat24hAgo()
+        assert.strictEqual($('#zil_balance_fiat_24h_ago').text(), '');
+        assert.strictEqual($('#zil_balance_fiat_percent_change_24h').text(), '');
+
+        // bindViewZilBalanceFiat()
+        assert.strictEqual($('#zil_balance_fiat').text(), 'Loading...');
+
+        // bindViewZrcTokenWalletBalanceZil24hAgo()
+        for (let ticker in Constants.zrcTokenPropertiesListMap) {
+            assert.strictEqual($('#' + ticker + '_balance_zil_24h_ago').text(), '');
+            assert.strictEqual($('#' + ticker + '_balance_zil_percent_change_24h').text(), '');
+        }
+
+        // bindViewZrcTokenWalletBalanceZil()
+        for (let ticker in Constants.zrcTokenPropertiesListMap) {
+            assert.strictEqual($('#' + ticker + '_balance_zil').text(), 'Loading...');
+        }
+
+        // bindViewZrcTokenWalletBalanceFiat24hAgo()
+        for (let ticker in Constants.zrcTokenPropertiesListMap) {
+            assert.strictEqual($('#' + ticker + '_balance_fiat_24h_ago').text(), '');
+            assert.strictEqual($('#' + ticker + '_balance_fiat_percent_change_24h').text(), '');
+        }
+
+        // bindViewZrcTokenWalletBalanceFiat()
+        for (let ticker in Constants.zrcTokenPropertiesListMap) {
+            assert.strictEqual($('#' + ticker + '_balance_fiat').text(), 'Loading...');
+        }
     });
 
     describe('#constructor()', function () {
@@ -176,8 +214,40 @@ describe('WalletBalanceStatus', function () {
                 assert.strictEqual($('#' + ticker + '_balance_fiat_percent_change_24h').text(), expectedDataMap[ticker][6]);
             }
         });
-    });
 
+        it('compute, wallet set, bindView(), resetView(), viwe reset', function () {
+            walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletAddressBase16, zilBalanceData, zrcBalanceData);
+            
+            walletBalanceStatus.computeTokenBalanceMap('ZIL');
+            walletBalanceStatus.bindViewIfDataExist('ZIL');
+            walletBalanceStatus.bindViewDataFiat('ZIL');
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                walletBalanceStatus.computeTokenBalanceMap(ticker);
+                walletBalanceStatus.bindViewIfDataExist(ticker);
+                walletBalanceStatus.bindViewDataFiat(ticker);
+            }
+
+            // Act
+            walletBalanceStatus.reset();
+
+            // bindViewZilBalance()
+            assert.strictEqual($('#zil_balance').text(), 'Loading...');
+            assert.strictEqual($('#zil_balance_fiat').text(), 'Loading...');
+            assert.strictEqual($('#zil_balance_fiat_24h_ago').text(), '');
+            assert.strictEqual($('#zil_balance_fiat_percent_change_24h').text(), '');
+
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#' + ticker + '_container').css('display'), 'none');
+                assert.strictEqual($('#' + ticker + '_balance').text(), 'Loading...');
+                assert.strictEqual($('#' + ticker + '_balance_zil').text(), 'Loading...');
+                assert.strictEqual($('#' + ticker + '_balance_zil_24h_ago').text(), '');
+                assert.strictEqual($('#' + ticker + '_balance_zil_percent_change_24h').text(), '');
+                assert.strictEqual($('#' + ticker + '_balance_fiat').text(), 'Loading...');
+                assert.strictEqual($('#' + ticker + '_balance_fiat_24h_ago').text(), '');
+                assert.strictEqual($('#' + ticker + '_balance_fiat_percent_change_24h').text(), '');
+            }
+        });
+    });
 
     describe('#methods(), with 24h ago, in idr', function () {
         // console.log("'%s': ['%s', '', '', '', '%s', '%s', '%s'],",

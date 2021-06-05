@@ -42,6 +42,7 @@ class WalletBalanceStatus {
         this.zilBalanceData_ = null;
         this.zrcBalanceDataMap_ = {};
         this.tokenBalanceMap_ = {};
+        this.resetView();
     }
 
     setWalletAddressBase16(walletAddressBase16) {
@@ -295,6 +296,26 @@ class WalletBalanceStatus {
     /** Private static method */
     bindViewZrcTokenWalletBalanceFiat(zrcBalanceFiat, ticker) {
         $('#' + ticker + '_balance_fiat').text(zrcBalanceFiat);
+    }
+
+    resetView() {
+        $('#zil_balance').text('Loading...');
+        $('#zil_balance_fiat').text('Loading...');
+        $('#zil_balance_fiat_24h_ago').text('');
+        $('#zil_balance_fiat_percent_change_24h').text('');
+
+        for (let ticker in this.zrcTokenPropertiesListMap_) {
+            $('#' + ticker + '_container').hide();
+
+            $('#' + ticker + '_balance').text('Loading...');
+            $('#' + ticker + '_balance_zil').text('Loading...');
+            $('#' + ticker + '_balance_zil_24h_ago').text('');
+            $('#' + ticker + '_balance_zil_percent_change_24h').text('');
+
+            $('#' + ticker + '_balance_fiat').text('Loading...');
+            $('#' + ticker + '_balance_fiat_24h_ago').text('');
+            $('#' + ticker + '_balance_fiat_percent_change_24h').text('');
+        }
     }
 }
 

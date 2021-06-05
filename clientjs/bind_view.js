@@ -88,26 +88,15 @@ function bindViewMainContainer(zilpayStatus) {
 
 function resetMainContainerContent() {
     $('#lp_container').hide();
-    $('#staking_container').hide();
     $('#total_all_lp_reward_next_epoch_container').hide();
 
-    $('#zil_balance').text('Loading...');
-    $('#zil_balance_fiat').text('Loading...');
-    $('#zil_balance_fiat_24h_ago').text('');
-    $('#zil_balance_fiat_percent_change_24h').text('');
-
     for (let ticker in zrcTokenPropertiesListMap) {
-        $('#' + ticker + '_container').hide();
-        $('#' + ticker + '_balance').text('Loading...');
-
         $('#' + ticker + '_lp_container').hide();
         $('#' + ticker + '_lp_pool_share_percent').text('Loading...');
         $('#' + ticker + '_lp_zil_balance').text('');
         $('#' + ticker + '_lp_token_balance').text('');
         $('#' + ticker + '_lp_pool_reward_zwap').text('');
         $('#' + ticker + '_lp_pool_reward_zwap_unit').text('');
-        $('#' + ticker + '_balance_zil').text('Loading...');
-        $('#' + ticker + '_balance_fiat').text('Loading...');
         $('#' + ticker + '_lp_balance_zil').text('');
         $('#' + ticker + '_lp_balance_fiat').text('Loading...');
 
@@ -116,10 +105,6 @@ function resetMainContainerContent() {
         $('#' + ticker + '_lp_token_balance_24h_ago').text('');
         $('#' + ticker + '_lp_balance_zil_24h_ago').text('');
 
-        $('#' + ticker + '_balance_zil_24h_ago').text('');
-        $('#' + ticker + '_balance_zil_percent_change_24h').text('');
-        $('#' + ticker + '_balance_fiat_24h_ago').text('');
-        $('#' + ticker + '_balance_fiat_percent_change_24h').text('');
         $('#' + ticker + '_lp_balance_fiat_24h_ago').text('');
         $('#' + ticker + '_lp_balance_fiat_percent_change_24h').text('');
     }

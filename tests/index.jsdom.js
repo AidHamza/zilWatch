@@ -72,15 +72,6 @@ var assert = require('assert');
 function assertDefaultStateMainContent() {
     // 2 --------------------------------------------------- 2
 
-    // bindViewZilBalance()
-    assert.strictEqual($('#zil_balance').text(), 'Loading...');
-
-    // bindViewZrcTokenWalletBalance()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_balance').text(), 'Loading...');
-        assert.strictEqual($('#' + ticker + '_container').css('display'), 'none');
-    }
-
     // bindViewZrcTokenLpBalance24hAgo()
     for (let ticker in Constants.zrcTokenPropertiesListMap) {
         assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_24h_ago').text(), '');
@@ -115,34 +106,6 @@ function assertDefaultStateMainContent() {
 
     // 3 --------------------------------------- 3
 
-    // bindViewZilBalanceFiat24hAgo()
-    assert.strictEqual($('#zil_balance_fiat_24h_ago').text(), '');
-    assert.strictEqual($('#zil_balance_fiat_percent_change_24h').text(), '');
-
-    // bindViewZilBalanceFiat()
-    assert.strictEqual($('#zil_balance_fiat').text(), 'Loading...');
-
-    // bindViewZrcTokenWalletBalanceZil24hAgo()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_balance_zil_24h_ago').text(), '');
-        assert.strictEqual($('#' + ticker + '_balance_zil_percent_change_24h').text(), '');
-    }
-
-    // bindViewZrcTokenWalletBalanceZil()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_balance_zil').text(), 'Loading...');
-    }
-
-    // bindViewZrcTokenWalletBalanceFiat24hAgo()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_balance_fiat_24h_ago').text(), '');
-        assert.strictEqual($('#' + ticker + '_balance_fiat_percent_change_24h').text(), '');
-    }
-
-    // bindViewZrcTokenWalletBalanceFiat()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_balance_fiat').text(), 'Loading...');
-    }
     // bindViewTotalWalletBalanceZil24hAgo()
     assert.strictEqual($('#wallet_balance_zil_24h_ago').text(), '');
     assert.strictEqual($('#wallet_balance_zil_percent_change_24h').text(), '');
