@@ -86,6 +86,64 @@ class StakingBalanceStatus {
         return this.zilStakingWithdrawalBalance_;
     }
 
+    /**
+     * Returns all staking balance from all types of staking in ZIL
+     * 
+     * Any error will return 0
+     */
+    getAllStakingBalanceInZil() {
+        let totalStakingInZil = 0;
+
+        let withdrawalBalanceInZil = this.getStakingWithdrawalBalance();
+        if (withdrawalBalanceInZil) {
+            totalStakingInZil += withdrawalBalanceInZil;
+        }
+
+        for (let ssnAddress in this.ssnListMap_) {
+            let currStakingZil = this.getStakingBalance(ssnAddress);
+            if (currStakingZil) {
+                totalStakingInZil += currStakingZil;
+            }
+        }
+
+        if (this.stakingCarbonStatus_) {
+            let stakingCarbonInZil = this.stakingCarbonStatus_.getCarbonStakingBalanceInZil();
+            if (stakingCarbonInZil) {
+                totalStakingInZil += stakingCarbonInZil;
+            }
+        }
+        return totalStakingInZil;
+    }
+
+    /**
+     * Returns all staking balance from all types of staking in ZIL
+     * 
+     * Any error will return 0
+     */
+    getAllStakingBalanceInZil24hAgo() {
+        let totalStakingInZil = 0;
+
+        let withdrawalBalanceInZil = this.getStakingWithdrawalBalance();
+        if (withdrawalBalanceInZil) {
+            totalStakingInZil += withdrawalBalanceInZil;
+        }
+
+        for (let ssnAddress in this.ssnListMap_) {
+            let currStakingZil = this.getStakingBalance(ssnAddress);
+            if (currStakingZil) {
+                totalStakingInZil += currStakingZil;
+            }
+        }
+
+        if (this.stakingCarbonStatus_) {
+            let stakingCarbonInZil = this.stakingCarbonStatus_.getCarbonStakingBalanceInZil24hAgo();
+            if (stakingCarbonInZil) {
+                totalStakingInZil += stakingCarbonInZil;
+            }
+        }
+        return totalStakingInZil;
+    }
+
     computeStakingBalanceMap() {
         if (!this.zilStakingBalanceData_) {
             return;

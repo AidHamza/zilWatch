@@ -145,6 +145,22 @@ class ZilswapDexStatus {
         return this.zilswapPairPublicStatus24hAgoMap_[zrcSymbol];
     }
 
+    getZrcPriceInZil(zrcSymbol) {
+        let pairPublicStatus = this.zilswapPairPublicStatusMap_[zrcSymbol];
+        if (!pairPublicStatus) {
+            return null;
+        }
+        return pairPublicStatus.zrcTokenPriceInZil;
+    }
+
+    getZrcPriceInZil24hAgo(zrcSymbol) {
+        let pairPublicStatus = this.zilswapPairPublicStatus24hAgoMap_[zrcSymbol];
+        if (!pairPublicStatus) {
+            return null;
+        }
+        return pairPublicStatus.zrcTokenPriceInZil;
+    }
+
     /**
      * Returns ZilswapPairPersonalStatus given a zrcSymbol.
      * ZilswapPairPersonalStatus contains share ratio and the amount of ZRC and ZIL in a personal wallet's LP pair.
@@ -163,6 +179,40 @@ class ZilswapDexStatus {
      */
     getZilswapPairPersonalStatus24hAgo(zrcSymbol) {
         return this.zilswapPairPersonalStatus24hAgoMap_[zrcSymbol];
+    }
+
+    /**
+     * Returns all personal LP balance in ZIL.
+     * 
+     * Any error will result in returning 0.
+     */
+    getAllPersonalBalanceInZil() {
+        let totalZilAmount = 0;
+        for (let ticker in this.zrcTokenPropertiesListMap_) {
+            let currPersonalStatus = this.getZilswapPairPersonalStatus(ticker);
+            if (!currPersonalStatus) {
+                continue;
+            }
+            totalZilAmount += 2.0 * currPersonalStatus.zilAmount;
+        }
+        return totalZilAmount;
+    }
+
+    /**
+     * Returns all personal LP balance in ZIL 24h ago.
+     * 
+     * Any error will result in returning 0.
+     */
+    getAllPersonalBalanceInZil24hAgo() {
+        let totalZilAmount = 0;
+        for (let ticker in this.zrcTokenPropertiesListMap_) {
+            let currPersonalStatus = this.getZilswapPairPersonalStatus24hAgo(ticker);
+            if (!currPersonalStatus) {
+                continue;
+            }
+            totalZilAmount += 2.0 * currPersonalStatus.zilAmount;
+        }
+        return totalZilAmount;
     }
 
     computeDataRpcIfBalanceDataNoExist(beforeRpcCallback, onSuccessCallback, onErrorCallback) {

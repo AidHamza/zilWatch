@@ -106,34 +106,6 @@ function resetMainContainerContent() {
     disableTooltipPastTotalRewardAllLpZwap();
     clearViewPastTotalRewardAllLpZwap();
 
-    $('#wallet_balance_zil_24h_ago').text('');
-    $('#wallet_balance_zil_percent_change_24h').text('');
-    $('#wallet_balance_fiat_24h_ago').text('');
-    $('#wallet_balance_fiat_percent_change_24h').text('');
-    $('#wallet_balance_zil').text('Loading...');
-    $('#wallet_balance_fiat').text('Loading...');
-
-    $('#lp_balance_zil_24h_ago').text('');
-    $('#lp_balance_zil_percent_change_24h').text('');
-    $('#lp_balance_fiat_24h_ago').text('');
-    $('#lp_balance_fiat_percent_change_24h').text('');
-    $('#lp_balance_zil').text('Loading...');
-    $('#lp_balance_fiat').text('Loading...');
-
-    $('#staking_balance_zil_24h_ago').text('');
-    $('#staking_balance_zil_percent_change_24h').text('');
-    $('#staking_balance_fiat_24h_ago').text('');
-    $('#staking_balance_fiat_percent_change_24h').text('');
-    $('#staking_balance_zil').text('Loading...');
-    $('#staking_balance_fiat').text('Loading...');
-
-    $('#net_worth_zil_24h_ago').text('');
-    $('#net_worth_zil_percent_change_24h').text('');
-    $('#net_worth_fiat_24h_ago').text('');
-    $('#net_worth_fiat_percent_change_24h').text('');
-    $('#net_worth_zil').text('Loading...');
-    $('#net_worth_fiat').text('Loading...');
-
     // Spinner
     $('.wallet-balance-spinner').hide();
     $('.lp-balance-spinner').hide();
@@ -185,89 +157,6 @@ function bindViewZrcTokenTotalSupplyFiat(zrcTokenTotalSupplyFiat, ticker) {
     $('#' + ticker + '_total_supply_fiat').text(zrcTokenTotalSupplyFiat);
 }
 
-/**
- * 3 --------------------------------------------------------------------------------
- */
-
-function bindViewTotalWalletBalanceZil24hAgo(totalWalletBalanceZil24hAgo, totalWalletBalanceZilPercentChange24h) {
-    $('#wallet_balance_zil_24h_ago').text(totalWalletBalanceZil24hAgo);
-    $('#wallet_balance_zil_percent_change_24h').text(totalWalletBalanceZilPercentChange24h);
-    bindViewPercentChangeColorContainer('#wallet_balance_zil_percent_change_24h_container', totalWalletBalanceZilPercentChange24h);
-}
-
-function bindViewTotalWalletBalanceZil(totalWalletBalanceZil) {
-    $('#wallet_balance_zil').text(totalWalletBalanceZil);
-}
-
-function bindViewTotalWalletBalanceFiat24hAgo(totalWalletBalanceFiat24hAgo, totalWalletBalanceFiatPercentChange24h) {
-    $('#wallet_balance_fiat_24h_ago').text(totalWalletBalanceFiat24hAgo);
-    $('#wallet_balance_fiat_percent_change_24h').text(totalWalletBalanceFiatPercentChange24h);
-    bindViewPercentChangeColorContainer('#wallet_balance_fiat_percent_change_24h_container', totalWalletBalanceFiatPercentChange24h);
-}
-
-function bindViewTotalWalletBalanceFiat(totalWalletBalanceFiat) {
-    $('#wallet_balance_fiat').text(totalWalletBalanceFiat);
-}
-
-function bindViewTotalLpBalanceZil24hAgo(totalLpBalanceZil24hAgo, totalLpBalanceZilPercentChange24h) {
-    $('#lp_balance_zil_24h_ago').text(totalLpBalanceZil24hAgo);
-    $('#lp_balance_zil_percent_change_24h').text(totalLpBalanceZilPercentChange24h);
-    bindViewPercentChangeColorContainer('#lp_balance_zil_percent_change_24h_container', totalLpBalanceZilPercentChange24h);
-}
-
-function bindViewTotalLpBalanceZil(totalLpBalanceZil) {
-    $('#lp_balance_zil').text(totalLpBalanceZil);
-}
-
-function bindViewTotalLpBalanceFiat24hAgo(totalLpBalanceFiat24hAgo, totalLpBalanceFiatPercentChange24h) {
-    $('#lp_balance_fiat_24h_ago').text(totalLpBalanceFiat24hAgo);
-    $('#lp_balance_fiat_percent_change_24h').text(totalLpBalanceFiatPercentChange24h);
-    bindViewPercentChangeColorContainer('#lp_balance_fiat_percent_change_24h_container', totalLpBalanceFiatPercentChange24h);
-}
-
-function bindViewTotalLpBalanceFiat(totalLpBalanceFiat) {
-    $('#lp_balance_fiat').text(totalLpBalanceFiat);
-}
-
-function bindViewTotalStakingBalanceZil24hAgo(totalStakingBalanceZil24hAgo, totalStakingBalanceZilPercentChange24h) {
-    $('#staking_balance_zil_24h_ago').text(totalStakingBalanceZil24hAgo);
-    $('#staking_balance_zil_percent_change_24h').text(totalStakingBalanceZilPercentChange24h);
-    bindViewPercentChangeColorContainer('#staking_balance_zil_percent_change_24h_container', totalStakingBalanceZilPercentChange24h);
-}
-
-function bindViewTotalStakingBalanceZil(totalStakingBalanceZil) {
-    $('#staking_balance_zil').text(totalStakingBalanceZil);
-}
-
-function bindViewTotalStakingBalanceFiat24hAgo(totalStakingBalanceFiat24hAgo, totalStakingBalanceFiatPercentChange24h) {
-    $('#staking_balance_fiat_24h_ago').text(totalStakingBalanceFiat24hAgo);
-    $('#staking_balance_fiat_percent_change_24h').text(totalStakingBalanceFiatPercentChange24h);
-    bindViewPercentChangeColorContainer('#staking_balance_fiat_percent_change_24h_container', totalStakingBalanceFiatPercentChange24h);
-}
-
-function bindViewTotalStakingBalanceFiat(totalStakingBalanceFiat) {
-    $('#staking_balance_fiat').text(totalStakingBalanceFiat);
-}
-
-function bindViewTotalNetWorthZil24hAgo(totalNetWorthZil24hAgo, totalNetWorthZilPercentChange24h) {
-    $('#net_worth_zil_24h_ago').text(totalNetWorthZil24hAgo);
-    $('#net_worth_zil_percent_change_24h').text(totalNetWorthZilPercentChange24h);
-    bindViewPercentChangeColorContainer('#net_worth_zil_percent_change_24h_container', totalNetWorthZilPercentChange24h);
-}
-
-function bindViewTotalNetWorthZil(totalNetWorthZil) {
-    $('#net_worth_zil').text(totalNetWorthZil);
-}
-
-function bindViewTotalNetWorthFiat24hAgo(totalNetWorthFiat24hAgo, totalNetWorthFiatPercentChange24h) {
-    $('#net_worth_fiat_24h_ago').text(totalNetWorthFiat24hAgo);
-    $('#net_worth_fiat_percent_change_24h').text(totalNetWorthFiatPercentChange24h);
-    bindViewPercentChangeColorContainer('#net_worth_fiat_percent_change_24h_container', totalNetWorthFiatPercentChange24h);
-}
-
-function bindViewTotalNetWorthFiat(totalNetWorthFiat) {
-    $('#net_worth_fiat').text(totalNetWorthFiat);
-}
 /**
  * 4 --------------------------------------------------------------------------------
  * This is mainly total ZWAP LP reward card
@@ -485,24 +374,6 @@ if (typeof exports !== 'undefined') {
     exports.bindViewZrcTokenCirculatingSupplyFiat = bindViewZrcTokenCirculatingSupplyFiat;
     exports.bindViewZrcTokenTotalSupply = bindViewZrcTokenTotalSupply;
     exports.bindViewZrcTokenTotalSupplyFiat = bindViewZrcTokenTotalSupplyFiat;
-
-    // 3
-    exports.bindViewTotalWalletBalanceZil24hAgo = bindViewTotalWalletBalanceZil24hAgo;
-    exports.bindViewTotalWalletBalanceZil = bindViewTotalWalletBalanceZil;
-    exports.bindViewTotalWalletBalanceFiat24hAgo = bindViewTotalWalletBalanceFiat24hAgo;
-    exports.bindViewTotalWalletBalanceFiat = bindViewTotalWalletBalanceFiat;
-    exports.bindViewTotalLpBalanceZil24hAgo = bindViewTotalLpBalanceZil24hAgo;
-    exports.bindViewTotalLpBalanceZil = bindViewTotalLpBalanceZil;
-    exports.bindViewTotalLpBalanceFiat24hAgo = bindViewTotalLpBalanceFiat24hAgo;
-    exports.bindViewTotalLpBalanceFiat = bindViewTotalLpBalanceFiat;
-    exports.bindViewTotalStakingBalanceZil24hAgo = bindViewTotalStakingBalanceZil24hAgo;
-    exports.bindViewTotalStakingBalanceZil = bindViewTotalStakingBalanceZil;
-    exports.bindViewTotalStakingBalanceFiat24hAgo = bindViewTotalStakingBalanceFiat24hAgo;
-    exports.bindViewTotalStakingBalanceFiat = bindViewTotalStakingBalanceFiat;
-    exports.bindViewTotalNetWorthZil24hAgo = bindViewTotalNetWorthZil24hAgo;
-    exports.bindViewTotalNetWorthZil = bindViewTotalNetWorthZil;
-    exports.bindViewTotalNetWorthFiat24hAgo = bindViewTotalNetWorthFiat24hAgo;
-    exports.bindViewTotalNetWorthFiat = bindViewTotalNetWorthFiat;
 
     // 4
     exports.bindViewTotalRewardAllLpZwap = bindViewTotalRewardAllLpZwap;

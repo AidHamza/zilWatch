@@ -147,6 +147,8 @@ describe('WalletBalanceStatus', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual(walletBalanceStatus.getTokenBalance(ticker), undefined);
             }
+            assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil(), 0);
+            assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil24hAgo(), 0);
         });
 
         it('compute, wallet not set, no token balance data', function () {
@@ -158,6 +160,8 @@ describe('WalletBalanceStatus', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual(walletBalanceStatus.getTokenBalance(ticker), undefined);
             }
+            assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil(), 0);
+            assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil24hAgo(), 0);
         });
 
         
@@ -176,6 +180,9 @@ describe('WalletBalanceStatus', function () {
                 assert.strictEqual(walletBalanceStatus.getTokenBalance(ticker), undefined);
             }
             assert.strictEqual(walletBalanceStatus.getTokenBalance('REDC'), 0.657942857);
+
+            assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil(), 13.868055089821784);
+            assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil24hAgo(), 0);
         });
 
         it('compute, wallet set, bindView(), assertView', function () {
@@ -191,12 +198,15 @@ describe('WalletBalanceStatus', function () {
                 walletBalanceStatus.bindViewDataFiat(ticker);
             }
 
+            // Assert
+            assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil(), 7665.323124151986);
+            assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil24hAgo(), 7476.589135982234);
+
             assert.strictEqual($('#zil_balance').text(), expectedDataMap['ZIL'][0]);
             assert.strictEqual($('#zil_balance_fiat').text(), expectedDataMap['ZIL'][4]);
             assert.strictEqual($('#zil_balance_fiat_24h_ago').text(),  expectedDataMap['ZIL'][5]);
             assert.strictEqual($('#zil_balance_fiat_percent_change_24h').text(), expectedDataMap['ZIL'][6]);
             
-            // Assert
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 if (Number.isNaN(parseFloat(expectedDataMap[ticker][0]))) {
                     assert.strictEqual($('#' + ticker + '_container').css('display'), 'none');
@@ -363,6 +373,9 @@ describe('WalletBalanceStatus', function () {
                 walletBalanceStatus.bindViewIfDataExist(ticker);
                 walletBalanceStatus.bindViewDataFiat(ticker);
             }
+
+            assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil(), 7665.323124151986);
+            assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil24hAgo(), 7682.523573160919);
 
             assert.strictEqual($('#zil_balance').text(), expectedDataMap['ZIL'][0]);
             assert.strictEqual($('#zil_balance_fiat').text(), expectedDataMap['ZIL'][4]);

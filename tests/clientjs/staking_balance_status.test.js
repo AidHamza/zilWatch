@@ -141,6 +141,9 @@ describe('StakingBalanceStatus', function () {
             stakingBalanceStatus.computeStakingWithdrawalBalance();
 
             // Assert
+            assert.strictEqual(stakingBalanceStatus.getAllStakingBalanceInZil(), 9363.107679853088);
+            assert.strictEqual(stakingBalanceStatus.getAllStakingBalanceInZil24hAgo(), 9363.107679853088);
+
             // The current address doesn't have  withdrawal balance in the data
             assert.strictEqual(stakingBalanceStatus.getStakingWithdrawalBalance(), undefined);
             for (let ssnAddress in Constants.ssnListMap) {
@@ -164,7 +167,9 @@ describe('StakingBalanceStatus', function () {
             stakingBalanceStatus.computeStakingWithdrawalBalance();
 
             // Assert
-            // The current address doesn't have  withdrawal balance in the data
+            assert.strictEqual(stakingBalanceStatus.getAllStakingBalanceInZil(), 30489.323039559265);
+            assert.strictEqual(stakingBalanceStatus.getAllStakingBalanceInZil24hAgo(), 30489.323039559265);
+            
             assert.strictEqual(stakingBalanceStatus.getStakingWithdrawalBalance(), 21126.215359706177);
             for (let ssnAddress in Constants.ssnListMap) {
                 // If zillet.io, we have some amount
@@ -354,8 +359,6 @@ describe('StakingBalanceStatus', function () {
             stakingBalanceStatus.bindViewStakingWithdrawalBalance();
             stakingBalanceStatus.bindViewStakingWithdrawalBalanceFiat();
 
-
-
             // Assert
             let isStakingContainerAlreadyShown = false;
             for (let ssnAddress in Constants.ssnListMap) {
@@ -455,6 +458,10 @@ describe('StakingBalanceStatus', function () {
             // Change currency
             coinPriceStatus.setActiveCurrencyCode('idr');
             stakingBalanceStatus.onCoinPriceStatusChange();
+
+            // Assert
+            assert.strictEqual(stakingBalanceStatus.getAllStakingBalanceInZil(), 31859.93729923527);
+            assert.strictEqual(stakingBalanceStatus.getAllStakingBalanceInZil24hAgo(), 32022.371219777688);
 
             // Assert IDR
             assert.strictEqual($('#carbon_staking_balance').text(), '90.36');

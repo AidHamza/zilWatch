@@ -68,6 +68,62 @@ class WalletBalanceStatus {
         return this.tokenBalanceMap_[coinSymbol];
     }
 
+    /**
+     * Returns token balance in ZIL, number data type.
+     * 
+     * Any error will result in returning 0.
+     */
+    getAllTokenBalanceInZil() {
+        let totalZil = 0;
+
+        let zilBalance = this.getTokenBalance('ZIL');
+        if (zilBalance) {
+            totalZil += zilBalance;
+        }
+        for (let ticker in this.zrcTokenPropertiesListMap_ ) {
+            let zrcBalance = this.getTokenBalance(ticker);
+            if (!zrcBalance) {
+                continue;
+            }
+            // Get zrcTokenPriceInZil
+            let zrcTokenPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil(ticker);
+            if (!zrcTokenPriceInZil) {
+                continue;
+            }
+            let zrcBalanceInZil = 1.0 * zrcBalance * zrcTokenPriceInZil;
+            totalZil += zrcBalanceInZil;
+        }
+        return totalZil;
+    }
+
+    /**
+     * Returns token balance in ZIL 24h ago, number data type.
+     * 
+     * Any error will result in returning 0.
+     */
+    getAllTokenBalanceInZil24hAgo() {
+        let totalZil = 0;
+
+        let zilBalance = this.getTokenBalance('ZIL');
+        if (zilBalance) {
+            totalZil += zilBalance;
+        }
+        for (let ticker in this.zrcTokenPropertiesListMap_ ) {
+            let zrcBalance = this.getTokenBalance(ticker);
+            if (!zrcBalance) {
+                continue;
+            }
+            // Get zrcTokenPriceInZil
+            let zrcTokenPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil24hAgo(ticker);
+            if (!zrcTokenPriceInZil) {
+                continue;
+            }
+            let zrcBalanceInZil = 1.0 * zrcBalance * zrcTokenPriceInZil;
+            totalZil += zrcBalanceInZil;
+        }
+        return totalZil;
+    }
+
     computeTokenBalanceMap(coinSymbol) {
         // If coinSymbol is ZIL, process here
         if (coinSymbol === 'ZIL') {
@@ -209,12 +265,8 @@ class WalletBalanceStatus {
         if (!zrcBalance) {
             return;
         }
-        let zrcPairPublicStatus = this.zilswapDexStatus_.getZilswapPairPublicStatus(coinSymbol);
-        if (!zrcPairPublicStatus) {
-            return;
-        }
-        let zrcPriceInZil = zrcPairPublicStatus.zrcTokenPriceInZil;
-        if (Number.isNaN(zrcPriceInZil)) {
+        let zrcPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil(coinSymbol);
+        if (!zrcPriceInZil) {
             return;
         }
 
@@ -231,12 +283,8 @@ class WalletBalanceStatus {
         this.bindViewZrcTokenWalletBalanceFiat(zrcBalanceFiatString, coinSymbol);
 
         // Process ZRC in ZIL 24h ago
-        let zrcPairPublicStatus24hAgo = this.zilswapDexStatus_.getZilswapPairPublicStatus24hAgo(coinSymbol);
-        if (!zrcPairPublicStatus24hAgo) {
-            return;
-        }
-        let zrcPriceInZil24hAgo = zrcPairPublicStatus24hAgo.zrcTokenPriceInZil;
-        if (Number.isNaN(zrcPriceInZil24hAgo)) {
+        let zrcPriceInZil24hAgo = this.zilswapDexStatus_.getZrcPriceInZil24hAgo(coinSymbol);
+        if (!zrcPriceInZil24hAgo) {
             return;
         }
         let zrcBalanceInZil24hAgo = 1.0 * zrcPriceInZil24hAgo * zrcBalance;

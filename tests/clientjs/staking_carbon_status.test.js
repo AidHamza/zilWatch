@@ -90,6 +90,8 @@ describe('StakingCarbonStatus', function () {
 
             // Assert
             assert.strictEqual(stakingCarbonStatus.getCarbonStakingBalance(), 90.36430995);
+            assert.strictEqual(stakingCarbonStatus.getCarbonStakingBalanceInZil(), 1370.614259676004);
+            assert.strictEqual(stakingCarbonStatus.getCarbonStakingBalanceInZil24hAgo(), 0); // 24h Ago not set
         });
 
         it('compute, wallet set, bindView(), assertView', function () {
@@ -160,6 +162,11 @@ describe('StakingCarbonStatus', function () {
             // Act
             stakingCarbonStatus.computeCarbonBalance();
             stakingCarbonStatus.bindViewStakingBalance();
+
+            // Assert
+            assert.strictEqual(stakingCarbonStatus.getCarbonStakingBalance(), 90.36430995);
+            assert.strictEqual(stakingCarbonStatus.getCarbonStakingBalanceInZil(), 1370.614259676004);
+            assert.strictEqual(stakingCarbonStatus.getCarbonStakingBalanceInZil24hAgo(), 1533.0481802184236);
 
             // Assert
             assert.strictEqual($('#carbon_staking_balance').text(), '90.36');

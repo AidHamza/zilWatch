@@ -86,64 +86,6 @@ function assertDefaultStateMainContent() {
     // bindViewZrcTokenTotalSupply(): Exception, no need refresh
     // bindViewZrcTokenTotalSupplyFiat(): Exception, no need refresh
 
-    // 3 --------------------------------------- 3
-
-    // bindViewTotalWalletBalanceZil24hAgo()
-    assert.strictEqual($('#wallet_balance_zil_24h_ago').text(), '');
-    assert.strictEqual($('#wallet_balance_zil_percent_change_24h').text(), '');
-
-    // bindViewTotalWalletBalanceZil()
-    assert.strictEqual($('#wallet_balance_zil').text(), 'Loading...');
-
-    // bindViewTotalWalletBalanceFiat24hAgo()
-    assert.strictEqual($('#wallet_balance_fiat_24h_ago').text(), '');
-    assert.strictEqual($('#wallet_balance_fiat_percent_change_24h').text(), '');
-
-    // bindViewTotalWalletBalanceFiat()
-    assert.strictEqual($('#wallet_balance_fiat').text(), 'Loading...');
-
-    // bindViewTotalLpBalanceZil24hAgo()
-    assert.strictEqual($('#lp_balance_zil_24h_ago').text(), '');
-    assert.strictEqual($('#lp_balance_zil_percent_change_24h').text(), '');
-
-    // bindViewTotalLpBalanceZil()
-    assert.strictEqual($('#lp_balance_zil').text(), 'Loading...');
-
-    // bindViewTotalLpBalanceFiat24hAgo()
-    assert.strictEqual($('#lp_balance_fiat_24h_ago').text(), '');
-    assert.strictEqual($('#lp_balance_fiat_percent_change_24h').text(), '');
-
-    // bindViewTotalLpBalanceFiat()
-    assert.strictEqual($('#lp_balance_fiat').text(), 'Loading...');
-
-    // bindViewTotalStakingBalanceZil24hAgo()
-    assert.strictEqual($('#staking_balance_zil_24h_ago').text(), '');
-    assert.strictEqual($('#staking_balance_zil_percent_change_24h').text(), '');
-
-    // bindViewTotalStakingBalanceZil()
-    assert.strictEqual($('#staking_balance_zil').text(), 'Loading...');
-
-    // bindViewTotalStakingBalanceFiat24hAgo()
-    assert.strictEqual($('#staking_balance_fiat_24h_ago').text(), '');
-    assert.strictEqual($('#staking_balance_fiat_percent_change_24h').text(), '');
-
-    // bindViewTotalStakingBalanceFiat()
-    assert.strictEqual($('#staking_balance_fiat').text(), 'Loading...');
-
-    // bindViewTotalNetWorthZil24hAgo()
-    assert.strictEqual($('#net_worth_zil_24h_ago').text(), '');
-    assert.strictEqual($('#net_worth_zil_percent_change_24h').text(), '');
-
-    // bindViewTotalNetWorthZil()
-    assert.strictEqual($('#net_worth_zil').text(), 'Loading...');
-
-    // bindViewTotalNetWorthFiat24hAgo()
-    assert.strictEqual($('#net_worth_fiat_24h_ago').text(), '');
-    assert.strictEqual($('#net_worth_fiat_percent_change_24h').text(), '');
-
-    // bindViewTotalNetWorthFiat()
-    assert.strictEqual($('#net_worth_fiat').text(), 'Loading...');
-
     // 4 -------------------------------------------------- 4
 
     // bindViewTotalRewardAllLpZwap()

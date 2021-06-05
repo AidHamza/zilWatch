@@ -276,12 +276,11 @@ describe('ZilswapDexStatus', function () {
                 /* totalPoolZilAmount= */
                 66488850.966800526,
                 /* totalPoolZrcTokenAmount= */
-                51815.94955267148,
-                /* zrcTokenPriceInZil= */
-                1283.1734541352732
+                51815.94955267148
             );
 
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPublicStatus('gZIL'), zilswapSinglePairPublicStatusGzil);
+            assert.strictEqual(zilswapDexStatus.getZrcPriceInZil('gZIL'), 1283.1734541352732);
             assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus('random'), undefined);
 
             assert.strictEqual(zilswapDexStatus.getZilswapPairPersonalStatus('gZIL'), undefined);
@@ -322,11 +321,10 @@ describe('ZilswapDexStatus', function () {
                 /* totalPoolZilAmount= */
                 208967662.45707452,
                 /* totalPoolZrcTokenAmount= */
-                55003.09484344847,
-                /* zrcTokenPriceInZil= */
-                3799.198264240309
+                55003.09484344847
             );
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('ZWAP'), zilswapSinglePairPublicStatusZwap24hAgo);
+            assert.strictEqual(zilswapDexStatus.getZrcPriceInZil24hAgo('ZWAP'), 3799.198264240309);
             assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('random'), undefined);
 
             assert.strictEqual(zilswapDexStatus.getZilswapPairPersonalStatus('ZWAP'), undefined);
@@ -398,9 +396,7 @@ describe('ZilswapDexStatus', function () {
                 /* totalPoolZilAmount= */
                 10152543.808845125,
                 /* totalPoolZrcTokenAmount= */
-                529716.7651811893,
-                /* zrcTokenPriceInZil= */
-                9.165985440110536,
+                529716.7651811893
             );
             let shareRatio = 0.00008895090398508389;
             let zilswapSinglePairPersonalStatusZlp = new TokenUtils.ZilswapSinglePairPersonalStatus(shareRatio, zilswapSinglePairPublicStatusZlp);
@@ -412,12 +408,16 @@ describe('ZilswapDexStatus', function () {
             // Assert
             // Public
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPublicStatus('ZLP'), zilswapSinglePairPublicStatusZlp);
+            assert.strictEqual(zilswapDexStatus.getZrcPriceInZil('ZLP'), 19.165985440110536);
             assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus('random'), undefined);
 
             // Personal
             assert.strictEqual(zilswapDexStatus.hasBalanceData(), true);
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPersonalStatus('ZLP', walletAddressBase16), zilswapSinglePairPersonalStatusZlp);
             assert.strictEqual(zilswapDexStatus.getZilswapPairPersonalStatus('random'), undefined);
+
+            assert.strictEqual(zilswapDexStatus.getAllPersonalBalanceInZil(), 9304.769369710459);
+            assert.strictEqual(zilswapDexStatus.getAllPersonalBalanceInZil24hAgo(), 0);
 
             // Public
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
@@ -485,9 +485,7 @@ describe('ZilswapDexStatus', function () {
                 /* totalPoolZilAmount= */
                 12082076.770067781,
                 /* totalPoolZrcTokenAmount= */
-                373028.3471918095,
-                /* zrcTokenPriceInZil= */
-                32.389165223025884,
+                373028.3471918095
             );
             let shareRatio = 0.00009658347940140957;
             let zilswapSinglePairPersonalStatusZlp24hAgo = new TokenUtils.ZilswapSinglePairPersonalStatus(shareRatio, zilswapSinglePairPublicStatusZlp24hAgo);
@@ -498,12 +496,16 @@ describe('ZilswapDexStatus', function () {
             // Assert
             // Public
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('ZLP'), zilswapSinglePairPublicStatusZlp24hAgo);
+            assert.strictEqual(zilswapDexStatus.getZrcPriceInZil24hAgo('ZLP'), 32.389165223025884);
             assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('random'), undefined);
 
             // Personal
             assert.strictEqual(zilswapDexStatus.hasBalanceData(), true);
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPersonalStatus24hAgo('ZLP', walletAddressBase16), zilswapSinglePairPersonalStatusZlp24hAgo);
             assert.strictEqual(zilswapDexStatus.getZilswapPairPersonalStatus24hAgo('random'), undefined);
+
+            assert.strictEqual(zilswapDexStatus.getAllPersonalBalanceInZil(), 9304.769369710459);
+            assert.strictEqual(zilswapDexStatus.getAllPersonalBalanceInZil24hAgo(), 10116.589684065013);
 
             // Public
             for (let ticker in Constants.zrcTokenPropertiesListMap) {

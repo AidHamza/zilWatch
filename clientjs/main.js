@@ -117,6 +117,7 @@ function refreshMainContentData(account) {
     walletBalanceStatus.reset();
     stakingBalanceStatus.reset();
     zilswapDexStatus.resetPersonal();
+    netWorthStatus.reset();
 
     // (4) show main screen
     bindViewMainContainer(ZilpayStatus.connected);
@@ -145,8 +146,7 @@ function computeStakingBalanceStatus(walletAddressBase16) {
         },
         /* onSuccessCallback= */
         function() {
-            onStakingBalanceLoaded();
-
+            netWorthStatus.onStakingBalanceStatusChange();
             decrementShowSpinnerStakingBalance();
         },
         /* onErrorCallback= */
@@ -164,7 +164,7 @@ function computeWalletBalanceStatus(walletAddressBase16) {
         },
         /* onSuccessCallback= */
         function() {
-            onWalletBalanceLoaded();
+            netWorthStatus.onWalletBalanceStatusChange();
             decrementShowSpinnerWalletBalance();
         },
         /* onErrorCallback= */
@@ -182,10 +182,22 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
         },
         /* onSuccessCallback= */
         function() {
-            onZilswapSinglePairPublicStatusLoaded();
-            onZrcTokenLpBalanceLoaded();
+            for (let ticker in zrcTokenPropertiesListMap) {
+                // Total supply
+                refreshZrcTokenCirculatingSupplyZilFiat(ticker);
+                refreshZrcTokenTotalSupplyZilFiat(ticker);
+                
+                // Lp reward
+                if (ticker === 'ZWAP') {
+                    refreshTotalLpRewardFiat();
+                    refreshPrevTotalLpRewardFiat();
+                    refreshPastTotalLpRewardFiat();
+                }
+            }
+            
             walletBalanceStatus.onZilswapDexStatusChange();
             stakingBalanceStatus.onZilswapDexStatusChange();
+            netWorthStatus.onZilswapDexStatusChange();
 
             decrementShowSpinnerLpBalance();
         },
@@ -202,9 +214,22 @@ function computeZilswapDexStatus() {
         },
         /* onSuccessCallback= */
         function() {
-            onZilswapSinglePairPublicStatusLoaded();
+            for (let ticker in zrcTokenPropertiesListMap) {
+                // Total supply
+                refreshZrcTokenCirculatingSupplyZilFiat(ticker);
+                refreshZrcTokenTotalSupplyZilFiat(ticker);
+                
+                // Lp reward
+                if (ticker === 'ZWAP') {
+                    refreshTotalLpRewardFiat();
+                    refreshPrevTotalLpRewardFiat();
+                    refreshPastTotalLpRewardFiat();
+                }
+            }
+
             walletBalanceStatus.onZilswapDexStatusChange();
             stakingBalanceStatus.onZilswapDexStatusChange();
+            netWorthStatus.onZilswapDexStatusChange();
         },
         /* onErrorCallback= */
         function() {
@@ -219,10 +244,20 @@ function computeCoinPriceStatus(currencyCode) {
         },
         /* onSuccessCallback= */
         function() {
-            onCoinFiatPriceLoaded();
+            for (let ticker in zrcTokenPropertiesListMap) {
+                refreshTotalTradeVolumeFiat(ticker);
+
+                refreshZrcTokenCirculatingSupplyZilFiat(ticker);
+                refreshZrcTokenTotalSupplyZilFiat(ticker);
+            }
+            refreshTotalLpRewardFiat();
+            refreshPrevTotalLpRewardFiat();
+            refreshPastTotalLpRewardFiat();
+
             zilswapDexStatus.onCoinPriceStatusChange();
             walletBalanceStatus.onCoinPriceStatusChange();
             stakingBalanceStatus.onCoinPriceStatusChange();
+            netWorthStatus.onCoinPriceStatusChange();
         },
         /* onErrorCallback= */
         function() {

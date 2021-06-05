@@ -738,3 +738,4 @@ block script
     const walletBalanceStatus = new WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBase16= */ null, /* zilBalanceData= */ null, /* zilBalanceDataMap= */ null);
     const stakingCarbonStatus = new StakingCarbonStatus(coinPriceStatus, zilswapDexStatus, /* walletAddressBase16= */ null, /* carbonBalanceData= */ null);
     const stakingBalanceStatus = new StakingBalanceStatus(zrcTokenPropertiesListMap, ssnListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilStakingBalanceData= */ null, /* zilStakingWithdrawalBalanceData= */ null, stakingCarbonStatus);
+    const netWorthStatus = new NetWorthStatus(coinPriceStatus, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus);

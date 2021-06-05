@@ -55,6 +55,38 @@ class StakingCarbonStatus {
         return this.carbonBalance_;
     }
 
+    /**
+     * Returns staking balance in ZIL, number data type.
+     * 
+     * Returns 0 if there is no carbon staking.
+     */
+    getCarbonStakingBalanceInZil() {
+        if (!this.carbonBalance_) {
+            return 0;
+        }
+        let zrcPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil('CARB');
+        if (!zrcPriceInZil) {
+            return 0;
+        }
+        return 1.0 * this.carbonBalance_ * zrcPriceInZil;
+    }
+
+    /**
+     * Returns staking balance in ZIL, number data type.
+     * 
+     * Returns 0 if there is no carbon staking.
+     */
+    getCarbonStakingBalanceInZil24hAgo() {
+        if (!this.carbonBalance_) {
+            return 0;
+        }
+        let zrcPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil24hAgo('CARB');
+        if (!zrcPriceInZil) {
+            return 0;
+        }
+        return 1.0 * this.carbonBalance_ * zrcPriceInZil;
+    }
+
     computeCarbonBalance() {
         if (!this.carbonBalanceData_) {
             return;
@@ -116,12 +148,8 @@ class StakingCarbonStatus {
         if (!carbonStakingBalance) {
             return;
         }
-        let zrcPairPublicStatus = this.zilswapDexStatus_.getZilswapPairPublicStatus('CARB');
-        if (!zrcPairPublicStatus) {
-            return;
-        }
-        let zrcPriceInZil = zrcPairPublicStatus.zrcTokenPriceInZil;
-        if (Number.isNaN(zrcPriceInZil)) {
+        let zrcPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil('CARB');
+        if (!zrcPriceInZil) {
             return;
         }
         let carbonStakingBalanceZil = 1.0 * zrcPriceInZil * carbonStakingBalance;
@@ -137,12 +165,8 @@ class StakingCarbonStatus {
         this.bindViewCarbonStakingBalanceFiat(carbonStakingBalanceFiatString);
 
         // Process ZRC in ZIL 24h ago
-        let zrcPairPublicStatus24hAgo = this.zilswapDexStatus_.getZilswapPairPublicStatus24hAgo('CARB');
-        if (!zrcPairPublicStatus24hAgo) {
-            return;
-        }
-        let zrcPriceInZil24hAgo = zrcPairPublicStatus24hAgo.zrcTokenPriceInZil;
-        if (Number.isNaN(zrcPriceInZil24hAgo)) {
+        let zrcPriceInZil24hAgo = this.zilswapDexStatus_.getZrcPriceInZil24hAgo('CARB');
+        if (!zrcPriceInZil24hAgo) {
             return;
         }
         let carbonStakingBalanceZil24hAgo = 1.0 * zrcPriceInZil24hAgo * carbonStakingBalance;
