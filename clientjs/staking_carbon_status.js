@@ -37,6 +37,7 @@ class StakingCarbonStatus {
     reset() {
         this.carbonBalanceData_ = null;
         this.carbonBalance_ = null;
+        this.resetView();
     }
 
     setWalletAddressBase16(walletAddressBase16) {
@@ -91,7 +92,6 @@ class StakingCarbonStatus {
                 onErrorCallback();
             });
     }
-
     bindViewStakingBalance() {
         let carbonStakingBalance = this.getCarbonStakingBalance();
         if (!carbonStakingBalance) {
@@ -181,6 +181,17 @@ class StakingCarbonStatus {
 
     bindViewCarbonStakingBalanceFiat(carbonStakingBalanceFiat) {
         $('#carbon_staking_balance_fiat').text(carbonStakingBalanceFiat);
+    }
+
+    resetView() {
+        $('#carbon_staking_container').hide();
+        $('#carbon_staking_balance').text('Loading...');
+        $('#carbon_staking_balance_zil').text('Loading...');
+        $('#carbon_staking_balance_zil_24h_ago').text('');
+        $('#carbon_staking_balance_zil_percent_change_24h').text('');
+        $('#carbon_staking_balance_fiat').text('Loading...');
+        $('#carbon_staking_balance_fiat_24h_ago').text('');
+        $('#carbon_staking_balance_fiat_percent_change_24h').text('');
     }
 }
 

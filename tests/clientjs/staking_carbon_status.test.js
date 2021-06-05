@@ -11,6 +11,25 @@ describe('StakingCarbonStatus', function () {
 
     beforeEach(function (done) {
         indexJsdom.resetHtmlView(done);
+
+        // bindViewCarbonStakingBalance()
+        assert.strictEqual($('#carbon_staking_balance').text(), 'Loading...');
+        assert.strictEqual($('#carbon_staking_container').css('display'), 'none');
+        assert.strictEqual($('#staking_container').css('display'), 'none');
+
+        // bindViewCarbonStakingBalanceZil24hAgo()
+        assert.strictEqual($('#carbon_staking_balance_zil_24h_ago').text(), '');
+        assert.strictEqual($('#carbon_staking_balance_zil_percent_change_24h').text(), '');
+
+        // bindViewCarbonStakingBalanceZil()
+        assert.strictEqual($('#carbon_staking_balance_zil').text(), 'Loading...');
+
+        // bindViewCarbonStakingBalanceFiat24hAgo()
+        assert.strictEqual($('#carbon_staking_balance_fiat_24h_ago').text(), '');
+        assert.strictEqual($('#carbon_staking_balance_fiat_percent_change_24h').text(), '');
+
+        // bindViewCarbonStakingBalanceFiat()
+        assert.strictEqual($('#carbon_staking_balance_fiat').text(), 'Loading...');
     });
 
     describe('#constructor()', function () {
@@ -90,6 +109,29 @@ describe('StakingCarbonStatus', function () {
             assert.strictEqual($('#carbon_staking_balance_fiat_percent_change_24h').text(), '');
             assert.strictEqual($('#carbon_staking_container').css('display'), 'block');
             assert.strictEqual($('#staking_container').css('display'), 'block');
+        });
+
+        it('compute, wallet set, bindView(), reset(), view reset', function () {
+            stakingCarbonStatus = new StakingCarbonStatus.StakingCarbonStatus(coinPriceStatus, zilswapDexStatus, walletAddressBase16, carbonBalanceData);
+
+            stakingCarbonStatus.computeCarbonBalance();
+            stakingCarbonStatus.bindViewStakingBalance();
+
+            // Act
+            stakingCarbonStatus.reset();
+
+            // Assert
+            assert.strictEqual(stakingCarbonStatus.carbonBalanceData_, null);
+            assert.strictEqual(stakingCarbonStatus.carbonBalance_, null);
+
+            assert.strictEqual($('#carbon_staking_container').css('display'), 'none');
+            assert.strictEqual($('#carbon_staking_balance').text(), 'Loading...');
+            assert.strictEqual($('#carbon_staking_balance_zil').text(), 'Loading...');
+            assert.strictEqual($('#carbon_staking_balance_zil_24h_ago').text(), '');
+            assert.strictEqual($('#carbon_staking_balance_zil_percent_change_24h').text(), '');
+            assert.strictEqual($('#carbon_staking_balance_fiat').text(), 'Loading...');
+            assert.strictEqual($('#carbon_staking_balance_fiat_24h_ago').text(), '');
+            assert.strictEqual($('#carbon_staking_balance_fiat_percent_change_24h').text(), '');
         });
     });
 

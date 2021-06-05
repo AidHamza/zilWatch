@@ -99,23 +99,6 @@ function assertDefaultStateMainContent() {
     }
     assert.strictEqual($('#lp_container').css('display'), 'none');
 
-    // bindViewZilStakingBalance()
-    for (let ssnAddress in Constants.ssnListMap) {
-        assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance').text(), 'Loading...');
-        assert.strictEqual($('#' + ssnAddress + '_zil_staking_container').css('display'), 'none');
-    }
-    assert.strictEqual($('#staking_container').css('display'), 'none');
-
-    // bindViewZilStakingWithdrawalPendingBalance()
-    assert.strictEqual($('#zil_staking_withdrawal_pending_balance').text(), 'Loading...');
-    assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'none');
-    assert.strictEqual($('#staking_container').css('display'), 'none');
-
-    // bindViewCarbonStakingBalance()
-    assert.strictEqual($('#carbon_staking_balance').text(), 'Loading...');
-    assert.strictEqual($('#carbon_staking_container').css('display'), 'none');
-    assert.strictEqual($('#staking_container').css('display'), 'none');
-
     // bindViewTotalTradeVolumeZil(): Exception, no need refresh
     // bindViewTotalTradeVolumeFiat(): Exception, no need refresh
 
@@ -198,38 +181,6 @@ function assertDefaultStateMainContent() {
 
     // bindViewTotalLpBalanceFiat()
     assert.strictEqual($('#lp_balance_fiat').text(), 'Loading...');
-
-    // bindViewZilStakingBalanceFiat24hAgo()
-    for (let ssnAddress in Constants.ssnListMap) {
-        assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_fiat_24h_ago').text(), '');
-        assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_fiat_percent_change_24h').text(), '');
-    }
-
-    // bindViewZilStakingBalanceFiat()
-    for (let ssnAddress in Constants.ssnListMap) {
-        assert.strictEqual($('#' + ssnAddress + '_zil_staking_balance_fiat').text(), 'Loading...');
-    }
-
-    // bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo()
-    assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(), '');
-    assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text(), '');
-
-    // bindViewZilStakingWithdrawalPendingBalanceFiat()
-    assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat').text(), 'Loading...');
-
-    // bindViewCarbonStakingBalanceZil24hAgo()
-    assert.strictEqual($('#carbon_staking_balance_zil_24h_ago').text(), '');
-    assert.strictEqual($('#carbon_staking_balance_zil_percent_change_24h').text(), '');
-
-    // bindViewCarbonStakingBalanceZil()
-    assert.strictEqual($('#carbon_staking_balance_zil').text(), 'Loading...');
-
-    // bindViewCarbonStakingBalanceFiat24hAgo()
-    assert.strictEqual($('#carbon_staking_balance_fiat_24h_ago').text(), '');
-    assert.strictEqual($('#carbon_staking_balance_fiat_percent_change_24h').text(), '');
-
-    // bindViewCarbonStakingBalanceFiat()
-    assert.strictEqual($('#carbon_staking_balance_fiat').text(), 'Loading...');
 
     // bindViewTotalStakingBalanceZil24hAgo()
     assert.strictEqual($('#staking_balance_zil_24h_ago').text(), '');

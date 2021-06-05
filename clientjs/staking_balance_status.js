@@ -47,6 +47,7 @@ class StakingBalanceStatus {
         this.zilStakingWithdrawalBalanceData_ = null;
         this.zilStakingBalanceMap_ = {};
         this.zilStakingWithdrawalBalance_ = null;
+        this.resetView();
         if (this.stakingCarbonStatus_) {
             this.stakingCarbonStatus_.reset();
         }
@@ -297,6 +298,22 @@ class StakingBalanceStatus {
         $('#zil_staking_withdrawal_pending_balance_fiat').text(zilStakingWithdrawalBalanceFiat);
     }
 
+    resetView() {
+        $('#staking_container').hide();
+        $('#zil_staking_withdrawal_pending_container').hide();
+        for (let ssnAddress in ssnListMap) {
+            $('#' + ssnAddress + '_zil_staking_container').hide();
+            $('#' + ssnAddress + '_zil_staking_balance').text('Loading...');
+            $('#' + ssnAddress + '_zil_staking_balance_fiat').text('Loading...');
+            $('#' + ssnAddress + '_zil_staking_balance_fiat_24h_ago').text('');
+            $('#' + ssnAddress + '_zil_staking_balance_fiat_percent_change_24h').text('');
+        }
+
+        $('#zil_staking_withdrawal_pending_balance').text('Loading...');
+        $('#zil_staking_withdrawal_pending_balance_fiat').text('Loading...');
+        $('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text('');
+        $('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text('');
+    }
 }
 
 if (typeof exports !== 'undefined') {

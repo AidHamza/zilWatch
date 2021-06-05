@@ -124,29 +124,6 @@ function resetMainContainerContent() {
         $('#' + ticker + '_lp_balance_fiat_percent_change_24h').text('');
     }
 
-    $('#zil_staking_withdrawal_pending_container').hide();
-    $('#carbon_staking_container').hide();
-    for (let ssnAddress in ssnListMap) {
-        $('#' + ssnAddress + '_zil_staking_container').hide();
-        $('#' + ssnAddress + '_zil_staking_balance').text('Loading...');
-        $('#' + ssnAddress + '_zil_staking_balance_fiat').text('Loading...');
-        $('#' + ssnAddress + '_zil_staking_balance_fiat_24h_ago').text('');
-        $('#' + ssnAddress + '_zil_staking_balance_fiat_percent_change_24h').text('');
-    }
-
-    $('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text('');
-    $('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text('');
-    $('#zil_staking_withdrawal_pending_balance').text('Loading...');
-    $('#zil_staking_withdrawal_pending_balance_fiat').text('Loading...');
-
-    $('#carbon_staking_balance_zil_24h_ago').text('');
-    $('#carbon_staking_balance_zil_percent_change_24h').text('');
-    $('#carbon_staking_balance_fiat_24h_ago').text('');
-    $('#carbon_staking_balance_fiat_percent_change_24h').text('');
-    $('#carbon_staking_balance').text('Loading...');
-    $('#carbon_staking_balance_zil').text('Loading...');
-    $('#carbon_staking_balance_fiat').text('Loading...');
-
     $('#total_all_lp_reward_next_epoch_zwap').text('Loading...');
     $('#total_all_lp_reward_next_epoch_fiat').text('Loading...');
     $('#total_all_lp_reward_prev_epoch_zwap').text('Loading...');
