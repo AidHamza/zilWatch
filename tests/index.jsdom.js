@@ -72,24 +72,6 @@ var assert = require('assert');
 function assertDefaultStateMainContent() {
     // 2 --------------------------------------------------- 2
 
-    // bindViewZrcTokenLpBalance24hAgo()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_24h_ago').text(), '');
-        assert.strictEqual($('#' + ticker + '_lp_zil_balance_24h_ago').text(), '');
-        assert.strictEqual($('#' + ticker + '_lp_token_balance_24h_ago').text(), '');
-        assert.strictEqual($('#' + ticker + '_lp_balance_zil_24h_ago').text(), '');
-    }
-
-    // bindViewZrcTokenLpBalance()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
-        assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
-        assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
-        assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), '');
-        assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
-    }
-    assert.strictEqual($('#lp_container').css('display'), 'none');
-
     // bindViewTotalTradeVolumeZil(): Exception, no need refresh
     // bindViewTotalTradeVolumeFiat(): Exception, no need refresh
 
@@ -119,17 +101,6 @@ function assertDefaultStateMainContent() {
 
     // bindViewTotalWalletBalanceFiat()
     assert.strictEqual($('#wallet_balance_fiat').text(), 'Loading...');
-
-    // bindViewZrcTokenLpBalanceFiat24hAgo()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_lp_balance_fiat_24h_ago').text(), '');
-        assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_24h').text(), '');
-    }
-
-    // bindViewZrcTokenLpBalanceFiat()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), 'Loading...');
-    }
 
     // bindViewTotalLpBalanceZil24hAgo()
     assert.strictEqual($('#lp_balance_zil_24h_ago').text(), '');

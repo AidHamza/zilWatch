@@ -210,6 +210,36 @@ describe('ZilswapDexStatus', function () {
 
     beforeEach(function (done) {
         indexJsdom.resetHtmlView(done);
+
+        // bindViewZrcTokenLpBalance24hAgo()
+        for (let ticker in Constants.zrcTokenPropertiesListMap) {
+            assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_24h_ago').text(), '');
+            assert.strictEqual($('#' + ticker + '_lp_zil_balance_24h_ago').text(), '');
+            assert.strictEqual($('#' + ticker + '_lp_token_balance_24h_ago').text(), '');
+            assert.strictEqual($('#' + ticker + '_lp_balance_zil_24h_ago').text(), '');
+            assert.strictEqual($('#' + ticker + '_lp_balance_zil_percent_change_24h').text(), '');
+        }
+
+        // bindViewZrcTokenLpBalance()
+        for (let ticker in Constants.zrcTokenPropertiesListMap) {
+            assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
+            assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
+            assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
+            assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), '');
+            assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
+        }
+        assert.strictEqual($('#lp_container').css('display'), 'none');
+
+        // bindViewZrcTokenLpBalanceFiat24hAgo()
+        for (let ticker in Constants.zrcTokenPropertiesListMap) {
+            assert.strictEqual($('#' + ticker + '_lp_balance_fiat_24h_ago').text(), '');
+            assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_24h').text(), '');
+        }
+
+        // bindViewZrcTokenLpBalanceFiat()
+        for (let ticker in Constants.zrcTokenPropertiesListMap) {
+            assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), 'Loading...');
+        }
     });
 
     describe('#constructor()', function () {
@@ -225,8 +255,8 @@ describe('ZilswapDexStatus', function () {
             assert.strictEqual(zilswapDexStatus.zilswapDexSmartContractState24hAgoData_, null);
             assert.deepStrictEqual(zilswapDexStatus.zilswapPairPublicStatusMap_, {});
             assert.deepStrictEqual(zilswapDexStatus.zilswapPairPublicStatus24hAgoMap_, {});
-            assert.deepStrictEqual(zilswapDexStatus.zilswapPairPublicStatusMap_, {});
-            assert.deepStrictEqual(zilswapDexStatus.zilswapPairPublicStatus24hAgoMap_, {});
+            assert.deepStrictEqual(zilswapDexStatus.zilswapPairPersonalStatusMap_, {});
+            assert.deepStrictEqual(zilswapDexStatus.zilswapPairPersonalStatus24hAgoMap_, {});
         });
     });
 
@@ -433,19 +463,24 @@ describe('ZilswapDexStatus', function () {
                 }
             }
         });
+    });
 
-        it('set basic: bindViewPersonal() with 24h ago ', function () {
-            // Arrange
-            let coinPriceCoingeckoData = JSON.parse('{"zilliqa":{"usd":0.11819}}');
-            let coinPriceCoingecko24hAgoData = JSON.parse('{"zilliqa":{"usd":0.10519}}');
-            let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
+    describe('#methodsPersonal() with 24h ago', function () {
+        var coinPriceStatus;
+        var zilswapDexStatus;
+        var walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
+
+        beforeEach(function() {
+            let coinPriceCoingeckoData = JSON.parse('{"zilliqa":{"usd":0.11819,"idr":1612}}');
+            let coinPriceCoingecko24hAgoData = JSON.parse('{"zilliqa":{"usd":0.10519,"idr":1498}}');
+            coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
 
             let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8'));
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, walletAddressBase16, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
+        });
 
-            // Prepare expected values
-            let walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
-
+        it('set basic: bindViewPersonal() with 24h ago ', function () {
             let zilswapSinglePairPublicStatusZlp24hAgo = new TokenUtils.ZilswapSinglePairPublicStatus(
                 /* totalPoolZilAmount= */
                 12082076.770067781,
@@ -458,7 +493,6 @@ describe('ZilswapDexStatus', function () {
             let zilswapSinglePairPersonalStatusZlp24hAgo = new TokenUtils.ZilswapSinglePairPersonalStatus(shareRatio, zilswapSinglePairPublicStatusZlp24hAgo);
 
             // Act
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, walletAddressBase16, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
             zilswapDexStatus.bindViewPersonalDataIfDataExist();
 
             // Assert
@@ -515,18 +549,7 @@ describe('ZilswapDexStatus', function () {
             }
         });
 
-        it('set basic, changeCurrency, updated!', function () {
-            // Arrange
-            let coinPriceCoingeckoData = JSON.parse('{"zilliqa":{"usd":0.11819,"idr":1612}}');
-            let coinPriceCoingecko24hAgoData = JSON.parse('{"zilliqa":{"usd":0.10519,"idr":1498}}');
-            let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
-
-            let walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
-
-            let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8'));
-            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, walletAddressBase16, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
-
+        it('bindViewPersonal(), changeCurrency, updated!', function () {
             // Act
             zilswapDexStatus.bindViewPersonalDataIfDataExist();
             coinPriceStatus.setActiveCurrencyCode('idr');
@@ -576,7 +599,41 @@ describe('ZilswapDexStatus', function () {
                     assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
                 }
             }
+        });
 
+        it('bindViewPersonal(), reset(), view reset!', function () {
+            zilswapDexStatus.bindViewPersonalDataIfDataExist();
+            coinPriceStatus.setActiveCurrencyCode('idr');
+            zilswapDexStatus.onCoinPriceStatusChange();
+
+            // Act
+            zilswapDexStatus.resetPersonal();
+
+            // Assert
+            assert.deepStrictEqual(zilswapDexStatus.zilswapPairPersonalStatusMap_, {});
+            assert.deepStrictEqual(zilswapDexStatus.zilswapPairPersonalStatus24hAgoMap_, {});
+            
+            assert.strictEqual($('#lp_container').css('display'), 'none');
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
+
+                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
+                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_24h_ago').text(), '');
+
+                assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_zil_balance_24h_ago').text(), '');
+
+                assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_token_balance_24h_ago').text(), '');
+
+                assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_balance_zil_24h_ago').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_balance_zil_percent_change_24h').text(), '');
+                
+                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_24h_ago').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), 'Loading...');
+                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_24h').text(), '');
+            }
         });
     });
 

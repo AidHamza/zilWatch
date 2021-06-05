@@ -116,6 +116,7 @@ function refreshMainContentData(account) {
     resetMainContainerContent();
     walletBalanceStatus.reset();
     stakingBalanceStatus.reset();
+    zilswapDexStatus.resetPersonal();
 
     // (4) show main screen
     bindViewMainContainer(ZilpayStatus.connected);

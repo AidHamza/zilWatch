@@ -91,22 +91,8 @@ function resetMainContainerContent() {
     $('#total_all_lp_reward_next_epoch_container').hide();
 
     for (let ticker in zrcTokenPropertiesListMap) {
-        $('#' + ticker + '_lp_container').hide();
-        $('#' + ticker + '_lp_pool_share_percent').text('Loading...');
-        $('#' + ticker + '_lp_zil_balance').text('');
-        $('#' + ticker + '_lp_token_balance').text('');
         $('#' + ticker + '_lp_pool_reward_zwap').text('');
         $('#' + ticker + '_lp_pool_reward_zwap_unit').text('');
-        $('#' + ticker + '_lp_balance_zil').text('');
-        $('#' + ticker + '_lp_balance_fiat').text('Loading...');
-
-        $('#' + ticker + '_lp_pool_share_percent_24h_ago').text('');
-        $('#' + ticker + '_lp_zil_balance_24h_ago').text('');
-        $('#' + ticker + '_lp_token_balance_24h_ago').text('');
-        $('#' + ticker + '_lp_balance_zil_24h_ago').text('');
-
-        $('#' + ticker + '_lp_balance_fiat_24h_ago').text('');
-        $('#' + ticker + '_lp_balance_fiat_percent_change_24h').text('');
     }
 
     $('#total_all_lp_reward_next_epoch_zwap').text('Loading...');
