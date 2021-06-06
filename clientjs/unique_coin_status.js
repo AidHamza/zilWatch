@@ -130,7 +130,7 @@ class UniqueCoinStatus {
 
         for (let i = 0; i < sortedCoinBalanceLength; i++) {
             let zrcBalance = this.sortedUniqueCoinsBalanceInZil_[i][1];
-            if (zrcBalance && zrcBalance > 1) {
+            if (zrcBalance && zrcBalance > 10) {
                 headerArray.push(this.sortedUniqueCoinsBalanceInZil_[i][0]);
                 dataArray.push(Math.round(zrcBalance));
             }
