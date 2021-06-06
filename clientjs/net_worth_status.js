@@ -1,12 +1,17 @@
 /** A class to represent global net worth status.  */
 class NetWorthStatus {
 
-    constructor( /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ walletBalanceStatus, /* nullable= */ stakingBalanceStatus) {
+    constructor(/* nullable= */ barChartDrawer, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ walletBalanceStatus, /* nullable= */ stakingBalanceStatus) {
         // Private variable
+        this.barChartDrawer_ = barChartDrawer;
         this.coinPriceStatus_ = coinPriceStatus;
         this.zilswapDexStatus_ = zilswapDexStatus;
         this.walletBalanceStatus_ = walletBalanceStatus
         this.stakingBalanceStatus_ = stakingBalanceStatus;
+
+        this.lastWalletBalanceInZil_ = 0;
+        this.lastLpBalanceInZil_ = 0;
+        this.lastStakingBalanceInZil_ = 0;
     }
 
     /**
@@ -202,9 +207,14 @@ class NetWorthStatus {
 
         // balance in ZIL
         let totalNetWorthInZil = 0;
-        totalNetWorthInZil += this.walletBalanceStatus_.getAllTokenBalanceInZil();
-        totalNetWorthInZil += this.zilswapDexStatus_.getAllPersonalBalanceInZil();
-        totalNetWorthInZil += this.stakingBalanceStatus_.getAllStakingBalanceInZil();
+
+        this.lastWalletBalanceInZil_ = this.walletBalanceStatus_.getAllTokenBalanceInZil();
+        this.lastLpBalanceInZil_ = this.zilswapDexStatus_.getAllPersonalBalanceInZil();
+        this.lastStakingBalanceInZil_ = this.stakingBalanceStatus_.getAllStakingBalanceInZil();
+        totalNetWorthInZil += this.lastWalletBalanceInZil_;
+        totalNetWorthInZil += this.lastLpBalanceInZil_;
+        totalNetWorthInZil += this.lastStakingBalanceInZil_;
+
         let totalNetWorthInZilString = convertNumberQaToDecimalString(totalNetWorthInZil, /* decimals= */ 0);
         this.bindViewTotalNetWorthZil(totalNetWorthInZilString);
 
@@ -237,7 +247,30 @@ class NetWorthStatus {
         let totalNetWorthInFiat24hAgoString = commafyNumberToString(totalNetWorthInFiat24hAgo, decimals);
         let totalNetWorthInFiat24hAgoPercentChange = getPercentChange(totalNetWorthInFiat, totalNetWorthInFiat24hAgo).toFixed(1);
         this.bindViewTotalNetWorthFiat24hAgo(totalNetWorthInFiat24hAgoString, totalNetWorthInFiat24hAgoPercentChange);
+
+        this.drawBarChart();
     }
+
+    drawBarChart() {
+        if (!this.barChartDrawer_) {
+            return;
+        }
+        if (!this.lastWalletBalanceInZil_ && !this.lastLpBalanceInZil_ && !this.lastStakingBalanceInZil_) {
+            return;
+        }
+        let walletBalanceInZil = Math.round(this.lastWalletBalanceInZil_);
+        let lpBalanceInZil = Math.round(this.lastLpBalanceInZil_);
+        let stakingBalanceInZil = Math.round(this.lastStakingBalanceInZil_);
+        
+        let customChartColor = ['#0094BA', '#88D581', '#135665'];
+        let customChartColorDarkMode = ['#41C6DD', '#AED2AB', '#316B78'];
+       
+        let headerArray = ['Balance Type', 'Wallet', 'LP', 'Staking'];
+        let dataArray = ['', walletBalanceInZil, lpBalanceInZil, stakingBalanceInZil];
+
+        this.barChartDrawer_.drawBarChart( /* barChartDivId= */ 'net_worth_chart', headerArray, dataArray, customChartColor, customChartColorDarkMode);
+    }
+
     /** ================ Total Wallet Balance =================== */
 
     /** Private static method */

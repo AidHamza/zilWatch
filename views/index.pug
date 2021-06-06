@@ -269,7 +269,7 @@ block content
   // Main Content Container
   div(id='main_content_container' class='container' style='display: none;')
 
-    div(class='row container')
+    div(class='row')
       div(class='balance-box col-md-6')
         div(class='mb-1' style='display:table-cell; vertical-align: middle;')
           span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Net Worth'
@@ -385,6 +385,12 @@ block content
           span(id='staking_balance_zil_24h_ago')
           span(class='ml-1')= 'ZIL'
           span(class='ml-1')= '(24h ago)'
+
+    div(class='row')
+      div(id='net_worth_chart_container' class='balance-box col-lg-6' style='display: none;')
+        div(id='net_worth_chart')
+      div(id='unique_coin_chart_container' class='balance-box col-lg-6' style='display: none;')
+        div(id='unique_coin_chart')
 
     hr
 
@@ -716,6 +722,7 @@ block content
       hr
 
 block script
+  script(src='https://www.gstatic.com/charts/loader.js')
   script(src='/javascripts/main.min.js')
 
   script.
@@ -732,10 +739,14 @@ block script
     var zilswapDexEpochInfoData = !{JSON.stringify(zilswapDexEpochInfo)};
     var zrcTokensTotalSupplyData = !{JSON.stringify(zrcTokensTotalSupply)};
     var zrcTokensCirculatingSupplyData = !{JSON.stringify(zrcTokensCirculatingSupply)};
+    
+    const barChartDrawer = new BarChartDrawer();
 
     const coinPriceStatus = new CoinPriceStatus(coinMap, currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
     const zilswapDexStatus = new ZilswapDexStatus(zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData,  zilswapDexSmartContractState24hAgoData);
     const walletBalanceStatus = new WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBase16= */ null, /* zilBalanceData= */ null, /* zilBalanceDataMap= */ null);
     const stakingCarbonStatus = new StakingCarbonStatus(coinPriceStatus, zilswapDexStatus, /* walletAddressBase16= */ null, /* carbonBalanceData= */ null);
     const stakingBalanceStatus = new StakingBalanceStatus(zrcTokenPropertiesListMap, ssnListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilStakingBalanceData= */ null, /* zilStakingWithdrawalBalanceData= */ null, stakingCarbonStatus);
-    const netWorthStatus = new NetWorthStatus(coinPriceStatus, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus);
+    const netWorthStatus = new NetWorthStatus(barChartDrawer, coinPriceStatus, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus);
+
+    const uniqueCoinStatus = new UniqueCoinStatus(zrcTokenPropertiesListMap, barChartDrawer, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingCarbonStatus);

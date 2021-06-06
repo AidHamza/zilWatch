@@ -26,6 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
     onZrcTokensCirculatingSupplyLoaded();
 
     computeLpEpochInfo(onLpCurrentEpochInfoLoaded);
+
+    $(window).resize(function(){
+        drawAllBarCharts();
+    });
 });
 
 window.addEventListener("load", async () => {
@@ -80,6 +84,7 @@ $("#toggle_theme_btn").click(function() {
     }
     // Finally, let's save the current preference to localStorage to keep using it
     localStorage.setItem("theme", theme);
+    drawAllBarCharts();
 });
 
 $( "#currency_selector" ).change(function() {
@@ -91,6 +96,11 @@ $( "#currency_selector" ).change(function() {
 function collapsePublicCards() {
     $('.card-header').addClass('collapsed');
     $('.card-body').removeClass('show');
+}
+
+function drawAllBarCharts() {
+    netWorthStatus.drawBarChart();
+    uniqueCoinStatus.drawBarChart();
 }
 
 // Global var to keep track of the current active wallet being shown to the screen.
@@ -147,6 +157,7 @@ function computeStakingBalanceStatus(walletAddressBase16) {
         /* onSuccessCallback= */
         function() {
             netWorthStatus.onStakingBalanceStatusChange();
+            uniqueCoinStatus.onStakingBalanceStatusChange();
             decrementShowSpinnerStakingBalance();
         },
         /* onErrorCallback= */
@@ -165,6 +176,7 @@ function computeWalletBalanceStatus(walletAddressBase16) {
         /* onSuccessCallback= */
         function() {
             netWorthStatus.onWalletBalanceStatusChange();
+            uniqueCoinStatus.onWalletBalanceStatusChange();
             decrementShowSpinnerWalletBalance();
         },
         /* onErrorCallback= */
@@ -198,6 +210,7 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
             walletBalanceStatus.onZilswapDexStatusChange();
             stakingBalanceStatus.onZilswapDexStatusChange();
             netWorthStatus.onZilswapDexStatusChange();
+            uniqueCoinStatus.onZilswapDexStatusChange();
 
             decrementShowSpinnerLpBalance();
         },
@@ -230,6 +243,7 @@ function computeZilswapDexStatus() {
             walletBalanceStatus.onZilswapDexStatusChange();
             stakingBalanceStatus.onZilswapDexStatusChange();
             netWorthStatus.onZilswapDexStatusChange();
+            uniqueCoinStatus.onZilswapDexStatusChange();
         },
         /* onErrorCallback= */
         function() {

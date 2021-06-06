@@ -76,7 +76,7 @@ describe('NetWorthStatus', function () {
     describe('#constructor()', function () {
 
         it('create empty object', function () {
-            let netWorthStatus = new NetWorthStatus.NetWorthStatus( /* coinPriceStatus= */ null, /* zilswapDexStatus= */ null, /* walletBalanceStatus= */ null, /* stakingBalanceStatus= */ null);
+            let netWorthStatus = new NetWorthStatus.NetWorthStatus( /* barChartDrawer= */ null, /* coinPriceStatus= */ null, /* zilswapDexStatus= */ null, /* walletBalanceStatus= */ null, /* stakingBalanceStatus= */ null);
 
             assert.strictEqual(netWorthStatus.coinPriceStatus_, null);
             assert.strictEqual(netWorthStatus.zilswapDexStatus_, null);
@@ -121,7 +121,7 @@ describe('NetWorthStatus', function () {
             let zilStakingBalanceWithdrawalData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"withdrawal_pending":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":{"1037958":"14063107679853089", "1137958":"7063107679853089"}}}}');
             let stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData, stakingCarbonStatus);
 
-            let netWorthStatus = new NetWorthStatus.NetWorthStatus(coinPriceStatus, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus);
+            let netWorthStatus = new NetWorthStatus.NetWorthStatus(/* barChartDrawer= */ null, coinPriceStatus, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus);
 
             assert.strictEqual(netWorthStatus.coinPriceStatus_, coinPriceStatus);
             assert.strictEqual(netWorthStatus.zilswapDexStatus_, zilswapDexStatus);
@@ -175,7 +175,7 @@ describe('NetWorthStatus', function () {
             let zilStakingBalanceWithdrawalData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"withdrawal_pending":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":{"1037958":"14063107679853089", "1137958":"7063107679853089"}}}}');
             stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData, stakingCarbonStatus);
 
-            netWorthStatus = new NetWorthStatus.NetWorthStatus(coinPriceStatus, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus);
+            netWorthStatus = new NetWorthStatus.NetWorthStatus(/* barChartDrawer= */ null, coinPriceStatus, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus);
         });
 
         it('onCoinPriceStatusChange() only updates fiat', function () {
@@ -499,7 +499,7 @@ describe('NetWorthStatus', function () {
         var netWorthStatus;
 
         beforeEach(function () {
-            netWorthStatus = new NetWorthStatus.NetWorthStatus( /* coinPriceStatus= */ null, /* zilswapDexStatus= */ null, /* walletBalanceStatus= */ null, /* stakingBalanceStatus= */ null);
+            netWorthStatus = new NetWorthStatus.NetWorthStatus(/* barChartDrawer= */ null,  /* coinPriceStatus= */ null, /* zilswapDexStatus= */ null, /* walletBalanceStatus= */ null, /* stakingBalanceStatus= */ null);
         });
 
         describe('wallet balance', function () {

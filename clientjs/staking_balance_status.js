@@ -74,6 +74,24 @@ class StakingBalanceStatus {
         return this.zilStakingBalanceMap_[ssnAddress];
     }
 
+    getStakingAllSsnAndWithdrawalBalance() {
+        let totalStakingInZil = 0;
+
+        let withdrawalBalanceInZil = this.getStakingWithdrawalBalance();
+        if (withdrawalBalanceInZil) {
+            totalStakingInZil += withdrawalBalanceInZil;
+        }
+
+        for (let ssnAddress in this.ssnListMap_) {
+            let currStakingZil = this.getStakingBalance(ssnAddress);
+            if (currStakingZil) {
+                totalStakingInZil += currStakingZil;
+            }
+        }
+
+        return totalStakingInZil;
+    }
+
     /**
      * Returns staking withdrawal balance in ZIL, number data type.
      * 
@@ -92,19 +110,7 @@ class StakingBalanceStatus {
      * Any error will return 0
      */
     getAllStakingBalanceInZil() {
-        let totalStakingInZil = 0;
-
-        let withdrawalBalanceInZil = this.getStakingWithdrawalBalance();
-        if (withdrawalBalanceInZil) {
-            totalStakingInZil += withdrawalBalanceInZil;
-        }
-
-        for (let ssnAddress in this.ssnListMap_) {
-            let currStakingZil = this.getStakingBalance(ssnAddress);
-            if (currStakingZil) {
-                totalStakingInZil += currStakingZil;
-            }
-        }
+        let totalStakingInZil = this.getStakingAllSsnAndWithdrawalBalance();
 
         if (this.stakingCarbonStatus_) {
             let stakingCarbonInZil = this.stakingCarbonStatus_.getCarbonStakingBalanceInZil();
