@@ -1,6 +1,6 @@
 {
   "name": "zilwatch",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "private": true,
   "scripts": {
     "start": "npm run uglifyjs && npm run uglifycss && node ./bin/www",
