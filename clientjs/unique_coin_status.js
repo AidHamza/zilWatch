@@ -44,6 +44,7 @@ class UniqueCoinStatus {
 
     reset() {
         this.sortedUniqueCoinsBalanceInZil_ = [];
+        this.hideBarChart();
     }
 
     computeUniqueCoinsBalance() {
@@ -141,6 +142,10 @@ class UniqueCoinStatus {
         }
 
         this.barChartDrawer_.drawBarChart( /* barChartDivId= */ 'unique_coin_chart', headerArray, dataArray, /* customChartColor= */ null, /* customChartColorDarkMode= */ null);
+    }
+
+    hideBarChart() {
+        $('#unique_coin_chart_container').hide();
     }
 }
 

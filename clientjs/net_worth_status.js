@@ -64,6 +64,7 @@ class NetWorthStatus {
         this.resetViewLpBalance();
         this.resetViewStakingBalance();
         this.resetViewNetWorth();
+        this.hideBarChart();
     }
 
     bindViewWalletBalanceZil() {
@@ -299,6 +300,10 @@ class NetWorthStatus {
         let dataArray = ['', walletBalanceInZil, lpBalanceInZil, stakingBalanceInZil];
 
         this.barChartDrawer_.drawBarChart( /* barChartDivId= */ 'net_worth_chart', headerArray, dataArray, customChartColor, customChartColorDarkMode);
+    }
+
+    hideBarChart() {
+        $('#net_worth_chart_container').hide();
     }
 
     /** ================ Total Wallet Balance =================== */
