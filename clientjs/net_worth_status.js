@@ -78,6 +78,10 @@ class NetWorthStatus {
 
         // Balance in ZIL 24h Ago
         let totalWalletBalanceInZil24hAgo = this.walletBalanceStatus_.getAllTokenBalanceInZil24hAgo();
+        // If it's 0, there is no point showing anything.
+        if (!totalWalletBalanceInZil24hAgo) {
+            return;
+        }
         let totalWalletBalanceInZil24hAgoString = convertNumberQaToDecimalString(totalWalletBalanceInZil24hAgo, /* decimals= */ 0);
         let totalWalletBalanceInZil24hAgoPercentChange = getPercentChange(totalWalletBalanceInZil, totalWalletBalanceInZil24hAgo).toFixed(1);
         this.bindViewTotalWalletBalanceZil24hAgo(totalWalletBalanceInZil24hAgoString, totalWalletBalanceInZil24hAgoPercentChange);
@@ -105,6 +109,10 @@ class NetWorthStatus {
             return;
         }
         let totalWalletBalanceInZil24hAgo = this.walletBalanceStatus_.getAllTokenBalanceInZil24hAgo();
+        // If it's 0, there is no point showing anything.
+        if (!totalWalletBalanceInZil24hAgo) {
+            return;
+        }
         let totalWalletBalanceInFiat24hAgo = 1.0 * totalWalletBalanceInZil24hAgo * zilPriceInFiat24hAgoFloat;
         let totalWalletBalanceInFiat24hAgoString = commafyNumberToString(totalWalletBalanceInFiat24hAgo, decimals);
         let totalWalletBalanceInFiat24hAgoPercentChange = getPercentChange(totalWalletBalanceInFiat, totalWalletBalanceInFiat24hAgo).toFixed(1);
@@ -123,6 +131,10 @@ class NetWorthStatus {
 
         // Balance in ZIL 24h ago
         let totalLpBalanceInZil24hAgo = this.zilswapDexStatus_.getAllPersonalBalanceInZil24hAgo();
+        // If it's 0, there is no point showing anything.
+        if (!totalLpBalanceInZil24hAgo) {
+            return;
+        }
         let totalLpBalanceInZil24hAgoString = convertNumberQaToDecimalString(totalLpBalanceInZil24hAgo, /* decimals= */ 0);
         let totalLpBalanceInZil24hAgoPercentChange = getPercentChange(totalLpBalanceInZil, totalLpBalanceInZil24hAgo).toFixed(1);
         this.bindViewTotalLpBalanceZil24hAgo(totalLpBalanceInZil24hAgoString, totalLpBalanceInZil24hAgoPercentChange);
@@ -150,6 +162,10 @@ class NetWorthStatus {
             return;
         }
         let totalLpBalanceInZil24hAgo = this.zilswapDexStatus_.getAllPersonalBalanceInZil24hAgo();
+        // If it's 0, there is no point showing anything.
+        if (!totalLpBalanceInZil24hAgo) {
+            return;
+        }
         let totalLpBalanceInFiat24hAgo = 1.0 * totalLpBalanceInZil24hAgo * zilPriceInFiat24hAgoFloat;
         let totalLpBalanceInFiat24hAgoString = commafyNumberToString(totalLpBalanceInFiat24hAgo, decimals);
         let totalLpBalanceInFiat24hAgoPercentChange = getPercentChange(totalLpBalanceInFiat, totalLpBalanceInFiat24hAgo).toFixed(1);
@@ -167,6 +183,10 @@ class NetWorthStatus {
 
         // Balance in ZIL 24h ago
         let totalStakingBalanceInZil24hAgo = this.stakingBalanceStatus_.getAllStakingBalanceInZil24hAgo();
+        // If it's 0, there is no point showing anything.
+        if (!totalStakingBalanceInZil24hAgo) {
+            return;
+        }
         let totalStakingBalanceInZil24hAgoString = convertNumberQaToDecimalString(totalStakingBalanceInZil24hAgo, /* decimals= */ 0);
         let totalStakingBalanceInZil24hAgoPercentChange = getPercentChange(totalStakingBalanceInZil, totalStakingBalanceInZil24hAgo).toFixed(1);
         this.bindViewTotalStakingBalanceZil24hAgo(totalStakingBalanceInZil24hAgoString, totalStakingBalanceInZil24hAgoPercentChange);
@@ -194,6 +214,10 @@ class NetWorthStatus {
             return;
         }
         let totalStakingBalanceInZil24hAgo = this.stakingBalanceStatus_.getAllStakingBalanceInZil24hAgo();
+        // If it's 0, there is no point showing anything.
+        if (!totalStakingBalanceInZil24hAgo) {
+            return;
+        }
         let totalStakingBalanceInFiat24hAgo = 1.0 * totalStakingBalanceInZil24hAgo * zilPriceInFiat24hAgoFloat;
         let totalStakingBalanceInFiat24hAgoString = commafyNumberToString(totalStakingBalanceInFiat24hAgo, decimals);
         let totalStakingBalanceInFiat24hAgoPercentChange = getPercentChange(totalStakingBalanceInFiat, totalStakingBalanceInFiat24hAgo).toFixed(1);
@@ -218,15 +242,6 @@ class NetWorthStatus {
         let totalNetWorthInZilString = convertNumberQaToDecimalString(totalNetWorthInZil, /* decimals= */ 0);
         this.bindViewTotalNetWorthZil(totalNetWorthInZilString);
 
-        // balance in ZIL 24h Ago
-        let totalNetWorthInZil24hAgo = 0;
-        totalNetWorthInZil24hAgo += this.walletBalanceStatus_.getAllTokenBalanceInZil24hAgo();
-        totalNetWorthInZil24hAgo += this.zilswapDexStatus_.getAllPersonalBalanceInZil24hAgo();
-        totalNetWorthInZil24hAgo += this.stakingBalanceStatus_.getAllStakingBalanceInZil24hAgo();
-        let totalNetWorthInZil24hAgoString = convertNumberQaToDecimalString(totalNetWorthInZil24hAgo, /* decimals= */ 0);
-        let totalNetWorthInZil24hAgoPercentChange = getPercentChange(totalNetWorthInZil, totalNetWorthInZil24hAgo).toFixed(1);
-        this.bindViewTotalNetWorthZil24hAgo(totalNetWorthInZil24hAgoString, totalNetWorthInZil24hAgoPercentChange);
-
         // balance in fiat
         let zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
         if (!zilPriceInFiatFloat) {
@@ -238,6 +253,22 @@ class NetWorthStatus {
         let totalNetWorthInFiatString = commafyNumberToString(totalNetWorthInFiat, decimals);
         this.bindViewTotalNetWorthFiat(totalNetWorthInFiatString);
 
+        // Draw bar chart if current data is available (no need 24h)
+        this.drawBarChart();
+
+        // balance in ZIL 24h Ago
+        let totalNetWorthInZil24hAgo = 0;
+        totalNetWorthInZil24hAgo += this.walletBalanceStatus_.getAllTokenBalanceInZil24hAgo();
+        totalNetWorthInZil24hAgo += this.zilswapDexStatus_.getAllPersonalBalanceInZil24hAgo();
+        totalNetWorthInZil24hAgo += this.stakingBalanceStatus_.getAllStakingBalanceInZil24hAgo();
+        // If it's 0, there is no point showing anything.
+        if (!totalNetWorthInZil24hAgo) {
+            return;
+        }
+        let totalNetWorthInZil24hAgoString = convertNumberQaToDecimalString(totalNetWorthInZil24hAgo, /* decimals= */ 0);
+        let totalNetWorthInZil24hAgoPercentChange = getPercentChange(totalNetWorthInZil, totalNetWorthInZil24hAgo).toFixed(1);
+        this.bindViewTotalNetWorthZil24hAgo(totalNetWorthInZil24hAgoString, totalNetWorthInZil24hAgoPercentChange);
+
         // balance in fiat 24h ago
         let zilPriceInFiat24hAgoFloat = this.coinPriceStatus_.getCoinPriceFiat24hAgo('ZIL');
         if (!zilPriceInFiat24hAgoFloat) {
@@ -248,7 +279,6 @@ class NetWorthStatus {
         let totalNetWorthInFiat24hAgoPercentChange = getPercentChange(totalNetWorthInFiat, totalNetWorthInFiat24hAgo).toFixed(1);
         this.bindViewTotalNetWorthFiat24hAgo(totalNetWorthInFiat24hAgoString, totalNetWorthInFiat24hAgoPercentChange);
 
-        this.drawBarChart();
     }
 
     drawBarChart() {

@@ -127,24 +127,19 @@ class StakingBalanceStatus {
      * Any error will return 0
      */
     getAllStakingBalanceInZil24hAgo() {
-        let totalStakingInZil = 0;
-
-        let withdrawalBalanceInZil = this.getStakingWithdrawalBalance();
-        if (withdrawalBalanceInZil) {
-            totalStakingInZil += withdrawalBalanceInZil;
-        }
-
-        for (let ssnAddress in this.ssnListMap_) {
-            let currStakingZil = this.getStakingBalance(ssnAddress);
-            if (currStakingZil) {
-                totalStakingInZil += currStakingZil;
-            }
-        }
+        // ZIL staking and withdrawal doesn't change now vs 24h ago, because
+        // they are in ZIL, not affected by ZRC prices.
+        let totalStakingInZil = this.getStakingAllSsnAndWithdrawalBalance();
 
         if (this.stakingCarbonStatus_) {
-            let stakingCarbonInZil = this.stakingCarbonStatus_.getCarbonStakingBalanceInZil24hAgo();
-            if (stakingCarbonInZil) {
-                totalStakingInZil += stakingCarbonInZil;
+            // If staking carbon is present and there is no 24h ago data, return 0 not to pollute the data.
+            if (!this.stakingCarbonStatus_.has24hAgoData()) {
+                return 0;
+            }
+            // Else compute 24h ago as usual.
+            let stakingCarbonInZil24hAgo = this.stakingCarbonStatus_.getCarbonStakingBalanceInZil24hAgo();
+            if (stakingCarbonInZil24hAgo) {
+                totalStakingInZil += stakingCarbonInZil24hAgo;
             }
         }
         return totalStakingInZil;

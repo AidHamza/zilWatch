@@ -39,6 +39,19 @@ class ZilswapDexStatus {
         }
         return false;
     }
+    
+    has24hAgoData() {
+        try {
+            if (this.zilswapDexSmartContractState24hAgoData_
+                && this.zilswapDexSmartContractState24hAgoData_.result
+                && this.zilswapDexSmartContractState24hAgoData_.result.total_contributions) {
+                    return true;
+                }
+        } catch (ex) {
+            console.log(ex);
+        }
+        return false;
+    }
 
     resetPersonal() {
         this.zilswapPairPersonalStatusMap_ = {}; 

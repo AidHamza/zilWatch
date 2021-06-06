@@ -20,6 +20,10 @@ class StakingCarbonStatus {
         this.carbonBalance_ = null;
     }
 
+    has24hAgoData() {
+        return this.zilswapDexStatus_.has24hAgoData();
+    }
+
     /**
      * Callback method to be executed if any properties in zilswapDexStatus_ is changed.
      */

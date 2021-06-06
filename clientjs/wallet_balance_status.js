@@ -102,6 +102,9 @@ class WalletBalanceStatus {
      * Any error will result in returning 0.
      */
     getAllTokenBalanceInZil24hAgo() {
+        if (!this.zilswapDexStatus_.has24hAgoData()) {
+            return 0;
+        }
         let totalZil = 0;
 
         let zilBalance = this.getTokenBalance('ZIL');

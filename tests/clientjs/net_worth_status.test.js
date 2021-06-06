@@ -190,8 +190,8 @@ describe('NetWorthStatus', function () {
             assert.strictEqual($('#wallet_balance_zil_24h_ago').text(), '');
             assert.strictEqual($('#wallet_balance_zil_percent_change_24h').text(), '');
             assert.strictEqual($('#wallet_balance_fiat').text(), '0.00');
-            assert.strictEqual($('#wallet_balance_fiat_24h_ago').text(), '0.00');
-            assert.strictEqual($('#wallet_balance_fiat_percent_change_24h').text(), '0.0');
+            assert.strictEqual($('#wallet_balance_fiat_24h_ago').text(), '');
+            assert.strictEqual($('#wallet_balance_fiat_percent_change_24h').text(), '');
 
             assert.strictEqual($('#lp_balance_zil').text(), 'Loading...');
             assert.strictEqual($('#lp_balance_zil_24h_ago').text(), '');
@@ -204,8 +204,8 @@ describe('NetWorthStatus', function () {
             assert.strictEqual($('#staking_balance_zil_24h_ago').text(), '');
             assert.strictEqual($('#staking_balance_zil_percent_change_24h').text(), '');
             assert.strictEqual($('#staking_balance_fiat').text(), '0.00');
-            assert.strictEqual($('#staking_balance_fiat_24h_ago').text(), '0.00');
-            assert.strictEqual($('#staking_balance_fiat_percent_change_24h').text(), '0.0');
+            assert.strictEqual($('#staking_balance_fiat_24h_ago').text(), '');
+            assert.strictEqual($('#staking_balance_fiat_percent_change_24h').text(), '');
 
             assert.strictEqual($('#net_worth_zil').text(), '9,305');
             assert.strictEqual($('#net_worth_zil_24h_ago').text(), '10,117');
@@ -306,10 +306,10 @@ describe('NetWorthStatus', function () {
             // Assert
             assert.strictEqual($('#wallet_balance_zil').text(), '');
             assert.strictEqual($('#wallet_balance_zil_24h_ago').text(), '');
-            assert.strictEqual($('#wallet_balance_zil_percent_change_24h').text(), '0.0');
+            assert.strictEqual($('#wallet_balance_zil_percent_change_24h').text(), '');
             assert.strictEqual($('#wallet_balance_fiat').text(), '0.00');
-            assert.strictEqual($('#wallet_balance_fiat_24h_ago').text(), '0.00');
-            assert.strictEqual($('#wallet_balance_fiat_percent_change_24h').text(), '0.0');
+            assert.strictEqual($('#wallet_balance_fiat_24h_ago').text(), '');
+            assert.strictEqual($('#wallet_balance_fiat_percent_change_24h').text(), '');
 
             assert.strictEqual($('#lp_balance_zil').text(), '9,305');
             assert.strictEqual($('#lp_balance_zil_24h_ago').text(), '10,117');
@@ -320,10 +320,10 @@ describe('NetWorthStatus', function () {
 
             assert.strictEqual($('#staking_balance_zil').text(), '');
             assert.strictEqual($('#staking_balance_zil_24h_ago').text(), '');
-            assert.strictEqual($('#staking_balance_zil_percent_change_24h').text(), '0.0');
+            assert.strictEqual($('#staking_balance_zil_percent_change_24h').text(), '');
             assert.strictEqual($('#staking_balance_fiat').text(), '0.00');
-            assert.strictEqual($('#staking_balance_fiat_24h_ago').text(), '0.00');
-            assert.strictEqual($('#staking_balance_fiat_percent_change_24h').text(), '0.0');
+            assert.strictEqual($('#staking_balance_fiat_24h_ago').text(), '');
+            assert.strictEqual($('#staking_balance_fiat_percent_change_24h').text(), '');
 
             assert.strictEqual($('#net_worth_zil').text(), '9,305');
             assert.strictEqual($('#net_worth_zil_24h_ago').text(), '10,117');

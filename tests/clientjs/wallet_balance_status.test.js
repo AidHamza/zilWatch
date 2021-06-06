@@ -200,7 +200,7 @@ describe('WalletBalanceStatus', function () {
 
             // Assert
             assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil(), 7665.323124151986);
-            assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil24hAgo(), 7476.589135982234);
+            assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil24hAgo(), 0);
 
             assert.strictEqual($('#zil_balance').text(), expectedDataMap['ZIL'][0]);
             assert.strictEqual($('#zil_balance_fiat').text(), expectedDataMap['ZIL'][4]);
