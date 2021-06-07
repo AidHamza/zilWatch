@@ -22,9 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // This is unrelated to balance and the APIs used for personalized dashboard
     // So don't need to reload.
     compute24hLpTradeVolume(onLpTradeVolumeLoaded);
-    onZrcTokensTotalSupplyLoaded();
-    onZrcTokensCirculatingSupplyLoaded();
-
     computeLpEpochInfo(onLpCurrentEpochInfoLoaded);
 
     $(window).resize(function(){
@@ -195,18 +192,9 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
         },
         /* onSuccessCallback= */
         function() {
-            for (let ticker in zrcTokenPropertiesListMap) {
-                // Total supply
-                refreshZrcTokenCirculatingSupplyZilFiat(ticker);
-                refreshZrcTokenTotalSupplyZilFiat(ticker);
-                
-                // Lp reward
-                if (ticker === 'ZWAP') {
-                    refreshTotalLpRewardFiat();
-                    refreshPrevTotalLpRewardFiat();
-                    refreshPastTotalLpRewardFiat();
-                }
-            }
+            refreshTotalLpRewardFiat();
+            refreshPrevTotalLpRewardFiat();
+            refreshPastTotalLpRewardFiat();
             
             walletBalanceStatus.onZilswapDexStatusChange();
             stakingBalanceStatus.onZilswapDexStatusChange();
@@ -228,18 +216,9 @@ function computeZilswapDexStatus() {
         },
         /* onSuccessCallback= */
         function() {
-            for (let ticker in zrcTokenPropertiesListMap) {
-                // Total supply
-                refreshZrcTokenCirculatingSupplyZilFiat(ticker);
-                refreshZrcTokenTotalSupplyZilFiat(ticker);
-                
-                // Lp reward
-                if (ticker === 'ZWAP') {
-                    refreshTotalLpRewardFiat();
-                    refreshPrevTotalLpRewardFiat();
-                    refreshPastTotalLpRewardFiat();
-                }
-            }
+            refreshTotalLpRewardFiat();
+            refreshPrevTotalLpRewardFiat();
+            refreshPastTotalLpRewardFiat();
 
             walletBalanceStatus.onZilswapDexStatusChange();
             stakingBalanceStatus.onZilswapDexStatusChange();
@@ -261,9 +240,6 @@ function computeCoinPriceStatus(currencyCode) {
         function() {
             for (let ticker in zrcTokenPropertiesListMap) {
                 refreshTotalTradeVolumeFiat(ticker);
-
-                refreshZrcTokenCirculatingSupplyZilFiat(ticker);
-                refreshZrcTokenTotalSupplyZilFiat(ticker);
             }
             refreshTotalLpRewardFiat();
             refreshPrevTotalLpRewardFiat();

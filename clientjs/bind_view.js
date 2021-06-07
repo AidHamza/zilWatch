@@ -137,26 +137,6 @@ function bindViewZwapRewardLp(zwapRewardString, ticker) {
     $('#' + ticker + '_lp_pool_reward_zwap_unit').text('ZWAP');
 }
 
-// Exception, no need reset
-function bindViewZrcTokenCirculatingSupply(zrcTokenCirculatingSupply, ticker) {
-    $('#' + ticker + '_circulating_supply_zrc').text(zrcTokenCirculatingSupply);
-}
-
-// Exception, no need reset
-function bindViewZrcTokenCirculatingSupplyFiat(zrcTokenCirculatingSupplyFiat, ticker) {
-    $('#' + ticker + '_circulating_supply_fiat').text(zrcTokenCirculatingSupplyFiat);
-}
-
-// Exception, no need reset
-function bindViewZrcTokenTotalSupply(zrcTokenTotalSupply, ticker) {
-    $('#' + ticker + '_total_supply_zrc').text(zrcTokenTotalSupply);
-}
-
-// Exception, no need reset
-function bindViewZrcTokenTotalSupplyFiat(zrcTokenTotalSupplyFiat, ticker) {
-    $('#' + ticker + '_total_supply_fiat').text(zrcTokenTotalSupplyFiat);
-}
-
 /**
  * 4 --------------------------------------------------------------------------------
  * This is mainly total ZWAP LP reward card
@@ -369,11 +349,6 @@ if (typeof exports !== 'undefined') {
     exports.bindViewTotalTradeVolumeFiat = bindViewTotalTradeVolumeFiat;
 
     exports.bindViewZwapRewardLp = bindViewZwapRewardLp;
-
-    exports.bindViewZrcTokenCirculatingSupply = bindViewZrcTokenCirculatingSupply;
-    exports.bindViewZrcTokenCirculatingSupplyFiat = bindViewZrcTokenCirculatingSupplyFiat;
-    exports.bindViewZrcTokenTotalSupply = bindViewZrcTokenTotalSupply;
-    exports.bindViewZrcTokenTotalSupplyFiat = bindViewZrcTokenTotalSupplyFiat;
 
     // 4
     exports.bindViewTotalRewardAllLpZwap = bindViewTotalRewardAllLpZwap;

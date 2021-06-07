@@ -382,6 +382,63 @@ describe('ZilswapDexStatus', function () {
         });
     });
 
+    describe('#methods public circulating and total supply()', function () {
+
+        // for (let ticker in Constants.zrcTokenPropertiesListMap) {
+        //     console.log("'%s': ['%s', '%s', '%s', '%s'],",
+        //         ticker,
+        //         $('#' + ticker + '_circulating_supply_zrc').text(),
+        //         $('#' + ticker + '_circulating_supply_fiat').text(),
+        //         $('#' + ticker + '_total_supply_zrc').text(),
+        //         $('#' + ticker + '_total_supply_fiat').text());
+        // }
+        var expectedCirculatingAndTotalSupplyMap = {
+            'gZIL': ['346,029', '52,478,232', '346,029', '52,478,232'],
+            'XSGD': ['31,416,534', '22,202,819', '31,416,534', '22,202,819'],
+            'ZWAP': ['150,750', '46,708,335', '150,750', '46,708,335'],
+            'PORT': ['1,691,713', '20,491,248', '10,000,000', '121,127,223'],
+            'XPORT': ['100,000,000', '5,196,926', '100,000,000', '5,196,926'],
+            'ZLP': ['1,000,000', '2,265,228', '1,000,000', '2,265,228'],
+            'REDC': ['319,493', '795,921', '2,000,000', '4,982,394'],
+            'CARB': ['2,760,997', '4,949,542', '10,000,000', '17,926,646'],
+            'SCO': ['21,827,496', '18,983,807', '100,000,000', '86,971,987'],
+            'SRV': ['182,052', '613,823', '1,000,000', '3,371,690'],
+            'DUCK': ['304.7', '264,145', '420.7', '364,674'],
+            'ELONS': ['293.8', '727,049', '1000.0', '2,474,623'],
+            'ZCH': ['323,425', '1,230,874', '500,000', '1,902,875'],
+            'BOLT': ['3,000,000', '107,945', '3,000,000', '107,945'],
+            'ZYRO': ['21,220,866', '360,858', '300,000,000', '5,101,463'],
+            'ZLF': ['17,927', '337,282', '50,000', '940,731'],
+            'GARY': ['80.45', '614,058', '100.00', '763,286'],
+            'RECAP': ['200,000', '107,952', '200,000', '107,952'],
+            'AXT': ['238,682', '20,401', '311,986', '26,667'],
+            'SHRK': ['32,962', '6,887', '91,230,460', '19,061,312'],
+            'XCAD': ['1,500,000', '4,405,877', '1,500,000', '4,405,877'],
+        };
+
+        it('circulating and total supply is set and shown in view ', function () {
+            // Arrange
+            let dataObject = JSON.parse('{"zilliqa":{"usd":0.11819}}');
+            let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ dataObject, /* coinPriceCoingecko24hAgoData= */ null);
+
+            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
+
+            let zrcTokensCirculatingSupplyData = JSON.parse("{\"XPORT\": \"1000000000000\", \"gZIL\": \"346029474699163264909\", \"ZWAP\": \"150750452810208786\", \"XSGD\": \"31416533610000\", \"PORT\": \"16917128379\", \"SCO\": \"218274960000\", \"CARB\": \"276099713572760\", \"XCAD\": \"1500000000000\", \"ZLP\": \"1000000000000000000000000\", \"ZCH\": \"323424763977\", \"REDC\": \"319493437295755\", \"ELONS\": \"293802\", \"SRV\": \"18205194\", \"GARY\": \"804492\", \"ZYRO\": \"2122086556874427\", \"DUCK\": \"30472\", \"ZLF\": \"1792658957\", \"BOLT\": \"3000000000000010000000000\", \"RECAP\": \"200000000000000000\", \"AXT\": \"238682000000\", \"SHRK\": \"32961895429\"}");
+            let zrcTokensTotalSupplyData = JSON.parse("{\"gZIL\": \"346029474699163264909\", \"XSGD\": \"31416533610000\", \"ZWAP\": \"150750452810208786\", \"PORT\": \"100000000000\", \"XPORT\": \"1000000000000\", \"ZLP\": \"1000000000000000000000000\", \"REDC\": \"2000000000000000\", \"CARB\": \"1000000000000000\", \"SCO\": \"1000000000000\", \"SRV\": \"100000000\", \"DUCK\": \"42069\", \"ELONS\": \"1000000\", \"ZCH\": \"500000000000\", \"BOLT\": \"3000000000000010000000000\", \"ZYRO\": \"30000000000000000\", \"ZLF\": \"5000000000\", \"GARY\": \"1000000\", \"RECAP\": \"200000000000000000\", \"AXT\": \"311986000000\", \"SHRK\": \"91230460000000\", \"XCAD\": \"1500000000000\"}");
+
+            // Act
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null, zrcTokensCirculatingSupplyData, zrcTokensTotalSupplyData);
+
+            // Assert
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#' + ticker + '_circulating_supply_zrc').text(), expectedCirculatingAndTotalSupplyMap[ticker][0]);
+                assert.strictEqual($('#' + ticker + '_circulating_supply_fiat').text(), expectedCirculatingAndTotalSupplyMap[ticker][1]);
+                assert.strictEqual($('#' + ticker + '_total_supply_zrc').text(), expectedCirculatingAndTotalSupplyMap[ticker][2]);
+                assert.strictEqual($('#' + ticker + '_total_supply_fiat').text(), expectedCirculatingAndTotalSupplyMap[ticker][3]);
+            }
+        });
+    });
+
     describe('#methodsPersonal()', function () {
         it('set basic: bindViewPersonal() without 24h ago ', function () {
             // Arrange
@@ -470,7 +527,7 @@ describe('ZilswapDexStatus', function () {
         var zilswapDexStatus;
         var walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
 
-        beforeEach(function() {
+        beforeEach(function () {
             let coinPriceCoingeckoData = JSON.parse('{"zilliqa":{"usd":0.11819,"idr":1612}}');
             let coinPriceCoingecko24hAgoData = JSON.parse('{"zilliqa":{"usd":0.10519,"idr":1498}}');
             coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
@@ -614,7 +671,7 @@ describe('ZilswapDexStatus', function () {
             // Assert
             assert.deepStrictEqual(zilswapDexStatus.zilswapPairPersonalStatusMap_, {});
             assert.deepStrictEqual(zilswapDexStatus.zilswapPairPersonalStatus24hAgoMap_, {});
-            
+
             assert.strictEqual($('#lp_container').css('display'), 'none');
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
@@ -631,7 +688,7 @@ describe('ZilswapDexStatus', function () {
                 assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_balance_zil_24h_ago').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_balance_zil_percent_change_24h').text(), '');
-                
+
                 assert.strictEqual($('#' + ticker + '_lp_balance_fiat_24h_ago').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), 'Loading...');
                 assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_24h').text(), '');
@@ -966,6 +1023,122 @@ describe('ZilswapDexStatus', function () {
 
                     // Assert
                     assert.strictEqual($('#' + ticker + '_lp_total_pool_fiat').text(), 'asdf');
+                }
+            });
+        });
+
+        describe('#bindViewZrcTokenCirculatingSupply()', function () {
+
+            beforeEach(function () {
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    assert.strictEqual($('#' + ticker + '_circulating_supply_zrc').text(), '0');
+                }
+            });
+
+            it('bind view happy case', function () {
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    // Act
+                    zilswapDexStatus.bindViewZrcTokenCirculatingSupply('1234.4', ticker);
+
+                    // Assert
+                    assert.strictEqual($('#' + ticker + '_circulating_supply_zrc').text(), '1234.4');
+                }
+            });
+
+            it('bind view random string', function () {
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    // Act
+                    zilswapDexStatus.bindViewZrcTokenCirculatingSupply('asdf', ticker);
+
+                    // Assert
+                    assert.strictEqual($('#' + ticker + '_circulating_supply_zrc').text(), 'asdf');
+                }
+            });
+        });
+
+        describe('#bindViewZrcTokenCirculatingSupplyFiat()', function () {
+
+            beforeEach(function () {
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    assert.strictEqual($('#' + ticker + '_circulating_supply_fiat').text(), '0');
+                }
+            });
+
+            it('bind view happy case', function () {
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    // Act
+                    zilswapDexStatus.bindViewZrcTokenCirculatingSupplyFiat('1234.4', ticker);
+
+                    // Assert
+                    assert.strictEqual($('#' + ticker + '_circulating_supply_fiat').text(), '1234.4');
+                }
+            });
+
+            it('bind view random string', function () {
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    // Act
+                    zilswapDexStatus.bindViewZrcTokenCirculatingSupplyFiat('asdf', ticker);
+
+                    // Assert
+                    assert.strictEqual($('#' + ticker + '_circulating_supply_fiat').text(), 'asdf');
+                }
+            });
+        });
+
+        describe('#bindViewZrcTokenTotalSupply()', function () {
+
+            beforeEach(function () {
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    assert.strictEqual($('#' + ticker + '_total_supply_zrc').text(), '0');
+                }
+            });
+
+            it('bind view happy case', function () {
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    // Act
+                    zilswapDexStatus.bindViewZrcTokenTotalSupply('1234.4', ticker);
+
+                    // Assert
+                    assert.strictEqual($('#' + ticker + '_total_supply_zrc').text(), '1234.4');
+                }
+            });
+
+            it('bind view random string', function () {
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    // Act
+                    zilswapDexStatus.bindViewZrcTokenTotalSupply('asdf', ticker);
+
+                    // Assert
+                    assert.strictEqual($('#' + ticker + '_total_supply_zrc').text(), 'asdf');
+                }
+            });
+        });
+
+        describe('#bindViewZrcTokenTotalSupplyFiat()', function () {
+
+            beforeEach(function () {
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    assert.strictEqual($('#' + ticker + '_total_supply_fiat').text(), '0');
+                }
+            });
+
+            it('bind view happy case', function () {
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    // Act
+                    zilswapDexStatus.bindViewZrcTokenTotalSupplyFiat('1234.4', ticker);
+
+                    // Assert
+                    assert.strictEqual($('#' + ticker + '_total_supply_fiat').text(), '1234.4');
+                }
+            });
+
+            it('bind view random string', function () {
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    // Act
+                    zilswapDexStatus.bindViewZrcTokenTotalSupplyFiat('asdf', ticker);
+
+                    // Assert
+                    assert.strictEqual($('#' + ticker + '_total_supply_fiat').text(), 'asdf');
                 }
             });
         });

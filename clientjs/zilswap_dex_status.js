@@ -1,7 +1,7 @@
 /** A class to represent Zilswap DEX status.  */
 class ZilswapDexStatus {
 
-    constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ walletAddressBase16, /* nullable= */ zilswapDexSmartContractStateData, /* nullable= */ zilswapDexSmartContractState24hAgoData) {
+    constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ walletAddressBase16, /* nullable= */ zilswapDexSmartContractStateData, /* nullable= */ zilswapDexSmartContractState24hAgoData, /* nullable= */ zrcTokensCirculatingSupplyData, /* nullable= */ zrcTokensTotalSupplyData) {
         // Constants
         this.zilswapDexAddress_ = "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w";
         this.zilswapDexAddressBase16_ = "Ba11eB7bCc0a02e947ACF03Cc651Bfaf19C9EC00";
@@ -11,6 +11,9 @@ class ZilswapDexStatus {
         this.coinPriceStatus_ = coinPriceStatus;
         this.zilswapDexSmartContractStateData_ = zilswapDexSmartContractStateData;
         this.zilswapDexSmartContractState24hAgoData_ = zilswapDexSmartContractState24hAgoData;
+        // Circulating and total supply
+        this.zrcTokensCirculatingSupplyData_ = zrcTokensCirculatingSupplyData;
+        this.zrcTokensTotalSupplyData_ = zrcTokensTotalSupplyData;
 
         // Private derived variable
         this.zilswapPairPublicStatusMap_ = {};
@@ -72,6 +75,9 @@ class ZilswapDexStatus {
     onCoinPriceStatusChange() {
         this.bindViewZrcTokenPriceFiat();
         this.bindViewPersonalDataFiat();
+
+        this.bindViewZrcTokenCirculatingSupplyZilFiat();
+        this.bindViewZrcTokenTotalSupplyZilFiat();
     }
 
     computeZilswapPairPublicPersonalStatusMap() {
@@ -403,6 +409,8 @@ class ZilswapDexStatus {
         }
 
         this.bindViewZrcTokenPriceFiat();
+        this.bindViewZrcTokenCirculatingSupplyZilFiat();
+        this.bindViewZrcTokenTotalSupplyZilFiat();
     }
 
     /** Private method */
@@ -457,6 +465,80 @@ class ZilswapDexStatus {
             }
         }
     }
+
+    bindViewZrcTokenCirculatingSupplyZilFiat() {
+        if (!this.coinPriceStatus_) {
+            return;
+        }
+        let zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
+        if (!zilPriceInFiatFloat) {
+            return;
+        }
+        if (!this.zrcTokensCirculatingSupplyData_) {
+            return;
+        }
+
+        for (let ticker in this.zrcTokensCirculatingSupplyData_) {
+            let zrcTokenProperties = this.zrcTokenPropertiesListMap_[ticker];
+            if (!zrcTokenProperties) {
+                continue;
+            }
+            let zrcCirculatingSupply = parseInt(this.zrcTokensCirculatingSupplyData_[ticker]);
+            if (!zrcCirculatingSupply) {
+                continue;
+            }
+
+            zrcCirculatingSupply = zrcCirculatingSupply / Math.pow(10, zrcTokenProperties.decimals);
+            let zrcCirculatingSupplyString = convertNumberQaToDecimalString(zrcCirculatingSupply, /* decimals= */ 0);
+            this.bindViewZrcTokenCirculatingSupply(zrcCirculatingSupplyString, ticker);
+
+            let zrcTokenPriceInZil = this.getZrcPriceInZil(ticker);
+            if (!zrcTokenPriceInZil) {
+                continue;
+            }
+
+            let zrcCirculatingSupplyInFiat = 1.0 * zrcCirculatingSupply * zrcTokenPriceInZil * zilPriceInFiatFloat;
+            let zrcCirculatingSupplyInFiatString = commafyNumberToString(zrcCirculatingSupplyInFiat, /* decimals= */ 0);
+            this.bindViewZrcTokenCirculatingSupplyFiat(zrcCirculatingSupplyInFiatString, ticker);
+        }
+    }
+
+    bindViewZrcTokenTotalSupplyZilFiat() {
+        if (!this.coinPriceStatus_) {
+            return;
+        }
+        let zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
+        if (!zilPriceInFiatFloat) {
+            return;
+        }
+        if (!this.zrcTokensTotalSupplyData_) {
+            return;
+        }
+
+        for (let ticker in this.zrcTokensTotalSupplyData_) {
+            let zrcTokenProperties = this.zrcTokenPropertiesListMap_[ticker];
+            if (!zrcTokenProperties) {
+                continue;
+            }
+            let zrcTotalSupply = parseInt(this.zrcTokensTotalSupplyData_[ticker]);
+            if (!zrcTotalSupply) {
+                continue;
+            }
+
+            zrcTotalSupply = zrcTotalSupply / Math.pow(10, zrcTokenProperties.decimals);
+            let zrcTotalSupplyString = convertNumberQaToDecimalString(zrcTotalSupply, /* decimals= */ 0);
+            this.bindViewZrcTokenTotalSupply(zrcTotalSupplyString, ticker);
+
+            let zrcTokenPriceInZil = this.getZrcPriceInZil(ticker);
+            if (!zrcTokenPriceInZil) {
+                continue;
+            }
+            let zrcTotalSupplyInFiat = 1.0 * zrcTotalSupply * zrcTokenPriceInZil * zilPriceInFiatFloat;
+            let zrcTotalSupplyInFiatString = commafyNumberToString(zrcTotalSupplyInFiat, /* decimals= */ 0);
+            this.bindViewZrcTokenTotalSupplyFiat(zrcTotalSupplyInFiatString, ticker);
+        }
+    }
+
 
     /** Private static method. public. */
     bindViewZrcTokenPriceInZil24hAgo(zrcTokenPriceInZil24hAgo, publicZrcTokenPriceInZil24hAgo, publicZrcTokenPriceInZilPercentChange24h, ticker) {
@@ -542,6 +624,26 @@ class ZilswapDexStatus {
             $('#' + ticker + '_lp_balance_fiat_24h_ago').text('');
             $('#' + ticker + '_lp_balance_fiat_percent_change_24h').text('');
         }
+    }
+
+    /** Private static method. Public. */
+    bindViewZrcTokenCirculatingSupply(zrcTokenCirculatingSupply, ticker) {
+        $('#' + ticker + '_circulating_supply_zrc').text(zrcTokenCirculatingSupply);
+    }
+
+    /** Private static method. Public. */
+    bindViewZrcTokenCirculatingSupplyFiat(zrcTokenCirculatingSupplyFiat, ticker) {
+        $('#' + ticker + '_circulating_supply_fiat').text(zrcTokenCirculatingSupplyFiat);
+    }
+
+    /** Private static method. Public. */
+    bindViewZrcTokenTotalSupply(zrcTokenTotalSupply, ticker) {
+        $('#' + ticker + '_total_supply_zrc').text(zrcTokenTotalSupply);
+    }
+
+    /** Private static method. Public. */
+    bindViewZrcTokenTotalSupplyFiat(zrcTokenTotalSupplyFiat, ticker) {
+        $('#' + ticker + '_total_supply_fiat').text(zrcTokenTotalSupplyFiat);
     }
 }
 

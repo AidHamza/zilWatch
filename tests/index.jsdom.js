@@ -81,11 +81,6 @@ function assertDefaultStateMainContent() {
         assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
     }
 
-    // bindViewZrcTokenCirculatingSupply(): Exception, no need refresh
-    // bindViewZrcTokenCirculatingSupplyFiat(): Exception, no need refresh
-    // bindViewZrcTokenTotalSupply(): Exception, no need refresh
-    // bindViewZrcTokenTotalSupplyFiat(): Exception, no need refresh
-
     // 4 -------------------------------------------------- 4
 
     // bindViewTotalRewardAllLpZwap()
