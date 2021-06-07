@@ -1,3 +1,6 @@
+var REFRESH_INTERVAL_MS = 30000;
+var activeIntervalId = null;
+
 document.addEventListener("DOMContentLoaded", () => {
     // Get the user's theme preference from local storage, if it's available
     let currentTheme = localStorage.getItem("theme");
@@ -17,7 +20,14 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Public information
     computeCoinPriceStatus(currentCurrencyCode);
-    computeZilswapDexStatus();
+    computeZilswapDexPublicStatus();
+
+    // Loop forever to refresh coin price and zilswap dex status (for zrc prices)
+    clearInterval(activeIntervalId);
+    activeIntervalId = setInterval(function() {
+        refreshCoinPriceStatus();
+        refreshZilswapDexPublicStatus();
+    }, REFRESH_INTERVAL_MS);
 
     // This is unrelated to balance and the APIs used for personalized dashboard
     // So don't need to reload.
@@ -137,16 +147,29 @@ function refreshMainContentData(account) {
     // Do this together because they are one API call, using the same data.
     computeZilswapDexPersonalStatus(walletAddressBase16);
 
-    // (7) Get Potential LP reward next epoch and past epoch, async
+    // (7) Get staking balance (ZIL, CARB), async
+    computeStakingBalanceStatus(walletAddressBase16);
+
+    // (8) Get Potential LP reward next epoch and past epoch, async
     computeTotalLpRewardNextEpoch(walletAddressBech32, onLpRewardNextEpochLoaded);
     computeTotalLpRewardPastEpoch(walletAddressBech32, onLpRewardPastEpochLoaded);
 
-    // (8) Get staking balance (ZIL, CARB), async
-    computeStakingBalanceStatus(walletAddressBase16);
+    // Loop forever to refresh all balances and coin status
+    clearInterval(activeIntervalId);
+    activeIntervalId = setInterval(function() {
+        refreshCoinPriceStatus();
+        refreshZilswapDexPersonalStatus();
+        refreshWalletBalanceStatus();
+        refreshStakingBalanceStatus();
+    }, REFRESH_INTERVAL_MS);
 }
 
 function computeStakingBalanceStatus(walletAddressBase16) {
     stakingBalanceStatus.setWalletAddressBase16(walletAddressBase16);
+    refreshStakingBalanceStatus();
+}
+
+function refreshStakingBalanceStatus() {
     stakingBalanceStatus.computeDataRpc(
         /* beforeRpcCallback= */
         function() {
@@ -166,6 +189,10 @@ function computeStakingBalanceStatus(walletAddressBase16) {
 
 function computeWalletBalanceStatus(walletAddressBase16) {
     walletBalanceStatus.setWalletAddressBase16(walletAddressBase16);
+    refreshWalletBalanceStatus();
+}
+
+function refreshWalletBalanceStatus() {
     walletBalanceStatus.computeDataRpc(
         /* beforeRpcCallback= */
         function() {
@@ -185,7 +212,7 @@ function computeWalletBalanceStatus(walletAddressBase16) {
 
 function computeZilswapDexPersonalStatus(walletAddressBase16) {
     zilswapDexStatus.setWalletAddressBase16(walletAddressBase16);
-    zilswapDexStatus.computeDataRpcIfBalanceDataNoExist(
+    zilswapDexStatus.computePersonalPublicDataRpcIfDataNoExist(
         /* beforeRpcCallback= */
         function() {
             incrementShowSpinnerLpBalance();
@@ -209,8 +236,54 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
         });
 }
 
-function computeZilswapDexStatus() {
-    zilswapDexStatus.computeDataRpcIfDataNoExist(
+function refreshZilswapDexPersonalStatus() {
+    zilswapDexStatus.computePersonalPublicDataRpc(
+        /* beforeRpcCallback= */
+        function() {
+            incrementShowSpinnerLpBalance();
+        },
+        /* onSuccessCallback= */
+        function() {
+            refreshTotalLpRewardFiat();
+            refreshPrevTotalLpRewardFiat();
+            refreshPastTotalLpRewardFiat();
+            
+            walletBalanceStatus.onZilswapDexStatusChange();
+            stakingBalanceStatus.onZilswapDexStatusChange();
+            netWorthStatus.onZilswapDexStatusChange();
+            uniqueCoinStatus.onZilswapDexStatusChange();
+
+            decrementShowSpinnerLpBalance();
+        },
+        /* onErrorCallback= */
+        function() {
+            decrementShowSpinnerLpBalance();
+        });
+}
+
+function computeZilswapDexPublicStatus() {
+    zilswapDexStatus.computePublicDataRpcIfDataNoExist(
+        /* beforeRpcCallback= */
+        function() {
+        },
+        /* onSuccessCallback= */
+        function() {
+            refreshTotalLpRewardFiat();
+            refreshPrevTotalLpRewardFiat();
+            refreshPastTotalLpRewardFiat();
+
+            walletBalanceStatus.onZilswapDexStatusChange();
+            stakingBalanceStatus.onZilswapDexStatusChange();
+            netWorthStatus.onZilswapDexStatusChange();
+            uniqueCoinStatus.onZilswapDexStatusChange();
+        },
+        /* onErrorCallback= */
+        function() {
+        });
+}
+
+function refreshZilswapDexPublicStatus() {
+    zilswapDexStatus.computePublicDataRpc(
         /* beforeRpcCallback= */
         function() {
         },
@@ -233,6 +306,30 @@ function computeZilswapDexStatus() {
 function computeCoinPriceStatus(currencyCode) {
     coinPriceStatus.setActiveCurrencyCode(currencyCode);
     coinPriceStatus.computeDataRpcIfDataNoExist(
+        /* beforeRpcCallback= */
+        function() {
+        },
+        /* onSuccessCallback= */
+        function() {
+            for (let ticker in zrcTokenPropertiesListMap) {
+                refreshTotalTradeVolumeFiat(ticker);
+            }
+            refreshTotalLpRewardFiat();
+            refreshPrevTotalLpRewardFiat();
+            refreshPastTotalLpRewardFiat();
+
+            zilswapDexStatus.onCoinPriceStatusChange();
+            walletBalanceStatus.onCoinPriceStatusChange();
+            stakingBalanceStatus.onCoinPriceStatusChange();
+            netWorthStatus.onCoinPriceStatusChange();
+        },
+        /* onErrorCallback= */
+        function() {
+        });
+}
+
+function refreshCoinPriceStatus() {
+    coinPriceStatus.computeDataRpc(
         /* beforeRpcCallback= */
         function() {
         },

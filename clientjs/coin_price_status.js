@@ -86,13 +86,18 @@ class CoinPriceStatus {
     }
 
     computeDataRpcIfDataNoExist(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
-        beforeRpcCallback();
-
         // If data is already loaded, do not perform RPC.
         if (this.coinPriceCoingeckoData_) {
+            beforeRpcCallback();
             onSuccessCallback(); // Call success callback as if the RPC is successful.
             return;
         }
+    
+        this.computeDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback);
+    }
+
+    computeDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
+        beforeRpcCallback();
 
         // Prepare URL for query
         let allCurrenciesCode = 'usd';
@@ -104,7 +109,7 @@ class CoinPriceStatus {
         for (let coinCode in coinMap) {
             allCoinsCode += ',' + coinMap[coinCode].coingecko_id;
         }
-    
+
         let self = this;
         queryUrlGetAjax(
             /* urlToGet= */

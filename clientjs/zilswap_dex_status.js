@@ -234,11 +234,10 @@ class ZilswapDexStatus {
         return totalZilAmount;
     }
 
-    computeDataRpcIfBalanceDataNoExist(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
-        beforeRpcCallback();
-
+    computePersonalPublicDataRpcIfDataNoExist(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
         // If data is already loaded, do not perform RPC.
         if (this.hasBalanceData()) {
+            beforeRpcCallback();
             this.computeZilswapPairPublicPersonalStatusMap();
             this.bindViewIfDataExist();
             this.bindViewPersonalDataIfDataExist();
@@ -246,6 +245,11 @@ class ZilswapDexStatus {
             return;
         }
 
+        this.computePersonalPublicDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback);
+    }
+
+    computePersonalPublicDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
+        beforeRpcCallback();
         let self = this;
         queryZilliqaApiAjax(
             /* method= */
@@ -266,16 +270,21 @@ class ZilswapDexStatus {
             });
     }
 
-    computeDataRpcIfDataNoExist(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
-        beforeRpcCallback();
-
+    computePublicDataRpcIfDataNoExist(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
         // If data is already loaded, do not perform RPC.
         if (this.zilswapDexSmartContractStateData_) {
+            beforeRpcCallback();
             this.computeZilswapPairPublicPersonalStatusMap();
             this.bindViewIfDataExist();
             onSuccessCallback(); // Call success callback as if the RPC is successful.
             return;
         }
+
+        this.computePublicDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback);
+    }
+
+    computePublicDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
+        beforeRpcCallback();
 
         let self = this;
         queryZilliqaApiAjax(
