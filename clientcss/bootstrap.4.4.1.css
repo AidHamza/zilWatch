@@ -48,11 +48,13 @@
     --gray-dark-focus: #1d2124;
     --gray-dark-focus-2: #121416;
 
+    --white-980: #fafafa;
     --white-970: #f7f7f7;
     --white-950: #f2f2f2;
     --white-940: #f0f0f0;
     --white-900: #e6e6e6;
     --black-850: #22292a;
+    --black-890: #191e1f;
     --black-910: #141819;
     --black-930: #101314;
     --black-950: #0b0d0e;
@@ -66,11 +68,13 @@
     --black-alpha-50: rgba(0, 0, 0, .5);
     --black-alpha-30: rgba(0, 0, 0, .3);
     --black-alpha-10: rgba(0, 0, 0, .1);
+    --black-alpha-5: rgba(0, 0, 0, .05);
 
     --white-alpha-75: rgba(255, 255, 255, .75);
     --white-alpha-50: rgba(255, 255, 255, .5);
     --white-alpha-25: rgba(255, 255, 255, .25);
     --white-alpha-10: rgba(255, 255, 255, .1);
+    --white-alpha-5: rgba(255, 255, 255, .05);
     
     --text-primary-white: #d5d9dd;
     --text-primary-white-focus: #aab3bb;
@@ -79,6 +83,9 @@
     --text-primary-black: #212529;
     --text-secondary-black: #6c757d;
     --text-secondary-black-focus: #494f54;
+
+    --border-white: #dee2e6;
+    --border-black: #21262c;
 
     --primary: var(--blue);
     --secondary: var(--gray);
@@ -105,17 +112,20 @@
     --light-alpha-50: var(--black-alpha-50);
     --light-alpha-30: var(--black-alpha-30);
     --light-alpha-10: var(--black-alpha-10);
+    --light-alpha-5: var(--black-alpha-5);
 
     --dark-alpha-90: var(--white);
     --dark-alpha-70: var(--white-alpha-75);
     --dark-alpha-50: var(--white-alpha-50);
     --dark-alpha-30: var(--white-alpha-25);
     --dark-alpha-10: var(--white-alpha-10);
+    --dark-alpha-5: var(--white-alpha-5);
 
     --bg-dynamic: var(--white-900);
     --bg-dynamic-1: var(--white-940);
     --bg-dynamic-2: var(--white-950);
     --bg-dynamic-3: var(--white-970);
+    --bg-dynamic-4: var(--white-980);
     --custom-select-arrow: var(--custom-select-arrow-black);
 
     --text-color: var(--text-primary-black);
@@ -124,6 +134,8 @@
 
     --text-dark: var(--gray-dark);
     --text-dark-focus: var(--gray-dark-focus-2);
+
+    --border-color: var(--border-white);
 
     --positive-green: var(--green);
     --negative-red: var(--red);
@@ -155,17 +167,20 @@
     --light-alpha-50: var(--white-alpha-50);
     --light-alpha-30: var(--white-alpha-25);
     --light-alpha-10: var(--white-alpha-10);
+    --light-alpha-5: var(--white-alpha-5);
 
     --dark-alpha-90: var(--black-alpha-90);
     --dark-alpha-70: var(--black-alpha-70);
     --dark-alpha-50: var(--black-alpha-50);
     --dark-alpha-30: var(--black-alpha-30);
     --dark-alpha-10: var(--black-alpha-10);
+    --dark-alpha-5: var(--black-alpha-5);
 
     --bg-dynamic: var(--black-950);
     --bg-dynamic-1: var(--black-930);
     --bg-dynamic-2: var(--black-910);
-    --bg-dynamic-3: var(--black-850);
+    --bg-dynamic-3: var(--black-890);
+    --bg-dynamic-4: var(--black-850);
     --custom-select-arrow: var(--custom-select-arrow-white);
 
     --text-color: var(--text-primary-white);
@@ -174,6 +189,8 @@
 
     --text-dark: var(--text-primary-white);
     --text-dark-focus: var(--text-primary-white-focus);
+
+    --border-color: var(--border-black);
 
     --positive-green: var(--lighter-green);
     --negative-red: var(--lighter-red);
@@ -588,7 +605,7 @@ hr {
 .img-thumbnail {
     padding: .25rem;
     background-color: var(--white);
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--border-color);
     border-radius: .25rem;
     max-width: 100%;
     height: auto
@@ -1798,16 +1815,16 @@ pre code {
 .table td, .table th {
     padding: .75rem;
     vertical-align: top;
-    border-top: 1px solid #dee2e6
+    border-top: 1px solid var(--border-color)
 }
 
 .table thead th {
     vertical-align: bottom;
-    border-bottom: 2px solid #dee2e6
+    border-bottom: 2px solid var(--border-color)
 }
 
 .table tbody+tbody {
-    border-top: 2px solid #dee2e6
+    border-top: 2px solid var(--border-color)
 }
 
 .table-sm td, .table-sm th {
@@ -1815,11 +1832,11 @@ pre code {
 }
 
 .table-bordered {
-    border: 1px solid #dee2e6
+    border: 1px solid var(--border-color)
 }
 
 .table-bordered td, .table-bordered th {
-    border: 1px solid #dee2e6
+    border: 1px solid var(--border-color)
 }
 
 .table-bordered thead td, .table-bordered thead th {
@@ -1988,7 +2005,7 @@ pre code {
 .table .thead-light th {
     color: #495057;
     background-color: #e9ecef;
-    border-color: #dee2e6
+    border-color: var(--border-color)
 }
 
 .table-dark {
@@ -4024,7 +4041,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     height: .5rem;
     color: transparent;
     cursor: pointer;
-    background-color: #dee2e6;
+    background-color: var(--border-color);
     border-color: transparent;
     border-radius: 1rem
 }
@@ -4057,7 +4074,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     height: .5rem;
     color: transparent;
     cursor: pointer;
-    background-color: #dee2e6;
+    background-color: var(--border-color);
     border-color: transparent;
     border-radius: 1rem
 }
@@ -4098,13 +4115,13 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .custom-range::-ms-fill-lower {
-    background-color: #dee2e6;
+    background-color: var(--border-color);
     border-radius: 1rem
 }
 
 .custom-range::-ms-fill-upper {
     margin-right: 15px;
-    background-color: #dee2e6;
+    background-color: var(--border-color);
     border-radius: 1rem
 }
 
@@ -4164,7 +4181,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .nav-tabs {
-    border-bottom: 1px solid #dee2e6
+    border-bottom: 1px solid var(--border-color)
 }
 
 .nav-tabs .nav-item {
@@ -4178,7 +4195,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
-    border-color: #e9ecef #e9ecef #dee2e6
+    border-color: #e9ecef #e9ecef var(--border-color)
 }
 
 .nav-tabs .nav-link.disabled {
@@ -4190,7 +4207,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
     color: #495057;
     background-color: var(--white);
-    border-color: #dee2e6 #dee2e6 var(--white)
+    border-color: var(--border-color) var(--border-color) var(--white)
 }
 
 .nav-tabs .dropdown-menu {
@@ -4893,7 +4910,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     line-height: 1.25;
     color: var(--blue);
     background-color: var(--white);
-    border: 1px solid #dee2e6
+    border: 1px solid var(--border-color)
 }
 
 .page-link:hover {
@@ -4901,7 +4918,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     color: #0056b3;
     text-decoration: none;
     background-color: #e9ecef;
-    border-color: #dee2e6
+    border-color: var(--border-color)
 }
 
 .page-link:focus {
@@ -4933,7 +4950,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     pointer-events: none;
     cursor: auto;
     background-color: var(--white);
-    border-color: #dee2e6
+    border-color: var(--border-color)
 }
 
 .pagination-lg .page-link {
@@ -5927,7 +5944,7 @@ a.close.disabled {
     -ms-flex-pack: justify;
     justify-content: space-between;
     padding: 1rem 1rem;
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid var(--border-color);
     border-top-left-radius: calc(.3rem - 1px);
     border-top-right-radius: calc(.3rem - 1px)
 }
@@ -5959,7 +5976,7 @@ a.close.disabled {
     -ms-flex-pack: end;
     justify-content: flex-end;
     padding: .75rem;
-    border-top: 1px solid #dee2e6;
+    border-top: 1px solid var(--border-color);
     border-bottom-right-radius: calc(.3rem - 1px);
     border-bottom-left-radius: calc(.3rem - 1px)
 }
@@ -6636,23 +6653,23 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
 }
 
 .border {
-    border: 1px solid #dee2e6!important
+    border: 1px solid var(--border-color)!important
 }
 
 .border-top {
-    border-top: 1px solid #dee2e6!important
+    border-top: 1px solid var(--border-color)!important
 }
 
 .border-right {
-    border-right: 1px solid #dee2e6!important
+    border-right: 1px solid var(--border-color)!important
 }
 
 .border-bottom {
-    border-bottom: 1px solid #dee2e6!important
+    border-bottom: 1px solid var(--border-color)!important
 }
 
 .border-left {
-    border-left: 1px solid #dee2e6!important
+    border-left: 1px solid var(--border-color)!important
 }
 
 .border-0 {
@@ -9687,16 +9704,16 @@ a.text-dark:focus, a.text-dark:hover {
         background-color: var(--white)!important
     }
     .table-bordered td, .table-bordered th {
-        border: 1px solid #dee2e6!important
+        border: 1px solid var(--border-color)!important
     }
     .table-dark {
         color: inherit
     }
     .table-dark tbody+tbody, .table-dark td, .table-dark th, .table-dark thead th {
-        border-color: #dee2e6
+        border-color: var(--border-color)
     }
     .table .thead-dark th {
         color: inherit;
-        border-color: #dee2e6
+        border-color: var(--border-color)
     }
 }

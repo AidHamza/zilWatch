@@ -32,39 +32,79 @@ block content
 
     div(class='row accordion')
     
-      div(class='col-lg-6' style='padding: 0;')
+      div(class='col-xl-12' style='padding: 0;')
         div(class='box-public')
 
           div(id='price_content_header_container' class='card-header' data-toggle='collapse' href='#price_content_container')
-            a(id='price_content_header_title' class='card-title font-weight-bold')= 'Token Price'
-          div(id='price_content_container' class='card-body collapse show')
-            table(class='table table-sm table-borderless' width='100%')
-              tbody
-                tr
-                  th(colspan=2 style='text-align: left; white-space: nowrap; width: 10%;' )= 'Token Symbol'
-                  th(style='text-align: right; white-space: nowrap; width: 25%;' )= 'Price (ZIL)'
-                  th(style='text-align: right; white-space: nowrap; width: 10%;' )= '24h %'
-                  th(style='text-align: right; white-space: nowrap; width: 25%;' )
+            a(id='price_content_header_title' class='card-title font-weight-bold')= 'Token Information'
+          div(id='price_content_container' class='card-body collapse show table-sticky-header')
+            table(class='table table-sm' width='100%')
+              thead 
+                tr(class='table-background-color')
+                  th(class='table-background-color' style='text-align: left; white-space: nowrap; width: 10%;' )= 'Token'
+                  th(style='text-align: right; white-space: nowrap; width: 10%;' )
+                    span= 'Price (ZIL)'
+                  th(style='text-align: right; white-space: nowrap; width: 10%;' )
+                    span='24h %'
+                  th(style='text-align: right; white-space: nowrap; width: 10%;' )
                     span= 'Price'
                     span= ' ('
                     span(class='currency_symbol')= '$'
                     span= ')'
-                  th(style='text-align: right; white-space: nowrap; width: 10%;' )= '24h %'
+                  th(style='text-align: right; white-space: nowrap; width: 10%;' )
+                    span= '24h %'
+                  th(style='text-align: right; white-space: nowrap; width: 10%;')
+                    span= '24h Volume'
+                    span= ' ('
+                    span(class='currency_symbol')= '$'
+                    span= ')'
+                  th(style='text-align: right; white-space: nowrap; width: 10%;')
+                    span= 'Total Pool'
+                    span= ' ('
+                    span(class='currency_symbol')= '$'
+                    span= ')'
+                  th(style='text-align: right; white-space: nowrap; width: 10%;')
+                    span= 'Circ. Supply (ZRC)'
+                  th(style='text-align: right; white-space: nowrap; width: 10%;')
+                    span= 'Market Cap'
+                    span= ' ('
+                    span(class='currency_symbol')= '$'
+                    span= ')'
+                  th(style='text-align: right; white-space: nowrap; width: 10%;')
+                    span= 'Total Supply (ZRC)'
+                  th(style='text-align: right; white-space: nowrap; width: 10%;')
+                    span= 'Total Supply'
+                    span= ' ('
+                    span(class='currency_symbol')= '$'
+                    span= ')'
                 
+              tbody
                 each coinProperties, key in coinMap 
                   tr
-                    td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                    th(scope='row' class='table-background-color' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 10%;')
                       img(height='18' width='18' src=coinProperties.logo_url loading='lazy')
-                    td(style='text-align: left; white-space: nowrap; width: 10%;' )
-                      span= coinProperties.ticker
-                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                      span(class='ml-2')= coinProperties.ticker
+                    //- th(style='text-align: left; white-space: nowrap; width: 10%;' )
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
                       span(class=coinProperties.ticker+'_price_zil')= 'Loading...'
                     td(id='public_'+coinProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; width: 10%;' )
                       span(id='public_'+coinProperties.ticker+'_price_zil_percent_change_24h')
-                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
                       span(class=coinProperties.ticker+'_price_fiat')= 'Loading...'
                     td(id='public_'+coinProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap; width: 10%;' )
                       span(id='public_'+coinProperties.ticker+'_price_fiat_percent_change_24h')
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span= '-'
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span= '-'
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span= '-'
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span= '-'
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span= '-'
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span= '-'
 
                 each circulatingSupply, ticker in zrcTokensCirculatingSupply
                   - let tokenProperties = zrcTokenPropertiesListMap[ticker]
@@ -73,20 +113,32 @@ block content
                     - trStyle = 'display: none;'
 
                   tr(style=trStyle)
-                    td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                    th(scope='row' class='table-background-color' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 10%;')
                       img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
-                    td(style='text-align: left; white-space: nowrap; width: 10%;' )
-                      span= tokenProperties.ticker
-                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                      span(class='ml-2')= tokenProperties.ticker
+                    //- th(style='text-align: left; white-space: nowrap; width: 10%;' )
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
                       span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
                     td(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; width: 10%;' )
                       span(id='public_'+tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
                       span(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h')
-                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
                       span(id='public_'+tokenProperties.ticker+'_price_fiat')= 'Loading...'
                     td(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap; width: 10%;' )
                       span(id='public_'+tokenProperties.ticker+'_price_fiat_24h_ago' style='display: none;')
                       span(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h')
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span(id=tokenProperties.ticker+'_lp_total_volume_fiat')= '0'
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span(id=tokenProperties.ticker+'_lp_total_pool_fiat')= 'Loading...'
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span(id=tokenProperties.ticker+'_circulating_supply_zrc')= '0'
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span(id=tokenProperties.ticker+'_circulating_supply_fiat')= '0'
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span(id=tokenProperties.ticker+'_total_supply_zrc')= '0'
+                    td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span(id=tokenProperties.ticker+'_total_supply_fiat')= '0'
 
       if zilswapDexReward || zilStakingReward
         div(class='col-lg-6' style='padding: 0;')
@@ -158,108 +210,6 @@ block content
                           td(style='text-align: right; white-space: nowrap; width: 20%;' )
                             span= zilswapDexReward[ticker].apr_percent
 
-      div(class='col-lg-6' style='padding: 0;')
-
-        div(class='box-public')
-          div(id='lp_status_content_header_container' class='card-header' data-toggle='collapse' href='#lp_status_content_container')
-            a(id='lp_status_content_header_title' class='card-title font-weight-bold')= 'Liquidity Pool Status'
-          div(id='lp_status_content_container' class='card-body collapse show')
-            table(class='table table-sm table-borderless' width='100%')
-              tbody
-                tr
-                  th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Liquidity Pair'
-                  th(style='text-align: right; white-space: nowrap; width: 25%;')
-                    span= '24h Volume'
-                    span= ' ('
-                    span(class='currency_symbol')= '$'
-                    span= ')'
-                  th(style='text-align: right; white-space: nowrap; width: 25%;')
-                    span= 'Total Pool'
-                    span= ' ('
-                    span(class='currency_symbol')= '$'
-                    span= ')'
-                each circulatingSupply, ticker in zrcTokensCirculatingSupply
-                  - let tokenProperties = zrcTokenPropertiesListMap[ticker]
-                  - var trStyle = ''
-                  if tokenProperties.ticker === 'XPORT'
-                    - trStyle = 'display: none;'
-
-                  tr(style=trStyle)
-                    td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                      img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
-                    td(style='text-align: left; white-space: nowrap; width: 25%;' )
-                      span= tokenProperties.ticker + '-ZIL'
-                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(id=tokenProperties.ticker+'_lp_total_volume_fiat')= '0'
-                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(id=tokenProperties.ticker+'_lp_total_pool_fiat')= 'Loading...'
-    
-      div(class='col-lg-6' style='padding: 0;')
-
-        div(class='box-public')
-          div(id='circulating_supply_content_header_container' class='card-header' data-toggle='collapse' href='#circulating_supply_content_container')
-            a(id='circulating_supply_content_header_title' class='card-title font-weight-bold')= 'Circulating Supply & Market Cap'
-          div(id='circulating_supply_content_container' class='card-body collapse show')
-            table(class='table table-sm table-borderless' width='100%')
-              tbody
-                tr
-                  th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Token Symbol'
-                  th(style='text-align: right; white-space: nowrap; width: 25%;')
-                    span= 'Circ. Supply (ZRC)'
-                  th(style='text-align: right; white-space: nowrap; width: 25%;')
-                    span= 'Market Cap'
-                    span= ' ('
-                    span(class='currency_symbol')= '$'
-                    span= ')'
-                each circulatingSupply, ticker in zrcTokensCirculatingSupply
-                  - let tokenProperties = zrcTokenPropertiesListMap[ticker]
-                  - var trStyle = ''
-                  if tokenProperties.ticker === 'XPORT'
-                    - trStyle = 'display: none;'
-
-                  tr(style=trStyle)
-                    td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                      img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
-                    td(style='text-align: left; white-space: nowrap; width: 25%;' )
-                      span= tokenProperties.ticker
-                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(id=tokenProperties.ticker+'_circulating_supply_zrc')= '0'
-                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(id=tokenProperties.ticker+'_circulating_supply_fiat')= '0'
-
-      div(class='col-lg-6' style='padding: 0;')
-
-        div(class='box-public')
-          div(id='total_supply_content_header_container' class='card-header' data-toggle='collapse' href='#total_supply_content_container')
-            a(id='total_supply_content_header_title' class='card-title font-weight-bold')= 'Total Supply'
-          div(id='total_supply_content_container' class='card-body collapse show')
-            table(class='table table-sm table-borderless' width='100%')
-              tbody
-                tr
-                  th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Token Symbol'
-                  th(style='text-align: right; white-space: nowrap; width: 25%;')
-                    span= 'Total Supply (ZRC)'
-                  th(style='text-align: right; white-space: nowrap; width: 25%;')
-                    span= 'Total Supply'
-                    span= ' ('
-                    span(class='currency_symbol')= '$'
-                    span= ')'
-
-                each circulatingSupply, ticker in zrcTokensCirculatingSupply
-                  - let tokenProperties = zrcTokenPropertiesListMap[ticker]
-                  - var trStyle = ''
-                  if tokenProperties.ticker === 'XPORT'
-                    - trStyle = 'display: none;'
-
-                  tr(style=trStyle)
-                    td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                      img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
-                    td(style='text-align: left; white-space: nowrap; width: 25%;' )
-                      span= tokenProperties.ticker
-                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(id=tokenProperties.ticker+'_total_supply_zrc')= '0'
-                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(id=tokenProperties.ticker+'_total_supply_fiat')= '0'
     
     hr
 
