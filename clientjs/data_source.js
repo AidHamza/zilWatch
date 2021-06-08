@@ -124,25 +124,3 @@ function computeLpEpochInfo(onLpCurrentEpochInfoLoaded) {
         /* errorCallback= */
         function () {});
 }
-
-function compute24hLpTradeVolume(onLpTradeVolumeLoaded) {
-    if (zilswapDex24hTradeVolumeData) {
-        // Use cache if available.
-        onLpTradeVolumeLoaded(zilswapDex24hTradeVolumeData);
-        return;
-    }
-
-    let currentDate = new Date();
-    let currentTimeSeconds = currentDate.getTime() / 1000;
-    let oneDayAgoSeconds = currentTimeSeconds - (60 * 60 * 24);
-
-    queryUrlGetAjax(
-        /* urlToGet= */
-        "https://stats.zilswap.org/volume?from=" + oneDayAgoSeconds.toFixed(0),
-        /* successCallback= */
-        function (data) {
-            onLpTradeVolumeLoaded(data);
-        },
-        /* errorCallback= */
-        function () {});
-}

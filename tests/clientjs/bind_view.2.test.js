@@ -17,64 +17,6 @@ describe('BindView2', function () {
         indexJsdom.assertDefaultStateMainContent();
     });
 
-    describe('#bindViewTotalTradeVolumeZil()', function () {
-
-        beforeEach(function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_total_volume_zil').text(), '0');
-            }
-        });
-
-        it('bind view happy case', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewTotalTradeVolumeZil('1234.4', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_lp_total_volume_zil').text(), '1234.4');
-            }
-        });
-
-        it('bind view random string', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewTotalTradeVolumeZil('asdf', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_lp_total_volume_zil').text(), 'asdf');
-            }
-        });
-    });
-
-    describe('#bindViewTotalTradeVolumeFiat()', function () {
-
-        beforeEach(function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_total_volume_fiat').text(), '0');
-            }
-        });
-
-        it('bind view happy case', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewTotalTradeVolumeFiat('1234.4', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_lp_total_volume_fiat').text(), '1234.4');
-            }
-        });
-
-        it('bind view random string', function () {
-            for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                // Act
-                BindView.bindViewTotalTradeVolumeFiat('asdf', ticker);
-
-                // Assert
-                assert.strictEqual($('#' + ticker + '_lp_total_volume_fiat').text(), 'asdf');
-            }
-        });
-    });
-
     describe('#bindViewZwapRewardLp()', function () {
 
         beforeEach(function () {

@@ -122,16 +122,6 @@ function resetMainContainerContent() {
  * 2 --------------------------------------------------------------------------------
  */
 
-// Exception, no need reset
-function bindViewTotalTradeVolumeZil(totalVolumeZil, ticker) {
-    $('#' + ticker + '_lp_total_volume_zil').text(totalVolumeZil);
-}
-
-// Exception, no need reset
-function bindViewTotalTradeVolumeFiat(totalVolumeFiat, ticker) {
-    $('#' + ticker + '_lp_total_volume_fiat').text(totalVolumeFiat);
-}
-
 function bindViewZwapRewardLp(zwapRewardString, ticker) {
     $('#' + ticker + '_lp_pool_reward_zwap').text(zwapRewardString);
     $('#' + ticker + '_lp_pool_reward_zwap_unit').text('ZWAP');
@@ -345,9 +335,6 @@ if (typeof exports !== 'undefined') {
     exports.resetMainContainerContent = resetMainContainerContent;
 
     // 2
-    exports.bindViewTotalTradeVolumeZil = bindViewTotalTradeVolumeZil;
-    exports.bindViewTotalTradeVolumeFiat = bindViewTotalTradeVolumeFiat;
-
     exports.bindViewZwapRewardLp = bindViewZwapRewardLp;
 
     // 4

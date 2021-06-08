@@ -189,9 +189,6 @@ block content
                       img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
                     td(style='text-align: left; white-space: nowrap; width: 25%;' )
                       span= tokenProperties.ticker + '-ZIL'
-                    //- Just a placeholder
-                    td(style='display: none;' )
-                      span(id=tokenProperties.ticker+'_lp_total_volume_zil')= '0'
                     td(style='text-align: right; white-space: nowrap; width: 25%;' )
                       span(id=tokenProperties.ticker+'_lp_total_volume_fiat')= '0'
                     td(style='text-align: right; white-space: nowrap; width: 25%;' )
@@ -749,4 +746,5 @@ block script
     const stakingBalanceStatus = new StakingBalanceStatus(zrcTokenPropertiesListMap, ssnListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilStakingBalanceData= */ null, /* zilStakingWithdrawalBalanceData= */ null, stakingCarbonStatus);
     const netWorthStatus = new NetWorthStatus(barChartDrawer, coinPriceStatus, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus);
 
+    const zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDex24hTradeVolumeData)
     const uniqueCoinStatus = new UniqueCoinStatus(zrcTokenPropertiesListMap, barChartDrawer, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingCarbonStatus);
