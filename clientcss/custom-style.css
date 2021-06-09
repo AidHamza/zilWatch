@@ -119,12 +119,16 @@ body {
   content: "\f067";
 }
 
+/* Custom drop down select, currenly used for currency. */
+
 .custom-select {
   width: 8rem;
   background: var(--bg-dynamic-4) var(--custom-select-arrow);
   color: var(--text-color);
   border: 1px solid var(--light-alpha-5);
 }
+
+/* Percent change color up or down */
 
 .positive-green {
   color: var(--positive-green);
@@ -133,6 +137,8 @@ body {
 .negative-red {
   color: var(--negative-red);
 }
+
+/* In-page tooltip related CSS */
 
 .tooltip-container {
   border: 0;
@@ -155,8 +161,26 @@ body {
   border-radius: 10px;
 }
 
-.table-background-color {
-  background-color: var(--bg-dynamic-3);
+/* Table related CSS, especially sticky header */
+
+.table-background-color-header {
+  background-color: var(--bg-dynamic-4);
+}
+
+.table-background-color tr:nth-child(even) {
+  background-color: var(--bg-dynamic-4);
+}
+
+.table-background-color tr:nth-child(odd) {
+  background-color: var(--bg-dynamic-2);
+}
+
+.table-background-color tr:nth-child(even) th:first-child {
+  background-color: var(--bg-dynamic-4);
+}
+
+.table-background-color tr:nth-child(odd) th:first-child {
+  background-color: var(--bg-dynamic-2);
 }
 
 .table-sticky-header {

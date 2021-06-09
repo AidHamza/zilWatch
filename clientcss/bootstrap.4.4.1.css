@@ -48,13 +48,13 @@
     --gray-dark-focus: #1d2124;
     --gray-dark-focus-2: #121416;
 
+    --white-990: #fcfcfc;
     --white-980: #fafafa;
-    --white-970: #f7f7f7;
     --white-950: #f2f2f2;
     --white-940: #f0f0f0;
     --white-900: #e6e6e6;
-    --black-850: #22292a;
-    --black-890: #191e1f;
+    --black-860: #202728;
+    --black-880: #1b2122;
     --black-910: #141819;
     --black-930: #101314;
     --black-950: #0b0d0e;
@@ -124,8 +124,8 @@
     --bg-dynamic: var(--white-900);
     --bg-dynamic-1: var(--white-940);
     --bg-dynamic-2: var(--white-950);
-    --bg-dynamic-3: var(--white-970);
-    --bg-dynamic-4: var(--white-980);
+    --bg-dynamic-3: var(--white-980);
+    --bg-dynamic-4: var(--white-990);
     --custom-select-arrow: var(--custom-select-arrow-black);
 
     --text-color: var(--text-primary-black);
@@ -179,8 +179,8 @@
     --bg-dynamic: var(--black-950);
     --bg-dynamic-1: var(--black-930);
     --bg-dynamic-2: var(--black-910);
-    --bg-dynamic-3: var(--black-890);
-    --bg-dynamic-4: var(--black-850);
+    --bg-dynamic-3: var(--black-880);
+    --bg-dynamic-4: var(--black-860);
     --custom-select-arrow: var(--custom-select-arrow-white);
 
     --text-color: var(--text-primary-white);

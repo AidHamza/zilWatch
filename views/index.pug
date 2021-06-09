@@ -38,10 +38,10 @@ block content
           div(id='price_content_header_container' class='card-header' data-toggle='collapse' href='#price_content_container')
             a(id='price_content_header_title' class='card-title font-weight-bold')= 'Token Information'
           div(id='price_content_container' class='card-body collapse show table-sticky-header')
-            table(class='table table-sm' width='100%')
-              thead 
+            table(class='table table-sm table-borderless' width='100%')
+              thead(class='table-background-color-header')
                 tr(class='table-background-color')
-                  th(class='table-background-color' style='text-align: left; white-space: nowrap; width: 10%;' )= 'Token'
+                  th(class='table-background-color-header' style='text-align: left; white-space: nowrap; width: 10%;' )= 'Token'
                   th(style='text-align: right; white-space: nowrap; width: 10%;' )
                     span= 'Price (ZIL)'
                   th(style='text-align: right; white-space: nowrap; width: 10%;' )
@@ -78,10 +78,10 @@ block content
                     span(class='currency_symbol')= '$'
                     span= ')'
                 
-              tbody
+              tbody(class='table-background-color')
                 each coinProperties, key in coinMap 
                   tr
-                    th(scope='row' class='table-background-color' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 10%;')
+                    th(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 10%;')
                       img(height='18' width='18' src=coinProperties.logo_url loading='lazy')
                       span(class='ml-2')= coinProperties.ticker
                     //- th(style='text-align: left; white-space: nowrap; width: 10%;' )
@@ -111,9 +111,10 @@ block content
                   - var trStyle = ''
                   if tokenProperties.ticker === 'XPORT'
                     - trStyle = 'display: none;'
+                    tr(style='display:none')
 
                   tr(style=trStyle)
-                    th(scope='row' class='table-background-color' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 10%;')
+                    th(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 10%;')
                       img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
                       span(class='ml-2')= tokenProperties.ticker
                     //- th(style='text-align: left; white-space: nowrap; width: 10%;' )
@@ -150,7 +151,7 @@ block content
 
               if zilStakingReward
                 table(class='table table-sm table-borderless' width='100%')
-                  tbody
+                  tbody(class='table-background-color-header')
                     tr
                       th(colspan=2 style='text-align: left; white-space: nowrap; width: 25%;' )= 'Token Staking'
                       th(style='text-align: right; white-space: nowrap; width: 25%;')
@@ -159,7 +160,7 @@ block content
                         span= 'Daily %'
                       th(style='text-align: right; white-space: nowrap; width: 25%;')
                         span= 'APR %'
-
+                  tbody
                     tr
                       td(rowspan=2 scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
                         img(height='18' width='18' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
@@ -184,7 +185,7 @@ block content
                         
               if zilswapDexReward
                 table(class='table table-sm table-borderless' width='100%')
-                  tbody
+                  tbody(class='table-background-color-header')
                     tr
                       th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Zilswap LP'
                       th(style='text-align: right; white-space: nowrap; width: 25%;')
@@ -194,6 +195,7 @@ block content
                       th(style='text-align: right; white-space: nowrap; width: 20%;')
                         span= 'APR %'
 
+                  tbody(class='table-background-color')
                     each circulatingSupply, ticker in zrcTokensCirculatingSupply
                       if zilswapDexReward[ticker] && ticker !== 'XPORT'
                         - let tokenProperties = zrcTokenPropertiesListMap[ticker]
