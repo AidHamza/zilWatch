@@ -551,6 +551,14 @@ block content
                         span(id=tokenProperties.ticker+'_lp_pool_share_percent')= 'Loading...'
                         span(class='ml-1')= '%'
                       td(style='text-align: right; white-space: nowrap;' )
+
+                    tr
+                      td(class='text-secondary' style='text-align: left; white-space: nowrap; width: 45%;' )
+                        span= 'Est. 0.3% fee earned (24h)'
+                      td(class='text-secondary'  style='text-align: right; white-space: nowrap; width: 55%;' )
+                        span(id=tokenProperties.ticker+'_lp_pool_fee_reward_zil')= 'Loading...'
+                        span(class='ml-1')= 'ZIL'
+                      td(style='text-align: right; white-space: nowrap;' )
       hr
 
     div(id='staking_container' style='display: none')
@@ -700,3 +708,4 @@ block script
 
     const zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDex24hTradeVolumeData)
     const uniqueCoinStatus = new UniqueCoinStatus(zrcTokenPropertiesListMap, barChartDrawer, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingCarbonStatus);
+    const zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus(zrcTokenPropertiesListMap, zilswapDexStatus, zilswapTradeVolumeStatus);

@@ -36,7 +36,7 @@ class ZilswapTradeVolumeStatus {
         }
 
         for (let ticker in this.zrcTokenPropertiesListMap_) {
-            let contractAddress = zrcTokenPropertiesListMap[ticker].address;
+            let contractAddress = this.zrcTokenPropertiesListMap_[ticker].address;
             let volumeList = poolToVolumeMap[contractAddress];
             if (!volumeList) {
                 continue;

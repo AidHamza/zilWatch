@@ -137,6 +137,7 @@ function refreshMainContentData(account) {
     zilswapDexStatus.resetPersonal();
     netWorthStatus.reset();
     uniqueCoinStatus.reset();
+    zilswapLpFeeRewardStatus.reset();
 
     // (4) show main screen
     bindViewMainContainer(ZilpayStatus.connected);
@@ -171,7 +172,9 @@ function computeZilswapTradeVolumeStatus() {
         /* beforeRpcCallback= */
         function() {},
         /* onSuccessCallback= */
-        function() {},
+        function() {
+            zilswapLpFeeRewardStatus.onZilswapTradeVolumeStatusChange();
+        },
         /* onErrorCallback= */
         function() {});
 }
@@ -181,7 +184,9 @@ function refreshZilswapTradeVolumeStatus() {
         /* beforeRpcCallback= */
         function() {},
         /* onSuccessCallback= */
-        function() {},
+        function() {
+            zilswapLpFeeRewardStatus.onZilswapTradeVolumeStatusChange();
+        },
         /* onErrorCallback= */
         function() {});
 }
@@ -249,6 +254,7 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
             stakingBalanceStatus.onZilswapDexStatusChange();
             netWorthStatus.onZilswapDexStatusChange();
             uniqueCoinStatus.onZilswapDexStatusChange();
+            zilswapLpFeeRewardStatus.onZilswapDexStatusChange();
 
             decrementShowSpinnerLpBalance();
         },
@@ -274,6 +280,7 @@ function refreshZilswapDexPersonalStatus() {
             stakingBalanceStatus.onZilswapDexStatusChange();
             netWorthStatus.onZilswapDexStatusChange();
             uniqueCoinStatus.onZilswapDexStatusChange();
+            zilswapLpFeeRewardStatus.onZilswapDexStatusChange();
 
             decrementShowSpinnerLpBalance();
         },
