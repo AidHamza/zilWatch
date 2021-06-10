@@ -36,6 +36,7 @@ let expectedZrcPriceMap = {
     'GOD': ['0.000494', '0.0005', '0.00006', '750'],
     'SHRK': ['1.768', '1.77', '0.21', '2,344'],
     'XCAD': ['24.85', '24.85', '2.94', '2,907,768'],
+    'FLAT': ['5.219', '5.22', '0.62', '12,537'],
 }
 
 // The array represents: [priceZil24h, publicPriceInZil24h, publicPriceInZil24hPercentChange, publicPriceFiat24hAgo, publicPriceFiat24hAgoPercentChange]
@@ -63,6 +64,7 @@ let expectedZrcPrice24hAgoMap = {
     'GOD': ['0.001433', '0.001', '-65.6', '0.0002', '-61.3'],
     'SHRK': ['2.357', '2.36', '-25.0', '0.25', '-15.7'],
     'XCAD': ['', '', '', '', ''],
+    'FLAT': ['', '', '', '', ''],
 }
 
 let expectedZrcPriceIdrMap = {
@@ -88,6 +90,7 @@ let expectedZrcPriceIdrMap = {
     'GOD': ['0.000494', '0.0005', '1', '10,224,723'],
     'SHRK': ['1.768', '1.77', '2,850', '31,967,195'],
     'XCAD': ['24.85', '24.85', '40,061', '39,659,208,291'],
+    'FLAT': ['5.219', '5.22', '8,413', '170,988,500'],
 }
 
 let expectedZrcPriceIdr24hAgoMap = {
@@ -113,6 +116,7 @@ let expectedZrcPriceIdr24hAgoMap = {
     'GOD': ['0.001433', '0.001', '-65.6', '2', '-62.9'],
     'SHRK': ['2.357', '2.36', '-25.0', '3,531', '-19.3'],
     'XCAD': ['', '', '', '', ''],
+    'FLAT': ['', '', '', '', ''],
 }
 
 /* ============ Personal =========== */
@@ -154,6 +158,7 @@ let expectedPersonalBalanceMap = {
     'GOD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'SHRK': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'XCAD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'FLAT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 let expectedPersonalBalanceWith24hAgoMap = {
@@ -179,6 +184,7 @@ let expectedPersonalBalanceWith24hAgoMap = {
     'GOD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'SHRK': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'XCAD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'FLAT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 let expectedPersonalBalanceWith24hAgoIdrMap = {
@@ -204,6 +210,7 @@ let expectedPersonalBalanceWith24hAgoIdrMap = {
     'GOD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'SHRK': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'XCAD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'FLAT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 describe('ZilswapDexStatus', function () {
@@ -414,6 +421,7 @@ describe('ZilswapDexStatus', function () {
             'AXT': ['238,682', '20,401', '311,986', '26,667'],
             'SHRK': ['32,962', '6,887', '91,230,460', '19,061,312'],
             'XCAD': ['1,500,000', '4,405,877', '1,500,000', '4,405,877'],
+            'FLAT': ['0', '0', '0', '0'],
         };
 
         it('circulating and total supply is set and shown in view ', function () {

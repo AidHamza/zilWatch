@@ -362,6 +362,14 @@ const zrcTokenPropertiesListMap = {
       "logo_url": "https://meta.viewblock.io/ZIL.zil1h63h5rlg7avatnlzhfnfzwn8vfspwkapzdy2aw/logo",
       "decimals": 6,
   },
+  'FLAT': {
+    "ticker": "FLAT",
+    "name": "Flat Lazy Ass Token",
+    "address": "zil133vrh59edllqz7guq7htfthjmj7gct5jxqqtl7",
+    "address_base16": "0x8C583bD0B96Ffe01791C07Aeb4AeF2DcbC8c2E92",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil133vrh59edllqz7guq7htfthjmj7gct5jxqqtl7/logo",
+    "decimals": 5,
+  },
 }
 
 // IF changed, also change in zilWatch-backend/core/constants.py
@@ -387,6 +395,7 @@ const emptyZrcTokensSupply = {
   'AXT': '0',
   'SHRK': '0',
   'XCAD': '0',
+  'FLAT': '0',
 }
 
 module.exports = {

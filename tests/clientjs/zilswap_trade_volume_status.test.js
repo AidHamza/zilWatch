@@ -54,6 +54,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             BOLT: 100.1054591818,
             ZYRO: 87868.41634263138,
             ZLF: 286139.65610147006,
+            FLAT: 372.538707565959,
             GARY: 183845.17296110862,
             RECAP: 18316.783018474987,
             AXT: 1140.020820967504,
@@ -82,6 +83,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             'AXT': '135',
             'SHRK': '0',
             'XCAD': '378,855',
+            'FLAT': '44',
         };
 
         let expectedTotalVolumeFiatIdrMap = {
@@ -106,6 +108,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             'AXT': '1,837,714',
             'SHRK': '0',
             'XCAD': '5,167,223,900',
+            'FLAT': '600,532',
         };
 
         it('set proper object. computed and binded to view.', function () {
