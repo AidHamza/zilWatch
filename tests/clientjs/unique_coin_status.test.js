@@ -98,7 +98,8 @@ describe('NetWorthStatus', function () {
                 [ 'AXT', 0 ],
                 [ 'SHRK', 0 ],
                 [ 'XCAD', 0 ],
-                [ 'FLAT', 0 ]
+                [ 'FLAT', 0 ],
+                [ 'RWD', 0 ]
               ];
 
             assert.deepStrictEqual(uniqueCoinStatus.sortedUniqueCoinsBalanceInZil_, expectedBeforeCompute);
@@ -140,7 +141,8 @@ describe('NetWorthStatus', function () {
                 [ 'AXT', 0 ],
                 [ 'SHRK', 0 ],
                 [ 'XCAD', 0 ],
-                [ 'FLAT', 0 ]
+                [ 'FLAT', 0 ],
+                [ 'RWD', 0 ]
               ];
               
             assert.deepStrictEqual(uniqueCoinStatus.sortedUniqueCoinsBalanceInZil_, expectedAfterCompute);

@@ -84,6 +84,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             'SHRK': '0',
             'XCAD': '378,855',
             'FLAT': '44',
+            'RWD': '0',
         };
 
         let expectedTotalVolumeFiatIdrMap = {
@@ -109,6 +110,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             'SHRK': '0',
             'XCAD': '5,167,223,900',
             'FLAT': '600,532',
+            'RWD': '0',
         };
 
         it('set proper object. computed and binded to view.', function () {

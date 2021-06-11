@@ -355,12 +355,12 @@ const zrcTokenPropertiesListMap = {
     "decimals": 6,
   },
   'XCAD': {
-      "ticker": "XCAD",
-      "name": "XCAD Network",
-      "address": "zil1h63h5rlg7avatnlzhfnfzwn8vfspwkapzdy2aw",
-      "address_base16": "0xBeA37A0Fe8F759D5CFE2Ba66913a676260175Ba1",
-      "logo_url": "https://meta.viewblock.io/ZIL.zil1h63h5rlg7avatnlzhfnfzwn8vfspwkapzdy2aw/logo",
-      "decimals": 6,
+    "ticker": "XCAD",
+    "name": "XCAD Network",
+    "address": "zil1h63h5rlg7avatnlzhfnfzwn8vfspwkapzdy2aw",
+    "address_base16": "0xBeA37A0Fe8F759D5CFE2Ba66913a676260175Ba1",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1h63h5rlg7avatnlzhfnfzwn8vfspwkapzdy2aw/logo",
+    "decimals": 6,
   },
   'FLAT': {
     "ticker": "FLAT",
@@ -369,6 +369,14 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x8C583bD0B96Ffe01791C07Aeb4AeF2DcbC8c2E92",
     "logo_url": "https://meta.viewblock.io/ZIL.zil133vrh59edllqz7guq7htfthjmj7gct5jxqqtl7/logo",
     "decimals": 5,
+  },
+  'RWD': {
+    "ticker": "RWD",
+    "name": "Reward",
+    "address": "zil1dccsly0lwkkxhxxazldcnph05v2dz8maz46g05",
+    "address_base16": "0x6e310F91ff75aC6b98DD17db8986EFA314d11f7d",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1dccsly0lwkkxhxxazldcnph05v2dz8maz46g05/logo",
+    "decimals": 4,
   },
 }
 
@@ -396,6 +404,7 @@ const emptyZrcTokensSupply = {
   'SHRK': '0',
   'XCAD': '0',
   'FLAT': '0',
+  'RWD': '0',
 }
 
 module.exports = {
