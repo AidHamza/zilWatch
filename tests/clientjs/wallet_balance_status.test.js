@@ -230,7 +230,7 @@ describe('WalletBalanceStatus', function () {
             }
         });
 
-        it('compute, wallet set, bindView(), resetView(), viwe reset', function () {
+        it('compute, wallet set, bindView(), resetView(), view reset', function () {
             walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletAddressBase16, zilBalanceData, zrcBalanceData);
             
             walletBalanceStatus.computeTokenBalanceMap('ZIL');

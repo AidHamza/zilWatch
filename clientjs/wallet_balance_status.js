@@ -199,6 +199,7 @@ class WalletBalanceStatus {
                 function (data) {
                     self.zrcBalanceDataMap_[ticker] = data;
                     self.computeTokenBalanceMap(ticker);
+                    self.resetViewSingleTicker(ticker);
                     self.bindViewIfDataExist(ticker);
                     self.bindViewDataFiat(ticker);
                     onSuccessCallback();
@@ -359,17 +360,21 @@ class WalletBalanceStatus {
         $('#zil_balance_fiat_percent_change_24h').text('');
 
         for (let ticker in this.zrcTokenPropertiesListMap_) {
-            $('#' + ticker + '_container').hide();
-
-            $('#' + ticker + '_balance').text('Loading...');
-            $('#' + ticker + '_balance_zil').text('Loading...');
-            $('#' + ticker + '_balance_zil_24h_ago').text('');
-            $('#' + ticker + '_balance_zil_percent_change_24h').text('');
-
-            $('#' + ticker + '_balance_fiat').text('Loading...');
-            $('#' + ticker + '_balance_fiat_24h_ago').text('');
-            $('#' + ticker + '_balance_fiat_percent_change_24h').text('');
+            this.resetViewSingleTicker(ticker);
         }
+    }
+
+    resetViewSingleTicker(ticker) {
+        $('#' + ticker + '_container').hide();
+
+        $('#' + ticker + '_balance').text('Loading...');
+        $('#' + ticker + '_balance_zil').text('Loading...');
+        $('#' + ticker + '_balance_zil_24h_ago').text('');
+        $('#' + ticker + '_balance_zil_percent_change_24h').text('');
+
+        $('#' + ticker + '_balance_fiat').text('Loading...');
+        $('#' + ticker + '_balance_fiat_24h_ago').text('');
+        $('#' + ticker + '_balance_fiat_percent_change_24h').text('');
     }
 }
 
