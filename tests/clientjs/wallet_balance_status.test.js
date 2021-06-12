@@ -112,6 +112,9 @@ describe('WalletBalanceStatus', function () {
             'XCAD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
             'FLAT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
             'RWD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'DogZilliqa': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'MESSI': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'MAMBO': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
         }
 
         let walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
@@ -304,6 +307,9 @@ describe('WalletBalanceStatus', function () {
             'XCAD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
             'FLAT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
             'RWD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'DogZilliqa': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'MESSI': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'MAMBO': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
         }
 
         var expectedIdrDataMap = {
@@ -332,6 +338,9 @@ describe('WalletBalanceStatus', function () {
             'XCAD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
             'FLAT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
             'RWD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'DogZilliqa': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'MESSI': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'MAMBO': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
         }
 
         var walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();

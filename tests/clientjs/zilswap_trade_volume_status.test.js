@@ -54,11 +54,14 @@ describe('ZilswapTradeVolumeStatus', function () {
             BOLT: 100.1054591818,
             ZYRO: 87868.41634263138,
             ZLF: 286139.65610147006,
-            FLAT: 372.538707565959,
             GARY: 183845.17296110862,
             RECAP: 18316.783018474987,
             AXT: 1140.020820967504,
-            XCAD: 3205473.8830753136
+            XCAD: 3205473.8830753136,
+            FLAT: 372.538707565959,
+            DogZilliqa: 737.56680815808,
+            MESSI: 19432.08235202948,
+            MAMBO: 132555.35877374487,
         }
 
         let expectedTotalVolumeFiatUsdMap = {
@@ -85,6 +88,9 @@ describe('ZilswapTradeVolumeStatus', function () {
             'XCAD': '378,855',
             'FLAT': '44',
             'RWD': '0',
+            'DogZilliqa': '87',
+            'MESSI': '2,297',
+            'MAMBO': '15,667',
         };
 
         let expectedTotalVolumeFiatIdrMap = {
@@ -111,6 +117,9 @@ describe('ZilswapTradeVolumeStatus', function () {
             'XCAD': '5,167,223,900',
             'FLAT': '600,532',
             'RWD': '0',
+            'DogZilliqa': '1,188,958',
+            'MESSI': '31,324,517',
+            'MAMBO': '213,679,238',
         };
 
         it('set proper object. computed and binded to view.', function () {

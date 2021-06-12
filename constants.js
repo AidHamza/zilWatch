@@ -378,6 +378,30 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil1dccsly0lwkkxhxxazldcnph05v2dz8maz46g05/logo",
     "decimals": 4,
   },
+  'DogZilliqa': {
+      "ticker": "DogZilliqa",
+      "name": "DogZilliqa",
+      "address": "zil17hdu9r4h49d7gyh8s7zkeh3yatqft62uvsu8ep",
+      "address_base16": "0xf5DbC28eb7A95bE412E787856cDe24eac095E95c",
+      "logo_url": "https://meta.viewblock.io/ZIL.zil17hdu9r4h49d7gyh8s7zkeh3yatqft62uvsu8ep/logo",
+      "decimals": 4,
+  },
+  'MESSI': {
+    "ticker": "MESSI",
+    "name": "Messi Token",
+    "address": "zil1qzwxvp3wz3q5ewzg3afesut9pqfax0sjdyna42",
+    "address_base16": "0x009C66062e14414Cb8488f539871650813D33E12",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1qzwxvp3wz3q5ewzg3afesut9pqfax0sjdyna42/logo",
+    "decimals": 2,
+  },
+  'MAMBO': {
+      "ticker": "MAMBO",
+      "name": "Mambo",
+      "address": "zil1ykcdhtgyercmv7ndfxt00wm9xzpq4k7hjmfm4e",
+      "address_base16": "0x25B0DBAd04c8f1B67A6d4996f7BB6530820ADBd7",
+      "logo_url": "https://meta.viewblock.io/ZIL.zil1ykcdhtgyercmv7ndfxt00wm9xzpq4k7hjmfm4e/logo",
+      "decimals": 12,
+  },
 }
 
 // IF changed, also change in zilWatch-backend/core/constants.py
@@ -405,6 +429,9 @@ const emptyZrcTokensSupply = {
   'XCAD': '0',
   'FLAT': '0',
   'RWD': '0',
+  'DogZilliqa': '0',
+  'MESSI': '0',
+  'MAMBO': '0',
 }
 
 module.exports = {

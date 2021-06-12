@@ -38,6 +38,9 @@ let expectedZrcPriceMap = {
     'XCAD': ['24.85', '24.85', '2.94', '2,907,768'],
     'FLAT': ['5.219', '5.22', '0.62', '12,537'],
     'RWD': ['0', '0', '0', 'Loading...'],
+    'DogZilliqa': ['1,436', '1,435.73', '169.69', '5,659'],
+    'MESSI': ['0', '0', '0', 'Loading...'],
+    'MAMBO': ['0.01177', '0.01', '0.001', '10,299'],
 }
 
 // The array represents: [priceZil24h, publicPriceInZil24h, publicPriceInZil24hPercentChange, publicPriceFiat24hAgo, publicPriceFiat24hAgoPercentChange]
@@ -67,6 +70,9 @@ let expectedZrcPrice24hAgoMap = {
     'XCAD': ['', '', '', '', ''],
     'FLAT': ['', '', '', '', ''],
     'RWD': ['', '', '', '', ''],
+    'DogZilliqa': ['', '', '', '', ''],
+    'MESSI': ['', '', '', '', ''],
+    'MAMBO': ['', '', '', '', ''],
 }
 
 let expectedZrcPriceIdrMap = {
@@ -94,6 +100,9 @@ let expectedZrcPriceIdrMap = {
     'XCAD': ['24.85', '24.85', '40,061', '39,659,208,291'],
     'FLAT': ['5.219', '5.22', '8,413', '170,988,500'],
     'RWD': ['0', '0', '0', 'Loading...'],
+    'DogZilliqa': ['1,436', '1,435.73', '2,314,397', '77,188,853'],
+    'MESSI': ['0', '0', '0', 'Loading...'],
+    'MAMBO': ['0.01177', '0.01', '19', '140,462,769'],
 }
 
 let expectedZrcPriceIdr24hAgoMap = {
@@ -121,6 +130,9 @@ let expectedZrcPriceIdr24hAgoMap = {
     'XCAD': ['', '', '', '', ''],
     'FLAT': ['', '', '', '', ''],
     'RWD': ['', '', '', '', ''],
+    'DogZilliqa': ['', '', '', '', ''],
+    'MESSI': ['', '', '', '', ''],
+    'MAMBO': ['', '', '', '', ''],
 }
 
 /* ============ Personal =========== */
@@ -164,6 +176,9 @@ let expectedPersonalBalanceMap = {
     'XCAD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'FLAT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'RWD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'DogZilliqa': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'MESSI': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'MAMBO': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 let expectedPersonalBalanceWith24hAgoMap = {
@@ -191,6 +206,9 @@ let expectedPersonalBalanceWith24hAgoMap = {
     'XCAD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'FLAT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'RWD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'DogZilliqa': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'MESSI': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'MAMBO': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 let expectedPersonalBalanceWith24hAgoIdrMap = {
@@ -218,6 +236,9 @@ let expectedPersonalBalanceWith24hAgoIdrMap = {
     'XCAD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'FLAT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'RWD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'DogZilliqa': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'MESSI': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'MAMBO': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 describe('ZilswapDexStatus', function () {
@@ -430,6 +451,9 @@ describe('ZilswapDexStatus', function () {
             'XCAD': ['1,500,000', '4,405,877', '1,500,000', '4,405,877'],
             'FLAT': ['0', '0', '0', '0'],
             'RWD': ['0', '0', '0', '0'],
+            'DogZilliqa': ['0', '0', '0', '0'],
+            'MESSI': ['0', '0', '0', '0'],
+            'MAMBO': ['0', '0', '0', '0'],
         };
 
         it('circulating and total supply is set and shown in view ', function () {
