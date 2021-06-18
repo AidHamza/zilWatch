@@ -91,6 +91,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             'DogZilliqa': '87',
             'MESSI': '2,297',
             'MAMBO': '15,667',
+            'STREAM': '0',
         };
 
         let expectedTotalVolumeFiatIdrMap = {
@@ -120,6 +121,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             'DogZilliqa': '1,188,958',
             'MESSI': '31,324,517',
             'MAMBO': '213,679,238',
+            'STREAM': '0',
         };
 
         it('set proper object. computed and binded to view.', function () {

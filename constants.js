@@ -379,12 +379,12 @@ const zrcTokenPropertiesListMap = {
     "decimals": 4,
   },
   'DogZilliqa': {
-      "ticker": "DogZilliqa",
-      "name": "DogZilliqa",
-      "address": "zil17hdu9r4h49d7gyh8s7zkeh3yatqft62uvsu8ep",
-      "address_base16": "0xf5DbC28eb7A95bE412E787856cDe24eac095E95c",
-      "logo_url": "https://meta.viewblock.io/ZIL.zil17hdu9r4h49d7gyh8s7zkeh3yatqft62uvsu8ep/logo",
-      "decimals": 4,
+    "ticker": "DogZilliqa",
+    "name": "DogZilliqa",
+    "address": "zil17hdu9r4h49d7gyh8s7zkeh3yatqft62uvsu8ep",
+    "address_base16": "0xf5DbC28eb7A95bE412E787856cDe24eac095E95c",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil17hdu9r4h49d7gyh8s7zkeh3yatqft62uvsu8ep/logo",
+    "decimals": 4,
   },
   'MESSI': {
     "ticker": "MESSI",
@@ -395,12 +395,20 @@ const zrcTokenPropertiesListMap = {
     "decimals": 2,
   },
   'MAMBO': {
-      "ticker": "MAMBO",
-      "name": "Mambo",
-      "address": "zil1ykcdhtgyercmv7ndfxt00wm9xzpq4k7hjmfm4e",
-      "address_base16": "0x25B0DBAd04c8f1B67A6d4996f7BB6530820ADBd7",
-      "logo_url": "https://meta.viewblock.io/ZIL.zil1ykcdhtgyercmv7ndfxt00wm9xzpq4k7hjmfm4e/logo",
-      "decimals": 12,
+    "ticker": "MAMBO",
+    "name": "Mambo",
+    "address": "zil1ykcdhtgyercmv7ndfxt00wm9xzpq4k7hjmfm4e",
+    "address_base16": "0x25B0DBAd04c8f1B67A6d4996f7BB6530820ADBd7",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1ykcdhtgyercmv7ndfxt00wm9xzpq4k7hjmfm4e/logo",
+    "decimals": 12,
+  },
+  'STREAM': {
+    "ticker": "STREAM",
+    "name": "ZilStream",
+    "address": "zil1504065pp76uuxm7s9m2c4gwszhez8pu3mp6r8c",
+    "address_base16": "0xa3eAFd5021F6B9c36fD02Ed58aa1d015F2238791",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1504065pp76uuxm7s9m2c4gwszhez8pu3mp6r8c/logo",
+    "decimals": 8,
   },
 }
 
@@ -432,6 +440,7 @@ const emptyZrcTokensSupply = {
   'DogZilliqa': '0',
   'MESSI': '0',
   'MAMBO': '0',
+  'STREAM': '0',
 }
 
 module.exports = {
