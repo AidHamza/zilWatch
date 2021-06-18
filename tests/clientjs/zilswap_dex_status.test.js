@@ -37,11 +37,11 @@ let expectedZrcPriceMap = {
     'SHRK': ['1.768', '1.77', '0.21', '2,344'],
     'XCAD': ['24.85', '24.85', '2.94', '2,907,768'],
     'FLAT': ['5.219', '5.22', '0.62', '12,537'],
-    'RWD': ['0', '0', '0', 'Loading...'],
+    'RWD': ['0', '0', '0', '0'],
     'DogZilliqa': ['1,436', '1,435.73', '169.69', '5,659'],
-    'MESSI': ['0', '0', '0', 'Loading...'],
+    'MESSI': ['0', '0', '0', '0'],
     'MAMBO': ['0.01177', '0.01', '0.001', '10,299'],
-    'STREAM': ['0', '0', '0', 'Loading...'],
+    'STREAM': ['0', '0', '0', '0'],
 }
 
 // The array represents: [priceZil24h, publicPriceInZil24h, publicPriceInZil24hPercentChange, publicPriceFiat24hAgo, publicPriceFiat24hAgoPercentChange]
@@ -101,11 +101,11 @@ let expectedZrcPriceIdrMap = {
     'SHRK': ['1.768', '1.77', '2,850', '31,967,195'],
     'XCAD': ['24.85', '24.85', '40,061', '39,659,208,291'],
     'FLAT': ['5.219', '5.22', '8,413', '170,988,500'],
-    'RWD': ['0', '0', '0', 'Loading...'],
+    'RWD': ['0', '0', '0', '0'],
     'DogZilliqa': ['1,436', '1,435.73', '2,314,397', '77,188,853'],
-    'MESSI': ['0', '0', '0', 'Loading...'],
+    'MESSI': ['0', '0', '0', '0'],
     'MAMBO': ['0.01177', '0.01', '19', '140,462,769'],
-    'STREAM': ['0', '0', '0', 'Loading...'],
+    'STREAM': ['0', '0', '0', '0'],
 }
 
 let expectedZrcPriceIdr24hAgoMap = {
@@ -1050,7 +1050,7 @@ describe('ZilswapDexStatus', function () {
 
             beforeEach(function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                    assert.strictEqual($('#' + ticker + '_lp_total_pool_fiat').text(), 'Loading...');
+                    assert.strictEqual($('#' + ticker + '_lp_total_pool_fiat').text(), '0');
                 }
             });
 

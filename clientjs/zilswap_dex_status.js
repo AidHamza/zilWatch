@@ -396,6 +396,7 @@ class ZilswapDexStatus {
             if (!zilswapSinglePairPublicStatus) {
                 this.bindViewZrcTokenPriceInZil("0", "0", zrcTokenProperties.ticker);
                 this.bindViewZrcTokenPriceInFiat("0", zrcTokenProperties.ticker);
+                this.bindViewZrcTokenLpTotalPoolBalanceFiat("0", zrcTokenProperties.ticker);
                 continue;
             }
             let zilswapSinglePairPublicStatus24hAgo = this.getZilswapPairPublicStatus24hAgo(key);
