@@ -17,25 +17,23 @@ document.addEventListener("DOMContentLoaded", () => {
     let currencySymbol = currencyMap[currentCurrencyCode];
     $("#currency_selector").val(currentCurrencyCode);
     $(".currency_symbol").text(currencySymbol);
-    
+
     // Public information
     computeCoinPriceStatus(currentCurrencyCode);
     computeZilswapDexPublicStatus();
     computeZilswapTradeVolumeStatus();
 
-    // Loop forever to refresh coin price and zilswap dex status (for zrc prices)
+    // Loop forever to refresh coin price in fiat
     clearInterval(activeIntervalId);
-    activeIntervalId = setInterval(function() {
+    activeIntervalId = setInterval(function () {
         refreshCoinPriceStatus();
-        refreshZilswapDexPublicStatus();
-        refreshZilswapTradeVolumeStatus();
     }, REFRESH_INTERVAL_MS);
 
     // This is unrelated to balance and the APIs used for personalized dashboard
     // So don't need to reload.
     computeLpEpochInfo(onLpCurrentEpochInfoLoaded);
 
-    $(window).resize(function(){
+    $(window).resize(function () {
         drawAllBarCharts();
     });
 });
@@ -80,7 +78,7 @@ $("#wallet_refresh").click(function () {
     window.location.reload();
 });
 
-$("#toggle_theme_btn").click(function() {
+$("#toggle_theme_btn").click(function () {
     let isCurrentDark = $("html").hasClass("dark-mode");
     let theme;
     if (isCurrentDark) {
@@ -95,7 +93,7 @@ $("#toggle_theme_btn").click(function() {
     drawAllBarCharts();
 });
 
-$( "#currency_selector" ).change(function() {
+$("#currency_selector").change(function () {
     let currencyCode = $(this).val();
     computeCoinPriceStatus(currencyCode);
     localStorage.setItem("currency", currencyCode);
@@ -155,40 +153,18 @@ function refreshMainContentData(account) {
     // (8) Get Potential LP reward next epoch and past epoch, async
     computeTotalLpRewardNextEpoch(walletAddressBech32, onLpRewardNextEpochLoaded);
     computeTotalLpRewardPastEpoch(walletAddressBech32, onLpRewardPastEpochLoaded);
-
-    // Loop forever to refresh all balances and coin status
-    clearInterval(activeIntervalId);
-    activeIntervalId = setInterval(function() {
-        refreshCoinPriceStatus();
-        refreshZilswapDexPersonalStatus();
-        refreshWalletBalanceStatus();
-        refreshStakingBalanceStatus();
-        refreshZilswapTradeVolumeStatus();
-    }, REFRESH_INTERVAL_MS);
 }
 
 function computeZilswapTradeVolumeStatus() {
     zilswapTradeVolumeStatus.computeDataRpcIfDataNoExist(
         /* beforeRpcCallback= */
-        function() {},
+        function () {},
         /* onSuccessCallback= */
-        function() {
+        function () {
             zilswapLpFeeRewardStatus.onZilswapTradeVolumeStatusChange();
         },
         /* onErrorCallback= */
-        function() {});
-}
-
-function refreshZilswapTradeVolumeStatus() {
-    zilswapTradeVolumeStatus.computeDataRpc(
-        /* beforeRpcCallback= */
-        function() {},
-        /* onSuccessCallback= */
-        function() {
-            zilswapLpFeeRewardStatus.onZilswapTradeVolumeStatusChange();
-        },
-        /* onErrorCallback= */
-        function() {});
+        function () {});
 }
 
 function computeStakingBalanceStatus(walletAddressBase16) {
@@ -196,60 +172,24 @@ function computeStakingBalanceStatus(walletAddressBase16) {
     refreshStakingBalanceStatus();
 }
 
-function refreshStakingBalanceStatus() {
-    stakingBalanceStatus.computeDataRpc(
-        /* beforeRpcCallback= */
-        function() {
-            incrementShowSpinnerStakingBalance();
-        },
-        /* onSuccessCallback= */
-        function() {
-            netWorthStatus.onStakingBalanceStatusChange();
-            uniqueCoinStatus.onStakingBalanceStatusChange();
-            decrementShowSpinnerStakingBalance();
-        },
-        /* onErrorCallback= */
-        function() {
-            decrementShowSpinnerStakingBalance();
-        });
-}
-
 function computeWalletBalanceStatus(walletAddressBase16) {
     walletBalanceStatus.setWalletAddressBase16(walletAddressBase16);
     refreshWalletBalanceStatus();
-}
-
-function refreshWalletBalanceStatus() {
-    walletBalanceStatus.computeDataRpc(
-        /* beforeRpcCallback= */
-        function() {
-            incrementShowSpinnerWalletBalance();
-        },
-        /* onSuccessCallback= */
-        function() {
-            netWorthStatus.onWalletBalanceStatusChange();
-            uniqueCoinStatus.onWalletBalanceStatusChange();
-            decrementShowSpinnerWalletBalance();
-        },
-        /* onErrorCallback= */
-        function() {
-            decrementShowSpinnerWalletBalance();
-        });
 }
 
 function computeZilswapDexPersonalStatus(walletAddressBase16) {
     zilswapDexStatus.setWalletAddressBase16(walletAddressBase16);
     zilswapDexStatus.computePersonalPublicDataRpcIfDataNoExist(
         /* beforeRpcCallback= */
-        function() {
+        function () {
             incrementShowSpinnerLpBalance();
         },
         /* onSuccessCallback= */
-        function() {
+        function () {
             refreshTotalLpRewardFiat();
             refreshPrevTotalLpRewardFiat();
             refreshPastTotalLpRewardFiat();
-            
+
             walletBalanceStatus.onZilswapDexStatusChange();
             stakingBalanceStatus.onZilswapDexStatusChange();
             netWorthStatus.onZilswapDexStatusChange();
@@ -259,33 +199,7 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
             decrementShowSpinnerLpBalance();
         },
         /* onErrorCallback= */
-        function() {
-            decrementShowSpinnerLpBalance();
-        });
-}
-
-function refreshZilswapDexPersonalStatus() {
-    zilswapDexStatus.computePersonalPublicDataRpc(
-        /* beforeRpcCallback= */
-        function() {
-            incrementShowSpinnerLpBalance();
-        },
-        /* onSuccessCallback= */
-        function() {
-            refreshTotalLpRewardFiat();
-            refreshPrevTotalLpRewardFiat();
-            refreshPastTotalLpRewardFiat();
-            
-            walletBalanceStatus.onZilswapDexStatusChange();
-            stakingBalanceStatus.onZilswapDexStatusChange();
-            netWorthStatus.onZilswapDexStatusChange();
-            uniqueCoinStatus.onZilswapDexStatusChange();
-            zilswapLpFeeRewardStatus.onZilswapDexStatusChange();
-
-            decrementShowSpinnerLpBalance();
-        },
-        /* onErrorCallback= */
-        function() {
+        function () {
             decrementShowSpinnerLpBalance();
         });
 }
@@ -293,10 +207,9 @@ function refreshZilswapDexPersonalStatus() {
 function computeZilswapDexPublicStatus() {
     zilswapDexStatus.computePublicDataRpcIfDataNoExist(
         /* beforeRpcCallback= */
-        function() {
-        },
+        function () {},
         /* onSuccessCallback= */
-        function() {
+        function () {
             refreshTotalLpRewardFiat();
             refreshPrevTotalLpRewardFiat();
             refreshPastTotalLpRewardFiat();
@@ -307,39 +220,16 @@ function computeZilswapDexPublicStatus() {
             uniqueCoinStatus.onZilswapDexStatusChange();
         },
         /* onErrorCallback= */
-        function() {
-        });
-}
-
-function refreshZilswapDexPublicStatus() {
-    zilswapDexStatus.computePublicDataRpc(
-        /* beforeRpcCallback= */
-        function() {
-        },
-        /* onSuccessCallback= */
-        function() {
-            refreshTotalLpRewardFiat();
-            refreshPrevTotalLpRewardFiat();
-            refreshPastTotalLpRewardFiat();
-
-            walletBalanceStatus.onZilswapDexStatusChange();
-            stakingBalanceStatus.onZilswapDexStatusChange();
-            netWorthStatus.onZilswapDexStatusChange();
-            uniqueCoinStatus.onZilswapDexStatusChange();
-        },
-        /* onErrorCallback= */
-        function() {
-        });
+        function () {});
 }
 
 function computeCoinPriceStatus(currencyCode) {
     coinPriceStatus.setActiveCurrencyCode(currencyCode);
     coinPriceStatus.computeDataRpcIfDataNoExist(
         /* beforeRpcCallback= */
-        function() {
-        },
+        function () {},
         /* onSuccessCallback= */
-        function() {
+        function () {
             refreshTotalLpRewardFiat();
             refreshPrevTotalLpRewardFiat();
             refreshPastTotalLpRewardFiat();
@@ -351,28 +241,5 @@ function computeCoinPriceStatus(currencyCode) {
             zilswapTradeVolumeStatus.onCoinPriceStatusChange();
         },
         /* onErrorCallback= */
-        function() {
-        });
-}
-
-function refreshCoinPriceStatus() {
-    coinPriceStatus.computeDataRpc(
-        /* beforeRpcCallback= */
-        function() {
-        },
-        /* onSuccessCallback= */
-        function() {
-            refreshTotalLpRewardFiat();
-            refreshPrevTotalLpRewardFiat();
-            refreshPastTotalLpRewardFiat();
-
-            zilswapDexStatus.onCoinPriceStatusChange();
-            walletBalanceStatus.onCoinPriceStatusChange();
-            stakingBalanceStatus.onCoinPriceStatusChange();
-            netWorthStatus.onCoinPriceStatusChange();
-            zilswapTradeVolumeStatus.onCoinPriceStatusChange();
-        },
-        /* onErrorCallback= */
-        function() {
-        });
+        function () {});
 }

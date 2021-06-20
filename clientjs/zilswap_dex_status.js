@@ -4,7 +4,8 @@ class ZilswapDexStatus {
     constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ walletAddressBase16, /* nullable= */ zilswapDexSmartContractStateData, /* nullable= */ zilswapDexSmartContractState24hAgoData, /* nullable= */ zrcTokensCirculatingSupplyData, /* nullable= */ zrcTokensTotalSupplyData) {
         // Constants
         this.zilswapDexAddress_ = "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w";
-        this.zilswapDexAddressBase16_ = "Ba11eB7bCc0a02e947ACF03Cc651Bfaf19C9EC00";
+        this.zilswapDexAddressBase16_ = "0xBa11eB7bCc0a02e947ACF03Cc651Bfaf19C9EC00";
+        this.zilswapDexAddressBase16LowerCase_ = this.zilswapDexAddressBase16_.toLowerCase();
 
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
@@ -52,6 +53,13 @@ class ZilswapDexStatus {
                 }
         } catch (ex) {
             console.log(ex);
+        }
+        return false;
+    }
+
+    isWalletAddressSet() {
+        if (this.walletAddressBase16_) {
+            return true;
         }
         return false;
     }
@@ -255,7 +263,7 @@ class ZilswapDexStatus {
             /* method= */
             "GetSmartContractState",
             /* params= */
-            [this.zilswapDexAddressBase16_],
+            [this.zilswapDexAddressBase16_.substring(2)],
             /* successCallback= */
             function (data) {
                 self.zilswapDexSmartContractStateData_ = data;
@@ -291,7 +299,7 @@ class ZilswapDexStatus {
             /* method= */
             "GetSmartContractSubState",
             /* params= */
-            [this.zilswapDexAddressBase16_, "pools", []],
+            [this.zilswapDexAddressBase16_.substring(2), "pools", []],
             /* successCallback= */
             function (data) {
                 self.zilswapDexSmartContractStateData_ = data;

@@ -13,7 +13,7 @@ block content
 
     button(id='toggle_theme_btn' class='btn btn-info my-2 my-sm-0 mr-2')
       i(id='toggle_theme_icon' class='fa fa-sun-o')
-    
+
     button(id='wallet_refresh' class='btn btn-info my-2 my-sm-0 mr-2')
       i(id='wallet_refresh_icon' class='fa fa-refresh')
     button(id='wallet_address' class='btn btn-outline-info my-2 my-sm-0' style='display: none;')
@@ -27,11 +27,11 @@ block content
 
   // Public Content Container
   div(id='public_content_container' class='container')
-   
+
     hr
 
     div(class='row accordion')
-    
+
       div(class='col-xl-12' style='padding: 0;')
         div(class='box-public')
 
@@ -77,7 +77,7 @@ block content
                     span= ' ('
                     span(class='currency_symbol')= '$'
                     span= ')'
-                
+
               tbody(class='table-background-color')
                 each coinProperties, key in coinMap 
                   tr
@@ -182,7 +182,7 @@ block content
                       td(style='text-align: right; white-space: nowrap;' )
                         span(class='text-secondary mr-1')= '(gZIL)'
                         span= zilStakingReward.gzil_reward_apr_percent
-                        
+
               if zilswapDexReward
                 table(class='table table-sm table-borderless' width='100%')
                   tbody(class='table-background-color-header')
@@ -212,7 +212,7 @@ block content
                           td(style='text-align: right; white-space: nowrap; width: 20%;' )
                             span= zilswapDexReward[ticker].apr_percent
 
-    
+
     hr
 
   // Main Content Container
@@ -364,6 +364,7 @@ block content
                   td(style='text-align: left; white-space: nowrap; width: 35%;' )
                     span(class='font-weight-bold')= 'Zilliqa'
                   td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                    span(id='zil_balance_precise' style='display: none;')= '0'
                     span(id='zil_balance')= 'Loading...'
                     span(id='zil_balance_unit' class='ml-1')= 'ZIL'
                 tr
@@ -414,6 +415,7 @@ block content
                     td(style='text-align: right; white-space: nowrap;' )
                   tr
                     td(scope='row' style='text-align: left; white-space: nowrap; width: 35%;' )
+                      span(id=tokenProperties.ticker+'_balance_precise' style='display: none;')= '0'
                       span(id=tokenProperties.ticker+'_balance')= 'Loading...'
                       span(id=tokenProperties.ticker+'_balance_unit' class='ml-1')= tokenProperties.ticker
                     td(style='text-align: right; white-space: nowrap; width: 40%;' )
@@ -547,7 +549,7 @@ block content
                       td(class='text-secondary' style='text-align: left; white-space: nowrap; width: 45%;' )
                         span(id=tokenProperties.ticker+'_lp_pool_reward_zwap')
                         span(id=tokenProperties.ticker+'_lp_pool_reward_zwap_unit' class='ml-1')
-                      td(class='text-secondary'  style='text-align: right; white-space: nowrap; width: 55%;' )
+                      td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 55%;' )
                         span(id=tokenProperties.ticker+'_lp_pool_share_percent')= 'Loading...'
                         span(class='ml-1')= '%'
                       td(style='text-align: right; white-space: nowrap;' )
@@ -555,7 +557,7 @@ block content
                     tr
                       td(class='text-secondary' style='text-align: left; white-space: nowrap; width: 45%;' )
                         span= 'Est. 0.3% fee earned (24h)'
-                      td(class='text-secondary'  style='text-align: right; white-space: nowrap; width: 55%;' )
+                      td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 55%;' )
                         span(id=tokenProperties.ticker+'_lp_pool_fee_reward_zil')= 'Loading...'
                         span(class='ml-1')= 'ZIL'
                       td(style='text-align: right; white-space: nowrap;' )
@@ -606,34 +608,34 @@ block content
                       td(style='text-align: right; white-space: nowrap;' )
 
           div(id='zil_staking_withdrawal_pending_container' class='col-lg-6' style='padding: 0; display: none')
-              div(class='box')
-                table(class='table table-sm table-borderless')
-                  tbody
-                    tr
-                      td(scope='row' rowspan='4' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                        img(height='32' width='32' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
-                      td(style='text-align: left; white-space: nowrap; width: 35%;' )
-                        span(class='font-weight-bold')= 'Withdrawal pending'
-                      td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                        span(id='zil_staking_withdrawal_pending_balance')= 'Loading...'
-                        span(id='zil_staking_withdrawal_pending_balance_unit' class='ml-1')= 'ZIL'
-                    tr
-                      td(scope='row' class='font-weight-normal text-secondary' style='white-space: nowrap; width: 35%;' )
-                        span(class='currency_symbol mr-1')= '$'
-                        span(class='ZIL_price_fiat')= 'Loading...'
-                      td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                        span(class='currency_symbol mr-1')= '$'
-                        span(id='zil_staking_withdrawal_pending_balance_fiat')= 'Loading...'
-                      td(id='zil_staking_withdrawal_pending_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
-                        span(id='zil_staking_withdrawal_pending_balance_fiat_percent_change_24h')
-                        span= '%'
-                    tr(id='zil_staking_withdrawal_pending_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
-                      td(scope='row' style='white-space: nowrap;' )
-                        span= 'Balance 24h ago'
-                      td(style='text-align: right; white-space: nowrap;' )
-                        span(class='currency_symbol mr-1')= '$'
-                        span(id='zil_staking_withdrawal_pending_balance_fiat_24h_ago')
-                      td(style='text-align: right; white-space: nowrap;' )
+            div(class='box')
+              table(class='table table-sm table-borderless')
+                tbody
+                  tr
+                    td(scope='row' rowspan='4' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                      img(height='32' width='32' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
+                    td(style='text-align: left; white-space: nowrap; width: 35%;' )
+                      span(class='font-weight-bold')= 'Withdrawal pending'
+                    td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                      span(id='zil_staking_withdrawal_pending_balance')= 'Loading...'
+                      span(id='zil_staking_withdrawal_pending_balance_unit' class='ml-1')= 'ZIL'
+                  tr
+                    td(scope='row' class='font-weight-normal text-secondary' style='white-space: nowrap; width: 35%;' )
+                      span(class='currency_symbol mr-1')= '$'
+                      span(class='ZIL_price_fiat')= 'Loading...'
+                    td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                      span(class='currency_symbol mr-1')= '$'
+                      span(id='zil_staking_withdrawal_pending_balance_fiat')= 'Loading...'
+                    td(id='zil_staking_withdrawal_pending_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                      span(id='zil_staking_withdrawal_pending_balance_fiat_percent_change_24h')
+                      span= '%'
+                  tr(id='zil_staking_withdrawal_pending_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
+                    td(scope='row' style='white-space: nowrap;' )
+                      span= 'Balance 24h ago'
+                    td(style='text-align: right; white-space: nowrap;' )
+                      span(class='currency_symbol mr-1')= '$'
+                      span(id='zil_staking_withdrawal_pending_balance_fiat_24h_ago')
+                    td(style='text-align: right; white-space: nowrap;' )
 
           div(id='carbon_staking_container' class='col-lg-6' style='padding: 0; display: none')
             div(class='box')
@@ -696,7 +698,7 @@ block script
     var zilswapDexEpochInfoData = !{JSON.stringify(zilswapDexEpochInfo)};
     var zrcTokensTotalSupplyData = !{JSON.stringify(zrcTokensTotalSupply)};
     var zrcTokensCirculatingSupplyData = !{JSON.stringify(zrcTokensCirculatingSupply)};
-    
+
     const barChartDrawer = new BarChartDrawer();
 
     const coinPriceStatus = new CoinPriceStatus(coinMap, currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
@@ -709,3 +711,144 @@ block script
     const zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDex24hTradeVolumeData)
     const uniqueCoinStatus = new UniqueCoinStatus(zrcTokenPropertiesListMap, barChartDrawer, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingCarbonStatus);
     const zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus(zrcTokenPropertiesListMap, zilswapDexStatus, zilswapTradeVolumeStatus);
+
+    function newBlockListenerCallback(blockchainStatusNotifyType, blockNum, txHashArr) {
+      console.log("NewBlock%s: %s", blockchainStatusNotifyType, blockNum);
+
+      if (blockchainStatusNotifyType === BlockchainStatusNotifyType.WEBSOCKET) {
+        refreshCoinPriceStatus();
+        refreshZilswapDexStatus();
+        refreshWalletBalanceStatus();
+        refreshStakingBalanceStatus();
+        refreshZilswapTradeVolumeStatus();
+      }
+    }
+
+    const blockchainStatusSocketConnection = new BlockchainStatusSocketConnection(newBlockListenerCallback);
+
+    /** Refresh functions */
+    function refreshZilswapTradeVolumeStatus() {
+      zilswapTradeVolumeStatus.computeDataRpc(
+        /* beforeRpcCallback= */
+        function() {},
+        /* onSuccessCallback= */
+        function() {
+          zilswapLpFeeRewardStatus.onZilswapTradeVolumeStatusChange();
+        },
+        /* onErrorCallback= */
+        function() {});
+    }
+
+    function refreshStakingBalanceStatus() {
+      stakingBalanceStatus.computeDataRpc(
+        /* beforeRpcCallback= */
+        function() {
+          incrementShowSpinnerStakingBalance();
+        },
+        /* onSuccessCallback= */
+        function() {
+          netWorthStatus.onStakingBalanceStatusChange();
+          uniqueCoinStatus.onStakingBalanceStatusChange();
+          decrementShowSpinnerStakingBalance();
+        },
+        /* onErrorCallback= */
+        function() {
+          decrementShowSpinnerStakingBalance();
+        });
+    }
+
+    function refreshWalletBalanceStatus() {
+      walletBalanceStatus.computeDataRpc(
+        /* beforeRpcCallback= */
+        function() {
+          incrementShowSpinnerWalletBalance();
+        },
+        /* onSuccessCallback= */
+        function() {
+          netWorthStatus.onWalletBalanceStatusChange();
+          uniqueCoinStatus.onWalletBalanceStatusChange();
+          decrementShowSpinnerWalletBalance();
+        },
+        /* onErrorCallback= */
+        function() {
+          decrementShowSpinnerWalletBalance();
+        });
+    }
+
+    function refreshZilswapDexStatus() {
+      if (zilswapDexStatus.isWalletAddressSet()) {
+        refreshZilswapDexPersonalPublicStatus();
+      } else {
+        refreshZilswapDexPublicStatus();
+      }
+    }
+
+    function refreshZilswapDexPersonalPublicStatus() {
+      zilswapDexStatus.computePersonalPublicDataRpc(
+        /* beforeRpcCallback= */
+        function() {
+          incrementShowSpinnerLpBalance();
+        },
+        /* onSuccessCallback= */
+        function() {
+          refreshTotalLpRewardFiat();
+          refreshPrevTotalLpRewardFiat();
+          refreshPastTotalLpRewardFiat();
+
+          walletBalanceStatus.onZilswapDexStatusChange();
+          stakingBalanceStatus.onZilswapDexStatusChange();
+          netWorthStatus.onZilswapDexStatusChange();
+          uniqueCoinStatus.onZilswapDexStatusChange();
+          zilswapLpFeeRewardStatus.onZilswapDexStatusChange();
+
+          decrementShowSpinnerLpBalance();
+        },
+        /* onErrorCallback= */
+        function() {
+          decrementShowSpinnerLpBalance();
+        });
+    }
+
+    function refreshZilswapDexPublicStatus() {
+      zilswapDexStatus.computePublicDataRpc(
+        /* beforeRpcCallback= */
+        function() {
+        },
+        /* onSuccessCallback= */
+        function() {
+          refreshTotalLpRewardFiat();
+          refreshPrevTotalLpRewardFiat();
+          refreshPastTotalLpRewardFiat();
+
+          walletBalanceStatus.onZilswapDexStatusChange();
+          stakingBalanceStatus.onZilswapDexStatusChange();
+          netWorthStatus.onZilswapDexStatusChange();
+          uniqueCoinStatus.onZilswapDexStatusChange();
+        },
+        /* onErrorCallback= */
+        function() {
+        });
+    }
+
+    function refreshCoinPriceStatus() {
+      coinPriceStatus.computeDataRpc(
+        /* beforeRpcCallback= */
+        function() {
+        },
+        /* onSuccessCallback= */
+        function() {
+          refreshTotalLpRewardFiat();
+          refreshPrevTotalLpRewardFiat();
+          refreshPastTotalLpRewardFiat();
+
+          zilswapDexStatus.onCoinPriceStatusChange();
+          walletBalanceStatus.onCoinPriceStatusChange();
+          stakingBalanceStatus.onCoinPriceStatusChange();
+          netWorthStatus.onCoinPriceStatusChange();
+          zilswapTradeVolumeStatus.onCoinPriceStatusChange();
+        },
+        /* onErrorCallback= */
+        function() {
+        });
+    }
+

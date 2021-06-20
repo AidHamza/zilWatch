@@ -1,7 +1,7 @@
 /** A class to represent global wallet balance status.  */
 class WalletBalanceStatus {
 
-    constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ walletAddressBase16, /* nullable= */ zilBalanceData, /* nullable= */ zrcBalanceDataMap) {
+    constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ walletAddressBase16, /* nullable= */ zilBalanceData, /* nullable= */ zrcBalanceDataMap, /* nullable= */ zrcAllowanceDataMap) {
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
         this.coinPriceStatus_ = coinPriceStatus;
@@ -15,8 +15,21 @@ class WalletBalanceStatus {
             this.zrcBalanceDataMap_ = zrcBalanceDataMap;
         }
 
+        this.zrcAllowanceDataMap_ = {};
+        if (zrcAllowanceDataMap) {
+            this.zrcAllowanceDataMap_ = zrcAllowanceDataMap;
+        }
+
+        this.zrcAllowanceNeedRefreshMap_ = {};
+        for (let ticker in this.zrcTokenPropertiesListMap_) {
+            this.zrcAllowanceNeedRefreshMap_[ticker] = true;
+        }
+
         // Private derived variable
         this.tokenBalanceMap_ = {};
+        this.tokenAllowanceZilswapDexMap_ = {
+            'ZIL': 21000000000
+        }
     }
 
     /**
@@ -45,6 +58,13 @@ class WalletBalanceStatus {
         this.resetView();
     }
 
+    isWalletAddressSet() {
+        if (this.walletAddressBase16_) {
+            return true;
+        }
+        return false;
+    }
+
     setWalletAddressBase16(walletAddressBase16) {
         // Need to reset the attributes when wallet is changed.
         this.reset();
@@ -68,6 +88,22 @@ class WalletBalanceStatus {
         return this.tokenBalanceMap_[coinSymbol];
     }
 
+    getTokenAllowanceZilswapDex(coinSymbol) {
+        if (coinSymbol === 'ZIL') {
+            return this.tokenAllowanceZilswapDexMap_['ZIL'];
+        }
+
+        // If zrc token symbol is not supported.
+        if (!this.zrcTokenPropertiesListMap_[coinSymbol]) {
+            return null;
+        }
+        return this.tokenAllowanceZilswapDexMap_[coinSymbol];
+    }
+
+    setTokenAllowanceNeedRefresh(coinSymbol) {
+        this.zrcAllowanceNeedRefreshMap_[coinSymbol] = true;
+    }
+
     /**
      * Returns token balance in ZIL, number data type.
      * 
@@ -80,7 +116,7 @@ class WalletBalanceStatus {
         if (zilBalance) {
             totalZil += zilBalance;
         }
-        for (let ticker in this.zrcTokenPropertiesListMap_ ) {
+        for (let ticker in this.zrcTokenPropertiesListMap_) {
             let zrcBalance = this.getTokenBalance(ticker);
             if (!zrcBalance) {
                 continue;
@@ -111,7 +147,7 @@ class WalletBalanceStatus {
         if (zilBalance) {
             totalZil += zilBalance;
         }
-        for (let ticker in this.zrcTokenPropertiesListMap_ ) {
+        for (let ticker in this.zrcTokenPropertiesListMap_) {
             let zrcBalance = this.getTokenBalance(ticker);
             if (!zrcBalance) {
                 continue;
@@ -149,6 +185,26 @@ class WalletBalanceStatus {
                 let zrcTokenBalance = parseInt(zrcBalanceData.result.balances[this.walletAddressBase16_]);
                 if (!Number.isNaN(zrcTokenBalance)) {
                     this.tokenBalanceMap_[coinSymbol] = zrcTokenBalance / Math.pow(10, this.zrcTokenPropertiesListMap_[coinSymbol].decimals);
+                }
+            }
+        }
+    }
+
+    computeTokenAllowanceZilswapDexMap(coinSymbol) {
+        // ZRC tokens process here
+        if (!this.zrcTokenPropertiesListMap_[coinSymbol]) {
+            return;
+        }
+        if (this.zrcAllowanceDataMap_ && this.zrcAllowanceDataMap_[coinSymbol]) {
+            let zrcAllowanceData = this.zrcAllowanceDataMap_[coinSymbol];
+            if (zrcAllowanceData && zrcAllowanceData.result && zrcAllowanceData.result.allowances) {
+                let currWalletAllowance = zrcAllowanceData.result.allowances[this.walletAddressBase16_];
+                if (!currWalletAllowance) {
+                    return;
+                }
+                let zrcTokenBalance = parseInt(currWalletAllowance[this.zilswapDexStatus_.zilswapDexAddressBase16LowerCase_]);
+                if (!Number.isNaN(zrcTokenBalance)) {
+                    this.tokenAllowanceZilswapDexMap_[coinSymbol] = zrcTokenBalance / Math.pow(10, this.zrcTokenPropertiesListMap_[coinSymbol].decimals);
                 }
             }
         }
@@ -209,6 +265,40 @@ class WalletBalanceStatus {
                     onErrorCallback();
                 });
         }
+
+        // Query for Allowance for Zilswap DEX to spend the wallet's token
+        for (let ticker in this.zrcTokenPropertiesListMap_) {
+            // If not explicitly required to refresh, don't perform RPC
+            if (!this.zrcAllowanceNeedRefreshMap_[ticker]) {
+                continue;
+            }
+
+            // Skip RPC call if the allowance is already nonZero
+            if (this.getTokenAllowanceZilswapDex(ticker)) {
+                continue;
+            }
+
+            let zrcTokenProperties = this.zrcTokenPropertiesListMap_[ticker];
+
+            beforeRpcCallback();
+
+            queryZilliqaApiAjax(
+                /* method= */
+                "GetSmartContractSubState",
+                /* params= */
+                [zrcTokenProperties.address_base16.substring(2), "allowances", [this.walletAddressBase16_]],
+                /* successCallback= */
+                function (data) {
+                    self.zrcAllowanceNeedRefreshMap_[ticker] = false;
+                    self.zrcAllowanceDataMap_[ticker] = data;
+                    self.computeTokenAllowanceZilswapDexMap(ticker);
+                    onSuccessCallback();
+                },
+                /* errorCallback= */
+                function () {
+                    onErrorCallback();
+                });
+        }
     }
 
     bindViewIfDataExist(coinSymbol) {
@@ -218,6 +308,7 @@ class WalletBalanceStatus {
             if (zilBalance) {
                 zilBalanceString = convertNumberQaToDecimalString(zilBalance, /* decimals= */ 0);
             }
+            this.bindViewZilBalancePrecise(zilBalance);
             this.bindViewZilBalance(zilBalanceString);
             return;
         }
@@ -230,6 +321,7 @@ class WalletBalanceStatus {
         if (!zrcBalanceString) {
             return;
         }
+        this.bindViewZrcTokenWalletBalancePrecise(zrcBalance, coinSymbol);
         this.bindViewZrcTokenWalletBalance(zrcBalanceString, coinSymbol);
     }
 
@@ -307,8 +399,18 @@ class WalletBalanceStatus {
     }
 
     /** Private static method */
+    bindViewZilBalancePrecise(zilBalance) {
+        $('#zil_balance_precise').text(zilBalance);
+    }
+
+    /** Private static method */
     bindViewZilBalance(zilBalance) {
         $('#zil_balance').text(zilBalance);
+    }
+
+    /** Private static method */
+    bindViewZrcTokenWalletBalancePrecise(zrcTokenBalance, ticker) {
+        $('#' + ticker + '_balance_precise').text(zrcTokenBalance);
     }
 
     /** Private static method */
@@ -354,6 +456,7 @@ class WalletBalanceStatus {
     }
 
     resetView() {
+        $('#zil_balance_precise').text('0');
         $('#zil_balance').text('Loading...');
         $('#zil_balance_fiat').text('Loading...');
         $('#zil_balance_fiat_24h_ago').text('');
@@ -366,6 +469,8 @@ class WalletBalanceStatus {
 
     resetViewSingleTicker(ticker) {
         $('#' + ticker + '_container').hide();
+
+        $('#' + ticker + '_balance_precise').text('0');
 
         $('#' + ticker + '_balance').text('Loading...');
         $('#' + ticker + '_balance_zil').text('Loading...');

@@ -321,6 +321,8 @@ describe('ZilswapDexStatus', function () {
                 51815.94955267148
             );
 
+            assert.strictEqual(zilswapDexStatus.isWalletAddressSet(), false);
+
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPublicStatus('gZIL'), zilswapSinglePairPublicStatusGzil);
             assert.strictEqual(zilswapDexStatus.getZrcPriceInZil('gZIL'), 1283.1734541352732);
             assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus('random'), undefined);
@@ -344,6 +346,9 @@ describe('ZilswapDexStatus', function () {
                 assert.strictEqual($('#public_' + ticker + '_price_fiat').text(), expectedZrcPriceMap[ticker][2]);
                 assert.strictEqual($('#' + ticker + '_lp_total_pool_fiat').text(), expectedZrcPriceMap[ticker][3]);
             }
+
+            zilswapDexStatus.setWalletAddressBase16('asdf');
+            assert.strictEqual(zilswapDexStatus.isWalletAddressSet(), true);
         });
 
         it('set basic: with 24h ago ', function () {
@@ -365,6 +370,8 @@ describe('ZilswapDexStatus', function () {
                 /* totalPoolZrcTokenAmount= */
                 55003.09484344847
             );
+            assert.strictEqual(zilswapDexStatus.isWalletAddressSet(), false);
+
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('ZWAP'), zilswapSinglePairPublicStatusZwap24hAgo);
             assert.strictEqual(zilswapDexStatus.getZrcPriceInZil24hAgo('ZWAP'), 3799.198264240309);
             assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('random'), undefined);
@@ -605,6 +612,7 @@ describe('ZilswapDexStatus', function () {
             assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('random'), undefined);
 
             // Personal
+            assert.strictEqual(zilswapDexStatus.isWalletAddressSet(), true);
             assert.strictEqual(zilswapDexStatus.hasBalanceData(), true);
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPersonalStatus24hAgo('ZLP', walletAddressBase16), zilswapSinglePairPersonalStatusZlp24hAgo);
             assert.strictEqual(zilswapDexStatus.getZilswapPairPersonalStatus24hAgo('random'), undefined);
@@ -740,6 +748,69 @@ describe('ZilswapDexStatus', function () {
                 assert.strictEqual($('#' + ticker + '_lp_balance_fiat_24h_ago').text(), '');
                 assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), 'Loading...');
                 assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_24h').text(), '');
+            }
+        });
+
+
+        it('bindViewPersonal(), setWalletAddress(), view reset!', function () {
+            zilswapDexStatus.bindViewPersonalDataIfDataExist();
+
+            // Act
+            zilswapDexStatus.setWalletAddressBase16(walletAddressBase16);
+
+            // Assert
+            assert.deepStrictEqual(zilswapDexStatus.zilswapPairPersonalStatusMap_, {});
+            assert.deepStrictEqual(zilswapDexStatus.zilswapPairPersonalStatus24hAgoMap_, {});
+
+            assert.strictEqual($('#lp_container').css('display'), 'none');
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
+
+                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
+                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_24h_ago').text(), '');
+
+                assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_zil_balance_24h_ago').text(), '');
+
+                assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_token_balance_24h_ago').text(), '');
+
+                assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_balance_zil_24h_ago').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_balance_zil_percent_change_24h').text(), '');
+
+                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_24h_ago').text(), '');
+                assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), 'Loading...');
+                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_24h').text(), '');
+            }
+
+            // Act, compute and bind again.
+            zilswapDexStatus.computeZilswapPairPublicPersonalStatusMap();
+            zilswapDexStatus.bindViewPersonalDataIfDataExist();
+
+            // Personal
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_24h_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][0]);
+                assert.strictEqual($('#' + ticker + '_lp_zil_balance_24h_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][1]);
+                assert.strictEqual($('#' + ticker + '_lp_token_balance_24h_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][2]);
+                assert.strictEqual($('#' + ticker + '_lp_balance_zil_24h_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][3]);
+                assert.strictEqual($('#' + ticker + '_lp_balance_zil_percent_change_24h').text(), expectedPersonalBalanceWith24hAgoMap[ticker][4]);
+
+                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), expectedPersonalBalanceWith24hAgoMap[ticker][5]);
+                assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), expectedPersonalBalanceWith24hAgoMap[ticker][6]);
+                assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), expectedPersonalBalanceWith24hAgoMap[ticker][7]);
+                assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), expectedPersonalBalanceWith24hAgoMap[ticker][8]);
+
+                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_24h_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][9]);
+                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_24h').text(), expectedPersonalBalanceWith24hAgoMap[ticker][10]);
+                assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), expectedPersonalBalanceWith24hAgoMap[ticker][11]);
+
+                if (expectedPersonalBalanceWith24hAgoMap[ticker][6]) {
+                    assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'block');
+                    assert.strictEqual($('#lp_container').css('display'), 'block');
+                } else {
+                    assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
+                }
             }
         });
     });

@@ -1,0 +1,45 @@
+{
+    "id": "1",
+    "jsonrpc": "2.0",
+    "result": {
+        "body": {
+            "BlockHash": "4255f4708dbfbbaf433cb1b0cc1051ce6e6f034f249a2654246444f5dfe02577",
+            "HeaderSign": "91932EED1F12F715397CFE60FFF99CDBDECC3EB0C2876482BB3E3686CF813CD8231A379F77CF346FA75B56FEC7A28951379A4E2B97A7BCEC990948123188A8F9",
+            "MicroBlockInfos": [{
+                "MicroBlockHash": "9ad3c750b55ff29b49edc49b2c088ad1af2d9285c0dcbc0a2b493f97fe985a45",
+                "MicroBlockShardId": 0,
+                "MicroBlockTxnRootHash": "0000000000000000000000000000000000000000000000000000000000000000"
+            }, {
+                "MicroBlockHash": "59840b732fecfca4304e8e1cd294fdc976e4153061327df3a73ff2dba83e9595",
+                "MicroBlockShardId": 1,
+                "MicroBlockTxnRootHash": "a7b4f552cc8e86310dbcdd5b2ac6d4f35d4ba671947d77bfdbee86daa46a86bd"
+            }, {
+                "MicroBlockHash": "66247d54b8bd94a0e73cfa13b904ad25e67be07e39f575f0b46355286c764a51",
+                "MicroBlockShardId": 2,
+                "MicroBlockTxnRootHash": "a279bcb571d579979794a4fe7948bd5166984795a4c9a200e1b62d3bded9a312"
+            }, {
+                "MicroBlockHash": "09a62a0b5c6c2e5bed5cece10907ac67755d224c37bb90160c1b6aade7e7f87f",
+                "MicroBlockShardId": 3,
+                "MicroBlockTxnRootHash": "6d73c683a5f7bdfd0a1560ee8751e421e7e630537740aa3007051a63b4af1850"
+            }]
+        },
+        "header": {
+            "BlockNum": "1234170",
+            "DSBlockNum": "12342",
+            "GasLimit": "550000",
+            "GasUsed": "2141",
+            "MbInfoHash": "910e4c883e3557014cd26f3f2a9cd0a2b1b0edefed62a35daa01f62ca9472a0a",
+            "MinerPubKey": "0x02477174B5A4356134F2D03553E383A1BA0D3D7B832437CEB18FE3BC2BFA467CC4",
+            "NumMicroBlocks": 4,
+            "NumPages": 1,
+            "NumTxns": 3,
+            "PrevBlockHash": "26b0e75e491f6f8e4d3958a222587dd904d6b0998168184957cb2d14e3cea4ee",
+            "Rewards": "0",
+            "StateDeltaHash": "795fab9ccfd90e7060ceafef84e3ca5a559c1217a57bf1b1442dd3e0a1195031",
+            "StateRootHash": "553a4e2c19c272e67fb52f4bc7cdc08b923434883680ea3d9dd7aff61e153a6c",
+            "Timestamp": "1624201996519639",
+            "TxnFees": "4282000000000",
+            "Version": 1
+        }
+    }
+}

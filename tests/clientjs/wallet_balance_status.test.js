@@ -11,60 +11,76 @@ var Constants = require('../../constants.js');
 describe('WalletBalanceStatus', function () {
 
     beforeEach(function (done) {
-        indexJsdom.resetHtmlView(done);
+        indexJsdom.resetHtmlView(
+            function () {
 
-        // bindViewZilBalance()
-        assert.strictEqual($('#zil_balance').text(), 'Loading...');
+                // bindViewZilBalancePrecise()
+                assert.strictEqual($('#zil_balance_precise').text(), '0');
 
-        // bindViewZrcTokenWalletBalance()
-        for (let ticker in Constants.zrcTokenPropertiesListMap) {
-            assert.strictEqual($('#' + ticker + '_balance').text(), 'Loading...');
-            assert.strictEqual($('#' + ticker + '_container').css('display'), 'none');
-        }
+                // bindViewZilBalance()
+                assert.strictEqual($('#zil_balance').text(), 'Loading...');
 
-        // bindViewZilBalanceFiat24hAgo()
-        assert.strictEqual($('#zil_balance_fiat_24h_ago').text(), '');
-        assert.strictEqual($('#zil_balance_fiat_percent_change_24h').text(), '');
+                // bindViewZrcTokenWalletBalancePrecise()
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    assert.strictEqual($('#' + ticker + '_balance_precise').text(), '0');
+                }
 
-        // bindViewZilBalanceFiat()
-        assert.strictEqual($('#zil_balance_fiat').text(), 'Loading...');
+                // bindViewZrcTokenWalletBalance()
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    assert.strictEqual($('#' + ticker + '_balance').text(), 'Loading...');
+                    assert.strictEqual($('#' + ticker + '_container').css('display'), 'none');
+                }
+                // bindViewZilBalanceFiat24hAgo()
+                assert.strictEqual($('#zil_balance_fiat_24h_ago').text(), '');
+                assert.strictEqual($('#zil_balance_fiat_percent_change_24h').text(), '');
 
-        // bindViewZrcTokenWalletBalanceZil24hAgo()
-        for (let ticker in Constants.zrcTokenPropertiesListMap) {
-            assert.strictEqual($('#' + ticker + '_balance_zil_24h_ago').text(), '');
-            assert.strictEqual($('#' + ticker + '_balance_zil_percent_change_24h').text(), '');
-        }
+                // bindViewZilBalanceFiat()
+                assert.strictEqual($('#zil_balance_fiat').text(), 'Loading...');
 
-        // bindViewZrcTokenWalletBalanceZil()
-        for (let ticker in Constants.zrcTokenPropertiesListMap) {
-            assert.strictEqual($('#' + ticker + '_balance_zil').text(), 'Loading...');
-        }
+                // bindViewZrcTokenWalletBalanceZil24hAgo()
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    assert.strictEqual($('#' + ticker + '_balance_zil_24h_ago').text(), '');
+                    assert.strictEqual($('#' + ticker + '_balance_zil_percent_change_24h').text(), '');
+                }
 
-        // bindViewZrcTokenWalletBalanceFiat24hAgo()
-        for (let ticker in Constants.zrcTokenPropertiesListMap) {
-            assert.strictEqual($('#' + ticker + '_balance_fiat_24h_ago').text(), '');
-            assert.strictEqual($('#' + ticker + '_balance_fiat_percent_change_24h').text(), '');
-        }
+                // bindViewZrcTokenWalletBalanceZil()
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    assert.strictEqual($('#' + ticker + '_balance_zil').text(), 'Loading...');
+                }
 
-        // bindViewZrcTokenWalletBalanceFiat()
-        for (let ticker in Constants.zrcTokenPropertiesListMap) {
-            assert.strictEqual($('#' + ticker + '_balance_fiat').text(), 'Loading...');
-        }
+                // bindViewZrcTokenWalletBalanceFiat24hAgo()
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    assert.strictEqual($('#' + ticker + '_balance_fiat_24h_ago').text(), '');
+                    assert.strictEqual($('#' + ticker + '_balance_fiat_percent_change_24h').text(), '');
+                }
+
+                // bindViewZrcTokenWalletBalanceFiat()
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    assert.strictEqual($('#' + ticker + '_balance_fiat').text(), 'Loading...');
+                }
+
+                done();
+            });
     });
 
     describe('#constructor()', function () {
 
         it('create plain object', function () {
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ null, /* coinPriceCoingecko24hAgoData= */ null);
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
             let walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBase16= */ null, /* zilBalanceData= */ null, /* zrcBalanceDataMap= */ null);
-    
+
             assert.strictEqual(walletBalanceStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
             assert.strictEqual(walletBalanceStatus.coinPriceStatus_, coinPriceStatus);
             assert.strictEqual(walletBalanceStatus.zilswapDexStatus_, zilswapDexStatus);
             assert.strictEqual(walletBalanceStatus.walletAddressBase16_, null);
             assert.strictEqual(walletBalanceStatus.zilBalanceData_, null);
             assert.deepStrictEqual(walletBalanceStatus.zrcBalanceDataMap_, {});
+            assert.deepStrictEqual(walletBalanceStatus.zrcAllowanceDataMap_, {});
+            assert.deepStrictEqual(walletBalanceStatus.tokenBalanceMap_, {});
+            assert.deepStrictEqual(walletBalanceStatus.tokenAllowanceZilswapDexMap_, {
+                'ZIL': 21000000000
+            });
         });
     });
 
@@ -85,7 +101,7 @@ describe('WalletBalanceStatus', function () {
         // $('#' + ticker + '_balance_fiat').text(),
         // $('#' + ticker + '_balance_fiat_24h_ago').text(),
         // $('#' + ticker + '_balance_fiat_percent_change_24h').text());
-        
+
         var expectedDataMap = {
             'ZIL': ['7,477', '', '', '', '883.66', '', ''],
             'gZIL': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
@@ -123,6 +139,7 @@ describe('WalletBalanceStatus', function () {
         var coinPriceStatus;
         var zilBalanceData;
         var zrcBalanceData;
+        var zrcAllowanceData;
         var walletBalanceStatus;
 
         beforeEach(function () {
@@ -131,8 +148,8 @@ describe('WalletBalanceStatus', function () {
             coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ dataObject, /* coinPriceCoingecko24hAgoData= */ null);
 
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
-            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData,  /* zilswapDexSmartContractState24hAgoData= */ null);
-            
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
+
             zilBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"balance":"7476589135982234","nonce":46}}');
 
             let redcBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"balances":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":"657942857"}}}');
@@ -143,18 +160,34 @@ describe('WalletBalanceStatus', function () {
                 'CARB': carbBalanceData,
                 'ZWAP': zwapBalanceData,
             }
-            
-            walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBase16= */ null, zilBalanceData, zrcBalanceData);
+
+            let duckAllowanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"allowances":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85": {"0xba11eb7bcc0a02e947acf03cc651bfaf19c9ec00" : "4851423"}}}}');
+            let elonsAllowanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"allowances":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85": {"0xba11eb7bcc0a02e947acf03cc651bfaf19c9ec00" : "43236754"}}}}');
+            zrcAllowanceData = {
+                'DUCK': duckAllowanceData,
+                'ELONS': elonsAllowanceData,
+            }
+
+            walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBase16= */ null, zilBalanceData, zrcBalanceData, zrcAllowanceData);
         });
 
         it('no action, no token balance data', function () {
             // Assert
+            assert.strictEqual(walletBalanceStatus.isWalletAddressSet(), false);
+
+            // Balance
             assert.strictEqual(walletBalanceStatus.getTokenBalance('ZIL'), undefined);
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual(walletBalanceStatus.getTokenBalance(ticker), undefined);
             }
             assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil(), 0);
             assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil24hAgo(), 0);
+
+            // Allowance
+            assert.deepStrictEqual(walletBalanceStatus.getTokenAllowanceZilswapDex('ZIL'), 21000000000);
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual(walletBalanceStatus.getTokenAllowanceZilswapDex(ticker), undefined);
+            }
         });
 
         it('compute, wallet not set, no token balance data', function () {
@@ -162,22 +195,42 @@ describe('WalletBalanceStatus', function () {
             walletBalanceStatus.computeTokenBalanceMap('REDC');
 
             // Assert
+            assert.strictEqual(walletBalanceStatus.isWalletAddressSet(), false);
+
+            // Balance
             assert.strictEqual(walletBalanceStatus.getTokenBalance('ZIL'), undefined);
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual(walletBalanceStatus.getTokenBalance(ticker), undefined);
             }
             assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil(), 0);
             assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil24hAgo(), 0);
+
         });
 
-        
-        it('compute, wallet set, have token balance data', function () {
-            walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletAddressBase16, zilBalanceData, zrcBalanceData);
-            
+        it('compute, wallet not set, no token allowance data', function () {
+            // Act
+            walletBalanceStatus.computeTokenAllowanceZilswapDexMap('ELONS');
+
+            // Assert
+            assert.strictEqual(walletBalanceStatus.isWalletAddressSet(), false);
+
+            // Allowance
+            assert.deepStrictEqual(walletBalanceStatus.getTokenAllowanceZilswapDex('ZIL'), 21000000000);
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                assert.strictEqual(walletBalanceStatus.getTokenAllowanceZilswapDex(ticker), undefined);
+            }
+        });
+
+
+        it('compute balance, wallet set, have token balance data', function () {
+            walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletAddressBase16, zilBalanceData, zrcBalanceData, zrcAllowanceData);
+
             // Act
             walletBalanceStatus.computeTokenBalanceMap('REDC');
 
             // Assert
+            assert.strictEqual(walletBalanceStatus.isWalletAddressSet(), true);
+
             assert.strictEqual(walletBalanceStatus.getTokenBalance('ZIL'), undefined);
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 if (ticker === 'REDC') {
@@ -191,9 +244,29 @@ describe('WalletBalanceStatus', function () {
             assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil24hAgo(), 0);
         });
 
+        it('compute allowance, wallet set, have token allowance data', function () {
+            walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletAddressBase16, zilBalanceData, zrcBalanceData, zrcAllowanceData);
+
+            // Act
+            walletBalanceStatus.computeTokenAllowanceZilswapDexMap('ELONS');
+
+            // Assert
+            assert.strictEqual(walletBalanceStatus.isWalletAddressSet(), true);
+
+            // Allowance
+            assert.strictEqual(walletBalanceStatus.getTokenAllowanceZilswapDex('ZIL'), 21000000000);
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                if (ticker === 'ELONS') {
+                    continue;
+                }
+                assert.strictEqual(walletBalanceStatus.getTokenAllowanceZilswapDex(ticker), undefined);
+            }
+            assert.strictEqual(walletBalanceStatus.getTokenAllowanceZilswapDex('ELONS'), 43236.754);
+        });
+
         it('compute, wallet set, bindView(), assertView', function () {
-            walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletAddressBase16, zilBalanceData, zrcBalanceData);
-            
+            walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletAddressBase16, zilBalanceData, zrcBalanceData, zrcAllowanceData);
+
             // Act
             walletBalanceStatus.computeTokenBalanceMap('ZIL');
             walletBalanceStatus.bindViewIfDataExist('ZIL');
@@ -205,26 +278,28 @@ describe('WalletBalanceStatus', function () {
             }
 
             // Assert
+            assert.strictEqual(walletBalanceStatus.isWalletAddressSet(), true);
+
             assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil(), 7665.323124151986);
             assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil24hAgo(), 0);
 
             assert.strictEqual($('#zil_balance').text(), expectedDataMap['ZIL'][0]);
             assert.strictEqual($('#zil_balance_fiat').text(), expectedDataMap['ZIL'][4]);
-            assert.strictEqual($('#zil_balance_fiat_24h_ago').text(),  expectedDataMap['ZIL'][5]);
+            assert.strictEqual($('#zil_balance_fiat_24h_ago').text(), expectedDataMap['ZIL'][5]);
             assert.strictEqual($('#zil_balance_fiat_percent_change_24h').text(), expectedDataMap['ZIL'][6]);
-            
+
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 if (Number.isNaN(parseFloat(expectedDataMap[ticker][0]))) {
                     assert.strictEqual($('#' + ticker + '_container').css('display'), 'none');
                 } else {
                     assert.strictEqual($('#' + ticker + '_container').css('display'), 'block');
                 }
-                
-                assert.strictEqual($('#' + ticker + '_balance').text(),  expectedDataMap[ticker][0]);
+
+                assert.strictEqual($('#' + ticker + '_balance').text(), expectedDataMap[ticker][0]);
                 assert.strictEqual($('#' + ticker + '_balance_zil').text(), expectedDataMap[ticker][1]);
                 assert.strictEqual($('#' + ticker + '_balance_zil_24h_ago').text(), expectedDataMap[ticker][2]);
                 assert.strictEqual($('#' + ticker + '_balance_zil_percent_change_24h').text(), expectedDataMap[ticker][3]);
-                
+
                 assert.strictEqual($('#' + ticker + '_balance_fiat').text(), expectedDataMap[ticker][4]);
                 assert.strictEqual($('#' + ticker + '_balance_fiat_24h_ago').text(), expectedDataMap[ticker][5]);
                 assert.strictEqual($('#' + ticker + '_balance_fiat_percent_change_24h').text(), expectedDataMap[ticker][6]);
@@ -233,7 +308,7 @@ describe('WalletBalanceStatus', function () {
 
         it('compute, wallet set, bindView(), resetView(), view reset', function () {
             walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletAddressBase16, zilBalanceData, zrcBalanceData);
-            
+
             walletBalanceStatus.computeTokenBalanceMap('ZIL');
             walletBalanceStatus.bindViewIfDataExist('ZIL');
             walletBalanceStatus.bindViewDataFiat('ZIL');
@@ -359,7 +434,7 @@ describe('WalletBalanceStatus', function () {
 
             let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8'));
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
-            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData,  zilswapDexSmartContractStateData24hAgo);
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
 
             let zilBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"balance":"7476589135982234","nonce":46}}');
             let redcBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"balances":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":"657942857"}}}');
@@ -368,7 +443,7 @@ describe('WalletBalanceStatus', function () {
             let emptyResultBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{}}');
             let emptyData = JSON.parse('{}');
             let emptyString = '';
-            
+
             let zrcBalanceData = {
                 'REDC': redcBalanceData,
                 'CARB': carbBalanceData,
@@ -377,7 +452,7 @@ describe('WalletBalanceStatus', function () {
                 'SCO': emptyData,
                 'GARY': emptyString,
             }
-            
+
             walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletAddressBase16, zilBalanceData, /* zrcBalanceDataMap= */ zrcBalanceData);
         });
 
@@ -397,7 +472,7 @@ describe('WalletBalanceStatus', function () {
 
             assert.strictEqual($('#zil_balance').text(), expectedDataMap['ZIL'][0]);
             assert.strictEqual($('#zil_balance_fiat').text(), expectedDataMap['ZIL'][4]);
-            assert.strictEqual($('#zil_balance_fiat_24h_ago').text(),  expectedDataMap['ZIL'][5]);
+            assert.strictEqual($('#zil_balance_fiat_24h_ago').text(), expectedDataMap['ZIL'][5]);
             assert.strictEqual($('#zil_balance_fiat_percent_change_24h').text(), expectedDataMap['ZIL'][6]);
 
             // Assert
@@ -407,17 +482,17 @@ describe('WalletBalanceStatus', function () {
                 } else {
                     assert.strictEqual($('#' + ticker + '_container').css('display'), 'block');
                 }
-                
-                assert.strictEqual($('#' + ticker + '_balance').text(),  expectedDataMap[ticker][0]);
+
+                assert.strictEqual($('#' + ticker + '_balance').text(), expectedDataMap[ticker][0]);
                 assert.strictEqual($('#' + ticker + '_balance_zil').text(), expectedDataMap[ticker][1]);
                 assert.strictEqual($('#' + ticker + '_balance_zil_24h_ago').text(), expectedDataMap[ticker][2]);
                 assert.strictEqual($('#' + ticker + '_balance_zil_percent_change_24h').text(), expectedDataMap[ticker][3]);
-                
+
                 assert.strictEqual($('#' + ticker + '_balance_fiat').text(), expectedDataMap[ticker][4]);
                 assert.strictEqual($('#' + ticker + '_balance_fiat_24h_ago').text(), expectedDataMap[ticker][5]);
                 assert.strictEqual($('#' + ticker + '_balance_fiat_percent_change_24h').text(), expectedDataMap[ticker][6]);
             }
-            
+
             // Change currency
             coinPriceStatus.setActiveCurrencyCode('idr');
             zilswapDexStatus.onCoinPriceStatusChange();
@@ -426,7 +501,7 @@ describe('WalletBalanceStatus', function () {
             // Assert IDR
             assert.strictEqual($('#zil_balance').text(), expectedIdrDataMap['ZIL'][0]);
             assert.strictEqual($('#zil_balance_fiat').text(), expectedIdrDataMap['ZIL'][4]);
-            assert.strictEqual($('#zil_balance_fiat_24h_ago').text(),  expectedIdrDataMap['ZIL'][5]);
+            assert.strictEqual($('#zil_balance_fiat_24h_ago').text(), expectedIdrDataMap['ZIL'][5]);
             assert.strictEqual($('#zil_balance_fiat_percent_change_24h').text(), expectedIdrDataMap['ZIL'][6]);
 
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
@@ -435,12 +510,12 @@ describe('WalletBalanceStatus', function () {
                 } else {
                     assert.strictEqual($('#' + ticker + '_container').css('display'), 'block');
                 }
-                
-                assert.strictEqual($('#' + ticker + '_balance').text(),  expectedIdrDataMap[ticker][0]);
+
+                assert.strictEqual($('#' + ticker + '_balance').text(), expectedIdrDataMap[ticker][0]);
                 assert.strictEqual($('#' + ticker + '_balance_zil').text(), expectedIdrDataMap[ticker][1]);
                 assert.strictEqual($('#' + ticker + '_balance_zil_24h_ago').text(), expectedIdrDataMap[ticker][2]);
                 assert.strictEqual($('#' + ticker + '_balance_zil_percent_change_24h').text(), expectedIdrDataMap[ticker][3]);
-                
+
                 assert.strictEqual($('#' + ticker + '_balance_fiat').text(), expectedIdrDataMap[ticker][4]);
                 assert.strictEqual($('#' + ticker + '_balance_fiat_24h_ago').text(), expectedIdrDataMap[ticker][5]);
                 assert.strictEqual($('#' + ticker + '_balance_fiat_percent_change_24h').text(), expectedIdrDataMap[ticker][6]);
@@ -453,8 +528,31 @@ describe('WalletBalanceStatus', function () {
 
         beforeEach(function () {
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ null, /* coinPriceCoingecko24hAgoData= */ null);
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* zilswapDexSmartContractStateData= */ null,  /* zilswapDexSmartContractState24hAgoData= */ null);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
             walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBase16= */ null, /* zilBalanceData= */ null, /* zrcBalanceDataMap= */ null);
+        });
+
+        describe('#bindViewZilBalancePrecise()', function () {
+
+            beforeEach(function () {
+                assert.strictEqual($('#zil_balance_precise').text(), '0');
+            });
+
+            it('bind view legit balance', function () {
+                // Act
+                walletBalanceStatus.bindViewZilBalancePrecise('1234.4');
+
+                // Assert
+                assert.strictEqual($('#zil_balance_precise').text(), '1234.4');
+            });
+
+            it('bind view random string', function () {
+                // Act
+                walletBalanceStatus.bindViewZilBalancePrecise('asdf');
+
+                // Assert
+                assert.strictEqual($('#zil_balance_precise').text(), 'asdf');
+            });
         });
 
         describe('#bindViewZilBalance()', function () {
@@ -479,6 +577,36 @@ describe('WalletBalanceStatus', function () {
                 assert.strictEqual($('#zil_balance').text(), 'asdf');
             });
         });
+
+        describe('#bindViewZrcTokenWalletBalancePrecise()', function () {
+
+            beforeEach(function () {
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    assert.strictEqual($('#' + ticker + '_balance_precise').text(), '0');
+                }
+            });
+
+            it('bind view happy case', function () {
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    // Act
+                    walletBalanceStatus.bindViewZrcTokenWalletBalancePrecise('1234.4', ticker);
+
+                    // Assert
+                    assert.strictEqual($('#' + ticker + '_balance_precise').text(), '1234.4');
+                }
+            });
+
+            it('bind view random string', function () {
+                for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                    // Act
+                    walletBalanceStatus.bindViewZrcTokenWalletBalancePrecise('asdf', ticker);
+
+                    // Assert
+                    assert.strictEqual($('#' + ticker + '_balance_precise').text(), 'asdf');
+                }
+            });
+        });
+
 
         describe('#bindViewZrcTokenWalletBalance()', function () {
 
