@@ -22,7 +22,7 @@ class WalletBalanceStatus {
 
         this.zrcAllowanceNeedRefreshMap_ = {};
         for (let ticker in this.zrcTokenPropertiesListMap_) {
-            this.zrcAllowanceNeedRefreshMap_[ticker] = true;
+            this.zrcAllowanceNeedRefreshMap_[ticker] = false;
         }
 
         // Private derived variable
@@ -268,8 +268,8 @@ class WalletBalanceStatus {
 
         // Query for Allowance for Zilswap DEX to spend the wallet's token
         for (let ticker in this.zrcTokenPropertiesListMap_) {
-            // If not explicitly required to refresh, don't perform RPC
-            if (!this.zrcAllowanceNeedRefreshMap_[ticker]) {
+            // If not explicitly required to refresh and data has been loaded before, don't perform RPC
+            if (!this.zrcAllowanceNeedRefreshMap_[ticker] && this.zrcAllowanceDataMap_[ticker]) {
                 continue;
             }
 
@@ -289,7 +289,6 @@ class WalletBalanceStatus {
                 [zrcTokenProperties.address_base16.substring(2), "allowances", [this.walletAddressBase16_]],
                 /* successCallback= */
                 function (data) {
-                    self.zrcAllowanceNeedRefreshMap_[ticker] = false;
                     self.zrcAllowanceDataMap_[ticker] = data;
                     self.computeTokenAllowanceZilswapDexMap(ticker);
                     onSuccessCallback();
