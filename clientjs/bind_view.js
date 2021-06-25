@@ -87,24 +87,7 @@ function bindViewMainContainer(zilpayStatus) {
 }
 
 function resetMainContainerContent() {
-    $('#lp_container').hide();
-    $('#total_all_lp_reward_next_epoch_container').hide();
-
-    for (let ticker in zrcTokenPropertiesListMap) {
-        $('#' + ticker + '_lp_pool_reward_zwap').text('');
-        $('#' + ticker + '_lp_pool_reward_zwap_unit').text('');
-    }
-
-    $('#total_all_lp_reward_next_epoch_zwap').text('Loading...');
-    $('#total_all_lp_reward_next_epoch_fiat').text('Loading...');
-    $('#total_all_lp_reward_prev_epoch_zwap').text('Loading...');
-    $('#total_all_lp_reward_prev_epoch_fiat').text('Loading...');
-    $('#total_all_lp_reward_prev_epoch_number').text('');
-
     $('.tooltip-container').removeClass('hover-effect');
-    $('#total_all_lp_reward_past_epoch_container').removeClass('hover-effect');
-    disableTooltipPastTotalRewardAllLpZwap();
-    clearViewPastTotalRewardAllLpZwap();
 
     // Spinner
     $('.wallet-balance-spinner').hide();
@@ -116,80 +99,6 @@ function resetMainContainerContent() {
     lpBalanceProcessingCounter = 0;
     stakingBalanceProcessingCounter = 0;
     netWorthProcessingCounter = 0;
-}
-
-/**
- * 2 --------------------------------------------------------------------------------
- */
-
-function bindViewZwapRewardLp(zwapRewardString, ticker) {
-    $('#' + ticker + '_lp_pool_reward_zwap').text(zwapRewardString);
-    $('#' + ticker + '_lp_pool_reward_zwap_unit').text('ZWAP');
-}
-
-/**
- * 4 --------------------------------------------------------------------------------
- * This is mainly total ZWAP LP reward card
- */
-
-function bindViewTotalRewardAllLpZwap(totalRewardZwapString) {
-    $('#total_all_lp_reward_next_epoch_zwap').text(totalRewardZwapString);
-    $('#total_all_lp_reward_next_epoch_container').show();
-    $('#lp_container').show();
-}
-
-function bindViewTotalRewardAllLpFiat(totalAllLpRewardFiat) {
-    $('#total_all_lp_reward_next_epoch_fiat').text(totalAllLpRewardFiat);
-}
-
-function bindViewPrevTotalRewardAllLpZwap(prevEpochNumber, prevTotalRewardZwapString) {
-    $('#total_all_lp_reward_prev_epoch_number').text(prevEpochNumber);
-    $('#total_all_lp_reward_prev_epoch_zwap').text(prevTotalRewardZwapString);
-}
-
-function bindViewPrevTotalRewardAllLpFiat(prevTotalAllLpRewardFiat) {
-    $('#total_all_lp_reward_prev_epoch_fiat').text(prevTotalAllLpRewardFiat);
-}
-
-function disableTooltipPastTotalRewardAllLpZwap() {
-    $('#total_all_lp_reward_past_epoch_container').removeClass('hover-effect');
-    $('#total_all_lp_reward_past_epoch_container').removeClass('tooltip-container');
-    $('#total_all_lp_reward_past_epoch_container').off('touchstart');
-    $('#total_all_lp_reward_past_epoch_container').off('mouseover');
-}
-
-function enableTooltipPastTotalRewardAllLpZwap() {
-    $('#total_all_lp_reward_past_epoch_container').addClass('tooltip-container');
-    $('#total_all_lp_reward_past_epoch_container').on('touchstart mouseover', onTouchStartOrMouseOverTooltipFunction);
-}
-
-function clearViewPastTotalRewardAllLpZwap() {
-    $('#total_all_lp_reward_past_epoch_tooltip_content').hide();
-    $('#total_all_lp_reward_past_epoch_tooltip_content').empty();
-}
-
-function addViewPastTotalRewardAllLpZwap(element) {
-    $('#total_all_lp_reward_past_epoch_tooltip_content').append(element);
-}
-
-function bindViewPastTotalRewardAllLpFiat(functionComputeRewardBalance) {
-    $('.past_lp_reward_fiat').each(function () {
-        let currentId = $(this).attr('id');
-        let zwapAmountId = currentId.replace("fiat", "zwap");
-
-        let rewardBalance = getNumberFromView('#' + zwapAmountId);
-        if (!rewardBalance) {
-            return;
-        }
-
-        let rewardBalanceFiatString = functionComputeRewardBalance(rewardBalance);
-        $(this).text(rewardBalanceFiatString);
-    });
-}
-
-// Exception, no need reset
-function bindViewLpNextEpochCounter(timeDurationString) {
-    $('#lp_reward_next_epoch_duration_counter').text(timeDurationString);
 }
 
 /**
@@ -334,24 +243,7 @@ if (typeof exports !== 'undefined') {
     exports.bindViewMainContainer = bindViewMainContainer;
     exports.resetMainContainerContent = resetMainContainerContent;
 
-    // 2
-    exports.bindViewZwapRewardLp = bindViewZwapRewardLp;
-
     // 4
-    exports.bindViewTotalRewardAllLpZwap = bindViewTotalRewardAllLpZwap;
-    exports.bindViewTotalRewardAllLpFiat = bindViewTotalRewardAllLpFiat;
-
-    exports.bindViewPrevTotalRewardAllLpZwap = bindViewPrevTotalRewardAllLpZwap;
-    exports.bindViewPrevTotalRewardAllLpFiat = bindViewPrevTotalRewardAllLpFiat;
-
-    exports.enableTooltipPastTotalRewardAllLpZwap = enableTooltipPastTotalRewardAllLpZwap;
-    exports.disableTooltipPastTotalRewardAllLpZwap = disableTooltipPastTotalRewardAllLpZwap;
-    exports.clearViewPastTotalRewardAllLpZwap = clearViewPastTotalRewardAllLpZwap;
-    exports.addViewPastTotalRewardAllLpZwap = addViewPastTotalRewardAllLpZwap;
-    exports.bindViewPastTotalRewardAllLpFiat = bindViewPastTotalRewardAllLpFiat;
-
-    exports.bindViewLpNextEpochCounter = bindViewLpNextEpochCounter;
-
     exports.bindViewPercentChangeColorContainer = bindViewPercentChangeColorContainer;
 
     // 5

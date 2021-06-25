@@ -711,6 +711,7 @@ block script
     const zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDex24hTradeVolumeData)
     const uniqueCoinStatus = new UniqueCoinStatus(zrcTokenPropertiesListMap, barChartDrawer, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingCarbonStatus);
     const zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus(zrcTokenPropertiesListMap, zilswapDexStatus, zilswapTradeVolumeStatus);
+    const zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, zilswapDexEpochInfoData, /* contractAddressToRewardMapData= */ null, /* pastRewardListData= */ null);
 
     function newBlockListenerCallback(blockchainStatusNotifyType, blockNum, txHashArr) {
       console.log("NewBlock%s: %s", blockchainStatusNotifyType, blockNum);
@@ -791,15 +792,12 @@ block script
         },
         /* onSuccessCallback= */
         function() {
-          refreshTotalLpRewardFiat();
-          refreshPrevTotalLpRewardFiat();
-          refreshPastTotalLpRewardFiat();
-
           walletBalanceStatus.onZilswapDexStatusChange();
           stakingBalanceStatus.onZilswapDexStatusChange();
           netWorthStatus.onZilswapDexStatusChange();
           uniqueCoinStatus.onZilswapDexStatusChange();
           zilswapLpFeeRewardStatus.onZilswapDexStatusChange();
+          zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
 
           decrementShowSpinnerLpBalance();
         },
@@ -816,14 +814,11 @@ block script
         },
         /* onSuccessCallback= */
         function() {
-          refreshTotalLpRewardFiat();
-          refreshPrevTotalLpRewardFiat();
-          refreshPastTotalLpRewardFiat();
-
           walletBalanceStatus.onZilswapDexStatusChange();
           stakingBalanceStatus.onZilswapDexStatusChange();
           netWorthStatus.onZilswapDexStatusChange();
           uniqueCoinStatus.onZilswapDexStatusChange();
+          zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
         },
         /* onErrorCallback= */
         function() {
@@ -837,15 +832,12 @@ block script
         },
         /* onSuccessCallback= */
         function() {
-          refreshTotalLpRewardFiat();
-          refreshPrevTotalLpRewardFiat();
-          refreshPastTotalLpRewardFiat();
-
           zilswapDexStatus.onCoinPriceStatusChange();
           walletBalanceStatus.onCoinPriceStatusChange();
           stakingBalanceStatus.onCoinPriceStatusChange();
           netWorthStatus.onCoinPriceStatusChange();
           zilswapTradeVolumeStatus.onCoinPriceStatusChange();
+          zilswapLpZwapRewardStatus.onCoinPriceStatusChange();
         },
         /* onErrorCallback= */
         function() {

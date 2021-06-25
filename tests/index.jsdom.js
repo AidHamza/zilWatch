@@ -70,50 +70,6 @@ const $ = require('jquery');
 var assert = require('assert');
 
 function assertDefaultStateMainContent() {
-    // 2 --------------------------------------------------- 2
-
-    // bindViewTotalTradeVolumeZil(): Exception, no need refresh
-    // bindViewTotalTradeVolumeFiat(): Exception, no need refresh
-
-    // bindViewZwapRewardLp()
-    for (let ticker in Constants.zrcTokenPropertiesListMap) {
-        assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), '');
-        assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), '');
-    }
-
-    // 4 -------------------------------------------------- 4
-
-    // bindViewTotalRewardAllLpZwap()
-    assert.strictEqual($('#total_all_lp_reward_next_epoch_zwap').text(), 'Loading...');
-    assert.strictEqual($('#total_all_lp_reward_next_epoch_container').css('display'), 'none');
-    assert.strictEqual($('#lp_container').css('display'), 'none');
-
-    // bindViewTotalRewardAllLpFiat()
-    assert.strictEqual($('#total_all_lp_reward_next_epoch_fiat').text(), 'Loading...');
-
-    // bindViewPrevTotalRewardAllLpZwap()
-    assert.strictEqual($('#total_all_lp_reward_prev_epoch_number').text(), '');
-    assert.strictEqual($('#total_all_lp_reward_prev_epoch_zwap').text(), 'Loading...');
-
-    // bindViewPrevTotalRewardAllLpFiat()
-    assert.strictEqual($('#total_all_lp_reward_prev_epoch_fiat').text(), 'Loading...');
-
-    // enableTooltipPastTotalRewardAllLpZwap()
-    // disableTooltipPastTotalRewardAllLpZwap()
-    assert.strictEqual($('#total_all_lp_reward_past_epoch_container').hasClass('tooltip-container'), false);
-    assert.strictEqual($('#total_all_lp_reward_past_epoch_container').hasClass('hover-effect'), false);
-    assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').css('display'), 'none');
-    $('#total_all_lp_reward_past_epoch_container').trigger('mouseover');
-    assert.strictEqual($('#total_all_lp_reward_past_epoch_container').hasClass('hover-effect'), false);
-    assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').css('display'), 'none');
-
-    // clearViewPastTotalRewardAllLpZwap()
-    // addViewPastTotalRewardAllLpZwap()
-    assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').html(), '');
-    assert.strictEqual($('#total_all_lp_reward_past_epoch_tooltip_content').css('display'), 'none');
-
-    // bindViewLpNextEpochCounter(): Exception, no need refresh
-
     // 5 -------------------------------------------------- 5
 
     // decrementShowSpinnerWalletBalance()

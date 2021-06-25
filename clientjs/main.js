@@ -29,10 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
         refreshCoinPriceStatus();
     }, REFRESH_INTERVAL_MS);
 
-    // This is unrelated to balance and the APIs used for personalized dashboard
-    // So don't need to reload.
-    computeLpEpochInfo(onLpCurrentEpochInfoLoaded);
-
     $(window).resize(function () {
         drawAllBarCharts();
     });
@@ -136,6 +132,7 @@ function refreshMainContentData(account) {
     netWorthStatus.reset();
     uniqueCoinStatus.reset();
     zilswapLpFeeRewardStatus.reset();
+    zilswapLpZwapRewardStatus.reset();
 
     // (4) show main screen
     bindViewMainContainer(ZilpayStatus.connected);
@@ -151,8 +148,18 @@ function refreshMainContentData(account) {
     computeStakingBalanceStatus(walletAddressBase16);
 
     // (8) Get Potential LP reward next epoch and past epoch, async
-    computeTotalLpRewardNextEpoch(walletAddressBech32, onLpRewardNextEpochLoaded);
-    computeTotalLpRewardPastEpoch(walletAddressBech32, onLpRewardPastEpochLoaded);
+    computeZilswapTotalLpZwapReward(walletAddressBech32);
+}
+
+function computeZilswapTotalLpZwapReward(walletAddressBech32) {
+    zilswapLpZwapRewardStatus.setWalletAddressBech32(walletAddressBech32);
+    zilswapLpZwapRewardStatus.computeDataRpc(
+        /* beforeRpcCallback= */
+        function () {},
+        /* onSuccessCallback= */
+        function () {},
+        /* onErrorCallback= */
+        function () {});
 }
 
 function computeZilswapTradeVolumeStatus() {
@@ -186,15 +193,12 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
         },
         /* onSuccessCallback= */
         function () {
-            refreshTotalLpRewardFiat();
-            refreshPrevTotalLpRewardFiat();
-            refreshPastTotalLpRewardFiat();
-
             walletBalanceStatus.onZilswapDexStatusChange();
             stakingBalanceStatus.onZilswapDexStatusChange();
             netWorthStatus.onZilswapDexStatusChange();
             uniqueCoinStatus.onZilswapDexStatusChange();
             zilswapLpFeeRewardStatus.onZilswapDexStatusChange();
+            zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
 
             decrementShowSpinnerLpBalance();
         },
@@ -210,14 +214,11 @@ function computeZilswapDexPublicStatus() {
         function () {},
         /* onSuccessCallback= */
         function () {
-            refreshTotalLpRewardFiat();
-            refreshPrevTotalLpRewardFiat();
-            refreshPastTotalLpRewardFiat();
-
             walletBalanceStatus.onZilswapDexStatusChange();
             stakingBalanceStatus.onZilswapDexStatusChange();
             netWorthStatus.onZilswapDexStatusChange();
             uniqueCoinStatus.onZilswapDexStatusChange();
+            zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
         },
         /* onErrorCallback= */
         function () {});
@@ -230,15 +231,12 @@ function computeCoinPriceStatus(currencyCode) {
         function () {},
         /* onSuccessCallback= */
         function () {
-            refreshTotalLpRewardFiat();
-            refreshPrevTotalLpRewardFiat();
-            refreshPastTotalLpRewardFiat();
-
             zilswapDexStatus.onCoinPriceStatusChange();
             walletBalanceStatus.onCoinPriceStatusChange();
             stakingBalanceStatus.onCoinPriceStatusChange();
             netWorthStatus.onCoinPriceStatusChange();
             zilswapTradeVolumeStatus.onCoinPriceStatusChange();
+            zilswapLpZwapRewardStatus.onCoinPriceStatusChange();
         },
         /* onErrorCallback= */
         function () {});
