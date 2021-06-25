@@ -671,7 +671,7 @@ if (typeof exports !== 'undefined') {
         convertNumberQaToDecimalString = FormattingUtils.convertNumberQaToDecimalString;
         commafyNumberToString = FormattingUtils.commafyNumberToString;
     }
-    if (typeof getPercentChange === 'undefined') {
+    if (typeof getZilswapSinglePairPublicStatusFromDexState === 'undefined') {
         TokenUtils = require('./token_utils.js');
         getPercentChange = TokenUtils.getPercentChange;
         getZilswapSinglePairShareRatio = TokenUtils.getZilswapSinglePairShareRatio;
