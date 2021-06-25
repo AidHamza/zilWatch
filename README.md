@@ -1,5 +1,7 @@
 # zilWatch.io
 
+[![Node.js CI](https://github.com/zilWatch-io/zilWatch/actions/workflows/node.js.yml/badge.svg)](https://github.com/zilWatch-io/zilWatch/actions/workflows/node.js.yml)
+
 ### Development
 
 - Run `npm install`
