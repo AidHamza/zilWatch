@@ -218,8 +218,8 @@ describe('ControllerLpReward', function () {
     describe('#onLpCurrentEpochInfoLoaded()', function () {
 
         beforeEach(function () {
-            // 2021 May 01, 2.34pm
-            clock = sinon.useFakeTimers(new Date(2021, 04, 1, 2, 34).getTime());
+            // 2021 May 01, 2.34pm UTC
+            clock = sinon.useFakeTimers(new Date(Date.UTC(2021, 04, 1, 2, 34)).getTime());
 
             assert.strictEqual($('#lp_reward_next_epoch_duration_counter').text(), '');
         });
@@ -239,7 +239,7 @@ describe('ControllerLpReward', function () {
             ControllerLpReward.onLpCurrentEpochInfoLoaded(epochInfoData);
 
             // Assert
-            assert.strictEqual($('#lp_reward_next_epoch_duration_counter').text(), '4d 13h 26m');
+            assert.strictEqual($('#lp_reward_next_epoch_duration_counter').text(), '4d 5h 26m');
         });
 
         it('LP epoch info not number', function () {
