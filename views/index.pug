@@ -107,6 +107,8 @@ block content
                       span= '-'
 
                 each circulatingSupply, ticker in zrcTokensCirculatingSupply
+                  if !(ticker in zrcTokenPropertiesListMap)
+                    - continue
                   - let tokenProperties = zrcTokenPropertiesListMap[ticker]
                   - var trStyle = ''
                   if tokenProperties.ticker === 'XPORT'
@@ -197,6 +199,8 @@ block content
 
                   tbody(class='table-background-color')
                     each circulatingSupply, ticker in zrcTokensCirculatingSupply
+                      if !(ticker in zrcTokenPropertiesListMap)
+                        - continue
                       if zilswapDexReward[ticker] && ticker !== 'XPORT'
                         - let tokenProperties = zrcTokenPropertiesListMap[ticker]
 
@@ -386,6 +390,8 @@ block content
                   td(style='text-align: right; white-space: nowrap;' )
 
         each circulatingSupply, ticker in zrcTokensCirculatingSupply
+          if !(ticker in zrcTokenPropertiesListMap)
+            - continue
           - let tokenProperties = zrcTokenPropertiesListMap[ticker]
 
           div(id=tokenProperties.ticker+'_container' class='col-lg-6' style='padding: 0; display: none')
@@ -483,6 +489,8 @@ block content
                   tbody(id='total_all_lp_reward_past_epoch_tooltip_content' class='tooltip-content' style='display: none')
 
           each circulatingSupply, ticker in zrcTokensCirculatingSupply
+            if !(ticker in zrcTokenPropertiesListMap)
+              - continue
             - let tokenProperties = zrcTokenPropertiesListMap[ticker]
 
             div(id=tokenProperties.ticker+'_lp_container' class='col-lg-6' style='padding: 0; display: none')
