@@ -410,6 +410,14 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil1504065pp76uuxm7s9m2c4gwszhez8pu3mp6r8c/logo",
     "decimals": 8,
   },
+  'SPW': {
+      "ticker": "SPW",
+      "name": "Sparda Wallet",
+      "address": "zil1pqcev4ykxla0jhy3anx32lnqgv8xncd8q57ql2",
+      "address_base16": "0x083196549637fAf95C91EcCD157E60430e69E1A7",
+      "logo_url": "https://meta.viewblock.io/ZIL.zil1pqcev4ykxla0jhy3anx32lnqgv8xncd8q57ql2/logo",
+      "decimals": 4,
+  },
 }
 
 // IF changed, also change in zilWatch-backend/core/constants.py
@@ -441,6 +449,7 @@ const emptyZrcTokensSupply = {
   'MESSI': '0',
   'MAMBO': '0',
   'STREAM': '0',
+  'SPW': '0',
 }
 
 module.exports = {

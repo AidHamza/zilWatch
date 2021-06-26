@@ -103,7 +103,8 @@ describe('NetWorthStatus', function () {
                 [ 'DogZilliqa', 0 ],
                 [ 'MESSI', 0 ],
                 [ 'MAMBO', 0 ],
-                [ 'STREAM', 0 ]
+                [ 'STREAM', 0 ],
+                [ 'SPW', 0 ]
               ];
 
             assert.deepStrictEqual(uniqueCoinStatus.sortedUniqueCoinsBalanceInZil_, expectedBeforeCompute);
@@ -150,7 +151,8 @@ describe('NetWorthStatus', function () {
                 [ 'DogZilliqa', 0 ],
                 [ 'MESSI', 0 ],
                 [ 'MAMBO', 0 ],
-                [ 'STREAM', 0 ]
+                [ 'STREAM', 0 ],
+                [ 'SPW', 0 ]
               ];
               
             assert.deepStrictEqual(uniqueCoinStatus.sortedUniqueCoinsBalanceInZil_, expectedAfterCompute);
