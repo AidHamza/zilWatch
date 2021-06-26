@@ -71,6 +71,10 @@ class WalletBalanceStatus {
         this.walletAddressBase16_ = walletAddressBase16;
     }
 
+    getWalletAddressBase16() {
+        return this.walletAddressBase16_;
+    }
+
     /**
      * Returns token balance in fiat, number data type.
      * 

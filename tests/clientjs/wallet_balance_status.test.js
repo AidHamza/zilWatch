@@ -175,6 +175,7 @@ describe('WalletBalanceStatus', function () {
         it('no action, no token balance data', function () {
             // Assert
             assert.strictEqual(walletBalanceStatus.isWalletAddressSet(), false);
+            assert.strictEqual(walletBalanceStatus.getWalletAddressBase16(), null);
 
             // Balance
             assert.strictEqual(walletBalanceStatus.getTokenBalance('ZIL'), undefined);
@@ -197,6 +198,7 @@ describe('WalletBalanceStatus', function () {
 
             // Assert
             assert.strictEqual(walletBalanceStatus.isWalletAddressSet(), false);
+            assert.strictEqual(walletBalanceStatus.getWalletAddressBase16(), null);
 
             // Balance
             assert.strictEqual(walletBalanceStatus.getTokenBalance('ZIL'), undefined);
@@ -214,6 +216,7 @@ describe('WalletBalanceStatus', function () {
 
             // Assert
             assert.strictEqual(walletBalanceStatus.isWalletAddressSet(), false);
+            assert.strictEqual(walletBalanceStatus.getWalletAddressBase16(), null);
 
             // Allowance
             assert.deepStrictEqual(walletBalanceStatus.getTokenAllowanceZilswapDex('ZIL'), 21000000000);
@@ -231,6 +234,7 @@ describe('WalletBalanceStatus', function () {
 
             // Assert
             assert.strictEqual(walletBalanceStatus.isWalletAddressSet(), true);
+            assert.strictEqual(walletBalanceStatus.getWalletAddressBase16(), walletAddressBase16);
 
             assert.strictEqual(walletBalanceStatus.getTokenBalance('ZIL'), undefined);
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
@@ -253,6 +257,7 @@ describe('WalletBalanceStatus', function () {
 
             // Assert
             assert.strictEqual(walletBalanceStatus.isWalletAddressSet(), true);
+            assert.strictEqual(walletBalanceStatus.getWalletAddressBase16(), walletAddressBase16);
 
             // Allowance
             assert.strictEqual(walletBalanceStatus.getTokenAllowanceZilswapDex('ZIL'), 21000000000);
@@ -280,6 +285,7 @@ describe('WalletBalanceStatus', function () {
 
             // Assert
             assert.strictEqual(walletBalanceStatus.isWalletAddressSet(), true);
+            assert.strictEqual(walletBalanceStatus.getWalletAddressBase16(), walletAddressBase16);
 
             assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil(), 7665.323124151986);
             assert.strictEqual(walletBalanceStatus.getAllTokenBalanceInZil24hAgo(), 0);
