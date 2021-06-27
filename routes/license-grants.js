@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
+/* GET license-grants. */
 router.get('/', function(req, res, next) {
-  res.send('Surpriseee!!');
+  res.send('None.');
 });
 
 module.exports = router;
