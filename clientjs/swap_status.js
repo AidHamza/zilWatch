@@ -214,12 +214,40 @@ class SwapStatus {
     /** ------------- End onChange listener callbacks ------------------- */
 
     reset() {
-        this.swapTxnToBeExecuted_ = null;
-        this.pendingTxnHashMap_ = {};
-
         this.closeAllModals();
         this.resetViewSwapHistory();
         this.resetViewSubmittedTransaction();
+
+        this.swapTxnToBeExecuted_ = null;
+        this.pendingTxnHashMap_ = {};
+
+        // Private derived variable
+        this.currentTokenSelectorType_ = TokenSelectorType.UNKNOWN;
+        this.currentEstimatedTokenType_ = TokenSelectorType.UNKNOWN;
+
+        this.fromTokenTicker_ = null;
+        this.fromTokenWalletBalance_ = null;
+        this.fromTokenAmount_ = null;
+
+        this.toTokenTicker_ = null;
+        this.toTokenWalletBalance_ = null;
+        this.toTokenAmount_ = null;
+
+        this.resetViewFromToken();
+        this.resetViewToToken();
+
+        this.bindViewFromTokenAmount('');
+        this.resetViewFromTokenAmountFiat();
+        this.resetViewFromTokenBalance();
+
+        this.bindViewToTokenAmount('');
+        this.resetViewToTokenBalance();
+
+        this.resetViewTokenPriceFinal();
+        this.resetViewPopOverInformation();
+
+        this.checkValidityBindViewSwapButton();
+        this.resetViewTokenErrorState();
     }
 
     /** ------------- Start token selector and computation ------------------- */
@@ -894,6 +922,11 @@ class SwapStatus {
         $('#swap_select_token_from_ticker').text(SELECT_TOKEN_STRING);
     }
 
+    resetViewFromTokenBalance() {
+        $('#swap_token_from_balance').text('');
+        $('#swap_token_from_balance_container').css('visibility', 'hidden');
+    }
+
     bindViewFromTokenBalance(balance) {
         $('#swap_token_from_balance').text(balance);
         $('#swap_token_from_balance_container').css('visibility', 'visible');
@@ -901,6 +934,11 @@ class SwapStatus {
 
     bindViewFromTokenAmount(fromAmount) {
         $('#swap_token_from_amount').val(fromAmount);
+    }
+
+    resetViewFromTokenAmountFiat() {
+        $('#swap_token_from_amount_fiat').text('');
+        $('#swap_token_from_amount_fiat_container').css('visibility', 'hidden');
     }
 
     bindViewFromTokenAmountFiat(fromAmountFiat) {
@@ -919,6 +957,11 @@ class SwapStatus {
         $('#swap_select_token_to_img').attr('src', '');
         $('#swap_select_token_to_img').hide();
         $('#swap_select_token_to_ticker').text(SELECT_TOKEN_STRING);
+    }
+
+    resetViewToTokenBalance() {
+        $('#swap_token_to_balance').text('');
+        $('#swap_token_to_balance_container').css('visibility', 'hidden');
     }
 
     bindViewToTokenBalance(balance) {

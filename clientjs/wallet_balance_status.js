@@ -55,6 +55,11 @@ class WalletBalanceStatus {
         this.zilBalanceData_ = null;
         this.zrcBalanceDataMap_ = {};
         this.tokenBalanceMap_ = {};
+
+        this.zrcAllowanceDataMap_ = {};
+        this.tokenAllowanceZilswapDexMap_ = {
+            'ZIL': 21000000000
+        }
         this.resetView();
     }
 
