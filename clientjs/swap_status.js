@@ -745,7 +745,7 @@ class SwapStatus {
         }
         if (!toMinAmountQa) {
             console.log('Swap confirmation modal, toMinAmountQa status error: ', toMinAmountQa);
-            this.bindViewErrorConfirmationModal('Min receive amount is empty!');
+            this.bindViewErrorConfirmationModal('Min receive amount is too small or empty!');
             return;
         }
 

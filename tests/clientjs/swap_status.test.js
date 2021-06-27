@@ -1180,7 +1180,7 @@ describe('SwapStatus', function () {
 
             swapStatus.setConfirmationModal();
 
-            assertErrorConfirmationModal('Min receive amount is empty!');
+            assertErrorConfirmationModal('Min receive amount is too small or empty!');
         });
     });
 
