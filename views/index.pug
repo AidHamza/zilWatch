@@ -236,7 +236,7 @@ block content
                       h5(id='swap_select_token_from' class='swap-mini-button-box')
                         img(id='swap_select_token_from_img' height='24' width='24' src='' loading='lazy' style='display: none;')
                         span(id='swap_select_token_from_ticker' class='ml-1 font-weight-bold' style='vertical-align: middle;')= 'Select token'
-                        svg(class='ml-1 arrow-down' width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg')
+                        svg(id='swap_select_token_from_svg' class='ml-1 arrow-down' width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg')
                           path(d='M0.97168 1L6.20532 6L11.439 1')
 
                     td(style='text-align: right; white-space: nowrap; width: 40%;' )
@@ -255,7 +255,7 @@ block content
                       span(id='swap_token_from_amount_fiat')
 
             div(id='swap_arrow_down_toggle_direction' class='swap-arrow-down-container')
-              svg(class='arrow-down' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg')
+              svg(id='swap_arrow_down_toggle_direction_svg' class='arrow-down' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg')
                 line(x1='12' y1='5' x2='12' y2='19')
                 polyline(points='19 12 12 19 5 12')
 
@@ -267,7 +267,7 @@ block content
                       h5(id='swap_select_token_to' class='swap-mini-button-box')
                         img(id='swap_select_token_to_img' height='24' width='24' src='' loading='lazy' style='display: none;')
                         span(id='swap_select_token_to_ticker' class='ml-1 font-weight-bold' style='vertical-align: middle;')= 'Select token'
-                        svg(class='ml-1 arrow-down' width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg')
+                        svg(id='swap_select_token_to_svg' class='ml-1 arrow-down' width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg')
                           path(d='M0.97168 1L6.20532 6L11.439 1')
                     td(style='text-align: right; white-space: nowrap; width: 40%;' )
                       h4(style='padding: 0; margin: 0;')
@@ -291,12 +291,12 @@ block content
                 tbody
                   tr
                     td(scope='row' style='text-align: left; white-space: nowrap; width: 1%;' )
-                      span(class='swap-mini-button-box' data-toggle='modal' data-target='#swap_token_settings_modal')
+                      span(id='swap_token_settings_button' class='swap-mini-button-box' data-toggle='modal' data-target='#swap_token_settings_modal')
                         i(class='fa fa-cog mr-1')
                         = 'Set.'
 
                     td(scope='row' style='text-align: left; white-space: nowrap; width: 1%;' )
-                      span(class='swap-mini-button-box' data-toggle='modal' data-target='#swap_history_modal')
+                      span(id='swap_history_button' class='swap-mini-button-box' data-toggle='modal' data-target='#swap_history_modal')
                         i(class='fa fa-history mr-1')
                         = 'History'
 
@@ -306,7 +306,7 @@ block content
                       span(id='swap_token_final_rate_inverse_button' class='swap-mini-button-box ml-1' style='display:none;')
                         i(class='fa fa-refresh ml-1 mr-1')
                     td(scope='row' style='text-align: right; white-space: nowrap; width: 1%;' )
-                      span(class='swap-mini-button-box' tabindex='0' data-toggle='popover' data-trigger='focus' data-popover-content='#swap_token_info_popover' data-placement='bottom')
+                      span(id='swap_token_info_popover_button' class='swap-mini-button-box' tabindex='0' data-toggle='popover' data-trigger='focus' data-popover-content='#swap_token_info_popover' data-placement='bottom')
                         i(class='fa fa-info-circle ml-1 mr-1')
 
             div(class='swap-box')
