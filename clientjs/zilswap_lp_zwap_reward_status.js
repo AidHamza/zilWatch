@@ -393,8 +393,8 @@ if (typeof exports !== 'undefined') {
         commafyNumberToString = FormattingUtils.commafyNumberToString;
     }
     if (typeof Duration === 'undefined') {
-        TimeUtils = require('./time_utils.js');
-        Duration = TimeUtils.Duration;
+        UtilsDuration = require('./utils_duration.js');
+        Duration = UtilsDuration.Duration;
     }
     if (typeof $ === 'undefined') {
         $ = global.jQuery = require('jquery');

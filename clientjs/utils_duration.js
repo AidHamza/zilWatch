@@ -1,4 +1,4 @@
-// time_utils.js
+// utils_duration.js
 // No dependencies
 
 /**
