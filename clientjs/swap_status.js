@@ -280,6 +280,7 @@ class SwapStatus {
             this.toTokenTicker_ = coinSymbol;
             this.bindViewToToken(tokenLogoSrc, this.toTokenTicker_);
         }
+        this.bindViewDisableSelectedTokenListRow(this.fromTokenTicker_, this.toTokenTicker_);
         this.computeAndBindViewWalletBalance();
 
         if (this.fromTokenAmount_) {
