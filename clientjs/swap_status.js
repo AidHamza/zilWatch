@@ -778,8 +778,14 @@ class SwapStatus {
 
         this.swapTxnToBeExecuted_.swap()
             .then(function (data) {
-                let walletAddressBase16Lower = data.from.toLowerCase();
-                let txnHash = data.ID.toLowerCase();
+                let walletAddressBase16Lower = 'unknown_wallet_address';
+                if (self.walletBalanceStatus_.isWalletAddressSet()) {
+                    walletAddressBase16Lower = self.walletBalanceStatus_.getWalletAddressBase16().toLowerCase();
+                }
+                let txnHash = 'unknown_hash';
+                if (data.ID) {
+                    txnHash = data.ID.toLowerCase();
+                }
                 let txnDescription = self.fromTokenTicker_ + " → " + self.toTokenTicker_;
                 self.addSwapSubmittedTxn(walletAddressBase16Lower, txnHash, txnDescription);
 
@@ -808,8 +814,14 @@ class SwapStatus {
             .then(function (data) {
                 self.walletBalanceStatus_.setTokenAllowanceNeedRefresh(self.fromTokenTicker_);
 
-                let walletAddressBase16Lower = data.from.toLowerCase();
-                let txnHash = data.ID.toLowerCase();
+                let walletAddressBase16Lower = 'unknown_wallet_address';
+                if (self.walletBalanceStatus_.isWalletAddressSet()) {
+                    walletAddressBase16Lower = self.walletBalanceStatus_.getWalletAddressBase16().toLowerCase();
+                }
+                let txnHash = 'unknown_hash';
+                if (data.ID) {
+                    txnHash = data.ID.toLowerCase();
+                }
                 let txnDescription = "Approve " + self.fromTokenTicker_;
                 self.addSwapSubmittedTxn(walletAddressBase16Lower, txnHash, txnDescription);
 
