@@ -132,7 +132,10 @@ function refreshMainContentData(account) {
     netWorthStatus.reset();
     uniqueCoinStatus.reset();
     zilswapLpFeeRewardStatus.reset();
-    zilswapLpZwapRewardStatus.reset();
+    swapStatus.reset();
+
+    // Load swap history for current address
+    swapStatus.loadSwapHistoryFromLocalStorage(walletAddressBase16);
 
     // (4) show main screen
     bindViewMainContainer(ZilpayStatus.connected);
@@ -200,6 +203,8 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
             zilswapLpFeeRewardStatus.onZilswapDexStatusChange();
             zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
 
+            swapStatus.onZilswapDexStatusChange();
+
             decrementShowSpinnerLpBalance();
         },
         /* onErrorCallback= */
@@ -219,6 +224,8 @@ function computeZilswapDexPublicStatus() {
             netWorthStatus.onZilswapDexStatusChange();
             uniqueCoinStatus.onZilswapDexStatusChange();
             zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
+
+            swapStatus.onZilswapDexStatusChange();
         },
         /* onErrorCallback= */
         function () {});
@@ -237,6 +244,8 @@ function computeCoinPriceStatus(currencyCode) {
             netWorthStatus.onCoinPriceStatusChange();
             zilswapTradeVolumeStatus.onCoinPriceStatusChange();
             zilswapLpZwapRewardStatus.onCoinPriceStatusChange();
+
+            swapStatus.onCoinPriceStatusChange();
         },
         /* onErrorCallback= */
         function () {});

@@ -204,3 +204,120 @@ body {
   left: 0;
   z-index: 2;
 }
+
+/** Disable all event for disabled class. */
+
+.disabled {
+  pointer-events: none;
+}
+
+/* Custom swap box. */
+
+.swap-box-table {
+  margin: 0.3rem;
+  /* this is a hack to keep the table inside the box */
+  padding-right: 0.6rem;
+  background-color: var(--bg-dynamic-4);
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-radius: 10px;
+}
+
+.swap-box-table-transparent {
+  margin: 0;
+  /* this is a hack to keep the table inside the box */
+  padding-right: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-radius: 10px;
+}
+
+.swap-box {
+  margin: 0.3rem;
+}
+
+.swap-mini-button-box {
+  margin: 0;
+  padding: 0.3rem;
+  background-color: var(--primary-alpha-1);
+  border-radius: 6px;
+}
+
+.swap-mini-button-box:hover {
+  background-color: var(--primary-alpha-2);
+  cursor: pointer;
+}
+
+.swap-mini-button-box-highlight {
+  background-color: var(--primary-alpha-3);
+}
+
+svg.arrow-down {
+  stroke: var(--text-color);
+  stroke-width: 2px;
+}
+
+.swap-arrow-down-container {
+  padding: 4px;
+  border-radius: 12px;
+  height: 32px;
+  width: 32px;
+  position: relative;
+  margin-top: -16px;
+  margin-bottom: -16px;
+  left: calc(50% - 16px);
+  background-color: var(--bg-dynamic-3);
+  border: 4px solid var(--bg-dynamic-2);
+  z-index: 2;
+}
+
+.swap-arrow-down-container:hover {
+  cursor: pointer;
+}
+
+.swap-arrow-down-container>svg {
+  vertical-align: baseline;
+  margin-bottom: 2px;
+}
+
+input[type=text].swap-input {
+  border: none;
+  background-color: transparent;
+  outline: 0;
+  color: var(--text-color);
+  text-align: right; 
+  width: 98%;
+}
+
+input[type=text].swap-input:focus {
+  border: none;
+  background-color: transparent;
+  outline: 0;
+  color: var(--text-color);
+  text-align: right; 
+  width: 98%;
+}
+
+.token-list-row:not(.disabled):hover {
+  cursor: pointer;
+  background-color: var(--light-alpha-10);
+}
+
+.token-list-row.disabled {
+  pointer-events: none;
+  opacity: 0.4;
+  background-color: var(--black-alpha-10);
+}
+
+/* Custom swap box settings. */
+
+input[type=text].swap-settings-input {
+  text-align: right; 
+}
+
+input[type=text].swap-settings-input:focus {
+  text-align: right; 
+} 
+
+input[aria-invalid="true"], textarea[aria-invalid="true"] {
+  border: 1px solid var(--negative-red) !important;
+  box-shadow: 0 0 4px 0 var(--negative-red) !important;
+}

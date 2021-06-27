@@ -39,6 +39,13 @@
     --cyan-dark-focus-3: #518f99; 
     --cyan-dark-focus-4: #4a838c; 
 
+    --cyan-light-alpha-30: rgba(23, 162, 184, 0.3);
+    --cyan-light-alpha-20: rgba(23, 162, 184, 0.2);
+    --cyan-light-alpha-10: rgba(23, 162, 184, 0.1);
+    --cyan-dark-alpha-20: rgba(109, 196, 209, 0.2);
+    --cyan-dark-alpha-30: rgba(109, 196, 209, 0.3);
+    --cyan-dark-alpha-40: rgba(109, 196, 209, 0.4);
+
     --white: #fff;
     --off-white: #f8f9fa;
     --off-white-focus: #dae0e5;
@@ -121,6 +128,10 @@
     --dark-alpha-10: var(--white-alpha-10);
     --dark-alpha-5: var(--white-alpha-5);
 
+    --primary-alpha-3: var(--cyan-light-alpha-30);
+    --primary-alpha-2: var(--cyan-light-alpha-20);
+    --primary-alpha-1: var(--cyan-light-alpha-10);
+
     --bg-dynamic: var(--white-900);
     --bg-dynamic-1: var(--white-940);
     --bg-dynamic-2: var(--white-950);
@@ -175,6 +186,10 @@
     --dark-alpha-30: var(--black-alpha-30);
     --dark-alpha-10: var(--black-alpha-10);
     --dark-alpha-5: var(--black-alpha-5);
+
+    --primary-alpha-3: var(--cyan-dark-alpha-40);
+    --primary-alpha-2: var(--cyan-dark-alpha-30);
+    --primary-alpha-1: var(--cyan-dark-alpha-20);
 
     --bg-dynamic: var(--black-950);
     --bg-dynamic-1: var(--black-930);
@@ -2097,10 +2112,10 @@ pre code {
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #495057;
-    background-color: var(--white);
+    color: var(--text-color);
+    background-color: var(--dark-alpha-90);
     background-clip: padding-box;
-    border: 1px solid #ced4da;
+    border: 1px solid var(--bg-dynamic);
     border-radius: .25rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out
 }
@@ -2122,8 +2137,8 @@ pre code {
 }
 
 .form-control:focus {
-    color: #495057;
-    background-color: var(--white);
+    color: var(--text-color);
+    background-color: var(--dark-alpha-90);
     border-color: #80bdff;
     outline: 0;
     box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25)
@@ -2160,8 +2175,8 @@ pre code {
 }
 
 select.form-control:focus::-ms-value {
-    color: #495057;
-    background-color: var(--white)
+    color: var(--text-color);
+    background-color: var(--dark-alpha-90);
 }
 
 .form-control-file, .form-control-range {
@@ -2593,7 +2608,7 @@ textarea.form-control {
 }
 
 .btn.disabled, .btn:disabled {
-    opacity: .65
+    opacity: .4
 }
 
 a.btn.disabled, fieldset:disabled a.btn {
@@ -3169,7 +3184,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .fade {
-    transition: opacity .15s linear
+    transition: opacity .07s linear
 }
 
 @media (prefers-reduced-motion:reduce) {
@@ -3646,11 +3661,11 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #495057;
+    color: var(--text-color);
     text-align: center;
     white-space: nowrap;
-    background-color: #e9ecef;
-    border: 1px solid #ced4da;
+    background-color: var(--bg-dynamic-3);
+    border: 1px solid var(--bg-dynamic);
     border-radius: .25rem
 }
 
@@ -5727,13 +5742,13 @@ a.badge-dark.focus, a.badge-dark:focus {
     font-size: 1.5rem;
     font-weight: 700;
     line-height: 1;
-    color: #000;
+    color: var(--text-color);
     text-shadow: 0 1px 0 var(--white);
     opacity: .5
 }
 
 .close:hover {
-    color: #000;
+    color: var(--text-color);
     text-decoration: none
 }
 
@@ -5830,9 +5845,9 @@ a.close.disabled {
 }
 
 .modal.fade .modal-dialog {
-    transition: -webkit-transform .3s ease-out;
-    transition: transform .3s ease-out;
-    transition: transform .3s ease-out, -webkit-transform .3s ease-out;
+    transition: -webkit-transform .1s ease-out;
+    transition: transform .1s ease-out;
+    transition: transform .1s ease-out, -webkit-transform .1s ease-out;
     -webkit-transform: translate(0, -50px);
     transform: translate(0, -50px)
 }
@@ -5911,10 +5926,10 @@ a.close.disabled {
     flex-direction: column;
     width: 100%;
     pointer-events: auto;
-    background-color: var(--white);
+    background-color: var(--bg-dynamic-2);
     background-clip: padding-box;
-    border: 1px solid rgba(0, 0, 0, .2);
-    border-radius: .3rem;
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-radius: 1rem;
     outline: 0
 }
 
@@ -6161,9 +6176,9 @@ a.close.disabled {
     line-break: auto;
     font-size: .875rem;
     word-wrap: break-word;
-    background-color: var(--white);
+    background-color: var(--bg-dynamic-4);
     background-clip: padding-box;
-    border: 1px solid rgba(0, 0, 0, .2);
+    border: 1px solid var(--light-alpha-30);
     border-radius: .3rem
 }
 
@@ -6194,13 +6209,13 @@ a.close.disabled {
 .bs-popover-auto[x-placement^=top]>.arrow::before, .bs-popover-top>.arrow::before {
     bottom: 0;
     border-width: .5rem .5rem 0;
-    border-top-color: rgba(0, 0, 0, .25)
+    border-top-color: var(--light-alpha-30);
 }
 
 .bs-popover-auto[x-placement^=top]>.arrow::after, .bs-popover-top>.arrow::after {
     bottom: 1px;
     border-width: .5rem .5rem 0;
-    border-top-color: var(--white)
+    border-top-color: var(--bg-dynamic-4);
 }
 
 .bs-popover-auto[x-placement^=right], .bs-popover-right {
@@ -6217,13 +6232,13 @@ a.close.disabled {
 .bs-popover-auto[x-placement^=right]>.arrow::before, .bs-popover-right>.arrow::before {
     left: 0;
     border-width: .5rem .5rem .5rem 0;
-    border-right-color: rgba(0, 0, 0, .25)
+    border-right-color: var(--light-alpha-30);
 }
 
 .bs-popover-auto[x-placement^=right]>.arrow::after, .bs-popover-right>.arrow::after {
     left: 1px;
     border-width: .5rem .5rem .5rem 0;
-    border-right-color: var(--white)
+    border-right-color: var(--bg-dynamic-4);
 }
 
 .bs-popover-auto[x-placement^=bottom], .bs-popover-bottom {
@@ -6237,13 +6252,13 @@ a.close.disabled {
 .bs-popover-auto[x-placement^=bottom]>.arrow::before, .bs-popover-bottom>.arrow::before {
     top: 0;
     border-width: 0 .5rem .5rem .5rem;
-    border-bottom-color: rgba(0, 0, 0, .25)
+    border-bottom-color: var(--light-alpha-30);
 }
 
 .bs-popover-auto[x-placement^=bottom]>.arrow::after, .bs-popover-bottom>.arrow::after {
     top: 1px;
     border-width: 0 .5rem .5rem .5rem;
-    border-bottom-color: var(--white)
+    border-bottom-color: var(--bg-dynamic-4);
 }
 
 .bs-popover-auto[x-placement^=bottom] .popover-header::before, .bs-popover-bottom .popover-header::before {
@@ -6271,13 +6286,13 @@ a.close.disabled {
 .bs-popover-auto[x-placement^=left]>.arrow::before, .bs-popover-left>.arrow::before {
     right: 0;
     border-width: .5rem 0 .5rem .5rem;
-    border-left-color: rgba(0, 0, 0, .25)
+    border-left-color: var(--light-alpha-30);
 }
 
 .bs-popover-auto[x-placement^=left]>.arrow::after, .bs-popover-left>.arrow::after {
     right: 1px;
     border-width: .5rem 0 .5rem .5rem;
-    border-left-color: var(--white)
+    border-left-color: var(--light-alpha-30);
 }
 
 .popover-header {
