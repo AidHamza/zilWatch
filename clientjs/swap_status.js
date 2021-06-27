@@ -935,12 +935,18 @@ class SwapStatus {
         $('#swap_token_final_rate').text(rateString);
         $('#swap_token_final_rate_inverse').text(rateStringInverse);
         $('#swap_token_final_rate').show();
+        $('#swap_token_final_rate_inverse').hide();
         $('#swap_token_final_rate_inverse_button').show();
     }
 
     toggleViewTokenPriceFinal() {
-        $('#swap_token_final_rate').toggle();
-        $('#swap_token_final_rate_inverse').toggle();
+        if ($('#swap_token_final_rate').css('display') === 'none') {
+            $('#swap_token_final_rate').show();
+            $('#swap_token_final_rate_inverse').hide();
+        } else {
+            $('#swap_token_final_rate').hide();
+            $('#swap_token_final_rate_inverse').show();
+        }
     }
 
     resetViewTokenPriceFinal() {
