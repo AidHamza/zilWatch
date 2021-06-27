@@ -194,14 +194,6 @@ const ssnListMap = {
 
 // IF changed, also change in zilWatch-backend/core/constants.py
 const zrcTokenPropertiesListMap = {
-  'AXT': {
-    "ticker": "AXT",
-    "name": "AXtoken",
-    "address": "zil1rk9vdfu2xsp7y4h24qg78n6ss23mxxge5slsv2",
-    "address_base16": "0x1D8AC6A78A3403E256EAA811E3CF5082A3b31919",
-    "logo_url": "https://meta.viewblock.io/ZIL.zil1rk9vdfu2xsp7y4h24qg78n6ss23mxxge5slsv2/logo",
-    "decimals": 6,
-  },
   'BOLT': {
     "ticker": "BOLT",
     "name": "Bolt Token",
@@ -422,7 +414,6 @@ const zrcTokenPropertiesListMap = {
 
 // IF changed, also change in zilWatch-backend/core/constants.py
 const emptyZrcTokensSupply = {
-  'AXT': '0',
   'BOLT': '0',
   'CARB': '0',
   'DogZilliqa': '0',
