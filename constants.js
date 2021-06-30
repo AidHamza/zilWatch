@@ -9,19 +9,19 @@ const coinMap = {
     name: "Bitcoin",
     ticker: "BTC",
     coingecko_id: "bitcoin",
-    logo_url: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png",
+    logo_url: "https://meta.viewblock.io/BTC/logo",
   },
   "ETH": {
     name: "Ethereum",
     ticker: "ETH",
     coingecko_id: "ethereum",
-    logo_url: "https://assets.coingecko.com/coins/images/279/small/ethereum.png",
+    logo_url: "https://meta.viewblock.io/ETH/logo",
   },
   "BNB": {
     name: "Binance Coin",
     ticker: "BNB",
     coingecko_id: "binancecoin",
-    logo_url: "https://assets.coingecko.com/coins/images/825/small/binance-coin-logo.png",
+    logo_url: "https://meta.viewblock.io/BNB/logo",
   },
   "ZIL": {
     name: "Zilliqa",
