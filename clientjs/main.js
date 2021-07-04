@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     computeCoinPriceStatus(currentCurrencyCode);
     computeZilswapDexPublicStatus();
     computeZilswapTradeVolumeStatus();
+    computeCoinMarketStatus();
 
     // Loop forever to refresh coin price in fiat
     clearInterval(activeIntervalId);
@@ -165,6 +166,18 @@ function computeZilswapTotalLpZwapReward(walletAddressBech32) {
         function () {});
 }
 
+
+/** Refresh functions */
+function computeCoinMarketStatus() {
+    coinMarketStatus.computeDataRpcIfDataNoExist(
+        /* beforeRpcCallback= */
+        function () {},
+        /* onSuccessCallback= */
+        function () {},
+        /* onErrorCallback= */
+        function () {});
+}
+
 function computeZilswapTradeVolumeStatus() {
     zilswapTradeVolumeStatus.computeDataRpcIfDataNoExist(
         /* beforeRpcCallback= */
@@ -246,6 +259,8 @@ function computeCoinPriceStatus(currencyCode) {
             zilswapLpZwapRewardStatus.onCoinPriceStatusChange();
 
             swapStatus.onCoinPriceStatusChange();
+
+            coinMarketStatus.onCoinPriceStatusChange();
         },
         /* onErrorCallback= */
         function () {});

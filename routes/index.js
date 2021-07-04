@@ -25,7 +25,8 @@ router.get('/', function (req, res, next) {
       "zrc_tokens_total_supply",
       "zrc_tokens_circulating_supply",
       "zilswap_dex_reward_and_apr",
-      "zil_staking_reward_and_apr"
+      "zil_staking_reward_and_apr",
+      "coin_market_coingecko"
     ],
     function (err, reply) {
       let currZilswapDexSmartContractStateTimestampSeconds = null; // 0
@@ -47,6 +48,8 @@ router.get('/', function (req, res, next) {
 
       let currZilswapDexReward = null; // 12
       let currZilStakingReward = null; // 13
+
+      let currCoinMarketCoingecko = null; // 14
 
       let currentDate = new Date();
       let currentTimeSeconds = currentDate.getTime() / 1000;
@@ -104,6 +107,10 @@ router.get('/', function (req, res, next) {
             currZilStakingReward = JSON.parse(reply[13]);
           }
 
+          if (reply[14]) {
+            currCoinMarketCoingecko = JSON.parse(reply[14]);
+          }
+
         } catch (ex) {
           console.log(ex);
         }
@@ -124,7 +131,8 @@ router.get('/', function (req, res, next) {
         zrcTokensTotalSupply: currZrcTokensTotalSupply,
         zrcTokensCirculatingSupply: currZrcTokensCirculatingSupply,
         zilswapDexReward: currZilswapDexReward,
-        zilStakingReward: currZilStakingReward
+        zilStakingReward: currZilStakingReward,
+        coinMarketCoingecko: currCoinMarketCoingecko,
       });
     });
 });
