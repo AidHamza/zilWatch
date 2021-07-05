@@ -38,7 +38,7 @@ block content
           div(id='price_content_header_container' class='card-header' data-toggle='collapse' href='#price_content_container')
             a(id='price_content_header_title' class='card-title font-weight-bold')= 'Token Information'
           div(id='price_content_container' class='card-body collapse show table-sticky-header')
-            table(class='table table-sm table-borderless' width='100%')
+            table(id='price_table' class='table table-sm table-borderless' width='100%')
               thead(class='table-background-color-header')
                 tr(class='table-background-color')
                   th(class='table-background-color-header' style='text-align: left; white-space: nowrap; width: 7%;' )= 'Token'
@@ -95,15 +95,15 @@ block content
                     td(style='text-align: right; white-space: nowrap;' )
                       span(id=coinProperties.ticker+'_lp_total_volume_fiat')= '0'
                     td(style='text-align: right; white-space: nowrap;' )
-                      span(id=coinProperties.ticker+'_lp_total_pool_fiat')= '-'
+                      span(id=coinProperties.ticker+'_lp_total_pool_fiat')
                     td(style='text-align: right; white-space: nowrap;' )
                       span(id=coinProperties.ticker+'_circulating_supply_coin')= '0'
                     td(style='text-align: right; white-space: nowrap;' )
                       span(id=coinProperties.ticker+'_circulating_supply_fiat')= '0'
                     td(style='text-align: right; white-space: nowrap;' )
-                      span(id=coinProperties.ticker+'_total_supply_coin')= '-'
+                      span(id=coinProperties.ticker+'_total_supply_coin')
                     td(style='text-align: right; white-space: nowrap;' )
-                      span(id=coinProperties.ticker+'_total_supply_fiat')= '-'
+                      span(id=coinProperties.ticker+'_total_supply_fiat')
 
                 each circulatingSupply, ticker in zrcTokensCirculatingSupply
                   if !(ticker in zrcTokenPropertiesListMap)
@@ -111,8 +111,20 @@ block content
                   - let tokenProperties = zrcTokenPropertiesListMap[ticker]
                   - var trStyle = ''
                   if tokenProperties.ticker === 'XPORT'
-                    - trStyle = 'display: none;'
-                    tr(style='display:none')
+                    div(style='display:none')
+                      span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
+                      span(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h')
+                      span(id='public_'+tokenProperties.ticker+'_price_fiat')= 'Loading...'
+                      span(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h')
+                      span(id=tokenProperties.ticker+'_lp_total_volume_fiat')= '0'
+                      span(id=tokenProperties.ticker+'_lp_total_pool_fiat')= 'Loading...'
+                      span(id=tokenProperties.ticker+'_circulating_supply_zrc')= '0'
+                      span(id=tokenProperties.ticker+'_circulating_supply_fiat')= '0'
+                      span(id=tokenProperties.ticker+'_total_supply_zrc')= '0'
+                      span(id=tokenProperties.ticker+'_total_supply_fiat')= '0'
+                      span(id='public_'+tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
+                      span(id='public_'+tokenProperties.ticker+'_price_fiat_24h_ago' style='display: none;')
+                    - continue
 
                   tr(style=trStyle)
                     th(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap;')
@@ -121,12 +133,10 @@ block content
                     td(style='text-align: right; white-space: nowrap;' )
                       span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
                     td(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap;' )
-                      span(id='public_'+tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
                       span(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h')
                     td(style='text-align: right; white-space: nowrap;' )
                       span(id='public_'+tokenProperties.ticker+'_price_fiat')= 'Loading...'
                     td(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap;' )
-                      span(id='public_'+tokenProperties.ticker+'_price_fiat_24h_ago' style='display: none;')
                       span(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h')
                     td(style='text-align: right; white-space: nowrap;' )
                       span(id=tokenProperties.ticker+'_lp_total_volume_fiat')= '0'
@@ -140,6 +150,9 @@ block content
                       span(id=tokenProperties.ticker+'_total_supply_zrc')= '0'
                     td(style='text-align: right; white-space: nowrap;' )
                       span(id=tokenProperties.ticker+'_total_supply_fiat')= '0'
+                    
+                    span(id='public_'+tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
+                    span(id='public_'+tokenProperties.ticker+'_price_fiat_24h_ago' style='display: none;')
 
       if zilswapDexReward || zilStakingReward
         div(class='col-lg-6 col-xxl-4' style='padding: 0;')
@@ -1058,7 +1071,9 @@ block script
         /* beforeRpcCallback= */
         function() {},
         /* onSuccessCallback= */
-        function() {},
+        function() {
+          $('#price_table').DataTable().rows().invalidate().draw();
+        },
         /* onErrorCallback= */
         function() {});
     }
@@ -1071,6 +1086,7 @@ block script
         /* onSuccessCallback= */
         function() {
           zilswapLpFeeRewardStatus.onZilswapTradeVolumeStatusChange();
+          $('#price_table').DataTable().rows().invalidate().draw();
         },
         /* onErrorCallback= */
         function() {});
@@ -1139,6 +1155,7 @@ block script
           swapStatus.onZilswapDexStatusChange();
 
           decrementShowSpinnerLpBalance();
+          $('#price_table').DataTable().rows().invalidate().draw();
         },
         /* onErrorCallback= */
         function() {
@@ -1160,6 +1177,7 @@ block script
           zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
 
           swapStatus.onZilswapDexStatusChange();
+          $('#price_table').DataTable().rows().invalidate().draw();
         },
         /* onErrorCallback= */
         function() {
@@ -1183,6 +1201,7 @@ block script
           swapStatus.onCoinPriceStatusChange();
 
           coinMarketStatus.onCoinPriceStatusChange();
+          $('#price_table').DataTable().rows().invalidate().draw();
         },
         /* onErrorCallback= */
         function() {

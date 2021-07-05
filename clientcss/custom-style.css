@@ -191,6 +191,9 @@ body {
   position: sticky;
   top: 0;
   z-index: 1;
+
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--text-color-secondary);
 }
 
 .table-sticky-header tbody th {
@@ -320,4 +323,34 @@ input[type=text].swap-settings-input:focus {
 input[aria-invalid="true"], textarea[aria-invalid="true"] {
   border: 1px solid var(--negative-red) !important;
   box-shadow: 0 0 4px 0 var(--negative-red) !important;
+}
+
+/* Custom data tables. */
+.dataTables_filter {
+  float: left;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  padding: 0.5rem;
+}
+
+.dataTables_filter label {
+  margin: 0;
+}
+
+.dataTables_filter input {
+  margin-left: 0.5rem;
+  display: inline-block;
+  width: 70%;
+  height: calc(1.5em + .75rem + 2px);
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-color);
+  background-color: var(--dark-alpha-90);
+  background-clip: padding-box;
+  border: 1px solid var(--bg-dynamic);
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out
 }

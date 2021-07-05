@@ -7,7 +7,7 @@ var CoinPriceStatus = require('../../clientjs/coin_price_status.js');
 var CoinMarketStatus = require('../../clientjs/coin_market_status.js');
 var Constants = require('../../constants.js');
 
-describe('CoinPriceStatus', function () {
+describe('CoinMarketStatus', function () {
 
     beforeEach(function (done) {
         indexJsdom.resetHtmlView(done);
@@ -53,14 +53,14 @@ describe('CoinPriceStatus', function () {
         // $('#' + coinTicker + '_total_supply_fiat').text());
         let expectedMap = {
             'BTC': ['23,223,888,493', '18,747,706', '663,631,296,988', '21,000,000', '743,358,000,000'],
-            'ETH': ['20,698,973,840', '116,555,562', '270,352,956,733', '-', '-'],
+            'ETH': ['20,698,973,840', '116,555,562', '270,352,956,733', '', ''],
             'BNB': ['1,083,258,762', '154,533,652', '47,009,136,908', '170,533,652', '51,876,336,908'],
             'ZIL': ['81,914,731', '12,200,293,676', '1,012,807,380', '21,000,000,000', '1,743,315,000'],
         }
 
         let expectedMapSgd = {
             'BTC': ['31,284,476,493', '18,747,706', '893,965,612,904', '21,000,000', '1,001,364,000,000'],
-            'ETH': ['27,883,539,543', '116,555,562', '364,191,839,547', '-', '-'],
+            'ETH': ['27,883,539,543', '116,555,562', '364,191,839,547', '', ''],
             'BNB': ['1,459,265,641', '154,533,652', '63,326,345,212', '170,533,652', '69,882,985,212'],
             'ZIL': ['110,347,821', '12,200,293,676', '1,364,358,842', '21,000,000,000', '2,348,430,000'],
         }
@@ -84,8 +84,8 @@ describe('CoinPriceStatus', function () {
                 assert.strictEqual($('#' + coinTicker + '_lp_total_volume_fiat').text(), "0");
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_coin').text(), "0");
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_fiat').text(), "0");
-                assert.strictEqual($('#' + coinTicker + '_total_supply_coin').text(), "-");
-                assert.strictEqual($('#' + coinTicker + '_total_supply_fiat').text(), "-");
+                assert.strictEqual($('#' + coinTicker + '_total_supply_coin').text(), "");
+                assert.strictEqual($('#' + coinTicker + '_total_supply_fiat').text(), "");
             }
 
             coinMarketStatus.coinMarketCoingeckoData_ = coinMarketCoingeckoData;
@@ -181,7 +181,7 @@ describe('CoinPriceStatus', function () {
 
             beforeEach(function () {
                 for (let coinTicker in Constants.coinMap) {
-                    assert.strictEqual($('#' + coinTicker + '_total_supply_coin').text(), '-');
+                    assert.strictEqual($('#' + coinTicker + '_total_supply_coin').text(), '');
                 }
             });
 
@@ -199,7 +199,7 @@ describe('CoinPriceStatus', function () {
 
             beforeEach(function () {
                 for (let coinTicker in Constants.coinMap) {
-                    assert.strictEqual($('#' + coinTicker + '_total_supply_fiat').text(), '-');
+                    assert.strictEqual($('#' + coinTicker + '_total_supply_fiat').text(), '');
                 }
             });
 

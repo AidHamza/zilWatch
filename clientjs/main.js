@@ -2,6 +2,18 @@ var REFRESH_INTERVAL_MS = 30000;
 var activeIntervalId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Must be initialized first before the rest.
+    $('#price_table').DataTable({
+        paging: false,
+        ordering: true,
+        language: {
+            decimal: ".",
+            thousands: ",",
+        },
+        order: [],
+        bInfo : false,
+    });
+
     // Get the user's theme preference from local storage, if it's available
     let currentTheme = localStorage.getItem("theme");
     if (currentTheme === "light") {
@@ -173,7 +185,9 @@ function computeCoinMarketStatus() {
         /* beforeRpcCallback= */
         function () {},
         /* onSuccessCallback= */
-        function () {},
+        function () {
+            $('#price_table').DataTable().rows().invalidate().draw();
+        },
         /* onErrorCallback= */
         function () {});
 }
@@ -185,6 +199,7 @@ function computeZilswapTradeVolumeStatus() {
         /* onSuccessCallback= */
         function () {
             zilswapLpFeeRewardStatus.onZilswapTradeVolumeStatusChange();
+            $('#price_table').DataTable().rows().invalidate().draw();
         },
         /* onErrorCallback= */
         function () {});
@@ -217,6 +232,7 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
             zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
 
             swapStatus.onZilswapDexStatusChange();
+            $('#price_table').DataTable().rows().invalidate().draw();
 
             decrementShowSpinnerLpBalance();
         },
@@ -239,6 +255,7 @@ function computeZilswapDexPublicStatus() {
             zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
 
             swapStatus.onZilswapDexStatusChange();
+            $('#price_table').DataTable().rows().invalidate().draw();
         },
         /* onErrorCallback= */
         function () {});
@@ -261,6 +278,7 @@ function computeCoinPriceStatus(currencyCode) {
             swapStatus.onCoinPriceStatusChange();
 
             coinMarketStatus.onCoinPriceStatusChange();
+            $('#price_table').DataTable().rows().invalidate().draw();
         },
         /* onErrorCallback= */
         function () {});
