@@ -43,6 +43,8 @@ let expectedZrcPriceMap = {
     'MAMBO': ['0.01177', '0.01', '0.001', '10,299'],
     'STREAM': ['0', '0', '0', '0'],
     'SPW': ['0', '0', '0', '0'],
+    'ZPAINT': ['0', '0', '0', '0'],
+    'ZWALL': ['0', '0', '0', '0'],
 }
 
 // The array represents: [priceZil24h, publicPriceInZil24h, publicPriceInZil24hPercentChange, publicPriceFiat24hAgo, publicPriceFiat24hAgoPercentChange]
@@ -77,6 +79,8 @@ let expectedZrcPrice24hAgoMap = {
     'MAMBO': ['', '', '', '', ''],
     'STREAM': ['', '', '', '', ''],
     'SPW': ['', '', '', '', ''],
+    'ZPAINT': ['', '', '', '', ''],
+    'ZWALL': ['', '', '', '', ''],
 }
 
 let expectedZrcPriceIdrMap = {
@@ -109,6 +113,8 @@ let expectedZrcPriceIdrMap = {
     'MAMBO': ['0.01177', '0.01', '19', '140,462,769'],
     'STREAM': ['0', '0', '0', '0'],
     'SPW': ['0', '0', '0', '0'],
+    'ZPAINT': ['0', '0', '0', '0'],
+    'ZWALL': ['0', '0', '0', '0'],
 }
 
 let expectedZrcPriceIdr24hAgoMap = {
@@ -141,6 +147,8 @@ let expectedZrcPriceIdr24hAgoMap = {
     'MAMBO': ['', '', '', '', ''],
     'STREAM': ['', '', '', '', ''],
     'SPW': ['', '', '', '', ''],
+    'ZPAINT': ['', '', '', '', ''],
+    'ZWALL': ['', '', '', '', ''],
 }
 
 /* ============ Personal =========== */
@@ -189,6 +197,8 @@ let expectedPersonalBalanceMap = {
     'MAMBO': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'STREAM': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'SPW': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'ZPAINT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'ZWALL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 let expectedPersonalBalanceWith24hAgoMap = {
@@ -221,6 +231,8 @@ let expectedPersonalBalanceWith24hAgoMap = {
     'MAMBO': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'STREAM': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'SPW': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'ZPAINT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'ZWALL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 let expectedPersonalBalanceWith24hAgoIdrMap = {
@@ -253,6 +265,8 @@ let expectedPersonalBalanceWith24hAgoIdrMap = {
     'MAMBO': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'STREAM': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'SPW': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'ZPAINT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'ZWALL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 describe('ZilswapDexStatus', function () {
@@ -477,6 +491,8 @@ describe('ZilswapDexStatus', function () {
             'MAMBO': ['0', '0', '0', '0'],
             'STREAM': ['0', '0', '0', '0'],
             'SPW': ['0', '0', '0', '0'],
+            'ZPAINT': ['0', '0', '0', '0'],
+            'ZWALL': ['0', '0', '0', '0'],
         };
 
         it('circulating and total supply is set and shown in view ', function () {

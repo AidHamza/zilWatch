@@ -378,6 +378,22 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil1l0g8u6f9g0fsvjuu74ctyla2hltefrdyt7k5f4/logo",
     "decimals": 18,
   },
+  'ZPAINT': {
+      "ticker": "ZPAINT",
+      "name": "ZilWall Paint",
+      "address": "zil1qldr63ds7yuspqcf02263y2lctmtqmr039vrht",
+      "address_base16": "0x07dA3D45b0F1390083097a95A8915fC2F6b06c6f",
+      "logo_url": "https://meta.viewblock.io/ZIL.zil1qldr63ds7yuspqcf02263y2lctmtqmr039vrht/logo",
+      "decimals": 4,
+  },
+  'ZWALL': {
+      "ticker": "ZWALL",
+      "name": "ZilWall",
+      "address": "zil1xswavlggsqmkd9kddcp0ulceqm9ht36gqkt8ua",
+      "address_base16": "0x341dD67D0880376696Cd6E02Fe7f1906cb75C748",
+      "logo_url": "https://meta.viewblock.io/ZIL.zil1xswavlggsqmkd9kddcp0ulceqm9ht36gqkt8ua/logo",
+      "decimals": 12,
+  },
   'ZWAP': {
     "ticker": "ZWAP",
     "name": "Zilswap",
@@ -421,8 +437,10 @@ const emptyZrcTokensSupply = {
   'ZCH': '0',
   'ZLF': '0',
   'ZLP': '0',
-  'ZYRO': '0',
+  'ZPAINT': '0',
+  'ZWALL': '0',
   'ZWAP': '0',
+  'ZYRO': '0',
 }
 
 module.exports = {

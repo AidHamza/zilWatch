@@ -91,6 +91,8 @@ describe('ZilswapTradeVolumeStatus', function () {
             'MAMBO': '15,667',
             'STREAM': '0',
             'SPW': '0',
+            'ZPAINT': '0',
+            'ZWALL': '0',
         };
 
         let expectedTotalVolumeFiatIdrMap = {
@@ -121,6 +123,8 @@ describe('ZilswapTradeVolumeStatus', function () {
             'MAMBO': '213,679,238',
             'STREAM': '0',
             'SPW': '0',
+            'ZPAINT': '0',
+            'ZWALL': '0',
         };
 
         it('set proper object. computed and binded to view.', function () {

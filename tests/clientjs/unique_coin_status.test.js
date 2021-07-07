@@ -101,6 +101,8 @@ describe('NetWorthStatus', function () {
                 ['XSGD', 0],
                 ['ZCH', 0],
                 ['ZLF', 0],
+                ['ZPAINT', 0],
+                ['ZWALL', 0],
                 ['ZYRO', 0]
             ];
             assert.deepStrictEqual(uniqueCoinStatus.sortedUniqueCoinsBalanceInZil_, expectedBeforeCompute);
@@ -145,6 +147,8 @@ describe('NetWorthStatus', function () {
                 ['XSGD', 0],
                 ['ZCH', 0],
                 ['ZLF', 0],
+                ['ZPAINT', 0],
+                ['ZWALL', 0],
                 ['ZYRO', 0]
             ];
 
