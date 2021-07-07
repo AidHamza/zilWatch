@@ -326,6 +326,15 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] {
 }
 
 /* Custom data tables. */
+.dataTables_wrapper {
+  display: inline-block;
+}
+@media (min-width: 1360px) {
+  .dataTables_wrapper {
+    display: block;
+  }
+}
+
 .dataTables_filter {
   float: left;
   position: sticky;
