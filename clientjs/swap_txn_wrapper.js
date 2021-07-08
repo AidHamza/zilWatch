@@ -116,7 +116,7 @@ class SwapTxnWrapper {
 
     async swapExactZilForTokens() {
         try {
-            console.log('Swap tokens to ZIL: ',
+            console.log('Swap ZIL to tokens: ',
                 this.zilswapDexAddressBase16_,
                 this.fromExactAmountQa_,
                 this.toTokenContractAddressBase16_,
