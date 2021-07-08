@@ -306,6 +306,14 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil1kwfu3x9n6fsuxc4ynp72uk5rxge25enw7zsf9z/logo",
     "decimals": 4,
   },
+  'SHARDS': {
+      "ticker": "SHARDS",
+      "name": "Shards",
+      "address": "zil14d6wwelssqumu6w9c6kaucz2r57z34cxuh96lf",
+      "address_base16": "0xAb74E767F08039Be69c5C6aDDe604A1D3C28d706",
+      "logo_url": "https://meta.viewblock.io/ZIL.zil14d6wwelssqumu6w9c6kaucz2r57z34cxuh96lf/logo",
+      "decimals": 12,
+  },
   'SPW': {
       "ticker": "SPW",
       "name": "Sparda Wallet",
@@ -428,6 +436,7 @@ const emptyZrcTokensSupply = {
   'RECAP': '0',
   'REDC': '0',
   'SCO': '0',
+  'SHARDS': '0',
   'SPW': '0',
   'SRV': '0',
   'STREAM': '0',

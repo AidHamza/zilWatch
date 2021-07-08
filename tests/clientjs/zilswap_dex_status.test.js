@@ -45,6 +45,7 @@ let expectedZrcPriceMap = {
     'SPW': ['0', '0', '0', '0'],
     'ZPAINT': ['0', '0', '0', '0'],
     'ZWALL': ['0', '0', '0', '0'],
+    'SHARDS': ['0', '0', '0', '0'],
 }
 
 // The array represents: [priceZil24h, publicPriceInZil24h, publicPriceInZil24hPercentChange, publicPriceFiat24hAgo, publicPriceFiat24hAgoPercentChange]
@@ -81,6 +82,7 @@ let expectedZrcPrice24hAgoMap = {
     'SPW': ['', '', '', '', ''],
     'ZPAINT': ['', '', '', '', ''],
     'ZWALL': ['', '', '', '', ''],
+    'SHARDS': ['', '', '', '', ''],
 }
 
 let expectedZrcPriceIdrMap = {
@@ -115,6 +117,7 @@ let expectedZrcPriceIdrMap = {
     'SPW': ['0', '0', '0', '0'],
     'ZPAINT': ['0', '0', '0', '0'],
     'ZWALL': ['0', '0', '0', '0'],
+    'SHARDS': ['0', '0', '0', '0'],
 }
 
 let expectedZrcPriceIdr24hAgoMap = {
@@ -149,6 +152,7 @@ let expectedZrcPriceIdr24hAgoMap = {
     'SPW': ['', '', '', '', ''],
     'ZPAINT': ['', '', '', '', ''],
     'ZWALL': ['', '', '', '', ''],
+    'SHARDS': ['', '', '', '', ''],
 }
 
 /* ============ Personal =========== */
@@ -199,6 +203,7 @@ let expectedPersonalBalanceMap = {
     'SPW': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'ZPAINT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'ZWALL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'SHARDS': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 let expectedPersonalBalanceWith24hAgoMap = {
@@ -233,6 +238,7 @@ let expectedPersonalBalanceWith24hAgoMap = {
     'SPW': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'ZPAINT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'ZWALL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'SHARDS': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 let expectedPersonalBalanceWith24hAgoIdrMap = {
@@ -267,6 +273,7 @@ let expectedPersonalBalanceWith24hAgoIdrMap = {
     'SPW': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'ZPAINT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'ZWALL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'SHARDS': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 describe('ZilswapDexStatus', function () {
@@ -493,6 +500,7 @@ describe('ZilswapDexStatus', function () {
             'SPW': ['0', '0', '0', '0'],
             'ZPAINT': ['0', '0', '0', '0'],
             'ZWALL': ['0', '0', '0', '0'],
+            'SHARDS': ['0', '0', '0', '0'],
         };
 
         it('circulating and total supply is set and shown in view ', function () {

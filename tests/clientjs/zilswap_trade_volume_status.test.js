@@ -93,6 +93,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             'SPW': '0',
             'ZPAINT': '0',
             'ZWALL': '0',
+            'SHARDS': '0',
         };
 
         let expectedTotalVolumeFiatIdrMap = {
@@ -125,6 +126,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             'SPW': '0',
             'ZPAINT': '0',
             'ZWALL': '0',
+            'SHARDS': '0',
         };
 
         it('set proper object. computed and binded to view.', function () {
