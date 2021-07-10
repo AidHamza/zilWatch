@@ -235,6 +235,7 @@ class SwapStatus {
 
         this.resetViewFromToken();
         this.resetViewToToken();
+        this.bindViewDisableSelectedTokenListRow(this.fromTokenTicker_, this.toTokenTicker_);
 
         this.bindViewFromTokenAmount('');
         this.resetViewFromTokenAmountFiat();
