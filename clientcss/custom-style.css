@@ -325,6 +325,24 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] {
   box-shadow: 0 0 4px 0 var(--negative-red) !important;
 }
 
+/* Mini buttons */
+
+.mini-button-box {
+  margin: 0;
+  padding: 0.3rem;
+  background-color: var(--primary-alpha-1);
+  border-radius: 6px;
+}
+
+.mini-button-box:hover {
+  background-color: var(--primary-alpha-2);
+  cursor: pointer;
+}
+
+.mini-button-box-highlight {
+  background-color: var(--primary-alpha-3);
+}
+
 /* Custom data tables. */
 .dataTables_wrapper {
   display: inline-block;

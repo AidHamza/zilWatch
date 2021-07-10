@@ -59,6 +59,33 @@ function bindViewLoggedInButton(walletAddress) {
     $('#wallet_refresh').show();
 }
 
+function bindViewFullWalletAddress(walletFullAddress, walletCensoredAddress) {
+    $('#wallet_full_address').text(walletFullAddress);
+    $('#wallet_censored_address').text(walletCensoredAddress);
+    $('#wallet_full_address').hide();
+    $('#wallet_censored_address').show();
+    $('#wallet_viewblock_anchor').attr('href', "https://viewblock.io/zilliqa/address/" + walletFullAddress);
+    hideFullWalletAddress();
+}
+
+function showFullWalletAddress() {
+    $('#wallet_censor_icon').removeClass("fa-eye");
+    $('#wallet_censor_icon').addClass("fa-eye-slash");
+    $('#wallet_full_address').show();
+    $('#wallet_censored_address').hide();
+}
+
+function hideFullWalletAddress() {
+    $('#wallet_censor_icon').removeClass("fa-eye-slash");
+    $('#wallet_censor_icon').addClass("fa-eye");
+    $('#wallet_full_address').hide();
+    $('#wallet_censored_address').show();
+}
+
+/**
+ * --------------------------------------------------------------------------------
+ */
+
 function bindViewMainContainer(zilpayStatus) {
     if (ZilpayStatus.connected === zilpayStatus) {
         $('#main_content_container').show();
@@ -240,6 +267,10 @@ if (typeof exports !== 'undefined') {
     exports.setThemeDarkMode = setThemeDarkMode;
 
     exports.bindViewLoggedInButton = bindViewLoggedInButton;
+    exports.bindViewFullWalletAddress = bindViewFullWalletAddress;
+    exports.showFullWalletAddress = showFullWalletAddress;
+    exports.hideFullWalletAddress = hideFullWalletAddress;
+
     exports.bindViewMainContainer = bindViewMainContainer;
     exports.resetMainContainerContent = resetMainContainerContent;
 

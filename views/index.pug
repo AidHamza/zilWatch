@@ -336,6 +336,19 @@ block content
   div(id='main_content_container' class='container' style='display: none;')
 
     div(class='row')
+      div(class='col-12')
+        span(id='wallet_full_address' style='display: none;')
+        span(id='wallet_censored_address' style='display: none;')
+        span(id='wallet_censor_button' class='mini-button-box ml-1')
+          i(id='wallet_censor_icon' class='fa fa-eye-slash ml-1 mr-1')
+        a(id='wallet_viewblock_anchor' target='_blank' style='color: var(--text-color);')
+          span(class='mini-button-box ml-1' )
+            i(class='fa fa-external-link ml-1 mr-1')
+        span(id='wallet_copy_button' class='mini-button-box ml-1')
+          i(class='fa fa-copy ml-1 mr-1')
+          span(id='wallet_copy_message')
+
+    div(class='row')
       div(class='balance-box col-md-6')
         div(class='mb-1' style='display:table-cell; vertical-align: middle;')
           span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Net Worth'

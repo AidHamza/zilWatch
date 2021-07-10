@@ -102,6 +102,31 @@ $("#toggle_theme_btn").click(function () {
     drawAllBarCharts();
 });
 
+$("#wallet_censor_button").on('click', function () {
+    let isShowingFullAddress = $("#wallet_full_address").css("display") !== 'none';
+    if (isShowingFullAddress) {
+        hideFullWalletAddress();
+    } else {
+        showFullWalletAddress();
+    }
+});
+
+$("#wallet_copy_button").on('click', function () {
+    let copyText = $('#wallet_full_address').text();
+
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val(copyText).select();
+    document.execCommand("copy");
+    $temp.remove();
+
+    // Show copied text for 5 seconds
+    $('#wallet_copy_message').text("Copied!");
+    setTimeout(function() {
+        $('#wallet_copy_message').text("");
+    }, 5000);
+});
+
 $("#currency_selector").change(function () {
     let currencyCode = $(this).val();
     computeCoinPriceStatus(currencyCode);
@@ -135,7 +160,9 @@ function refreshMainContentData(account) {
     collapsePublicCards();
 
     // (2) Refresh login button state
-    bindViewLoggedInButton(censorBech32Address(walletAddressBech32));
+    let censoredWalletAddress = censorBech32Address(walletAddressBech32);
+    bindViewLoggedInButton(censoredWalletAddress);
+    bindViewFullWalletAddress(walletAddressBech32, censoredWalletAddress);
 
     // (3) Reset main content
     resetMainContainerContent();

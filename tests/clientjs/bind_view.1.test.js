@@ -163,6 +163,55 @@ describe('BindView1', function () {
         });
     });
 
+
+    describe('full wallet address', function () {
+        let walletFullAddress = 'abc123456xyz';
+        let walletCensoredAddress = 'abc...xyz';
+
+        beforeEach(function () {
+            assert.strictEqual($('#wallet_full_address').text(), '');
+            assert.strictEqual($('#wallet_censored_address').text(), '');
+            assert.strictEqual($('#wallet_full_address').css('display'), 'none');
+            assert.strictEqual($('#wallet_censored_address').css('display'), 'none');
+        });
+
+        it('#bindViewFullWalletAddress()', function () {
+            // Act
+            BindView.bindViewFullWalletAddress(walletFullAddress, walletCensoredAddress);
+
+            // Assert
+            assert.strictEqual($('#wallet_full_address').text(), walletFullAddress);
+            assert.strictEqual($('#wallet_censored_address').text(), walletCensoredAddress);
+            assert.strictEqual($('#wallet_full_address').css('display'), 'none');
+            assert.strictEqual($('#wallet_censored_address').css('display'), '');
+            assert.strictEqual($('#wallet_censor_icon').hasClass('fa-eye'), true);
+            assert.strictEqual($('#wallet_censor_icon').hasClass('fa-eye-slash'), false);
+            assert.strictEqual($('#wallet_viewblock_anchor').attr('href'), "https://viewblock.io/zilliqa/address/" + walletFullAddress);
+        });
+
+        it('#showFullWalletAddress()', function () {
+            // Act
+            BindView.showFullWalletAddress();
+
+            // Assert
+            assert.strictEqual($('#wallet_full_address').css('display'), '');
+            assert.strictEqual($('#wallet_censored_address').css('display'), 'none');
+            assert.strictEqual($('#wallet_censor_icon').hasClass('fa-eye'), false);
+            assert.strictEqual($('#wallet_censor_icon').hasClass('fa-eye-slash'), true);
+        });
+
+        it('#hideFullWalletAddress()', function () {
+            // Act
+            BindView.hideFullWalletAddress();
+
+            // Assert
+            assert.strictEqual($('#wallet_full_address').css('display'), 'none');
+            assert.strictEqual($('#wallet_censored_address').css('display'), '');
+            assert.strictEqual($('#wallet_censor_icon').hasClass('fa-eye'), true);
+            assert.strictEqual($('#wallet_censor_icon').hasClass('fa-eye-slash'), false);
+        });
+    });
+
     describe('#bindViewMainContainer()', function () {
 
         beforeEach(function () {
