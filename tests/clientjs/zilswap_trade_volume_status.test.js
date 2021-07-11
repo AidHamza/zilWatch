@@ -16,7 +16,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             assert.strictEqual(zilswapTradeVolumeStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
             assert.strictEqual(zilswapTradeVolumeStatus.coinPriceStatus_, null);
             assert.strictEqual(zilswapTradeVolumeStatus.zilswapDex24hTradeVolumeData_, null);
-            assert.deepStrictEqual(zilswapTradeVolumeStatus.coinToVolumeMap_, {});
+            assert.deepStrictEqual(zilswapTradeVolumeStatus.coinTo24hVolumeMap_, {});
         });
 
         it('create proper object', function () {
@@ -31,7 +31,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             assert.strictEqual(zilswapTradeVolumeStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
             assert.strictEqual(zilswapTradeVolumeStatus.coinPriceStatus_, coinPriceStatus);
             assert.strictEqual(zilswapTradeVolumeStatus.zilswapDex24hTradeVolumeData_, zilswap24hTradeVolumeData);
-            assert.notDeepStrictEqual(zilswapTradeVolumeStatus.coinToVolumeMap_, {});
+            assert.notDeepStrictEqual(zilswapTradeVolumeStatus.coinTo24hVolumeMap_, {});
         });
     });
 
@@ -139,9 +139,9 @@ describe('ZilswapTradeVolumeStatus', function () {
             let zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus.ZilswapTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswap24hTradeVolumeData);
 
             // Assert
-            assert.deepStrictEqual(zilswapTradeVolumeStatus.coinToVolumeMap_, expectedCoinToVolumeMap);
+            assert.deepStrictEqual(zilswapTradeVolumeStatus.coinTo24hVolumeMap_, expectedCoinToVolumeMap);
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_total_volume_fiat').text(), expectedTotalVolumeFiatUsdMap[ticker]);
+                assert.strictEqual($('#' + ticker + '_lp_24h_volume_fiat').text(), expectedTotalVolumeFiatUsdMap[ticker]);
             }
 
             // Change to IDR
@@ -149,7 +149,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             zilswapTradeVolumeStatus.onCoinPriceStatusChange();
 
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_total_volume_fiat').text(), expectedTotalVolumeFiatIdrMap[ticker]);
+                assert.strictEqual($('#' + ticker + '_lp_24h_volume_fiat').text(), expectedTotalVolumeFiatIdrMap[ticker]);
             }
         });
     });
@@ -162,31 +162,31 @@ describe('ZilswapTradeVolumeStatus', function () {
             zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus.ZilswapTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDex24hTradeVolumeData= */ null);
         });
 
-        describe('#bindViewTotalTradeVolumeFiat()', function () {
+        describe('#bindView24hVolumeFiat()', function () {
 
             beforeEach(function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                    assert.strictEqual($('#' + ticker + '_lp_total_volume_fiat').text(), '0');
+                    assert.strictEqual($('#' + ticker + '_lp_24h_volume_fiat').text(), '0');
                 }
             });
 
             it('bind view happy case', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
-                    zilswapTradeVolumeStatus.bindViewTotalTradeVolumeFiat('1234.4', ticker);
+                    zilswapTradeVolumeStatus.bindView24hVolumeFiat('1234.4', ticker);
 
                     // Assert
-                    assert.strictEqual($('#' + ticker + '_lp_total_volume_fiat').text(), '1234.4');
+                    assert.strictEqual($('#' + ticker + '_lp_24h_volume_fiat').text(), '1234.4');
                 }
             });
 
             it('bind view random string', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
-                    zilswapTradeVolumeStatus.bindViewTotalTradeVolumeFiat('asdf', ticker);
+                    zilswapTradeVolumeStatus.bindView24hVolumeFiat('asdf', ticker);
 
                     // Assert
-                    assert.strictEqual($('#' + ticker + '_lp_total_volume_fiat').text(), 'asdf');
+                    assert.strictEqual($('#' + ticker + '_lp_24h_volume_fiat').text(), 'asdf');
                 }
             });
         });

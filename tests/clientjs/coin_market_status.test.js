@@ -46,7 +46,7 @@ describe('CoinMarketStatus', function () {
 
         // console.log("'%s': ['%s', '%s', '%s', '%s', '%s'],",
         // coinTicker,
-        // $('#' + coinTicker + '_lp_total_volume_fiat').text(),
+        // $('#' + coinTicker + '_lp_24h_volume_fiat').text(),
         // $('#' + coinTicker + '_circulating_supply_coin').text(),
         // $('#' + coinTicker + '_circulating_supply_fiat').text(),
         // $('#' + coinTicker + '_total_supply_coin').text(),
@@ -69,7 +69,7 @@ describe('CoinMarketStatus', function () {
             let coinMarketStatus = new CoinMarketStatus.CoinMarketStatus(Constants.coinMap, coinPriceStatus, coinMarketCoingeckoData);
 
             for (let coinTicker in Constants.coinMap) {
-                assert.strictEqual($('#' + coinTicker + '_lp_total_volume_fiat').text(), expectedMap[coinTicker][0]);
+                assert.strictEqual($('#' + coinTicker + '_lp_24h_volume_fiat').text(), expectedMap[coinTicker][0]);
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_coin').text(), expectedMap[coinTicker][1]);
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_fiat').text(), expectedMap[coinTicker][2]);
                 assert.strictEqual($('#' + coinTicker + '_total_supply_coin').text(), expectedMap[coinTicker][3]);
@@ -81,7 +81,7 @@ describe('CoinMarketStatus', function () {
             let coinMarketStatus = new CoinMarketStatus.CoinMarketStatus(Constants.coinMap, coinPriceStatus, /* coinMarketCoingeckoData= */ null);
 
             for (let coinTicker in Constants.coinMap) {
-                assert.strictEqual($('#' + coinTicker + '_lp_total_volume_fiat').text(), "0");
+                assert.strictEqual($('#' + coinTicker + '_lp_24h_volume_fiat').text(), "0");
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_coin').text(), "0");
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_fiat').text(), "0");
                 assert.strictEqual($('#' + coinTicker + '_total_supply_coin').text(), "");
@@ -93,7 +93,7 @@ describe('CoinMarketStatus', function () {
             coinMarketStatus.bindViewIfDataExist();
 
             for (let coinTicker in Constants.coinMap) {
-                assert.strictEqual($('#' + coinTicker + '_lp_total_volume_fiat').text(), expectedMap[coinTicker][0]);
+                assert.strictEqual($('#' + coinTicker + '_lp_24h_volume_fiat').text(), expectedMap[coinTicker][0]);
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_coin').text(), expectedMap[coinTicker][1]);
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_fiat').text(), expectedMap[coinTicker][2]);
                 assert.strictEqual($('#' + coinTicker + '_total_supply_coin').text(), expectedMap[coinTicker][3]);
@@ -108,7 +108,7 @@ describe('CoinMarketStatus', function () {
             coinMarketStatus.onCoinPriceStatusChange();
 
             for (let coinTicker in Constants.coinMap) {
-                assert.strictEqual($('#' + coinTicker + '_lp_total_volume_fiat').text(), expectedMapSgd[coinTicker][0]);
+                assert.strictEqual($('#' + coinTicker + '_lp_24h_volume_fiat').text(), expectedMapSgd[coinTicker][0]);
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_coin').text(), expectedMapSgd[coinTicker][1]);
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_fiat').text(), expectedMapSgd[coinTicker][2]);
                 assert.strictEqual($('#' + coinTicker + '_total_supply_coin').text(), expectedMapSgd[coinTicker][3]);
@@ -124,19 +124,19 @@ describe('CoinMarketStatus', function () {
 
         let coinMarketStatus = new CoinMarketStatus.CoinMarketStatus(Constants.coinMap, /* coinPriceStatus= */ null, /* coinMarketCoingeckoData= */ null);
 
-        describe('#bindViewTradeVolumeFiat()', function () {
+        describe('#bindView24hVolumeFiat()', function () {
 
             beforeEach(function () {
                 for (let coinTicker in Constants.coinMap) {
-                    assert.strictEqual($('#' + coinTicker + '_lp_total_volume_fiat').text(), '0');
+                    assert.strictEqual($('#' + coinTicker + '_lp_24h_volume_fiat').text(), '0');
                 }
             });
 
             it('bind view', function () {
                 for (let coinTicker in Constants.coinMap) {
-                    coinMarketStatus.bindViewTradeVolumeFiat('0.123', coinTicker);
+                    coinMarketStatus.bindView24hVolumeFiat('0.123', coinTicker);
 
-                    assert.strictEqual($('#' + coinTicker + '_lp_total_volume_fiat').text(), '0.123');
+                    assert.strictEqual($('#' + coinTicker + '_lp_24h_volume_fiat').text(), '0.123');
                 }
             });
         });

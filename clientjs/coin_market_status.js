@@ -174,14 +174,14 @@ class CoinMarketStatus {
             if (tradeVolumeInToken) {
                 let coinTradeVolumeFiat = 1.0 * coinPriceInFiatFloat * tradeVolumeInToken;
                 let coinTradeVolumeFiatString = commafyNumberToString(coinTradeVolumeFiat, /* decimals= */ 0);
-                this.bindViewTradeVolumeFiat(coinTradeVolumeFiatString, coinTicker);
+                this.bindView24hVolumeFiat(coinTradeVolumeFiatString, coinTicker);
             }
         }
     }
 
     /** Private static method. Public. */
-    bindViewTradeVolumeFiat(tradeVolumeFiat, ticker) {
-        $('#' + ticker + '_lp_total_volume_fiat').text(tradeVolumeFiat);
+    bindView24hVolumeFiat(tradeVolumeFiat, ticker) {
+        $('#' + ticker + '_lp_24h_volume_fiat').text(tradeVolumeFiat);
     }
 
     /** Private static method. Public. */

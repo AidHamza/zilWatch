@@ -50,7 +50,7 @@ class ZilswapLpFeeRewardStatus {
             if (!shareRatio) {
                 continue;
             }
-            let tradeVolume24hInZil = this.zilswapTradeVolumeStatus_.getTradeVolumeInZil(ticker);
+            let tradeVolume24hInZil = this.zilswapTradeVolumeStatus_.get24hTradeVolumeInZil(ticker);
             if (!tradeVolume24hInZil) {
                 continue;
             }

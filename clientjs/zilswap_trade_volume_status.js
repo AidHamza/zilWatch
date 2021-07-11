@@ -8,21 +8,21 @@ class ZilswapTradeVolumeStatus {
         this.zilswapDex24hTradeVolumeData_ = zilswapDex24hTradeVolumeData;
 
         // private variable
-        this.coinToVolumeMap_ = {};
+        this.coinTo24hVolumeMap_ = {};
 
         this.computeCoinToVolumeMap();
-        this.bindViewTradeVolumeFiat();
+        this.bindView24hTradeVolumeFiat();
     }
 
     /**
      * Callback method to be executed if any properties in coinPriceStatus_ is changed.
      */
     onCoinPriceStatusChange() {
-        this.bindViewTradeVolumeFiat();
+        this.bindView24hTradeVolumeFiat();
     }
 
-    getTradeVolumeInZil(coinSymbol) {
-        return this.coinToVolumeMap_[coinSymbol];
+    get24hTradeVolumeInZil(coinSymbol) {
+        return this.coinTo24hVolumeMap_[coinSymbol];
     }
 
     computeCoinToVolumeMap() {
@@ -45,11 +45,11 @@ class ZilswapTradeVolumeStatus {
             let outZilAmount = parseInt(volumeList.out_zil_amount);
             let totalVolumeZilAmount = inZilAmount + outZilAmount;
 
-            this.coinToVolumeMap_[ticker] = totalVolumeZilAmount / Math.pow(10, 12);
+            this.coinTo24hVolumeMap_[ticker] = totalVolumeZilAmount / Math.pow(10, 12);
         }
     }
 
-    bindViewTradeVolumeFiat() {
+    bindView24hTradeVolumeFiat() {
         if (!this.coinPriceStatus_) {
             return;
         }
@@ -59,14 +59,14 @@ class ZilswapTradeVolumeStatus {
         }
 
         for (let ticker in this.zrcTokenPropertiesListMap_) {
-            let tradeVolumeInZil = this.getTradeVolumeInZil(ticker);
+            let tradeVolumeInZil = this.get24hTradeVolumeInZil(ticker);
             if (!tradeVolumeInZil) {
                 continue;
             }
 
             let totalVolumeFiat = (1.0 * zilPriceInFiatFloat * tradeVolumeInZil);
             let totalVolumeFiatString = commafyNumberToString(totalVolumeFiat, /* decimals= */ 0);
-            this.bindViewTotalTradeVolumeFiat(totalVolumeFiatString, ticker);
+            this.bindView24hVolumeFiat(totalVolumeFiatString, ticker);
         }
     }
 
@@ -74,7 +74,7 @@ class ZilswapTradeVolumeStatus {
         if (this.zilswapDex24hTradeVolumeData_) {
             beforeRpcCallback();
             this.computeCoinToVolumeMap();
-            this.bindViewTradeVolumeFiat();
+            this.bindView24hTradeVolumeFiat();
             onSuccessCallback();
         }
         this.computeDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback);
@@ -95,7 +95,7 @@ class ZilswapTradeVolumeStatus {
             function (data) {
                 self.zilswapDex24hTradeVolumeData_ = data;
                 self.computeCoinToVolumeMap();
-                self.bindViewTradeVolumeFiat();
+                self.bindView24hTradeVolumeFiat();
                 onSuccessCallback();
             },
             /* errorCallback= */
@@ -105,8 +105,8 @@ class ZilswapTradeVolumeStatus {
     }
 
     // Exception, no need reset
-    bindViewTotalTradeVolumeFiat(totalVolumeFiat, ticker) {
-        $('#' + ticker + '_lp_total_volume_fiat').text(totalVolumeFiat);
+    bindView24hVolumeFiat(totalVolumeFiat, ticker) {
+        $('#' + ticker + '_lp_24h_volume_fiat').text(totalVolumeFiat);
     }
 }
 
