@@ -32,12 +32,14 @@
     --cyan-focus-2: #117a8b; 
     --cyan-focus-3: #10707f; 
     --cyan-focus-4: #0f6674; 
+    --cyan-bg: #c6e2e7;
 
     --cyan-dark: #6dc4d1;
     --cyan-dark-focus-1: #5da5b0; 
     --cyan-dark-focus-2: #569ba6; 
     --cyan-dark-focus-3: #518f99; 
     --cyan-dark-focus-4: #4a838c; 
+    --cyan-dark-bg: #263a3e;
 
     --cyan-light-alpha-30: rgba(23, 162, 184, 0.3);
     --cyan-light-alpha-20: rgba(23, 162, 184, 0.2);
@@ -105,6 +107,7 @@
     --info-focus-2: var(--cyan-focus-2);
     --info-focus-3: var(--cyan-focus-3);
     --info-focus-4: var(--cyan-focus-4);
+    --info-bg: var(--cyan-bg);
 
     --light: var(--off-white);
     --light-focus: var(--off-white-focus);
@@ -164,6 +167,7 @@
     --info-focus-2: var(--cyan-dark-focus-2);
     --info-focus-3: var(--cyan-dark-focus-3);
     --info-focus-4: var(--cyan-dark-focus-4);
+    --info-bg: var(--cyan-dark-bg);
 
     --light: var(--gray-dark);
     --light-focus: var(--gray-dark-focus);
@@ -5568,7 +5572,7 @@ a.badge-dark.focus, a.badge-dark:focus {
     height: 1rem;
     overflow: hidden;
     font-size: .75rem;
-    background-color: #e9ecef;
+    background-color: var(--info-bg);
     border-radius: .25rem
 }
 
@@ -5583,7 +5587,7 @@ a.badge-dark.focus, a.badge-dark:focus {
     color: var(--white);
     text-align: center;
     white-space: nowrap;
-    background-color: var(--blue);
+    background-color: var(--info);
     transition: width .6s ease
 }
 
@@ -6847,7 +6851,7 @@ a.bg-success:focus, a.bg-success:hover, button.bg-success:focus, button.bg-succe
 }
 
 .bg-info {
-    background-color: var(--cyan)!important
+    background-color: var(--info)!important
 }
 
 a.bg-info:focus, a.bg-info:hover, button.bg-info:focus, button.bg-info:hover {

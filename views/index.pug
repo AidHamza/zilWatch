@@ -46,6 +46,10 @@ block content
                     span= 'Price (ZIL)'
                   th(style='text-align: right; white-space: nowrap; width: 3%;' )
                     span='24h %'
+                  th(style='text-align: right; white-space: nowrap; width: 10%;' )
+                    span= '24h Low'
+                    span(class='ml-1 mr-1')='/'
+                    span= 'High'
                   th(style='text-align: right; white-space: nowrap; width: 7%;' )
                     span= 'Price'
                     span= ' ('
@@ -81,28 +85,35 @@ block content
               tbody(class='table-background-color')
                 each coinProperties, key in coinMap 
                   tr
-                    th(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap;')
+                    th(scope='row' style='display:table-cell; white-space: nowrap; vertical-align: middle;')
                       img(height='18' width='18' src=coinProperties.logo_url loading='lazy')
                       span(class='ml-2')= coinProperties.ticker
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(class=coinProperties.ticker+'_price_zil')= 'Loading...'
-                    td(id='public_'+coinProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap;' )
+                    td(class='pr-3' id='public_'+coinProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id='public_'+coinProperties.ticker+'_price_zil_percent_change_24h')
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                      div(class='progress' style='height: 0.4rem; margin-top: 0.2rem;')
+                        div(id=coinProperties.ticker+'_price_24h_low_high_progress' class='progress-bar' role='progressbar' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
+                      span(class='currency_symbol mr-1')= '$'
+                      span(id=coinProperties.ticker+'_price_24h_low_fiat')= ''
+                      span(class='ml-1 mr-1')='/'
+                      span(id=coinProperties.ticker+'_price_24h_high_fiat')= ''
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(class=coinProperties.ticker+'_price_fiat')= 'Loading...'
-                    td(id='public_'+coinProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap' )
+                    td(class='pr-3' id='public_'+coinProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id='public_'+coinProperties.ticker+'_price_fiat_percent_change_24h')
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id=coinProperties.ticker+'_lp_24h_volume_fiat')= '0'
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id=coinProperties.ticker+'_lp_total_pool_fiat')
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id=coinProperties.ticker+'_circulating_supply_coin')= '0'
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id=coinProperties.ticker+'_circulating_supply_fiat')= '0'
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id=coinProperties.ticker+'_total_supply_coin')
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id=coinProperties.ticker+'_total_supply_fiat')
 
                 each circulatingSupply, ticker in zrcTokensCirculatingSupply
@@ -114,6 +125,9 @@ block content
                     div(style='display:none')
                       span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
                       span(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h')
+                      span(id=tokenProperties.ticker+'_price_24h_low_high_progress' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
+                      span(id=tokenProperties.ticker+'_price_24h_low')= ''
+                      span(id=tokenProperties.ticker+'_price_24h_high')= ''
                       span(id='public_'+tokenProperties.ticker+'_price_fiat')= 'Loading...'
                       span(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h')
                       span(id=tokenProperties.ticker+'_lp_24h_volume_fiat')= '0'
@@ -127,30 +141,36 @@ block content
                     - continue
 
                   tr(style=trStyle)
-                    th(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap;')
+                    th(scope='row' style='display:table-cell; white-space: nowrap; vertical-align: middle;')
                       img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
                       span(class='ml-2')= tokenProperties.ticker
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
-                    td(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap;' )
+                    td(class='pr-3' id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h')
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                      div(class='progress' style='height: 0.4rem; margin-top: 0.2rem;')
+                        div(id=tokenProperties.ticker+'_price_24h_low_high_progress' class='progress-bar' role='progressbar' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
+                      span(id=tokenProperties.ticker+'_price_24h_low')= ''
+                      span(class='ml-1 mr-1')='/'
+                      span(id=tokenProperties.ticker+'_price_24h_high')= ''
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id='public_'+tokenProperties.ticker+'_price_fiat')= 'Loading...'
-                    td(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap;' )
+                    td(class='pr-3' id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h')
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id=tokenProperties.ticker+'_lp_24h_volume_fiat')= '0'
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id=tokenProperties.ticker+'_lp_total_pool_fiat')= 'Loading...'
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id=tokenProperties.ticker+'_circulating_supply_zrc')= '0'
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id=tokenProperties.ticker+'_circulating_supply_fiat')= '0'
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id=tokenProperties.ticker+'_total_supply_zrc')= '0'
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                       span(id=tokenProperties.ticker+'_total_supply_fiat')= '0'
-                    
+
                     span(id='public_'+tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
                     span(id='public_'+tokenProperties.ticker+'_price_fiat_24h_ago' style='display: none;')
 
@@ -1042,6 +1062,9 @@ block script
     var zrcTokensTotalSupplyData = !{JSON.stringify(zrcTokensTotalSupply)};
     var zrcTokensCirculatingSupplyData = !{JSON.stringify(zrcTokensCirculatingSupply)};
 
+    var zrcTokenPrice24hLowData = !{JSON.stringify(zrcTokenPrice24hLow)};
+    var zrcTokenPrice24hHighData = !{JSON.stringify(zrcTokenPrice24hHigh)};
+
     const barChartDrawer = new BarChartDrawer();
 
     const coinPriceStatus = new CoinPriceStatus(coinMap, currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
@@ -1052,6 +1075,7 @@ block script
     const netWorthStatus = new NetWorthStatus(barChartDrawer, coinPriceStatus, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus);
 
     const coinMarketStatus = new CoinMarketStatus(coinMap, coinPriceStatus, coinMarketCoingeckoData);
+    const zilswapZrcPrice24hLowHighStatus = new ZilswapZrcPrice24hLowHighStatus(zrcTokenPropertiesListMap, zilswapDexStatus, zrcTokenPrice24hLowData, zrcTokenPrice24hHighData);
 
     const zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDex24hTradeVolumeData)
     const uniqueCoinStatus = new UniqueCoinStatus(zrcTokenPropertiesListMap, barChartDrawer, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingCarbonStatus);
@@ -1073,10 +1097,22 @@ block script
         refreshStakingBalanceStatus();
         refreshZilswapTradeVolumeStatus();
         refreshCoinMarketStatus();
+        refreshZilswapZrcPrice24hLowHighStatus();
       }
     }
 
     const blockchainStatusSocketConnection = new BlockchainStatusSocketConnection(newBlockListenerCallback);
+
+    /** Refresh functions */
+    function refreshZilswapZrcPrice24hLowHighStatus() {
+      zilswapZrcPrice24hLowHighStatus.computeDataRpc(
+        /* beforeRpcCallback= */
+        function () {},
+        /* onSuccessCallback= */
+        function () {},
+        /* onErrorCallback= */
+        function () {});
+    }
 
     /** Refresh functions */
     function refreshCoinMarketStatus() {
@@ -1164,6 +1200,7 @@ block script
           uniqueCoinStatus.onZilswapDexStatusChange();
           zilswapLpFeeRewardStatus.onZilswapDexStatusChange();
           zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
+          zilswapZrcPrice24hLowHighStatus.onZilswapDexStatusChange();
 
           swapStatus.onZilswapDexStatusChange();
 
@@ -1188,6 +1225,7 @@ block script
           netWorthStatus.onZilswapDexStatusChange();
           uniqueCoinStatus.onZilswapDexStatusChange();
           zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
+          zilswapZrcPrice24hLowHighStatus.onZilswapDexStatusChange();
 
           swapStatus.onZilswapDexStatusChange();
           $('#price_table').DataTable().rows().invalidate().draw();

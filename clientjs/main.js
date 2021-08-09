@@ -10,8 +10,14 @@ document.addEventListener("DOMContentLoaded", () => {
             decimal: ".",
             thousands: ",",
         },
+        columnDefs: [{
+            // Disable sorting for column index 3
+            // 24h Low / High (sorting not supported)
+            targets: 3,
+            orderable: false
+        }],
         order: [],
-        bInfo : false,
+        bInfo: false,
     });
 
     // Get the user's theme preference from local storage, if it's available
@@ -35,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     computeZilswapDexPublicStatus();
     computeZilswapTradeVolumeStatus();
     computeCoinMarketStatus();
+    computeZilswapZrcPrice24hLowHighStatus();
 
     // Loop forever to refresh coin price in fiat
     clearInterval(activeIntervalId);
@@ -122,7 +129,7 @@ $("#wallet_copy_button").on('click', function () {
 
     // Show copied text for 5 seconds
     $('#wallet_copy_message').text("Copied!");
-    setTimeout(function() {
+    setTimeout(function () {
         $('#wallet_copy_message').text("");
     }, 5000);
 });
@@ -205,8 +212,16 @@ function computeZilswapTotalLpZwapReward(walletAddressBech32) {
         function () {});
 }
 
+function computeZilswapZrcPrice24hLowHighStatus() {
+    zilswapZrcPrice24hLowHighStatus.computeDataRpcIfDataNoExist(
+        /* beforeRpcCallback= */
+        function () {},
+        /* onSuccessCallback= */
+        function () {},
+        /* onErrorCallback= */
+        function () {});
+}
 
-/** Refresh functions */
 function computeCoinMarketStatus() {
     coinMarketStatus.computeDataRpcIfDataNoExist(
         /* beforeRpcCallback= */
@@ -257,6 +272,7 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
             uniqueCoinStatus.onZilswapDexStatusChange();
             zilswapLpFeeRewardStatus.onZilswapDexStatusChange();
             zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
+            zilswapZrcPrice24hLowHighStatus.onZilswapDexStatusChange();
 
             swapStatus.onZilswapDexStatusChange();
             $('#price_table').DataTable().rows().invalidate().draw();
@@ -280,6 +296,7 @@ function computeZilswapDexPublicStatus() {
             netWorthStatus.onZilswapDexStatusChange();
             uniqueCoinStatus.onZilswapDexStatusChange();
             zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
+            zilswapZrcPrice24hLowHighStatus.onZilswapDexStatusChange();
 
             swapStatus.onZilswapDexStatusChange();
             $('#price_table').DataTable().rows().invalidate().draw();

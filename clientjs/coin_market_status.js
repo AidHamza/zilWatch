@@ -46,6 +46,30 @@ class CoinMarketStatus {
         return this.coinToMarketDataMap_[coinSymbol].total_supply;
     }
 
+    get24hLow(coinSymbol) {
+        // If coin symbol is not supported.
+        if (!this.coinMap_[coinSymbol]) {
+            return null;
+        }
+        return this.coinToMarketDataMap_[coinSymbol].low_24h_in_token;
+    }
+
+    get24hHigh(coinSymbol) {
+        // If coin symbol is not supported.
+        if (!this.coinMap_[coinSymbol]) {
+            return null;
+        }
+        return this.coinToMarketDataMap_[coinSymbol].high_24h_in_token;
+    }
+
+    getProgress24hPercent(coinSymbol) {
+        // If coin symbol is not supported.
+        if (!this.coinMap_[coinSymbol]) {
+            return null;
+        }
+        return this.coinToMarketDataMap_[coinSymbol].progress_24h_in_percent;
+    }
+
     computeCoinToMarketDataMap() {
         if (!this.coinMarketCoingeckoData_) {
             return null;
@@ -65,6 +89,10 @@ class CoinMarketStatus {
             let tradeVolumeInUsd = parseFloat(this.coinMarketCoingeckoData_[i].total_volume);
             let circulatingSupply = parseFloat(this.coinMarketCoingeckoData_[i].circulating_supply);
             let totalSupply = parseFloat(this.coinMarketCoingeckoData_[i].total_supply);
+            
+            let price24hLowInUsd = parseFloat(this.coinMarketCoingeckoData_[i].low_24h);
+            let price24hHighInUsd = parseFloat(this.coinMarketCoingeckoData_[i].high_24h);
+
             // Some coin doesn't have a total supply or max supply
             if (!totalSupply) {
                 totalSupply = null;
@@ -75,11 +103,32 @@ class CoinMarketStatus {
                 tradeVolumeInToken = 1.0 * tradeVolumeInUsd / currentPriceUsd;
             }
 
+            let price24hLowInToken = null;
+            let price24hHighInToken = null;
+            let progress24hInPercent = null;
+            if (currentPriceUsd && price24hLowInUsd && price24hHighInUsd) {
+                price24hLowInToken = 1.0 * price24hLowInUsd / currentPriceUsd;
+                price24hHighInToken = 1.0 * price24hHighInUsd / currentPriceUsd;
+
+                let normalizedCurrentPrice = currentPriceUsd - price24hLowInUsd;
+                if (normalizedCurrentPrice < 0) {
+                    normalizedCurrentPrice = 0;
+                }
+                let normalizedMaxPrice = price24hHighInUsd - price24hLowInUsd;
+                if (normalizedCurrentPrice > normalizedMaxPrice) {
+                    normalizedCurrentPrice = normalizedMaxPrice;
+                }
+                progress24hInPercent = 100.0 * normalizedCurrentPrice / normalizedMaxPrice;
+            }
+
             if (tradeVolumeInToken && circulatingSupply) {
                 this.coinToMarketDataMap_[currCoinSymbol] = {
                     trade_volume_in_token: tradeVolumeInToken,
                     circulating_supply: circulatingSupply,
                     total_supply: totalSupply,
+                    low_24h_in_token: price24hLowInToken,
+                    high_24h_in_token: price24hHighInToken,
+                    progress_24h_in_percent: progress24hInPercent,
                 }
             }
         }
@@ -125,6 +174,14 @@ class CoinMarketStatus {
     }
 
     bindViewIfDataExist() {
+        let zilPriceInFiatFloat = 0;
+        let decimals = 2;
+        if (this.coinPriceStatus_) {
+            zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
+            if (zilPriceInFiatFloat) {
+                decimals = (zilPriceInFiatFloat > 1000) ? 0 : 2;
+            }
+        }
 
         for (let coinTicker in this.coinMap_) {
             if (!this.coinToMarketDataMap_[coinTicker]) {
@@ -176,6 +233,34 @@ class CoinMarketStatus {
                 let coinTradeVolumeFiatString = commafyNumberToString(coinTradeVolumeFiat, /* decimals= */ 0);
                 this.bindView24hVolumeFiat(coinTradeVolumeFiatString, coinTicker);
             }
+
+            // 24h low & high in fiat
+            let coinPrice24hLowInToken = this.get24hLow(coinTicker);
+            let coinPrice24hHighInToken = this.get24hHigh(coinTicker);
+            if (coinPrice24hLowInToken && coinPrice24hHighInToken) {
+                // Low
+                let coinPrice24hLowFiat = 1.0 * coinPriceInFiatFloat * coinPrice24hLowInToken;
+                let coinPrice24hLowFiatString = commafyNumberToString(coinPrice24hLowFiat, decimals);
+                if (coinTicker === 'ZIL') {
+                    // Special case for zilliqa, 0 decimals to show more decimal point
+                    coinPrice24hLowFiatString = convertNumberQaToDecimalString(coinPrice24hLowFiat, /* decimals= */ 0);
+                }
+                this.bindView24hLowFiat(coinPrice24hLowFiatString, coinTicker);
+            
+                // High
+                let coinPrice24hHighFiat = 1.0 * coinPriceInFiatFloat * coinPrice24hHighInToken;
+                let coinPrice24hHighFiatString = commafyNumberToString(coinPrice24hHighFiat, decimals);
+                if (coinTicker === 'ZIL') {
+                    // Special case for zilliqa, 0 decimals to show more decimal point
+                    coinPrice24hHighFiatString = convertNumberQaToDecimalString(coinPrice24hHighFiat, /* decimals= */ 0);
+                }
+                this.bindView24hHighFiat(coinPrice24hHighFiatString, coinTicker);
+
+                let progress24hInPercent = this.getProgress24hPercent(coinTicker);
+                if (progress24hInPercent !== null && typeof progress24hInPercent !== 'undefined') {
+                    this.bindViewProgress24hPercent(progress24hInPercent, coinTicker);
+                }
+            }
         }
     }
 
@@ -202,6 +287,23 @@ class CoinMarketStatus {
     /** Private static method. Public. */
     bindViewTokenTotalSupplyFiat(tokenTotalSupplyFiat, ticker) {
         $('#' + ticker + '_total_supply_fiat').text(tokenTotalSupplyFiat);
+    }
+
+    /** Private static method. Public. */
+    bindView24hLowFiat(coinPrice24hLowFiat, ticker) {
+        $('#' + ticker + '_price_24h_low_fiat').text(coinPrice24hLowFiat);
+    }
+
+    /** Private static method. Public. */
+    bindView24hHighFiat(coinPrice24hHighFiat, ticker) {
+        $('#' + ticker + '_price_24h_high_fiat').text(coinPrice24hHighFiat);
+    }
+
+    // Exception, no need reset
+    bindViewProgress24hPercent(currentPricePercent, ticker) {
+        let currentPricePercentString = currentPricePercent.toString();
+        $('#' + ticker + '_price_24h_low_high_progress').attr("aria-valuenow", currentPricePercentString);
+        $('#' + ticker + '_price_24h_low_high_progress').width(currentPricePercentString + '%');
     }
 }
 
