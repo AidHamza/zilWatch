@@ -1,5 +1,6 @@
 var ua = require('universal-analytics');
-var visitor = ua('UA-194858212-1');
+var ua_key = 'UA-194858212-1';
+var visitor = ua(ua_key);
 
 var redis = require('redis')
 var express = require('express');
@@ -13,7 +14,7 @@ redisClient.on("error", function (error) {
 
 /* GET api for token price low-high with a given range (e.g., 24h). */
 router.get('/lowhigh', function (req, res, next) {
-  visitor.pageview("/api/tokenprice/lowhigh" + req.url, "https://zilwatch.io", "Token Price API").send();
+  visitor.pageview("/api/tokenprice" + req.url, "https://zilwatch.io", "Token Price API").send();
 
   let queryRange = req.query.range;
   if (!queryRange) {
