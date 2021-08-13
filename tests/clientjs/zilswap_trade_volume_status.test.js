@@ -94,6 +94,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             'ZPAINT': '0',
             'ZWALL': '0',
             'SHARDS': '0',
+            'BLOX': '0',
         };
 
         let expectedTotalVolumeFiatIdrMap = {
@@ -127,6 +128,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             'ZPAINT': '0',
             'ZWALL': '0',
             'SHARDS': '0',
+            'BLOX': '0',
         };
 
         it('set proper object. computed and binded to view.', function () {

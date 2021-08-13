@@ -7,11 +7,12 @@ var ZilswapDexStatus = require('../../clientjs/zilswap_dex_status.js');
 var ZilswapZrcPrice24hLowHighStatus = require('../../clientjs/zilswap_zrc_price_24h_low_high_status.js');
 var Constants = require('../../constants.js');
 
-describe('ZilswapTradeVolumeStatus', function () {
+describe('ZilswapZrcPrice24hLowHighStatus', function () {
 
     let zrcTokenPrice24hLowData = {
         "AXT": 0.03729530323728581,
         "BOLT": 0.254312219348629,
+        "BLOX": 0,
         "CARB": 6.951811322272539,
         "DogZilliqa": 197.48189928646755,
         "DUCK": 3289.8890315245276,
@@ -46,6 +47,7 @@ describe('ZilswapTradeVolumeStatus', function () {
     let zrcTokenPrice24hHighData = {
         "AXT": 1.4681564649936805,
         "BOLT": 0.6657911027679212,
+        "BLOX": 0,
         "CARB": 15.96995889627357,
         "DogZilliqa": 2877.299892173915,
         "DUCK": 11363.109295298736,
@@ -124,6 +126,7 @@ describe('ZilswapTradeVolumeStatus', function () {
         // );
         let expectedMap = {
             'BOLT': ['0.25', '0.67', '12.182022045813543', '12.182022045813543%'],
+            'BLOX': ['', '', '0', '0%'],
             'CARB': ['6.95', '15.97', '91.10339995045994', '91.10339995045994%'],
             'DogZilliqa': ['197.48', '2,877.30', '46.206437564886706', '46.206437564886706%'],
             'DUCK': ['3,289.89', '11,363.11', '50.09721057667441', '50.09721057667441%'],

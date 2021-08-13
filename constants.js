@@ -202,6 +202,14 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil1x6z064fkssmef222gkhz3u5fhx57kyssn7vlu0/logo",
     "decimals": 18,
   },
+  'BLOX': {
+    "ticker": "BLOX",
+    "name": "Blox Token",
+    "address": "zil1gf5vxndx44q6fn025fwdaajnrmgvngdzel0jzp",
+    "address_base16": "0x4268C34dA6Ad41a4cDeAa25cdEF6531Ed0c9a1A2",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1gf5vxndx44q6fn025fwdaajnrmgvngdzel0jzp/logo",
+    "decimals": 2,
+  },
   'CARB': {
     "ticker": "CARB",
     "name": "Carbon",
@@ -431,6 +439,7 @@ const zrcTokenPropertiesListMap = {
 // IF changed, also change in zilWatch-backend/core/constants.py
 const emptyZrcTokensSupply = {
   'BOLT': '0',
+  'BLOX': '0',
   'CARB': '0',
   'DogZilliqa': '0',
   'DUCK': '0',
