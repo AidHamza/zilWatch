@@ -47,6 +47,7 @@ let expectedZrcPriceMap = {
     'ZWALL': ['0', '0', '0', '0'],
     'SHARDS': ['0', '0', '0', '0'],
     'BLOX': ['0', '0', '0', '0'],
+    'SIMP': ['0', '0', '0', '0'],
 }
 
 // The array represents: [priceZil24h, publicPriceInZil24h, publicPriceInZil24hPercentChange, publicPriceFiat24hAgo, publicPriceFiat24hAgoPercentChange]
@@ -85,6 +86,7 @@ let expectedZrcPrice24hAgoMap = {
     'ZWALL': ['', '', '', '', ''],
     'SHARDS': ['', '', '', '', ''],
     'BLOX': ['', '', '', '', ''],
+    'SIMP': ['', '', '', '', ''],
 }
 
 let expectedZrcPriceIdrMap = {
@@ -121,6 +123,7 @@ let expectedZrcPriceIdrMap = {
     'ZWALL': ['0', '0', '0', '0'],
     'SHARDS': ['0', '0', '0', '0'],
     'BLOX': ['0', '0', '0', '0'],
+    'SIMP': ['0', '0', '0', '0'],
 }
 
 let expectedZrcPriceIdr24hAgoMap = {
@@ -157,6 +160,7 @@ let expectedZrcPriceIdr24hAgoMap = {
     'ZWALL': ['', '', '', '', ''],
     'SHARDS': ['', '', '', '', ''],
     'BLOX': ['', '', '', '', ''],
+    'SIMP': ['', '', '', '', ''],
 }
 
 /* ============ Personal =========== */
@@ -209,6 +213,7 @@ let expectedPersonalBalanceMap = {
     'ZWALL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'SHARDS': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'BLOX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'SIMP': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 let expectedPersonalBalanceWith24hAgoMap = {
@@ -245,6 +250,7 @@ let expectedPersonalBalanceWith24hAgoMap = {
     'ZWALL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'SHARDS': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'BLOX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'SIMP': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 let expectedPersonalBalanceWith24hAgoIdrMap = {
@@ -281,6 +287,7 @@ let expectedPersonalBalanceWith24hAgoIdrMap = {
     'ZWALL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'SHARDS': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'BLOX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'SIMP': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 describe('ZilswapDexStatus', function () {
@@ -509,6 +516,7 @@ describe('ZilswapDexStatus', function () {
             'ZWALL': ['0', '0', '0', '0'],
             'SHARDS': ['0', '0', '0', '0'],
             'BLOX': ['0', '0', '0', '0'],
+            'SIMP': ['0', '0', '0', '0'],
         };
 
         it('circulating and total supply is set and shown in view ', function () {
