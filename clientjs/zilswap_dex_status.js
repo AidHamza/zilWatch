@@ -20,7 +20,7 @@ class ZilswapDexStatus {
         this.zilswapPairPublicStatusMap_ = {};
         this.zilswapPairPublicStatus24hAgoMap_ = {};
 
-        this.zilswapPairPersonalStatusMap_ = {}; 
+        this.zilswapPairPersonalStatusMap_ = {};
         this.zilswapPairPersonalStatus24hAgoMap_ = {};
 
         // private variable
@@ -32,25 +32,25 @@ class ZilswapDexStatus {
 
     hasBalanceData() {
         try {
-            if (this.zilswapDexSmartContractStateData_
-                && this.zilswapDexSmartContractStateData_.result
-                && this.zilswapDexSmartContractStateData_.result.balances
-                && this.zilswapDexSmartContractStateData_.result.total_contributions) {
-                    return true;
-                }
+            if (this.zilswapDexSmartContractStateData_ &&
+                this.zilswapDexSmartContractStateData_.result &&
+                this.zilswapDexSmartContractStateData_.result.balances &&
+                this.zilswapDexSmartContractStateData_.result.total_contributions) {
+                return true;
+            }
         } catch (ex) {
             console.log(ex);
         }
         return false;
     }
-    
+
     has24hAgoData() {
         try {
-            if (this.zilswapDexSmartContractState24hAgoData_
-                && this.zilswapDexSmartContractState24hAgoData_.result
-                && this.zilswapDexSmartContractState24hAgoData_.result.total_contributions) {
-                    return true;
-                }
+            if (this.zilswapDexSmartContractState24hAgoData_ &&
+                this.zilswapDexSmartContractState24hAgoData_.result &&
+                this.zilswapDexSmartContractState24hAgoData_.result.total_contributions) {
+                return true;
+            }
         } catch (ex) {
             console.log(ex);
         }
@@ -65,7 +65,7 @@ class ZilswapDexStatus {
     }
 
     resetPersonal() {
-        this.zilswapPairPersonalStatusMap_ = {}; 
+        this.zilswapPairPersonalStatusMap_ = {};
         this.zilswapPairPersonalStatus24hAgoMap_ = {};
 
         this.resetPersonalView();
@@ -94,7 +94,19 @@ class ZilswapDexStatus {
             return;
         }
         let hasBalanceData = this.hasBalanceData();
+
+        // Special case for XPORT: 100 XPORT = 1 PORT
+        let xportKey = 'XPORT';
+        let hasXport = false;
+        if (xportKey in this.zrcTokenPropertiesListMap_) {
+            hasXport = true;
+        }
         for (let key in this.zrcTokenPropertiesListMap_) {
+            // Special case for XPORT: 100 XPORT = 1 PORT
+            if (hasXport && key === xportKey) {
+                continue;
+            }
+
             let zrcTokenProperties = this.zrcTokenPropertiesListMap_[key];
             let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();
 
@@ -105,7 +117,13 @@ class ZilswapDexStatus {
             }
             // Set public data
             this.zilswapPairPublicStatusMap_[key] = zilswapSinglePairPublicStatus;
-            
+
+            // Special case for XPORT: 100 XPORT = 1 PORT
+            if (hasXport && key === 'PORT') {
+                let xportZilswapSinglePairPublicStatus = new ZilswapSinglePairPublicStatus(zilswapSinglePairPublicStatus.totalPoolZilAmount, zilswapSinglePairPublicStatus.totalPoolZrcTokenAmount * 100);
+                this.zilswapPairPublicStatusMap_[xportKey] = xportZilswapSinglePairPublicStatus;
+            }
+
             // Compute personal status
             if (!hasBalanceData || !this.walletAddressBase16_) {
                 continue;
@@ -128,6 +146,11 @@ class ZilswapDexStatus {
             this.zilswapDexSmartContractState24hAgoData_.result.balances = this.zilswapDexSmartContractStateData_.result.balances;
         }
         for (let key in this.zrcTokenPropertiesListMap_) {
+            // Special case for XPORT: 100 XPORT = 1 PORT
+            if (hasXport && key === xportKey) {
+                continue;
+            }
+
             let zrcTokenProperties = this.zrcTokenPropertiesListMap_[key];
             let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();
 
@@ -137,6 +160,12 @@ class ZilswapDexStatus {
             }
             // Set public data
             this.zilswapPairPublicStatus24hAgoMap_[key] = zilswapSinglePairPublicStatus24hAgo;
+
+            // Special case for XPORT: 100 XPORT = 1 PORT
+            if (hasXport && key === 'PORT') {
+                let xportZilswapSinglePairPublicStatus24hAgo = new ZilswapSinglePairPublicStatus(zilswapSinglePairPublicStatus24hAgo.totalPoolZilAmount, zilswapSinglePairPublicStatus24hAgo.totalPoolZrcTokenAmount * 100);
+                this.zilswapPairPublicStatus24hAgoMap_[xportKey] = xportZilswapSinglePairPublicStatus24hAgo;
+            }
 
             if (!hasBalanceData || !this.walletAddressBase16_) {
                 continue;
@@ -194,7 +223,7 @@ class ZilswapDexStatus {
      * 
      * Any error will result in returning null.
      */
-     getZilswapPairPersonalStatus(zrcSymbol) {
+    getZilswapPairPersonalStatus(zrcSymbol) {
         return this.zilswapPairPersonalStatusMap_[zrcSymbol];
     }
 
@@ -316,7 +345,7 @@ class ZilswapDexStatus {
     /** Private method */
     bindViewPersonalDataIfDataExist() {
         for (let ticker in this.zrcTokenPropertiesListMap_) {
-            
+
             // To get ZilswapLp balance and Total pool status
             let zilswapSinglePairPersonalStatus = this.getZilswapPairPersonalStatus(ticker);
             if (!zilswapSinglePairPersonalStatus) {
@@ -598,7 +627,7 @@ class ZilswapDexStatus {
         $('#' + ticker + '_lp_balance_zil_percent_change_24h').text(balanceInZilPercentChange24h);
         bindViewPercentChangeColorContainer('#' + ticker + '_lp_balance_zil_percent_change_24h_container', balanceInZilPercentChange24h);
     }
-    
+
     /** Private static method. Personal. */
     bindViewZrcTokenLpBalance(poolSharePercent, zilBalance, zrcBalance, balanceInZil, ticker) {
         $('#' + ticker + '_lp_pool_share_percent').text(poolSharePercent);
@@ -677,6 +706,7 @@ if (typeof exports !== 'undefined') {
         getZilswapSinglePairShareRatio = TokenUtils.getZilswapSinglePairShareRatio;
         getZilswapSinglePairPublicStatusFromDexState = TokenUtils.getZilswapSinglePairPublicStatusFromDexState;
         getZilswapSinglePairPersonalStatus = TokenUtils.getZilswapSinglePairPersonalStatus;
+        ZilswapSinglePairPublicStatus = TokenUtils.ZilswapSinglePairPublicStatus;
     }
 
     if (typeof $ === 'undefined') {
