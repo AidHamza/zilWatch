@@ -2,6 +2,8 @@
 class ZilswapLpZwapRewardStatus {
 
     constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ walletAddressBech32, /* nullable= */ epochInfoData, /* nullable= */ contractAddressToRewardMapData, /* nullable= */ pastRewardListData) {
+        this.zilswapRewardDistributorAddressBase16_ = "0xe5e274f59482759c1a0c13682ff3ec3efeb22d2a";
+        
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
         this.coinPriceStatus_ = coinPriceStatus;
@@ -42,7 +44,10 @@ class ZilswapLpZwapRewardStatus {
     }
 
     computeLpRewardNextEpochLoaded() {
-        let contractAddressToRewardMap = this.contractAddressToRewardMapData_;
+        if (!this.contractAddressToRewardMapData_) {
+            return;
+        }
+        let contractAddressToRewardMap = this.contractAddressToRewardMapData_[this.zilswapRewardDistributorAddressBase16_];
         if (!contractAddressToRewardMap) {
             return;
         }
@@ -264,7 +269,7 @@ class ZilswapLpZwapRewardStatus {
         beforeRpcCallback();
         queryUrlGetAjax(
             /* urlToGet= */
-            "https://stats.zilswap.org/distribution/current/" + self.walletAddressBech32_,
+            "https://stats.zilswap.org/distribution/estimated_amounts/" + self.walletAddressBech32_,
             /* successCallback= */
             function (data) {
                 self.contractAddressToRewardMapData_ = data;
