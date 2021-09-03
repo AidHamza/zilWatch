@@ -282,21 +282,25 @@ class ZilswapLpZwapRewardStatus {
                 onErrorCallback();
             });
 
-        beforeRpcCallback();
-        queryUrlGetAjax(
-            /* urlToGet= */
-            "https://stats.zilswap.org/distribution/data/" + self.walletAddressBech32_,
-            /* successCallback= */
-            function (data) {
-                self.pastRewardListData_ = data;
-                self.computeLpRewardPastEpochLoaded();
+        // Exception for now, Zilswap changed their stats API and the past epochs data
+        // need to be processed before retrieval.
+        this.bindViewPrevTotalRewardAllLpZwap('-', '-');
+        this.bindViewPrevTotalRewardAllLpFiat('-');
+        // beforeRpcCallback();
+        // queryUrlGetAjax(
+        //     /* urlToGet= */
+        //     "https://stats.zilswap.org/distribution/data/" + self.walletAddressBech32_,
+        //     /* successCallback= */
+        //     function (data) {
+        //         self.pastRewardListData_ = data;
+        //         self.computeLpRewardPastEpochLoaded();
 
-                onSuccessCallback();
-            },
-            /* errorCallback= */
-            function () {
-                onErrorCallback();
-            });
+        //         onSuccessCallback();
+        //     },
+        //     /* errorCallback= */
+        //     function () {
+        //         onErrorCallback();
+        //     });
     }
 
 
