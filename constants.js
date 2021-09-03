@@ -266,6 +266,14 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil14pzuzq6v6pmmmrfjhczywguu0e97djepxt8g3e/logo",
     "decimals": 15
   },
+  'HODL': {
+    "ticker": "HODL",
+    "name": "Hodl",
+    "address": "zil177u3jh5x4hqual22zy7s2ru3gc2y4yq5wnq2un",
+    "address_base16": "0xF7B9195E86Adc1CEfD4a113D050f9146144A9014",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil177u3jh5x4hqual22zy7s2ru3gc2y4yq5wnq2un/logo",
+    "decimals": 0,
+  },
   'MAMBO': {
     "ticker": "MAMBO",
     "name": "Mambo",
@@ -386,6 +394,14 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil180v66mlw007ltdv8tq5t240y7upwgf7djklmwh/logo",
     "decimals": 6,
   },
+  'YODA': {
+    "ticker": "YODA",
+    "name": "Yoda",
+    "address": "zil1vdc79fg75sth96xnt6xmq5f55swcd5t6m5zhvn",
+    "address_base16": "0x6371E2A51eA41772E8d35E8DB05134a41D86d17a",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1vdc79fg75sth96xnt6xmq5f55swcd5t6m5zhvn/logo",
+    "decimals": 5,
+  },
   'ZCH': {
     "ticker": "ZCH",
     "name": "Zilchess",
@@ -455,6 +471,7 @@ const emptyZrcTokensSupply = {
   'FLAT': '0',
   'GARY': '0',
   'gZIL': '0',
+  'HODL': '0',
   'MAMBO': '0',
   'MESSI': '0',
   'PORT': '0',
@@ -470,6 +487,7 @@ const emptyZrcTokensSupply = {
   'XCAD': '0',
   'XPORT': '0',
   'XSGD': '0',
+  'YODA': '0',
   'ZCH': '0',
   'ZLF': '0',
   'ZLP': '0',

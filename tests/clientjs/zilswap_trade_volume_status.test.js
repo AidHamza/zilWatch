@@ -61,6 +61,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             DogZilliqa: 737.56680815808,
             MESSI: 19432.08235202948,
             MAMBO: 132555.35877374487,
+            HODL: 2162.671959339823,
         }
 
         let expectedTotalVolumeFiatUsdMap = {
@@ -96,6 +97,8 @@ describe('ZilswapTradeVolumeStatus', function () {
             'SHARDS': '0',
             'BLOX': '0',
             'SIMP': '0',
+            'HODL': '256',
+            'YODA': '0',
         };
 
         let expectedTotalVolumeFiatIdrMap = {
@@ -131,6 +134,8 @@ describe('ZilswapTradeVolumeStatus', function () {
             'SHARDS': '0',
             'BLOX': '0',
             'SIMP': '0',
+            'HODL': '3,486,227',
+            'YODA': '0',
         };
 
         it('set proper object. computed and binded to view.', function () {

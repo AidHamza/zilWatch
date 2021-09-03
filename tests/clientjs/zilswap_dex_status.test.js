@@ -48,6 +48,8 @@ let expectedZrcPriceMap = {
     'SHARDS': ['0', '0', '0', '0'],
     'BLOX': ['0', '0', '0', '0'],
     'SIMP': ['0', '0', '0', '0'],
+    'HODL': ['0', '0', '0', '0'],
+    'YODA': ['0', '0', '0', '0'],
 }
 
 // The array represents: [priceZil24h, publicPriceInZil24h, publicPriceInZil24hPercentChange, publicPriceFiat24hAgo, publicPriceFiat24hAgoPercentChange]
@@ -87,6 +89,8 @@ let expectedZrcPrice24hAgoMap = {
     'SHARDS': ['', '', '', '', ''],
     'BLOX': ['', '', '', '', ''],
     'SIMP': ['', '', '', '', ''],
+    'HODL': ['', '', '', '', ''],
+    'YODA': ['', '', '', '', ''],
 }
 
 let expectedZrcPriceIdrMap = {
@@ -124,6 +128,8 @@ let expectedZrcPriceIdrMap = {
     'SHARDS': ['0', '0', '0', '0'],
     'BLOX': ['0', '0', '0', '0'],
     'SIMP': ['0', '0', '0', '0'],
+    'HODL': ['0', '0', '0', '0'],
+    'YODA': ['0', '0', '0', '0'],
 }
 
 let expectedZrcPriceIdr24hAgoMap = {
@@ -161,6 +167,8 @@ let expectedZrcPriceIdr24hAgoMap = {
     'SHARDS': ['', '', '', '', ''],
     'BLOX': ['', '', '', '', ''],
     'SIMP': ['', '', '', '', ''],
+    'HODL': ['', '', '', '', ''],
+    'YODA': ['', '', '', '', ''],
 }
 
 /* ============ Personal =========== */
@@ -214,6 +222,8 @@ let expectedPersonalBalanceMap = {
     'SHARDS': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'BLOX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'SIMP': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'HODL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'YODA': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 let expectedPersonalBalanceWith24hAgoMap = {
@@ -251,6 +261,8 @@ let expectedPersonalBalanceWith24hAgoMap = {
     'SHARDS': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'BLOX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'SIMP': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'HODL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'YODA': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 let expectedPersonalBalanceWith24hAgoIdrMap = {
@@ -288,6 +300,8 @@ let expectedPersonalBalanceWith24hAgoIdrMap = {
     'SHARDS': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'BLOX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'SIMP': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'HODL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'YODA': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 describe('ZilswapDexStatus', function () {
@@ -517,6 +531,8 @@ describe('ZilswapDexStatus', function () {
             'SHARDS': ['0', '0', '0', '0'],
             'BLOX': ['0', '0', '0', '0'],
             'SIMP': ['0', '0', '0', '0'],
+            'HODL': ['0', '0', '0', '0'],
+            'YODA': ['0', '0', '0', '0'],
         };
 
         it('circulating and total supply is set and shown in view ', function () {
