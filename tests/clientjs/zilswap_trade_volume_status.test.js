@@ -99,6 +99,9 @@ describe('ZilswapTradeVolumeStatus', function () {
             'SIMP': '0',
             'HODL': '256',
             'YODA': '0',
+            'CONSULT': '0',
+            'UNIDEX': '0',
+            'ZILLEX': '0',
         };
 
         let expectedTotalVolumeFiatIdrMap = {
@@ -136,6 +139,9 @@ describe('ZilswapTradeVolumeStatus', function () {
             'SIMP': '0',
             'HODL': '3,486,227',
             'YODA': '0',
+            'CONSULT': '0',
+            'UNIDEX': '0',
+            'ZILLEX': '0',
         };
 
         it('set proper object. computed and binded to view.', function () {

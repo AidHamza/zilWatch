@@ -50,6 +50,9 @@ let expectedZrcPriceMap = {
     'SIMP': ['0', '0', '0', '0'],
     'HODL': ['0', '0', '0', '0'],
     'YODA': ['0', '0', '0', '0'],
+    'CONSULT': ['0', '0', '0', '0'],
+    'UNIDEX': ['0', '0', '0', '0'],
+    'ZILLEX': ['0', '0', '0', '0'],
 }
 
 // The array represents: [priceZil24h, publicPriceInZil24h, publicPriceInZil24hPercentChange, publicPriceFiat24hAgo, publicPriceFiat24hAgoPercentChange]
@@ -91,6 +94,9 @@ let expectedZrcPrice24hAgoMap = {
     'SIMP': ['', '', '', '', ''],
     'HODL': ['', '', '', '', ''],
     'YODA': ['', '', '', '', ''],
+    'CONSULT': ['', '', '', '', ''],
+    'UNIDEX': ['', '', '', '', ''],
+    'ZILLEX': ['', '', '', '', ''],
 }
 
 let expectedZrcPriceIdrMap = {
@@ -130,6 +136,9 @@ let expectedZrcPriceIdrMap = {
     'SIMP': ['0', '0', '0', '0'],
     'HODL': ['0', '0', '0', '0'],
     'YODA': ['0', '0', '0', '0'],
+    'CONSULT': ['0', '0', '0', '0'],
+    'UNIDEX': ['0', '0', '0', '0'],
+    'ZILLEX': ['0', '0', '0', '0'],
 }
 
 let expectedZrcPriceIdr24hAgoMap = {
@@ -169,6 +178,9 @@ let expectedZrcPriceIdr24hAgoMap = {
     'SIMP': ['', '', '', '', ''],
     'HODL': ['', '', '', '', ''],
     'YODA': ['', '', '', '', ''],
+    'CONSULT': ['', '', '', '', ''],
+    'UNIDEX': ['', '', '', '', ''],
+    'ZILLEX': ['', '', '', '', ''],
 }
 
 /* ============ Personal =========== */
@@ -224,6 +236,9 @@ let expectedPersonalBalanceMap = {
     'SIMP': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'HODL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'YODA': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'CONSULT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'UNIDEX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'ZILLEX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 let expectedPersonalBalanceWith24hAgoMap = {
@@ -263,6 +278,9 @@ let expectedPersonalBalanceWith24hAgoMap = {
     'SIMP': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'HODL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'YODA': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'CONSULT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'UNIDEX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'ZILLEX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 let expectedPersonalBalanceWith24hAgoIdrMap = {
@@ -302,6 +320,9 @@ let expectedPersonalBalanceWith24hAgoIdrMap = {
     'SIMP': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'HODL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'YODA': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'CONSULT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'UNIDEX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+    'ZILLEX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
 }
 
 describe('ZilswapDexStatus', function () {
@@ -533,6 +554,9 @@ describe('ZilswapDexStatus', function () {
             'SIMP': ['0', '0', '0', '0'],
             'HODL': ['0', '0', '0', '0'],
             'YODA': ['0', '0', '0', '0'],
+            'CONSULT': ['0', '0', '0', '0'],
+            'UNIDEX': ['0', '0', '0', '0'],
+            'ZILLEX': ['0', '0', '0', '0'],
         };
 
         it('circulating and total supply is set and shown in view ', function () {

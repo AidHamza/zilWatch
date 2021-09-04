@@ -140,6 +140,9 @@ describe('WalletBalanceStatus', function () {
             'SIMP': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
             'HODL': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
             'YODA': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'CONSULT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'UNIDEX': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'ZILLEX': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
         }
 
         let walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
@@ -409,6 +412,9 @@ describe('WalletBalanceStatus', function () {
             'SIMP': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
             'HODL': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
             'YODA': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'CONSULT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'UNIDEX': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'ZILLEX': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
         }
 
         var expectedIdrDataMap = {
@@ -449,6 +455,9 @@ describe('WalletBalanceStatus', function () {
             'SIMP': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
             'HODL': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
             'YODA': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'CONSULT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'UNIDEX': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+            'ZILLEX': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
         }
 
         var walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
