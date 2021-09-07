@@ -37,22 +37,14 @@ let expectedZrcPriceMap = {
     'SHRK': ['1.768', '1.77', '0.21', '2,344'],
     'XCAD': ['24.85', '24.85', '2.94', '2,907,768'],
     'FLAT': ['5.219', '5.22', '0.62', '12,537'],
-    'RWD': ['0', '0', '0', '0'],
     'DogZilliqa': ['1,436', '1,435.73', '169.69', '5,659'],
-    'MESSI': ['0', '0', '0', '0'],
     'MAMBO': ['0.01177', '0.01', '0.001', '10,299'],
-    'STREAM': ['0', '0', '0', '0'],
-    'SPW': ['0', '0', '0', '0'],
-    'ZPAINT': ['0', '0', '0', '0'],
-    'ZWALL': ['0', '0', '0', '0'],
-    'SHARDS': ['0', '0', '0', '0'],
-    'BLOX': ['0', '0', '0', '0'],
-    'SIMP': ['0', '0', '0', '0'],
-    'HODL': ['0', '0', '0', '0'],
-    'YODA': ['0', '0', '0', '0'],
-    'CONSULT': ['0', '0', '0', '0'],
-    'UNIDEX': ['0', '0', '0', '0'],
-    'ZILLEX': ['0', '0', '0', '0'],
+}
+// If token not in the list, i.e., new token, we add default value into the list
+for (let ticker in Constants.zrcTokenPropertiesListMap) {
+    if (!(ticker in expectedZrcPriceMap)) {
+        expectedZrcPriceMap[ticker] = ['0', '0', '0', '0'];
+    }
 }
 
 // The array represents: [priceZil24h, publicPriceInZil24h, publicPriceInZil24hPercentChange, publicPriceFiat24hAgo, publicPriceFiat24hAgoPercentChange]
@@ -66,7 +58,6 @@ let expectedZrcPrice24hAgoMap = {
     'ZLP': ['32.39', '32.39', '-40.8', '3.41', '-33.5'],
     'REDC': ['15.72', '15.72', '34.1', '1.65', '50.6'],
     'CARB': ['16.97', '16.97', '-10.6', '1.78', '0.5'],
-    'SCO': ['', '', '', '', ''],
     'SRV': ['19.66', '19.66', '45.1', '2.07', '63.0'],
     'DUCK': ['4,723', '4,723.41', '55.3', '496.86', '74.5'],
     'ELONS': ['18,444', '18,444.06', '13.5', '1,940.13', '27.5'],
@@ -79,24 +70,12 @@ let expectedZrcPrice24hAgoMap = {
     'AXT': ['0.6356', '0.64', '13.8', '0.07', '27.8'],
     'GOD': ['0.001433', '0.001', '-65.6', '0.0002', '-61.3'],
     'SHRK': ['2.357', '2.36', '-25.0', '0.25', '-15.7'],
-    'XCAD': ['', '', '', '', ''],
-    'FLAT': ['', '', '', '', ''],
-    'RWD': ['', '', '', '', ''],
-    'DogZilliqa': ['', '', '', '', ''],
-    'MESSI': ['', '', '', '', ''],
-    'MAMBO': ['', '', '', '', ''],
-    'STREAM': ['', '', '', '', ''],
-    'SPW': ['', '', '', '', ''],
-    'ZPAINT': ['', '', '', '', ''],
-    'ZWALL': ['', '', '', '', ''],
-    'SHARDS': ['', '', '', '', ''],
-    'BLOX': ['', '', '', '', ''],
-    'SIMP': ['', '', '', '', ''],
-    'HODL': ['', '', '', '', ''],
-    'YODA': ['', '', '', '', ''],
-    'CONSULT': ['', '', '', '', ''],
-    'UNIDEX': ['', '', '', '', ''],
-    'ZILLEX': ['', '', '', '', ''],
+}
+// If token not in the list, i.e., new token, we add default value into the list
+for (let ticker in Constants.zrcTokenPropertiesListMap) {
+    if (!(ticker in expectedZrcPrice24hAgoMap)) {
+        expectedZrcPrice24hAgoMap[ticker] = ['', '', '', '', ''];
+    }
 }
 
 let expectedZrcPriceIdrMap = {
@@ -123,22 +102,14 @@ let expectedZrcPriceIdrMap = {
     'SHRK': ['1.768', '1.77', '2,850', '31,967,195'],
     'XCAD': ['24.85', '24.85', '40,061', '39,659,208,291'],
     'FLAT': ['5.219', '5.22', '8,413', '170,988,500'],
-    'RWD': ['0', '0', '0', '0'],
     'DogZilliqa': ['1,436', '1,435.73', '2,314,397', '77,188,853'],
-    'MESSI': ['0', '0', '0', '0'],
     'MAMBO': ['0.01177', '0.01', '19', '140,462,769'],
-    'STREAM': ['0', '0', '0', '0'],
-    'SPW': ['0', '0', '0', '0'],
-    'ZPAINT': ['0', '0', '0', '0'],
-    'ZWALL': ['0', '0', '0', '0'],
-    'SHARDS': ['0', '0', '0', '0'],
-    'BLOX': ['0', '0', '0', '0'],
-    'SIMP': ['0', '0', '0', '0'],
-    'HODL': ['0', '0', '0', '0'],
-    'YODA': ['0', '0', '0', '0'],
-    'CONSULT': ['0', '0', '0', '0'],
-    'UNIDEX': ['0', '0', '0', '0'],
-    'ZILLEX': ['0', '0', '0', '0'],
+}
+// If token not in the list, i.e., new token, we add default value into the list
+for (let ticker in Constants.zrcTokenPropertiesListMap) {
+    if (!(ticker in expectedZrcPriceIdrMap)) {
+        expectedZrcPriceIdrMap[ticker] = ['0', '0', '0', '0'];
+    }
 }
 
 let expectedZrcPriceIdr24hAgoMap = {
@@ -150,7 +121,6 @@ let expectedZrcPriceIdr24hAgoMap = {
     'ZLP': ['32.39', '32.39', '-40.8', '48,519', '-36.3'],
     'REDC': ['15.72', '15.72', '34.1', '23,553', '44.3'],
     'CARB': ['16.97', '16.97', '-10.6', '25,414', '-3.8'],
-    'SCO': ['', '', '', '', ''],
     'SRV': ['19.66', '19.66', '45.1', '29,450', '56.2'],
     'DUCK': ['4,723', '4,723.41', '55.3', '7,075,661', '67.1'],
     'ELONS': ['18,444', '18,444.06', '13.5', '27,629,203', '22.2'],
@@ -163,24 +133,12 @@ let expectedZrcPriceIdr24hAgoMap = {
     'AXT': ['0.6356', '0.64', '13.8', '952', '22.4'],
     'GOD': ['0.001433', '0.001', '-65.6', '2', '-62.9'],
     'SHRK': ['2.357', '2.36', '-25.0', '3,531', '-19.3'],
-    'XCAD': ['', '', '', '', ''],
-    'FLAT': ['', '', '', '', ''],
-    'RWD': ['', '', '', '', ''],
-    'DogZilliqa': ['', '', '', '', ''],
-    'MESSI': ['', '', '', '', ''],
-    'MAMBO': ['', '', '', '', ''],
-    'STREAM': ['', '', '', '', ''],
-    'SPW': ['', '', '', '', ''],
-    'ZPAINT': ['', '', '', '', ''],
-    'ZWALL': ['', '', '', '', ''],
-    'SHARDS': ['', '', '', '', ''],
-    'BLOX': ['', '', '', '', ''],
-    'SIMP': ['', '', '', '', ''],
-    'HODL': ['', '', '', '', ''],
-    'YODA': ['', '', '', '', ''],
-    'CONSULT': ['', '', '', '', ''],
-    'UNIDEX': ['', '', '', '', ''],
-    'ZILLEX': ['', '', '', '', ''],
+}
+// If token not in the list, i.e., new token, we add default value into the list
+for (let ticker in Constants.zrcTokenPropertiesListMap) {
+    if (!(ticker in expectedZrcPriceIdr24hAgoMap)) {
+        expectedZrcPriceIdr24hAgoMap[ticker] = ['', '', '', '', ''];
+    }
 }
 
 /* ============ Personal =========== */
@@ -200,129 +158,42 @@ let expectedZrcPriceIdr24hAgoMap = {
 // $('#' + ticker + '_lp_balance_fiat_percent_change_24h').text(),
 // $('#' + ticker + '_lp_balance_fiat').text());
 let expectedPersonalBalanceMap = {
-    'gZIL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'XSGD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'ZWAP': ['', '', '', '', '', '0.000534', '1,134', '0.4324', '2,267', '', '', '267.98'],
-    'PORT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'XPORT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'ZLP': ['', '', '', '', '', '0.00890', '903.1', '47.12', '1,806', '', '', '213.47'],
     'REDC': ['', '', '', '', '', '0.0518', '1,093', '51.84', '2,185', '', '', '258.27'],
     'CARB': ['', '', '', '', '', '0.0129', '1,523', '100.4', '3,046', '', '', '360.02'],
-    'SCO': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'SRV': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'DUCK': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ELONS': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZCH': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'BOLT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZYRO': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZLF': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'GARY': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'RECAP': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'AXT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'GOD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'SHRK': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'XCAD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'FLAT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'RWD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'DogZilliqa': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'MESSI': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'MAMBO': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'STREAM': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'SPW': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZPAINT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZWALL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'SHARDS': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'BLOX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'SIMP': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'HODL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'YODA': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'CONSULT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'UNIDEX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZILLEX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+}
+// If token not in the list, i.e., new token, we add default value into the list
+for (let ticker in Constants.zrcTokenPropertiesListMap) {
+    if (!(ticker in expectedPersonalBalanceMap)) {
+        expectedPersonalBalanceMap[ticker] = ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'];
+    }
 }
 
 let expectedPersonalBalanceWith24hAgoMap = {
-    'gZIL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'XSGD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'ZWAP': ['0.000651', '1,360', '0.3579', '2,720', '-16.6', '0.000534', '1,134', '0.4324', '2,267', '286.07', '-6.3', '267.98'],
-    'PORT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'XPORT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'ZLP': ['0.00966', '1,167', '36.03', '2,334', '-22.6', '0.00890', '903.1', '47.12', '1,806', '245.50', '-13.0', '213.47'],
     'REDC': ['0.183', '935.5', '59.50', '1,871', '16.8', '0.0518', '1,093', '51.84', '2,185', '196.82', '31.2', '258.27'],
     'CARB': ['0.0363', '1,596', '94.08', '3,192', '-4.6', '0.0129', '1,523', '100.4', '3,046', '335.78', '7.2', '360.02'],
-    'SCO': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'SRV': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'DUCK': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ELONS': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZCH': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'BOLT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZYRO': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZLF': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'GARY': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'RECAP': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'AXT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'GOD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'SHRK': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'XCAD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'FLAT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'RWD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'DogZilliqa': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'MESSI': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'MAMBO': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'STREAM': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'SPW': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZPAINT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZWALL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'SHARDS': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'BLOX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'SIMP': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'HODL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'YODA': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'CONSULT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'UNIDEX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZILLEX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+}
+// If token not in the list, i.e., new token, we add default value into the list
+for (let ticker in Constants.zrcTokenPropertiesListMap) {
+    if (!(ticker in expectedPersonalBalanceWith24hAgoMap)) {
+        expectedPersonalBalanceWith24hAgoMap[ticker] = ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'];
+    }
 }
 
 let expectedPersonalBalanceWith24hAgoIdrMap = {
-    'gZIL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'XSGD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'ZWAP': ['0.000651', '1,360', '0.3579', '2,720', '-16.6', '0.000534', '1,134', '0.4324', '2,267', '4,073,930', '-10.3', '3,654,947'],
-    'PORT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'XPORT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
     'ZLP': ['0.00966', '1,167', '36.03', '2,334', '-22.6', '0.00890', '903.1', '47.12', '1,806', '3,496,119', '-16.7', '2,911,523'],
     'REDC': ['0.183', '935.5', '59.50', '1,871', '16.8', '0.0518', '1,093', '51.84', '2,185', '2,802,850', '25.7', '3,522,548'],
     'CARB': ['0.0363', '1,596', '94.08', '3,192', '-4.6', '0.0129', '1,523', '100.4', '3,046', '4,781,752', '2.7', '4,910,270'],
-    'SCO': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'SRV': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'DUCK': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ELONS': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZCH': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'BOLT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZYRO': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZLF': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'GARY': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'RECAP': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'AXT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'GOD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'SHRK': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'XCAD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'FLAT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'RWD': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'DogZilliqa': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'MESSI': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'MAMBO': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'STREAM': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'SPW': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZPAINT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZWALL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'SHARDS': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'BLOX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'SIMP': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'HODL': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'YODA': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'CONSULT': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'UNIDEX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
-    'ZILLEX': ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'],
+}
+// If token not in the list, i.e., new token, we add default value into the list
+for (let ticker in Constants.zrcTokenPropertiesListMap) {
+    if (!(ticker in expectedPersonalBalanceWith24hAgoIdrMap)) {
+        expectedPersonalBalanceWith24hAgoIdrMap[ticker] = ['', '', '', '', '', 'Loading...', '', '', '', '', '', 'Loading...'];
+    }
 }
 
 describe('ZilswapDexStatus', function () {
@@ -540,24 +411,13 @@ describe('ZilswapDexStatus', function () {
             'AXT': ['238,682', '20,401', '311,986', '26,667'],
             'SHRK': ['32,962', '6,887', '91,230,460', '19,061,312'],
             'XCAD': ['1,500,000', '4,405,877', '1,500,000', '4,405,877'],
-            'FLAT': ['0', '0', '0', '0'],
-            'RWD': ['0', '0', '0', '0'],
-            'DogZilliqa': ['0', '0', '0', '0'],
-            'MESSI': ['0', '0', '0', '0'],
-            'MAMBO': ['0', '0', '0', '0'],
-            'STREAM': ['0', '0', '0', '0'],
-            'SPW': ['0', '0', '0', '0'],
-            'ZPAINT': ['0', '0', '0', '0'],
-            'ZWALL': ['0', '0', '0', '0'],
-            'SHARDS': ['0', '0', '0', '0'],
-            'BLOX': ['0', '0', '0', '0'],
-            'SIMP': ['0', '0', '0', '0'],
-            'HODL': ['0', '0', '0', '0'],
-            'YODA': ['0', '0', '0', '0'],
-            'CONSULT': ['0', '0', '0', '0'],
-            'UNIDEX': ['0', '0', '0', '0'],
-            'ZILLEX': ['0', '0', '0', '0'],
         };
+        // If token not in the list, i.e., new token, we add default value into the list
+        for (let ticker in Constants.zrcTokenPropertiesListMap) {
+            if (!(ticker in expectedCirculatingAndTotalSupplyMap)) {
+                expectedCirculatingAndTotalSupplyMap[ticker] = ['0', '0', '0', '0'];
+            }
+        }
 
         it('circulating and total supply is set and shown in view ', function () {
             // Arrange

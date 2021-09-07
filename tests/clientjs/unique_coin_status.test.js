@@ -81,39 +81,15 @@ describe('NetWorthStatus', function () {
                 ['ZWAP', 1133.668348840813],
                 ['REDC', 1092.6018798700845],
                 ['ZLP', 903.0779495449406],
-                ['BOLT', 0],
-                ['BLOX', 0],
-                ['CONSULT', 0],
-                ['DogZilliqa', 0],
-                ['DUCK', 0],
-                ['ELONS', 0],
-                ['FLAT', 0],
-                ['GARY', 0],
-                ['gZIL', 0],
-                ['HODL', 0],
-                ['MAMBO', 0],
-                ['MESSI', 0],
-                ['PORT', 0],
-                ['RECAP', 0],
-                ['SCO', 0],
-                ['SHARDS', 0],
-                ['SHRK', 0],
-                ['SIMP', 0],
-                ['SPW', 0],
-                ['SRV', 0],
-                ['STREAM', 0],
-                ['UNIDEX', 0],
-                ['XCAD', 0],
-                ['XPORT', 0],
-                ['XSGD', 0],
-                ['YODA', 0],
-                ['ZCH', 0],
-                ['ZILLEX', 0],
-                ['ZLF', 0],
-                ['ZPAINT', 0],
-                ['ZWALL', 0],
-                ['ZYRO', 0]
             ];
+            let nonZeroTickerDummyMap = {'ZIL': 0, 'CARB': 0, 'ZWAP': 0, 'REDC': 0, 'ZLP': 0}
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // If token not in the list, i.e., new token, it's 0, we add it into the list
+                if (!(ticker in nonZeroTickerDummyMap)) {
+                    expectedBeforeCompute.push([ticker, 0]);
+                }
+            }
+
             assert.deepStrictEqual(uniqueCoinStatus.sortedUniqueCoinsBalanceInZil_, expectedBeforeCompute);
 
             // Compute all status
@@ -136,39 +112,13 @@ describe('NetWorthStatus', function () {
                 ['ZWAP', 1133.668348840813],
                 ['REDC', 1106.4699349599064],
                 ['ZLP', 903.0779495449406],
-                ['BOLT', 0],
-                ['BLOX', 0],
-                ['CONSULT', 0],
-                ['DogZilliqa', 0],
-                ['DUCK', 0],
-                ['ELONS', 0],
-                ['FLAT', 0],
-                ['GARY', 0],
-                ['gZIL', 0],
-                ['HODL', 0],
-                ['MAMBO', 0],
-                ['MESSI', 0],
-                ['PORT', 0],
-                ['RECAP', 0],
-                ['SCO', 0],
-                ['SHARDS', 0],
-                ['SHRK', 0],
-                ['SIMP', 0],
-                ['SPW', 0],
-                ['SRV', 0],
-                ['STREAM', 0],
-                ['UNIDEX', 0],
-                ['XCAD', 0],
-                ['XPORT', 0],
-                ['XSGD', 0],
-                ['YODA', 0],
-                ['ZCH', 0],
-                ['ZILLEX', 0],
-                ['ZLF', 0],
-                ['ZPAINT', 0],
-                ['ZWALL', 0],
-                ['ZYRO', 0]
             ];
+            for (let ticker in Constants.zrcTokenPropertiesListMap) {
+                // If token not in the list, i.e., new token, it's 0, we add it into the list
+                if (!(ticker in nonZeroTickerDummyMap)) {
+                    expectedAfterCompute.push([ticker, 0]);
+                }
+            }
 
             assert.deepStrictEqual(uniqueCoinStatus.sortedUniqueCoinsBalanceInZil_, expectedAfterCompute);
         });

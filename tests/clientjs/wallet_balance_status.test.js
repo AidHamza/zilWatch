@@ -104,45 +104,14 @@ describe('WalletBalanceStatus', function () {
 
         var expectedDataMap = {
             'ZIL': ['7,477', '', '', '', '883.66', '', ''],
-            'gZIL': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'XSGD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZWAP': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'PORT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'XPORT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZLP': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
             'REDC': ['0.6579', '13.87', '', '', '1.64', '', ''],
             'CARB': ['11.53', '174.9', '', '', '20.67', '', ''],
-            'SCO': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'SRV': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'DUCK': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ELONS': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZCH': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'BOLT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZYRO': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZLF': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'GARY': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'RECAP': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'AXT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'GOD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'SHRK': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'XCAD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'FLAT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'RWD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'DogZilliqa': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'MESSI': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'MAMBO': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'STREAM': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'SPW': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZPAINT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZWALL': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'SHARDS': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'BLOX': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'SIMP': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'HODL': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'YODA': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'CONSULT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'UNIDEX': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZILLEX': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+        }
+        // If token not in the list, i.e., new token, we add default value into the list
+        for (let ticker in Constants.zrcTokenPropertiesListMap) {
+            if (!(ticker in expectedDataMap)) {
+                expectedDataMap[ticker] = ['Loading...', 'Loading...', '', '', 'Loading...', '', ''];
+            }
         }
 
         let walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
@@ -376,88 +345,23 @@ describe('WalletBalanceStatus', function () {
         // $('#' + ticker + '_balance_fiat_percent_change_24h').text());
         var expectedDataMap = {
             'ZIL': ['7,477', '', '', '', '883.66', '786.46', '12.4'],
-            'gZIL': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'XSGD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZWAP': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'PORT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'XPORT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZLP': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
             'REDC': ['0.6579', '13.87', '10.34', '34.1', '1.64', '1.09', '50.6'],
             'CARB': ['11.53', '174.9', '195.6', '-10.6', '20.67', '20.57', '0.5'],
-            'SCO': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'SRV': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'DUCK': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ELONS': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZCH': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'BOLT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZYRO': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZLF': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'GARY': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'RECAP': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'AXT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'GOD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'SHRK': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'XCAD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'FLAT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'RWD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'DogZilliqa': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'MESSI': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'MAMBO': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'STREAM': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'SPW': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZPAINT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZWALL': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'SHARDS': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'BLOX': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'SIMP': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'HODL': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'YODA': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'CONSULT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'UNIDEX': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZILLEX': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
         }
 
         var expectedIdrDataMap = {
             'ZIL': ['7,477', '', '', '', '12,052,262', '11,199,931', '7.6'],
-            'gZIL': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'XSGD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZWAP': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'PORT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'XPORT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZLP': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
             'REDC': ['0.6579', '13.87', '10.34', '34.1', '22,355', '15,497', '44.3'],
             'CARB': ['11.53', '174.9', '195.6', '-10.6', '281,884', '292,993', '-3.8'],
-            'SCO': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'SRV': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'DUCK': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ELONS': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZCH': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'BOLT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZYRO': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZLF': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'GARY': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'RECAP': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'AXT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'GOD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'SHRK': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'XCAD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'FLAT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'RWD': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'DogZilliqa': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'MESSI': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'MAMBO': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'STREAM': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'SPW': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZPAINT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZWALL': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'SHARDS': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'BLOX': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'SIMP': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'HODL': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'YODA': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'CONSULT': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'UNIDEX': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
-            'ZILLEX': ['Loading...', 'Loading...', '', '', 'Loading...', '', ''],
+        }
+        // If token not in the list, i.e., new token, we add default value into the list
+        for (let ticker in Constants.zrcTokenPropertiesListMap) {
+            if (!(ticker in expectedDataMap)) {
+                expectedDataMap[ticker] = ['Loading...', 'Loading...', '', '', 'Loading...', '', ''];
+            }
+            if (!(ticker in expectedIdrDataMap)) {
+                expectedIdrDataMap[ticker] = ['Loading...', 'Loading...', '', '', 'Loading...', '', ''];
+            }
         }
 
         var walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();

@@ -83,25 +83,12 @@ describe('ZilswapTradeVolumeStatus', function () {
             'ZLF': '33,819',
             'GARY': '21,729',
             'RECAP': '2,165',
-            'SHRK': '0',
             'XCAD': '378,855',
             'FLAT': '44',
-            'RWD': '0',
             'DogZilliqa': '87',
             'MESSI': '2,297',
             'MAMBO': '15,667',
-            'STREAM': '0',
-            'SPW': '0',
-            'ZPAINT': '0',
-            'ZWALL': '0',
-            'SHARDS': '0',
-            'BLOX': '0',
-            'SIMP': '0',
             'HODL': '256',
-            'YODA': '0',
-            'CONSULT': '0',
-            'UNIDEX': '0',
-            'ZILLEX': '0',
         };
 
         let expectedTotalVolumeFiatIdrMap = {
@@ -123,26 +110,22 @@ describe('ZilswapTradeVolumeStatus', function () {
             'ZLF': '461,257,126',
             'GARY': '296,358,419',
             'RECAP': '29,526,654',
-            'SHRK': '0',
             'XCAD': '5,167,223,900',
             'FLAT': '600,532',
-            'RWD': '0',
             'DogZilliqa': '1,188,958',
             'MESSI': '31,324,517',
             'MAMBO': '213,679,238',
-            'STREAM': '0',
-            'SPW': '0',
-            'ZPAINT': '0',
-            'ZWALL': '0',
-            'SHARDS': '0',
-            'BLOX': '0',
-            'SIMP': '0',
             'HODL': '3,486,227',
-            'YODA': '0',
-            'CONSULT': '0',
-            'UNIDEX': '0',
-            'ZILLEX': '0',
         };
+        // If token not in the list, i.e., new token, we add default value into the list
+        for (let ticker in Constants.zrcTokenPropertiesListMap) {
+            if (!(ticker in expectedTotalVolumeFiatUsdMap)) {
+                expectedTotalVolumeFiatUsdMap[ticker] = '0';
+            }
+            if (!(ticker in expectedTotalVolumeFiatIdrMap)) {
+                expectedTotalVolumeFiatIdrMap[ticker] = '0';
+            }
+        }
 
         it('set proper object. computed and binded to view.', function () {
             let coinPriceCoingeckoData = JSON.parse('{"zilliqa":{"usd":0.11819,"idr":1612}}');
