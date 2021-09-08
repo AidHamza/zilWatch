@@ -617,6 +617,15 @@ block content
                     td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
                       span(class='currency_symbol mr-1')= '$'
                       span(id='total_all_lp_reward_next_epoch_fiat')= 'Loading...'
+                  tr
+                    td(colspan='2' style='text-align: left; white-space: nowrap; width: 25%;' )
+                      span= 'Unclaimed reward'
+                    td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
+                      span(id='total_all_lp_reward_unclaimed_zwap' class='ml-1')= 'Loading...'
+                      span(class='ml-1')= zrcTokenPropertiesListMap['ZWAP'].ticker
+                    td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
+                      span(class='currency_symbol mr-1')= '$'
+                      span(id='total_all_lp_reward_unclaimed_fiat')= 'Loading...'
                   tr(id='total_all_lp_reward_past_epoch_container')
                     td(colspan='2' style='text-align: left; white-space: nowrap; width: 25%;' )
                       span= 'Prev epoch'
@@ -1080,7 +1089,7 @@ block script
     const zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDex24hTradeVolumeData)
     const uniqueCoinStatus = new UniqueCoinStatus(zrcTokenPropertiesListMap, barChartDrawer, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingCarbonStatus);
     const zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus(zrcTokenPropertiesListMap, zilswapDexStatus, zilswapTradeVolumeStatus);
-    const zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, zilswapDexEpochInfoData, /* contractAddressToRewardMapData= */ null, /* pastRewardListData= */ null);
+    const zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, zilswapDexEpochInfoData, /* contractAddressToRewardMapData= */ null, /* pastRewardListData= */ null, /* unclaimedRewardListData= */ null);
 
     const swapStatus = new SwapStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletBalanceStatus)
 

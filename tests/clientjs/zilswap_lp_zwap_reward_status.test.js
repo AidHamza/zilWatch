@@ -59,7 +59,7 @@ describe('ZilswapLpZwapRewardStatus', function () {
     describe('#constructor()', function () {
 
         it('create empty object', function () {
-            let zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexStatus= */ null, /* walletAddressBech32= */ null, /* epochInfoData= */ null, /* contractAddressToRewardMapData= */ null, /* pastRewardListData= */ null);
+            let zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexStatus= */ null, /* walletAddressBech32= */ null, /* epochInfoData= */ null, /* contractAddressToRewardMapData= */ null, /* pastRewardListData= */ null, /* unclaimedRewardListData= */ null);
 
             assert.strictEqual(zilswapLpZwapRewardStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
             assert.strictEqual(zilswapLpZwapRewardStatus.totalZwapRewardNextEpoch_, 0);
@@ -80,8 +80,8 @@ describe('ZilswapLpZwapRewardStatus', function () {
 
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
             zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
-            
-            zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, /* contractAddressToRewardMapData= */ null, /* pastRewardListData= */ null);
+
+            zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, /* contractAddressToRewardMapData= */ null, /* pastRewardListData= */ null, /* unclaimedRewardListData= */ null);
         });
 
         describe('#computeLpRewardNextEpochLoaded()', function () {
@@ -113,7 +113,7 @@ describe('ZilswapLpZwapRewardStatus', function () {
                     "zil1l0g8u6f9g0fsvjuu74ctyla2hltefrdyt7k5f4": "0.01578"
                 };
 
-                zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, newApiContractAddressToRewardMap, /* pastRewardListData= */ null);
+                zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, newApiContractAddressToRewardMap, /* pastRewardListData= */ null, /* unclaimedRewardListData= */ null);
 
                 // Act
                 zilswapLpZwapRewardStatus.computeLpRewardNextEpochLoaded();
@@ -145,8 +145,8 @@ describe('ZilswapLpZwapRewardStatus', function () {
                 let newApiContractAddressToRewardMap = {
                     "0xe5e274f59482759c1a0c13682ff3ec3efeb22d2a": contractAddressToRewardMap,
                 };
-                
-                zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, newApiContractAddressToRewardMap, /* pastRewardListData= */ null);
+
+                zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, newApiContractAddressToRewardMap, /* pastRewardListData= */ null, /* unclaimedRewardListData= */ null);
 
                 // Act
                 zilswapLpZwapRewardStatus.computeLpRewardNextEpochLoaded();
@@ -177,7 +177,7 @@ describe('ZilswapLpZwapRewardStatus', function () {
                     "0xe5e274f59482759c1a0c13682ff3ec3efeb22d2a": contractAddressToRewardMap,
                 };
 
-                zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, newApiContractAddressToRewardMap, /* pastRewardListData= */ null);
+                zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, newApiContractAddressToRewardMap, /* pastRewardListData= */ null, /* unclaimedRewardListData= */ null);
 
                 // Act
                 zilswapLpZwapRewardStatus.computeLpRewardNextEpochLoaded();
@@ -200,8 +200,8 @@ describe('ZilswapLpZwapRewardStatus', function () {
             it('LP reward data not a map', function () {
                 // Arrange
                 let contractAddressToRewardMap = "asdffds";
-                
-                zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, contractAddressToRewardMap, /* pastRewardListData= */ null);
+
+                zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, contractAddressToRewardMap, /* pastRewardListData= */ null, /* unclaimedRewardListData= */ null);
 
                 // Act
                 zilswapLpZwapRewardStatus.computeLpRewardNextEpochLoaded();
@@ -281,6 +281,58 @@ describe('ZilswapLpZwapRewardStatus', function () {
             });
         });
 
+        describe('#computeLpUnclaimedRewardLoaded()', function () {
+
+            beforeEach(function () {
+                assert.strictEqual($('#total_all_lp_reward_unclaimed_zwap').text(), 'Loading...');
+                assert.strictEqual($('#total_all_lp_reward_unclaimed_fiat').text(), 'Loading...');
+            });
+
+            it('Past LP reward loaded happy case', function () {
+                // Arrange
+                let dataString = fs.readFileSync('./tests/clientjs/stats_zilswap_distribution_claimable_data_20210908.txt', 'utf8')
+                let unclaimedRewardData = JSON.parse(dataString);
+
+                zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, /* contractAddressToRewardMapData= */ null, /* pastRewardListData= */ null, unclaimedRewardData);
+
+                // Act
+                zilswapLpZwapRewardStatus.computeLpUnclaimedRewardLoaded();
+
+                // Assert
+                assert.strictEqual($('#total_all_lp_reward_unclaimed_zwap').text(), '0.6612');
+                assert.strictEqual($('#total_all_lp_reward_unclaimed_fiat').text(), '204.86');
+            });
+
+            it('No Past LP reward, show 0', function () {
+                // Arrange
+                let dataString = "[]";
+                let unclaimedRewardData = JSON.parse(dataString);
+
+                zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, /* contractAddressToRewardMapData= */ null, /* pastRewardListData= */ null, unclaimedRewardData);
+
+                // Act
+                zilswapLpZwapRewardStatus.computeLpUnclaimedRewardLoaded();
+
+                // Assert
+                assert.strictEqual($('#total_all_lp_reward_unclaimed_zwap').text(), '0');
+                assert.strictEqual($('#total_all_lp_reward_unclaimed_fiat').text(), '0');
+            });
+
+            it('Null Past LP reward, show 0', function () {
+                // Arrange
+                let unclaimedRewardData = null;
+
+                zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, /* contractAddressToRewardMapData= */ null, /* pastRewardListData= */ null, unclaimedRewardData);
+
+                // Act
+                zilswapLpZwapRewardStatus.computeLpUnclaimedRewardLoaded();
+
+                // Assert
+                assert.strictEqual($('#total_all_lp_reward_unclaimed_zwap').text(), '0');
+                assert.strictEqual($('#total_all_lp_reward_unclaimed_fiat').text(), '0');
+            });
+        });
+
         describe('#computeLpCurrentEpochInfoLoaded()', function () {
 
             beforeEach(function () {
@@ -351,7 +403,7 @@ describe('ZilswapLpZwapRewardStatus', function () {
         var zilswapLpZwapRewardStatus;
 
         beforeEach(function () {
-            zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexStatus= */ null, /* walletAddressBech32= */ null, /* epochInfoData= */ null, /* contractAddressToRewardMapData= */ null, /* pastRewardListData= */ null);
+            zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* zilswapDexStatus= */ null, /* walletAddressBech32= */ null, /* epochInfoData= */ null, /* contractAddressToRewardMapData= */ null, /* pastRewardListData= */ null, /* unclaimedRewardListData= */ null);
         });
 
         describe('#bindViewZwapRewardLp()', function () {
@@ -689,6 +741,53 @@ describe('ZilswapLpZwapRewardStatus', function () {
                 zilswapLpZwapRewardStatus.bindViewPastTotalRewardAllLpFiat(epochNumber2, '994');
                 assert.strictEqual($("#total_all_lp_reward_epoch_" + epochNumber + "_fiat").text(), '534');
                 assert.strictEqual($("#total_all_lp_reward_epoch_" + epochNumber2 + "_fiat").text(), '994');
+            });
+        });
+
+
+        describe('#bindViewTotalUnclaimedRewardAllLpZwap()', function () {
+
+            beforeEach(function () {
+                assert.strictEqual($('#total_all_lp_reward_unclaimed_zwap').text(), 'Loading...');
+            });
+
+            it('bind view legit balance', function () {
+                // Act
+                zilswapLpZwapRewardStatus.bindViewTotalUnclaimedRewardAllLpZwap('1234.4');
+
+                // Assert
+                assert.strictEqual($('#total_all_lp_reward_unclaimed_zwap').text(), '1234.4');
+            });
+
+            it('bind view random string', function () {
+                // Act
+                zilswapLpZwapRewardStatus.bindViewTotalUnclaimedRewardAllLpZwap('asdf');
+
+                // Assert
+                assert.strictEqual($('#total_all_lp_reward_unclaimed_zwap').text(), 'asdf');
+            });
+        });
+
+        describe('#bindViewTotalUnclaimedRewardAllLpFiat()', function () {
+
+            beforeEach(function () {
+                assert.strictEqual($('#total_all_lp_reward_unclaimed_fiat').text(), 'Loading...');
+            });
+
+            it('bind view happy case', function () {
+                // Act
+                zilswapLpZwapRewardStatus.bindViewTotalUnclaimedRewardAllLpFiat('1234.52');
+
+                // Assert
+                assert.strictEqual($('#total_all_lp_reward_unclaimed_fiat').text(), '1234.52');
+            });
+
+            it('bind view random string', function () {
+                // Act
+                zilswapLpZwapRewardStatus.bindViewTotalUnclaimedRewardAllLpFiat('asdf');
+
+                // Assert
+                assert.strictEqual($('#total_all_lp_reward_unclaimed_fiat').text(), 'asdf');
             });
         });
 

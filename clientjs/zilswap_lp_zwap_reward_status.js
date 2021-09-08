@@ -1,9 +1,9 @@
 /** A class to represent Zilswap LP ZWAP reward status.  */
 class ZilswapLpZwapRewardStatus {
 
-    constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ walletAddressBech32, /* nullable= */ epochInfoData, /* nullable= */ contractAddressToRewardMapData, /* nullable= */ pastRewardListData) {
+    constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ walletAddressBech32, /* nullable= */ epochInfoData, /* nullable= */ contractAddressToRewardMapData, /* nullable= */ pastRewardListData, /* nullable= */ unclaimedRewardListData) {
         this.zilswapRewardDistributorAddressBase16_ = "0xe5e274f59482759c1a0c13682ff3ec3efeb22d2a";
-        
+
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
         this.coinPriceStatus_ = coinPriceStatus;
@@ -13,22 +13,26 @@ class ZilswapLpZwapRewardStatus {
         this.epochInfoData_ = epochInfoData;
         this.contractAddressToRewardMapData_ = contractAddressToRewardMapData;
         this.pastRewardListData_ = pastRewardListData;
+        this.unclaimedRewardListData_ = unclaimedRewardListData;
 
         this.totalZwapRewardNextEpoch_ = 0;
         this.totalZwapRewardPrevEpoch_ = 0;
         this.totalZwapRewardPastEpoch_ = {};
+        this.totalZwapRewardUnclaimed_ = 0;
     }
 
     onCoinPriceStatusChange() {
         this.refreshTotalLpRewardFiat();
         this.refreshPrevTotalLpRewardFiat();
         this.refreshPastTotalLpRewardFiat();
+        this.refreshUnclaimedTotalLprewardFiat();
     }
 
     onZilswapDexStatusChange() {
         this.refreshTotalLpRewardFiat();
         this.refreshPrevTotalLpRewardFiat();
         this.refreshPastTotalLpRewardFiat();
+        this.refreshUnclaimedTotalLprewardFiat();
     }
 
     setWalletAddressBech32(walletAddressBech32) {
@@ -41,6 +45,7 @@ class ZilswapLpZwapRewardStatus {
         this.totalZwapRewardNextEpoch_ = 0;
         this.totalZwapRewardPrevEpoch_ = 0;
         this.totalZwapRewardPastEpoch_ = {};
+        this.totalZwapRewardUnclaimed_ = 0;
     }
 
     computeLpRewardNextEpochLoaded() {
@@ -155,15 +160,63 @@ class ZilswapLpZwapRewardStatus {
         this.refreshPastTotalLpRewardFiat();
     }
 
+    computeLpUnclaimedRewardLoaded() {
+        let unclaimedRewardList = this.unclaimedRewardListData_;
+        if (!unclaimedRewardList || unclaimedRewardList.length < 1) {
+            // If there is no data, it means user has no unclaimed reward, show 0 to user
+            this.bindViewTotalUnclaimedRewardAllLpZwap('0');
+            this.bindViewTotalUnclaimedRewardAllLpFiat('0');
+            return;
+        }
+        let totalUnclaimedZwapQa = 0;
+        for (let i = 0; i < unclaimedRewardList.length; i++) {
+            let currUnclaimedReward = unclaimedRewardList[i];
+            if (!currUnclaimedReward.distributor_address) {
+                continue;
+            }
+            // If it's not ZWAP reward
+            if (currUnclaimedReward.distributor_address != this.zilswapRewardDistributorAddressBase16_) {
+                continue;
+            }
+            let currUnclaimedZwapQa = parseInt(currUnclaimedReward.amount)
+            if (!currUnclaimedZwapQa) {
+                continue;
+            }
+            totalUnclaimedZwapQa += currUnclaimedZwapQa;
+        }
+
+        let totalUnclaimedZwap = 1.0 * totalUnclaimedZwapQa / Math.pow(10, this.zrcTokenPropertiesListMap_['ZWAP'].decimals);
+        if (!totalUnclaimedZwap) {
+            this.bindViewTotalUnclaimedRewardAllLpZwap('0');
+            this.bindViewTotalUnclaimedRewardAllLpFiat('0');
+            return;
+        }
+        this.totalZwapRewardUnclaimed_ = totalUnclaimedZwap;
+
+        let totalUnclaimedZwapString = convertNumberQaToDecimalString(totalUnclaimedZwap, /* decimals= */ 0);
+        if (!totalUnclaimedZwapString) {
+            return;
+        }
+
+        this.bindViewTotalUnclaimedRewardAllLpZwap(totalUnclaimedZwapString);
+        this.refreshUnclaimedTotalLprewardFiat();
+    }
+
     computeLpCurrentEpochInfoLoaded() {
         let epochInfoData = this.epochInfoData_;
+        let epochPeriod = parseInt(epochInfoData.epoch_period);
         let nextEpochStartSeconds = parseInt(epochInfoData.next_epoch_start);
         if (!nextEpochStartSeconds) {
             return;
         }
         let currentDate = new Date();
         let currentTimeSeconds = currentDate.getTime() / 1000;
-        let timeDiffSeconds = Math.max(0, nextEpochStartSeconds - currentTimeSeconds);
+
+        // Fallback if the epoch start seconds is not updated
+        while (nextEpochStartSeconds < currentTimeSeconds) {
+            nextEpochStartSeconds += epochPeriod;
+        }
+        let timeDiffSeconds = nextEpochStartSeconds - currentTimeSeconds;
         let timeDiffDuration = new Duration(timeDiffSeconds);
 
         this.bindViewLpNextEpochCounter(timeDiffDuration.getUserFriendlyString());
@@ -243,6 +296,29 @@ class ZilswapLpZwapRewardStatus {
         }
     }
 
+    refreshUnclaimedTotalLprewardFiat() {
+        if (!this.coinPriceStatus_ || !this.zilswapDexStatus_) {
+            return;
+        }
+        let zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
+        if (!zilPriceInFiatFloat) {
+            return;
+        }
+        let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
+
+        let zrcTokenPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil('ZWAP');
+        if (!zrcTokenPriceInZil) {
+            return;
+        }
+
+        if (!this.totalZwapRewardUnclaimed_) {
+            return;
+        }
+        let unclaimedRewardFiat = (zilPriceInFiatFloat * zrcTokenPriceInZil * this.totalZwapRewardUnclaimed_);
+        let unclaimedRewardFiatString = commafyNumberToString(unclaimedRewardFiat, decimals);
+        this.bindViewTotalUnclaimedRewardAllLpFiat(unclaimedRewardFiatString);
+    }
+
     computeDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
         let self = this;
 
@@ -301,8 +377,23 @@ class ZilswapLpZwapRewardStatus {
         //     function () {
         //         onErrorCallback();
         //     });
-    }
 
+        beforeRpcCallback();
+        queryUrlGetAjax(
+            /* urlToGet= */
+            "https://stats.zilswap.org/distribution/claimable_data/" + self.walletAddressBech32_,
+            /* successCallback= */
+            function (data) {
+                self.unclaimedRewardListData_ = data;
+                self.computeLpUnclaimedRewardLoaded();
+
+                onSuccessCallback();
+            },
+            /* errorCallback= */
+            function () {
+                onErrorCallback();
+            });
+    }
 
     bindViewZwapRewardLp(zwapRewardString, ticker) {
         $('#' + ticker + '_lp_pool_reward_zwap').text(zwapRewardString);
@@ -326,6 +417,14 @@ class ZilswapLpZwapRewardStatus {
 
     bindViewPrevTotalRewardAllLpFiat(prevTotalAllLpRewardFiat) {
         $('#total_all_lp_reward_prev_epoch_fiat').text(prevTotalAllLpRewardFiat);
+    }
+
+    bindViewTotalUnclaimedRewardAllLpZwap(totalUnclaimedRewardZwapString) {
+        $('#total_all_lp_reward_unclaimed_zwap').text(totalUnclaimedRewardZwapString);
+    }
+
+    bindViewTotalUnclaimedRewardAllLpFiat(totalUnclaimedRewardFiat) {
+        $('#total_all_lp_reward_unclaimed_fiat').text(totalUnclaimedRewardFiat);
     }
 
     disableTooltipPastTotalRewardAllLpZwap() {
@@ -388,6 +487,8 @@ class ZilswapLpZwapRewardStatus {
         $('#total_all_lp_reward_prev_epoch_zwap').text('Loading...');
         $('#total_all_lp_reward_prev_epoch_fiat').text('Loading...');
         $('#total_all_lp_reward_prev_epoch_number').text('');
+        $('#total_all_lp_reward_unclaimed_zwap').text('Loading...');
+        $('#total_all_lp_reward_unclaimed_fiat').text('Loading...');
 
         $('#total_all_lp_reward_past_epoch_container').removeClass('hover-effect');
         this.disableTooltipPastTotalRewardAllLpZwap();
