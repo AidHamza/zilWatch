@@ -90,21 +90,6 @@ $("#wallet_connect").click(function () {
     );
 });
 
-$("#toggle_theme_btn").click(function () {
-    let isCurrentDark = $("html").hasClass("dark-mode");
-    let theme;
-    if (isCurrentDark) {
-        theme = "light";
-        setThemeLightMode();
-    } else {
-        theme = "dark";
-        setThemeDarkMode();
-    }
-    // Finally, let's save the current preference to localStorage to keep using it
-    localStorage.setItem("theme", theme);
-    drawAllBarCharts();
-});
-
 $("#wallet_censor_button").on('click', function () {
     let isShowingFullAddress = $("#wallet_full_address").css("display") !== 'none';
     if (isShowingFullAddress) {
@@ -139,6 +124,11 @@ $("#currency_selector").change(function () {
 function collapsePublicCards() {
     $('.card-header').addClass('collapsed');
     $('.card-body').removeClass('show');
+}
+
+// Callback method defined and called after toggle theme button press
+function toggleThemeCallback() {
+    drawAllBarCharts();
 }
 
 function drawAllBarCharts() {
