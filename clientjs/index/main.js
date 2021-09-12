@@ -2,23 +2,7 @@ var REFRESH_INTERVAL_MS = 30000;
 var activeIntervalId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Must be initialized first before the rest.
-    $('#price_table').DataTable({
-        paging: false,
-        ordering: true,
-        language: {
-            decimal: ".",
-            thousands: ",",
-        },
-        columnDefs: [{
-            // Disable sorting for column index 3
-            // 24h Low / High (sorting not supported)
-            targets: 3,
-            orderable: false
-        }],
-        order: [],
-        bInfo: false,
-    });
+    initDataTableIfNotInitialized();
 
     // Public information
     computeZilswapDexPublicStatus();
@@ -97,6 +81,33 @@ $("#wallet_copy_button").on('click', function () {
         $('#wallet_copy_message').text("");
     }, 5000);
 });
+
+function initDataTableIfNotInitialized() {
+    if (!$.fn.DataTable.isDataTable('#price_table')) {
+        // Must be initialized first before the rest.
+        $('#price_table').DataTable({
+            paging: false,
+            ordering: true,
+            language: {
+                decimal: ".",
+                thousands: ",",
+            },
+            columnDefs: [{
+                // Disable sorting for column index 3
+                // 24h Low / High (sorting not supported)
+                targets: 3,
+                orderable: false
+            }],
+            order: [],
+            bInfo: false,
+        });
+    }
+}
+
+function refreshDataTable() {
+    initDataTableIfNotInitialized();
+    $('#price_table').DataTable().rows().invalidate().draw();
+}
 
 function collapsePublicCards() {
     $('.card-header').addClass('collapsed');
@@ -195,7 +206,7 @@ function computeCoinMarketStatus() {
         function () {},
         /* onSuccessCallback= */
         function () {
-            $('#price_table').DataTable().rows().invalidate().draw();
+            refreshDataTable();
         },
         /* onErrorCallback= */
         function () {});
@@ -208,7 +219,7 @@ function computeZilswapTradeVolumeStatus() {
         /* onSuccessCallback= */
         function () {
             zilswapLpFeeRewardStatus.onZilswapTradeVolumeStatusChange();
-            $('#price_table').DataTable().rows().invalidate().draw();
+            refreshDataTable();
         },
         /* onErrorCallback= */
         function () {});
@@ -242,7 +253,7 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
             zilswapZrcPrice24hLowHighStatus.onZilswapDexStatusChange();
 
             swapStatus.onZilswapDexStatusChange();
-            $('#price_table').DataTable().rows().invalidate().draw();
+            refreshDataTable();
 
             decrementShowSpinnerLpBalance();
         },
@@ -266,7 +277,7 @@ function computeZilswapDexPublicStatus() {
             zilswapZrcPrice24hLowHighStatus.onZilswapDexStatusChange();
 
             swapStatus.onZilswapDexStatusChange();
-            $('#price_table').DataTable().rows().invalidate().draw();
+            refreshDataTable();
         },
         /* onErrorCallback= */
         function () {});
@@ -289,7 +300,7 @@ function computeCoinPriceStatus(currencyCode) {
             swapStatus.onCoinPriceStatusChange();
 
             coinMarketStatus.onCoinPriceStatusChange();
-            $('#price_table').DataTable().rows().invalidate().draw();
+            refreshDataTable();
         },
         /* onErrorCallback= */
         function () {});

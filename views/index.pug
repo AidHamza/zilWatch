@@ -1130,7 +1130,7 @@ block script
         function() {},
         /* onSuccessCallback= */
         function() {
-          $('#price_table').DataTable().rows().invalidate().draw();
+          refreshDataTable();
         },
         /* onErrorCallback= */
         function() {});
@@ -1144,7 +1144,7 @@ block script
         /* onSuccessCallback= */
         function() {
           zilswapLpFeeRewardStatus.onZilswapTradeVolumeStatusChange();
-          $('#price_table').DataTable().rows().invalidate().draw();
+          refreshDataTable();
         },
         /* onErrorCallback= */
         function() {});
@@ -1214,7 +1214,7 @@ block script
           swapStatus.onZilswapDexStatusChange();
 
           decrementShowSpinnerLpBalance();
-          $('#price_table').DataTable().rows().invalidate().draw();
+          refreshDataTable();
         },
         /* onErrorCallback= */
         function() {
@@ -1237,7 +1237,7 @@ block script
           zilswapZrcPrice24hLowHighStatus.onZilswapDexStatusChange();
 
           swapStatus.onZilswapDexStatusChange();
-          $('#price_table').DataTable().rows().invalidate().draw();
+          refreshDataTable();
         },
         /* onErrorCallback= */
         function() {
@@ -1261,7 +1261,7 @@ block script
           swapStatus.onCoinPriceStatusChange();
 
           coinMarketStatus.onCoinPriceStatusChange();
-          $('#price_table').DataTable().rows().invalidate().draw();
+          refreshDataTable();
         },
         /* onErrorCallback= */
         function() {
