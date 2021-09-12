@@ -64,6 +64,11 @@ if (typeof exports !== 'undefined') {
         $ = global.jQuery = require('jquery');
     }
 
+    if (typeof localStorage === 'undefined') {
+        MockLocalStorage = require('../tests/mocks/mock_localstorage.js');
+        localStorage = new MockLocalStorage.MockLocalStorage();
+    }
+
     exports.setThemeLightMode = setThemeLightMode;
     exports.setThemeDarkMode = setThemeDarkMode;
 }
