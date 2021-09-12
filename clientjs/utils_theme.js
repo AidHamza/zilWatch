@@ -13,8 +13,8 @@ $("#toggle_theme_btn").click(function () {
     // Finally, let's save the current preference to localStorage to keep using it
     localStorage.setItem("theme", theme);
 
-    if (typeof toggleThemeCallback === "function") {
-        toggleThemeCallback();
+    if (typeof onThemeChangedCallback === "function") {
+        onThemeChangedCallback();
     }
 });
 

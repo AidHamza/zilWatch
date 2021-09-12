@@ -127,7 +127,7 @@ function collapsePublicCards() {
 }
 
 // Callback method defined and called after toggle theme button press
-function toggleThemeCallback() {
+function onThemeChangedCallback() {
     drawAllBarCharts();
 }
 
