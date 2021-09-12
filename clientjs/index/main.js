@@ -20,24 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         bInfo: false,
     });
 
-    // Get the user's theme preference from local storage, if it's available
-    let currentTheme = localStorage.getItem("theme");
-    if (currentTheme === "light") {
-        setThemeLightMode();
-    } else {
-        setThemeDarkMode();
-    }
-
-    let currentCurrencyCode = localStorage.getItem("currency");
-    if (!currentCurrencyCode) {
-        currentCurrencyCode = "usd";
-    }
-    let currencySymbol = currencyMap[currentCurrencyCode];
-    $("#currency_selector").val(currentCurrencyCode);
-    $(".currency_symbol").text(currencySymbol);
-
     // Public information
-    computeCoinPriceStatus(currentCurrencyCode);
     computeZilswapDexPublicStatus();
     computeZilswapTradeVolumeStatus();
     computeCoinMarketStatus();
@@ -115,19 +98,17 @@ $("#wallet_copy_button").on('click', function () {
     }, 5000);
 });
 
-$("#currency_selector").change(function () {
-    let currencyCode = $(this).val();
-    computeCoinPriceStatus(currencyCode);
-    localStorage.setItem("currency", currencyCode);
-});
-
 function collapsePublicCards() {
     $('.card-header').addClass('collapsed');
     $('.card-body').removeClass('show');
 }
 
+function onCurrencyChangeCallback(currencyCode) {
+    computeCoinPriceStatus(currencyCode);
+}
+
 // Callback method defined and called after toggle theme button press
-function onThemeChangedCallback() {
+function onThemeChangeCallback() {
     drawAllBarCharts();
 }
 

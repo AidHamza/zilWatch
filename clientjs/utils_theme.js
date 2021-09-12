@@ -1,6 +1,16 @@
 // utils_theme.js to handle theme changes in zilwatch
 
-$("#toggle_theme_btn").click(function () {
+document.addEventListener("DOMContentLoaded", () => {
+    // Get the user's theme preference from local storage, if it's available
+    let currentTheme = localStorage.getItem("theme");
+    if (currentTheme === "light") {
+        setThemeLightMode();
+    } else {
+        setThemeDarkMode();
+    }
+});
+
+$("#toggle_theme_btn").on('click', function () {
     let isCurrentDark = $("html").hasClass("dark-mode");
     let theme;
     if (isCurrentDark) {
@@ -13,8 +23,8 @@ $("#toggle_theme_btn").click(function () {
     // Finally, let's save the current preference to localStorage to keep using it
     localStorage.setItem("theme", theme);
 
-    if (typeof onThemeChangedCallback === "function") {
-        onThemeChangedCallback();
+    if (typeof onThemeChangeCallback === "function") {
+        onThemeChangeCallback();
     }
 });
 
