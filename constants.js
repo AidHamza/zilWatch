@@ -311,6 +311,14 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil18f5rlhqz9vndw4w8p60d0n7vg3n9sqvta7n6t2/logo",
     "decimals": 4,
   },
+  'PELE': {
+    "ticker": "PELE",
+    "name": "PELE Network",
+    "address": "zil12htx8pdfwk39e47fhd7t3vd3rftyxeuf9px354",
+    "address_base16": "0x55d66385a975A25Cd7c9bB7Cb8b1B11A56436789",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil12htx8pdfwk39e47fhd7t3vd3rftyxeuf9px354/logo",
+    "decimals": 5,
+  },
   'RECAP': {
     "ticker": "RECAP",
     "name": "Review Capital",
@@ -490,44 +498,9 @@ const zrcTokenPropertiesListMap = {
 }
 
 // IF changed, also change in zilWatch-backend/core/constants.py
-const emptyZrcTokensSupply = {
-  'BOLT': '0',
-  'BLOX': '0',
-  'CARB': '0',
-  'CONSULT': '0',
-  'DMZ': '0',
-  'DogZilliqa': '0',
-  'DUCK': '0',
-  'ELONS': '0',
-  'FLAT': '0',
-  'GARY': '0',
-  'gZIL': '0',
-  'HODL': '0',
-  'MAMBO': '0',
-  'MESSI': '0',
-  'PORT': '0',
-  'RECAP': '0',
-  'REDC': '0',
-  'SCO': '0',
-  'SHARDS': '0',
-  'SHRK': '0',
-  'SIMP': '0',
-  'SPW': '0',
-  'SRV': '0',
-  'STREAM': '0',
-  'UNIDEX': '0',
-  'XCAD': '0',
-  'XPORT': '0',
-  'XSGD': '0',
-  'YODA': '0',
-  'ZCH': '0',
-  'ZILLEX': '0',
-  'ZLF': '0',
-  'ZLP': '0',
-  'ZPAINT': '0',
-  'ZWALL': '0',
-  'ZWAP': '0',
-  'ZYRO': '0',
+const emptyZrcTokensSupply = {};
+for (let key in zrcTokenPropertiesListMap) {
+  emptyZrcTokensSupply[key] = '0';
 }
 
 module.exports = {
