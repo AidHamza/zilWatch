@@ -1,7 +1,7 @@
-var indexJsdom = require('../index.jsdom.js');
+var indexJsdom = require('../../index.jsdom.js');
 var $ = indexJsdom.$;
 
-var BindView = require('../../clientjs/bind_view.js');
+var BindView = require('../../../clientjs/index//bind_view.js');
 var assert = require('assert');
 
 describe('BindView4', function () {

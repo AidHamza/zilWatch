@@ -128,8 +128,8 @@ router.get('/', function (req, res, next) {
         }
       }
       res.render('index', {
-        title: constants.title,
-        description: constants.description,
+        title: 'zilWatch',
+        description: 'View your Zilliqa (ZIL) wallet balances and current ZIL and ZRC-2 prices today in an all-in-one smart dashboard.',
         coinMap: constants.coinMap,
         currencyMap: constants.currencyMap,
         zrcTokenPropertiesListMap: constants.zrcTokenPropertiesListMap,

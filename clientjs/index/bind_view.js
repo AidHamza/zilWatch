@@ -239,12 +239,12 @@ if (typeof exports !== 'undefined') {
     }
 
     if (typeof zrcTokenPropertiesListMap === 'undefined') {
-        Constants = require('../constants.js');
+        Constants = require('../../constants.js');
         zrcTokenPropertiesListMap = Constants.zrcTokenPropertiesListMap;
     }
 
     if (typeof ssnListMap === 'undefined') {
-        Constants = require('../constants.js');
+        Constants = require('../../constants.js');
         ssnListMap = Constants.ssnListMap;
     }
 

@@ -1,5 +1,5 @@
 var assert = require('assert');
-var UtilsDuration = require('../../clientjs/utils_duration.js');
+var UtilsDuration = require('../../../clientjs/index//utils_duration.js');
 
 describe('UtilsDuration', function () {
 

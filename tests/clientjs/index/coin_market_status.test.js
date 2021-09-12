@@ -1,11 +1,11 @@
-var indexJsdom = require('../index.jsdom.js');
+var indexJsdom = require('../../index.jsdom.js');
 var $ = indexJsdom.$;
 var fs = require('fs')
 
 var assert = require('assert');
-var CoinPriceStatus = require('../../clientjs/coin_price_status.js');
-var CoinMarketStatus = require('../../clientjs/coin_market_status.js');
-var Constants = require('../../constants.js');
+var CoinPriceStatus = require('../../../clientjs/index//coin_price_status.js');
+var CoinMarketStatus = require('../../../clientjs/index//coin_market_status.js');
+var Constants = require('../../../constants.js');
 
 describe('CoinMarketStatus', function () {
 
@@ -39,7 +39,7 @@ describe('CoinMarketStatus', function () {
     });
 
     describe('#methods()', function () {
-        let coinMarketCoingeckoData = JSON.parse(fs.readFileSync('./tests/clientjs/coingecko_coin_market_20210704.txt', 'utf8'));
+        let coinMarketCoingeckoData = JSON.parse(fs.readFileSync('./tests/testdata/coingecko_coin_market_20210704.txt', 'utf8'));
         let coinPriceCoingeckoData = JSON.parse('{"bitcoin":{"usd":35398,"idr":511833653,"sgd":47684},"binancecoin":{"usd":304.2,"idr":4398566,"sgd":409.79},"ethereum":{"usd":2319.52,"idr":33539204,"sgd":3124.62},"zilliqa":{"usd":0.083015,"idr":1200.36,"sgd":0.11183}}');
         let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, /* coinPriceCoingecko24hAgoData= */ null);
 

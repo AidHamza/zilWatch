@@ -1,7 +1,7 @@
 // Setup code for mocha testing requiring UI components (jsdom and jquery)
 // To use this code, just declare the following in your test:
 // ```
-// var indexJsdom = require('../index.jsdom.js');
+// var indexJsdom = require('../../index.jsdom.js');
 // var $ = indexJsdom.$;
 // ```
 // And all the $ jQuery methods will work

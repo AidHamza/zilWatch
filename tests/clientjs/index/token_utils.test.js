@@ -1,13 +1,13 @@
 var assert = require('assert');
 var fs = require('fs')
-var TokenUtils = require('../../clientjs/token_utils.js');
+var TokenUtils = require('../../../clientjs/index//token_utils.js');
 
 describe('TokenUtils', function () {
 
     describe('#getZilswapSinglePairPublicStatusFromDexState()', function () {
 
         it('gZil', function () {
-            let dataString = fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataString = fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8')
 
             let dataObject = JSON.parse(dataString);
             let zrcTokenAddressBase16 = "0xa845C1034CD077bD8D32be0447239c7E4be6cb21";
@@ -23,7 +23,7 @@ describe('TokenUtils', function () {
         });
 
         it('ZWAP', function () {
-            let dataString = fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataString = fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8')
             let dataObject = JSON.parse(dataString);
             let zrcTokenAddressBase16 = "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31";
 
@@ -37,7 +37,7 @@ describe('TokenUtils', function () {
         });
 
         it('zrc token contract address not found: null', function () {
-            let dataString = fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataString = fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8')
             let dataObject = JSON.parse(dataString);
             let zrcTokenAddressBase16 = "0x123412341A06aBEE40d8177F95171c8c63AbdC31";
 
@@ -56,7 +56,7 @@ describe('TokenUtils', function () {
         });
 
         it('zrcTokenAddressBase16 not string: null', function () {
-            let dataString = fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataString = fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8')
             let dataObject = JSON.parse(dataString);
             let zrcTokenAddressBase16 = 1234;
 
@@ -66,7 +66,7 @@ describe('TokenUtils', function () {
         });
 
         it('zrcTokenDecimals not number: null', function () {
-            let dataString = fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataString = fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8')
             let dataObject = JSON.parse(dataString);
             let zrcTokenAddressBase16 = "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31";
 
@@ -80,7 +80,7 @@ describe('TokenUtils', function () {
     describe('#getZilswapSinglePairShareRatio()', function () {
 
         it('gZil', function () {
-            let dataString = fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataString = fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8')
 
             let dataObject = JSON.parse(dataString);
             let zrcTokenAddressBase16 = "0xa845C1034CD077bD8D32be0447239c7E4be6cb21";
@@ -92,7 +92,7 @@ describe('TokenUtils', function () {
         });
 
         it('ZWAP', function () {
-            let dataString = fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataString = fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8')
             let dataObject = JSON.parse(dataString);
             let zrcTokenAddressBase16 = "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31";
             let walletAddressBase16 = "0x278598f13a4cb142e44dde38aba8d8c0190bcb85";
@@ -103,7 +103,7 @@ describe('TokenUtils', function () {
         });
 
         it('zrc token contract address not found: null', function () {
-            let dataString = fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataString = fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8')
             let dataObject = JSON.parse(dataString);
             let zrcTokenAddressBase16 = "0x123451901A06aBEE40d8177F95171c8c63AbdC31";
             let walletAddressBase16 = "0x278598f13a4cb142e44dde38aba8d8c0190bcb85";
@@ -114,7 +114,7 @@ describe('TokenUtils', function () {
         });
 
         it('wallet address not found: null', function () {
-            let dataString = fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataString = fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8')
             let dataObject = JSON.parse(dataString);
             let zrcTokenAddressBase16 = "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31";
             let walletAddressBase16 = "0x123458f13a4cb142e44dde38aba8d8c0190bcb85";
@@ -135,7 +135,7 @@ describe('TokenUtils', function () {
         });
 
         it('zrcTokenAddressBase16 not string: null', function () {
-            let dataString = fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataString = fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8')
             let dataObject = JSON.parse(dataString);
             let zrcTokenAddressBase16 = 1234;
             let walletAddressBase16 = "0x278598f13a4cb142e44dde38aba8d8c0190bcb85";
@@ -146,7 +146,7 @@ describe('TokenUtils', function () {
         });
 
         it('walletAddressBase16 not string: null', function () {
-            let dataString = fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8')
+            let dataString = fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8')
             let dataObject = JSON.parse(dataString);
             let zrcTokenAddressBase16 = "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31";
             let walletAddressBase16 = 1234;

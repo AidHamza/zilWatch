@@ -90,10 +90,6 @@ $("#wallet_connect").click(function () {
     );
 });
 
-$("#wallet_refresh").click(function () {
-    window.location.reload();
-});
-
 $("#toggle_theme_btn").click(function () {
     let isCurrentDark = $("html").hasClass("dark-mode");
     let theme;

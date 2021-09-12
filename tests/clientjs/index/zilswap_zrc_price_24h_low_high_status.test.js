@@ -1,11 +1,11 @@
-var indexJsdom = require('../index.jsdom.js');
+var indexJsdom = require('../../index.jsdom.js');
 var fs = require('fs')
 var $ = indexJsdom.$;
 
 var assert = require('assert');
-var ZilswapDexStatus = require('../../clientjs/zilswap_dex_status.js');
-var ZilswapZrcPrice24hLowHighStatus = require('../../clientjs/zilswap_zrc_price_24h_low_high_status.js');
-var Constants = require('../../constants.js');
+var ZilswapDexStatus = require('../../../clientjs/index//zilswap_dex_status.js');
+var ZilswapZrcPrice24hLowHighStatus = require('../../../clientjs/index//zilswap_zrc_price_24h_low_high_status.js');
+var Constants = require('../../../constants.js');
 
 describe('ZilswapZrcPrice24hLowHighStatus', function () {
 
@@ -107,7 +107,7 @@ describe('ZilswapZrcPrice24hLowHighStatus', function () {
         });
 
         it('create complete object', function () {
-            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
+            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
             zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
 
             let zilswapZrcPrice24hLowHighStatus = new ZilswapZrcPrice24hLowHighStatus.ZilswapZrcPrice24hLowHighStatus(Constants.zrcTokenPropertiesListMap, zilswapDexStatus, zrcTokenPrice24hLowData, zrcTokenPrice24hHighData);
@@ -121,7 +121,7 @@ describe('ZilswapZrcPrice24hLowHighStatus', function () {
 
     describe('#methods()', function () {
 
-        let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
+        let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
         let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
 
         // console.log("'%s': ['%s', '%s', '%s', '%s'],",

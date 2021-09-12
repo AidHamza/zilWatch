@@ -1,12 +1,12 @@
-var indexJsdom = require('../index.jsdom.js');
+var indexJsdom = require('../../index.jsdom.js');
 var $ = indexJsdom.$;
 
 var assert = require('assert');
-var ZilswapDexStatus = require('../../clientjs/zilswap_dex_status.js');
-var CoinPriceStatus = require('../../clientjs/coin_price_status.js');
-var WalletBalanceStatus = require('../../clientjs/wallet_balance_status.js');
-var SwapStatus = require('../../clientjs/swap_status.js');
-var Constants = require('../../constants.js');
+var ZilswapDexStatus = require('../../../clientjs/index//zilswap_dex_status.js');
+var CoinPriceStatus = require('../../../clientjs/index//coin_price_status.js');
+var WalletBalanceStatus = require('../../../clientjs/index//wallet_balance_status.js');
+var SwapStatus = require('../../../clientjs/index//swap_status.js');
+var Constants = require('../../../constants.js');
 
 describe('SwapStatusBindView', function () {
 

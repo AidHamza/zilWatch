@@ -1,12 +1,12 @@
-var indexJsdom = require('../index.jsdom.js');
+var indexJsdom = require('../../index.jsdom.js');
 var fs = require('fs')
 var $ = indexJsdom.$;
 
 var assert = require('assert');
-var ZilswapDexStatus = require('../../clientjs/zilswap_dex_status.js');
-var ZilswapTradeVolumeStatus = require('../../clientjs/zilswap_trade_volume_status.js');
-var ZilswapLpFeeRewardStatus = require('../../clientjs/zilswap_lp_fee_reward_status.js');
-var Constants = require('../../constants.js');
+var ZilswapDexStatus = require('../../../clientjs/index//zilswap_dex_status.js');
+var ZilswapTradeVolumeStatus = require('../../../clientjs/index//zilswap_trade_volume_status.js');
+var ZilswapLpFeeRewardStatus = require('../../../clientjs/index//zilswap_lp_fee_reward_status.js');
+var Constants = require('../../../constants.js');
 
 describe('ZilswapLpFeeRewardStatus', function () {
 
@@ -50,7 +50,7 @@ describe('ZilswapLpFeeRewardStatus', function () {
             let zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus.ZilswapTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, zilswap24hTradeVolumeData);
            
             let walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
-            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
+            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
             let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, walletAddressBase16, zilswapDexSmartContractStateData, /* zilswapDexSmartContractStateData24hAgo= */ null);
         
 

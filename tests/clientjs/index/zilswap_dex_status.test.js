@@ -1,12 +1,12 @@
-var indexJsdom = require('../index.jsdom.js');
+var indexJsdom = require('../../index.jsdom.js');
 var fs = require('fs')
 var $ = indexJsdom.$;
 
 var assert = require('assert');
-var ZilswapDexStatus = require('../../clientjs/zilswap_dex_status.js');
-var CoinPriceStatus = require('../../clientjs/coin_price_status.js');
-var TokenUtils = require('../../clientjs/token_utils.js');
-var Constants = require('../../constants.js');
+var ZilswapDexStatus = require('../../../clientjs/index//zilswap_dex_status.js');
+var CoinPriceStatus = require('../../../clientjs/index//coin_price_status.js');
+var TokenUtils = require('../../../clientjs/index//token_utils.js');
+var Constants = require('../../../constants.js');
 
 /* ============ Public =========== */
 
@@ -256,7 +256,7 @@ describe('ZilswapDexStatus', function () {
             let dataObject = JSON.parse('{"zilliqa":{"usd":0.11819}}');
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ dataObject, /* coinPriceCoingecko24hAgoData= */ null);
 
-            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
+            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
 
             // Act
             zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
@@ -305,8 +305,8 @@ describe('ZilswapDexStatus', function () {
             let coinPriceCoingecko24hAgoData = JSON.parse('{"zilliqa":{"usd":0.10519}}');
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
 
-            let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8'));
-            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
+            let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8'));
+            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
 
             // Act
             let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
@@ -351,8 +351,8 @@ describe('ZilswapDexStatus', function () {
             let coinPriceCoingecko24hAgoData = JSON.parse('{"zilliqa":{"usd":0.10519,"idr":1498}}');
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
 
-            let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8'));
-            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
+            let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8'));
+            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
             let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
 
             // Act
@@ -424,7 +424,7 @@ describe('ZilswapDexStatus', function () {
             let dataObject = JSON.parse('{"zilliqa":{"usd":0.11819}}');
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ dataObject, /* coinPriceCoingecko24hAgoData= */ null);
 
-            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
+            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
 
             let zrcTokensCirculatingSupplyData = JSON.parse("{\"XPORT\": \"1000000000000\", \"gZIL\": \"346029474699163264909\", \"ZWAP\": \"150750452810208786\", \"XSGD\": \"31416533610000\", \"PORT\": \"16917128379\", \"SCO\": \"218274960000\", \"CARB\": \"276099713572760\", \"XCAD\": \"1500000000000\", \"ZLP\": \"1000000000000000000000000\", \"ZCH\": \"323424763977\", \"REDC\": \"319493437295755\", \"ELONS\": \"293802\", \"SRV\": \"18205194\", \"GARY\": \"804492\", \"ZYRO\": \"2122086556874427\", \"DUCK\": \"30472\", \"ZLF\": \"1792658957\", \"BOLT\": \"3000000000000010000000000\", \"RECAP\": \"200000000000000000\", \"AXT\": \"238682000000\", \"SHRK\": \"32961895429\"}");
             let zrcTokensTotalSupplyData = JSON.parse("{\"gZIL\": \"346029474699163264909\", \"XSGD\": \"31416533610000\", \"ZWAP\": \"150750452810208786\", \"PORT\": \"100000000000\", \"XPORT\": \"1000000000000\", \"ZLP\": \"1000000000000000000000000\", \"REDC\": \"2000000000000000\", \"CARB\": \"1000000000000000\", \"SCO\": \"1000000000000\", \"SRV\": \"100000000\", \"DUCK\": \"42069\", \"ELONS\": \"1000000\", \"ZCH\": \"500000000000\", \"BOLT\": \"3000000000000010000000000\", \"ZYRO\": \"30000000000000000\", \"ZLF\": \"5000000000\", \"GARY\": \"1000000\", \"RECAP\": \"200000000000000000\", \"AXT\": \"311986000000\", \"SHRK\": \"91230460000000\", \"XCAD\": \"1500000000000\"}");
@@ -447,7 +447,7 @@ describe('ZilswapDexStatus', function () {
             // Arrange
             let dataObject = JSON.parse('{"zilliqa":{"usd":0.11819}}');
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ dataObject, /* coinPriceCoingecko24hAgoData= */ null);
-            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
+            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
 
             // Prepare expected values
             let walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
@@ -535,8 +535,8 @@ describe('ZilswapDexStatus', function () {
             let coinPriceCoingecko24hAgoData = JSON.parse('{"zilliqa":{"usd":0.10519,"idr":1498}}');
             coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
 
-            let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210422.txt', 'utf8'));
-            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
+            let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8'));
+            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
             zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, walletAddressBase16, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
         });
 

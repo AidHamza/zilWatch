@@ -1,4 +1,4 @@
-var Constants = require('../../constants.js');
+var Constants = require('../../../constants.js');
 var assert = require('assert');
 
 describe('Constants', function () {

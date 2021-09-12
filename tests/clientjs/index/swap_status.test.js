@@ -1,14 +1,14 @@
-var indexJsdom = require('../index.jsdom.js');
+var indexJsdom = require('../../index.jsdom.js');
 var fs = require('fs')
 var $ = indexJsdom.$;
 
 var assert = require('assert');
-var ZilswapDexStatus = require('../../clientjs/zilswap_dex_status.js');
-var CoinPriceStatus = require('../../clientjs/coin_price_status.js');
-var WalletBalanceStatus = require('../../clientjs/wallet_balance_status.js');
-var SwapStatus = require('../../clientjs/swap_status.js');
-var SwapTxnWrapper = require('../../clientjs/swap_txn_wrapper.js');
-var Constants = require('../../constants.js');
+var ZilswapDexStatus = require('../../../clientjs/index//zilswap_dex_status.js');
+var CoinPriceStatus = require('../../../clientjs/index//coin_price_status.js');
+var WalletBalanceStatus = require('../../../clientjs/index//wallet_balance_status.js');
+var SwapStatus = require('../../../clientjs/index//swap_status.js');
+var SwapTxnWrapper = require('../../../clientjs/index//swap_txn_wrapper.js');
+var Constants = require('../../../constants.js');
 
 function assertWalletIsNotConnectedAndSwapButtonDisabled() {
     // Assert message wallet is not connected and swap button disabled
@@ -361,7 +361,7 @@ describe('SwapStatus', function () {
         beforeEach(function () {
             let coinPriceCoingeckoData = JSON.parse('{"zilliqa":{"usd":0.11819,"idr":1612}}');
 
-            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
+            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
 
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, /* coinPriceCoingecko24hAgoData= */ null);
             let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
@@ -1194,7 +1194,7 @@ describe('SwapStatus', function () {
             let coinPriceCoingeckoData = JSON.parse('{"zilliqa":{"usd":0.11819,"idr":1612}}');
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, /* coinPriceCoingecko24hAgoData= */ null);
 
-            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
+            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
             zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
 
             let zilBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"balance":"7476589135982234","nonce":46}}');

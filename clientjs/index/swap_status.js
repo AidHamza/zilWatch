@@ -1188,7 +1188,7 @@ if (typeof exports !== 'undefined') {
     }
 
     if (typeof localStorage === 'undefined') {
-        MockLocalStorage = require('../tests/mocks/mock_localstorage.js');
+        MockLocalStorage = require('../../tests/mocks/mock_localstorage.js');
         localStorage = new MockLocalStorage.MockLocalStorage();
     }
 

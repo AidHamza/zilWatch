@@ -1,6 +1,6 @@
 var fs = require('fs')
 var assert = require('assert');
-var BlockchainStatusSocketConnection = require('../../clientjs/blockchain_status_socket_connection.js');
+var BlockchainStatusSocketConnection = require('../../../clientjs/index//blockchain_status_socket_connection.js');
 
 describe('BlockchainStatusSocketConnection', function () {
 
@@ -15,7 +15,7 @@ describe('BlockchainStatusSocketConnection', function () {
             let calledBlockNum = null;
             let calledTxHashArr = null;
 
-            let latestTxBlockData = JSON.parse(fs.readFileSync('./tests/clientjs/latest_tx_block_20210620.txt', 'utf8'));
+            let latestTxBlockData = JSON.parse(fs.readFileSync('./tests/testdata/latest_tx_block_20210620.txt', 'utf8'));
 
             let blockchainStatusSocketConnection = new BlockchainStatusSocketConnection.BlockchainStatusSocketConnection(
                 function (blockchainStatusNotifyType, blockNum, txHashArr) {
@@ -125,7 +125,7 @@ describe('BlockchainStatusSocketConnection', function () {
             let calledBlockNum = null;
             let calledTxHashArr = null;
 
-            let latestWebsocketNewBlockNotificationData = JSON.parse(fs.readFileSync('./tests/clientjs/websocket_new_block_notification_20210619.txt', 'utf8'));
+            let latestWebsocketNewBlockNotificationData = JSON.parse(fs.readFileSync('./tests/testdata/websocket_new_block_notification_20210619.txt', 'utf8'));
 
             let wsQueryMap = {
                 "query": "NewBlock",

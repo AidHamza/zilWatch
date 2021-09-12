@@ -1,8 +1,8 @@
-var indexJsdom = require('../index.jsdom.js');
+var indexJsdom = require('../../index.jsdom.js');
 var $ = indexJsdom.$;
 
-var Constants = require('../../constants.js');
-var TooltipTouchHover = require('../../clientjs/tooltip_touch_hover.js');
+var Constants = require('../../../constants.js');
+var TooltipTouchHover = require('../../../clientjs/index//tooltip_touch_hover.js');
 var assert = require('assert');
 
 describe('TooltipTouchHover', function () {

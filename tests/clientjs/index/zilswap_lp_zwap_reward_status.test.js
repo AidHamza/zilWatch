@@ -1,12 +1,12 @@
-var indexJsdom = require('../index.jsdom.js');
+var indexJsdom = require('../../index.jsdom.js');
 var fs = require('fs')
 var $ = indexJsdom.$;
 
 var assert = require('assert');
-var ZilswapDexStatus = require('../../clientjs/zilswap_dex_status.js');
-var CoinPriceStatus = require('../../clientjs/coin_price_status.js');
-var ZilswapLpZwapRewardStatus = require('../../clientjs/zilswap_lp_zwap_reward_status.js');
-var Constants = require('../../constants.js');
+var ZilswapDexStatus = require('../../../clientjs/index//zilswap_dex_status.js');
+var CoinPriceStatus = require('../../../clientjs/index//coin_price_status.js');
+var ZilswapLpZwapRewardStatus = require('../../../clientjs/index//zilswap_lp_zwap_reward_status.js');
+var Constants = require('../../../constants.js');
 var sinon = require('sinon');
 
 describe('ZilswapLpZwapRewardStatus', function () {
@@ -78,7 +78,7 @@ describe('ZilswapLpZwapRewardStatus', function () {
             let dataObject = JSON.parse('{"zilliqa":{"usd":0.11819}}');
             coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ dataObject, /* coinPriceCoingecko24hAgoData= */ null);
 
-            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/clientjs/zilswapdex_contractstate_20210602.txt', 'utf8'));
+            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
             zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
 
             zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, /* contractAddressToRewardMapData= */ null, /* pastRewardListData= */ null, /* unclaimedRewardListData= */ null);
@@ -225,7 +225,7 @@ describe('ZilswapLpZwapRewardStatus', function () {
 
             it('Past LP reward loaded happy case', function () {
                 // Arrange
-                let dataString = fs.readFileSync('./tests/clientjs/stats_zilswap_distribution_data_20210516.txt', 'utf8')
+                let dataString = fs.readFileSync('./tests/testdata/stats_zilswap_distribution_data_20210516.txt', 'utf8')
                 let pastRewardList = JSON.parse(dataString);
 
                 zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, /* contractAddressToRewardMapData= */ null, pastRewardList);
@@ -290,7 +290,7 @@ describe('ZilswapLpZwapRewardStatus', function () {
 
             it('Past LP reward loaded happy case', function () {
                 // Arrange
-                let dataString = fs.readFileSync('./tests/clientjs/stats_zilswap_distribution_claimable_data_20210908.txt', 'utf8')
+                let dataString = fs.readFileSync('./tests/testdata/stats_zilswap_distribution_claimable_data_20210908.txt', 'utf8')
                 let unclaimedRewardData = JSON.parse(dataString);
 
                 zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, /* contractAddressToRewardMapData= */ null, /* pastRewardListData= */ null, unclaimedRewardData);

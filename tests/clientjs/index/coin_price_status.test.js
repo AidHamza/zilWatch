@@ -1,9 +1,9 @@
-var indexJsdom = require('../index.jsdom.js');
+var indexJsdom = require('../../index.jsdom.js');
 var $ = indexJsdom.$;
 
 var assert = require('assert');
-var CoinPriceStatus = require('../../clientjs/coin_price_status.js');
-var Constants = require('../../constants.js');
+var CoinPriceStatus = require('../../../clientjs/index//coin_price_status.js');
+var Constants = require('../../../constants.js');
 
 describe('CoinPriceStatus', function () {
 

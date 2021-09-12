@@ -1,10 +1,10 @@
-var indexJsdom = require('../index.jsdom.js');
+var indexJsdom = require('../../index.jsdom.js');
 var $ = indexJsdom.$;
 
 var assert = require('assert');
-var CoinPriceStatus = require('../../clientjs/coin_price_status.js');
-var ZilswapTradeVolumeStatus = require('../../clientjs/zilswap_trade_volume_status.js');
-var Constants = require('../../constants.js');
+var CoinPriceStatus = require('../../../clientjs/index//coin_price_status.js');
+var ZilswapTradeVolumeStatus = require('../../../clientjs/index//zilswap_trade_volume_status.js');
+var Constants = require('../../../constants.js');
 
 describe('ZilswapTradeVolumeStatus', function () {
 
