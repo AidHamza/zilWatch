@@ -263,6 +263,14 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil133vrh59edllqz7guq7htfthjmj7gct5jxqqtl7/logo",
     "decimals": 5,
   },
+  'FRANC': {
+    "ticker": "FRANC",
+    "name": "Chocolate Stablecoin",
+    "address": "zil1z4hxwnqk9gu6tamcw4umxss9wjpmrkhzdh4n85",
+    "address_base16": "0x156e674C162A39a5F7787579B342057483B1Dae2",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1z4hxwnqk9gu6tamcw4umxss9wjpmrkhzdh4n85/logo",
+    "decimals": 6,
+  },
   'GARY': {
     "ticker": "GARY",
     "name": "The Gary Token",
@@ -302,6 +310,14 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x009C66062e14414Cb8488f539871650813D33E12",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1qzwxvp3wz3q5ewzg3afesut9pqfax0sjdyna42/logo",
     "decimals": 2,
+  },
+  'NFTDEX': {
+    "ticker": "NFTDEX",
+    "name": "Zilliqa NFT Index Compound",
+    "address": "zil18l7eyut8t4gu68w7mg0ck664ee33mykrycps6l",
+    "address_base16": "0x3fFD9271675d51Cd1DdeDA1f8B6b55cE631D92c3",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil18l7eyut8t4gu68w7mg0ck664ee33mykrycps6l/logo",
+    "decimals": 0,
   },
   'PORT': {
     "ticker": "PORT",
