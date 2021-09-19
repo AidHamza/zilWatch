@@ -12,23 +12,24 @@ redisClient.on("error", function (error) {
 /* GET home page. */
 router.get('/', function (req, res, next) {
   redisClient.mget(
-    ["zilswap_dex_smart_contract_state_timestamp_seconds",
-      "zilswap_dex_smart_contract_state",
-      "zilswap_dex_smart_contract_state_24h_ago",
-      "coin_price_coingecko_timestamp_seconds",
-      "coin_price_coingecko",
-      "coin_price_coingecko_24h_ago",
-      "zilswap_dex_24h_trade_volume_timestamp_seconds",
-      "zilswap_dex_24h_trade_volume",
-      "zilswap_dex_epoch_info_timestamp_seconds",
-      "zilswap_dex_epoch_info",
-      "zrc_tokens_total_supply",
-      "zrc_tokens_circulating_supply",
-      "zilswap_dex_reward_and_apr",
-      "zil_staking_reward_and_apr",
-      "coin_market_coingecko",
-      "zilswap_dex_zrc_tokens_price_in_zil_24h_low",
-      "zilswap_dex_zrc_tokens_price_in_zil_24h_high",
+    ["zilswap_dex_smart_contract_state_timestamp_seconds", // 0
+      "zilswap_dex_smart_contract_state", // 1
+      "zilswap_dex_smart_contract_state_24h_ago", // 2
+      "coin_price_coingecko_timestamp_seconds", // 3
+      "coin_price_coingecko", // 4
+      "coin_price_coingecko_24h_ago", // 5
+      "zilswap_dex_24h_trade_volume_timestamp_seconds", // 6
+      "zilswap_dex_24h_trade_volume", // 7
+      "zilswap_dex_epoch_info_timestamp_seconds", // 8
+      "zilswap_dex_epoch_info", // 9
+      "zrc_tokens_total_supply", // 10
+      "zrc_tokens_circulating_supply", // 11
+      "zrc_tokens_circulating_supply_sorted_market_cap", // 12
+      "zilswap_dex_reward_and_apr", // 13
+      "zil_staking_reward_and_apr", // 14
+      "coin_market_coingecko", // 15
+      "zilswap_dex_zrc_tokens_price_in_zil_24h_low", // 16
+      "zilswap_dex_zrc_tokens_price_in_zil_24h_high", // 17
     ],
     function (err, reply) {
       let currZilswapDexSmartContractStateTimestampSeconds = null; // 0
@@ -46,15 +47,15 @@ router.get('/', function (req, res, next) {
       let currZilswapDexEpochInfo = null; // 9
 
       let currZrcTokensTotalSupply = constants.emptyZrcTokensSupply; // 10
-      let currZrcTokensCirculatingSupply = constants.emptyZrcTokensSupply; // 11
+      let currZrcTokensCirculatingSupply = constants.emptyZrcTokensSupply; // 11 and 12
 
-      let currZilswapDexReward = null; // 12
-      let currZilStakingReward = null; // 13
+      let currZilswapDexReward = null; // 13
+      let currZilStakingReward = null; // 14
 
-      let currCoinMarketCoingecko = null; // 14
+      let currCoinMarketCoingecko = null; // 15
 
-      let currZrcTokenPrice24hLow = null // 15
-      let currZrcTokenPrice24hHigh = null // 16
+      let currZrcTokenPrice24hLow = null // 16
+      let currZrcTokenPrice24hHigh = null // 17
 
       let currentDate = new Date();
       let currentTimeSeconds = currentDate.getTime() / 1000;
@@ -102,25 +103,31 @@ router.get('/', function (req, res, next) {
           if (reply[10]) {
             currZrcTokensTotalSupply = JSON.parse(reply[10]);
           }
+          // Get original circulating supply by alphabetical order first.
           if (reply[11]) {
             currZrcTokensCirculatingSupply = JSON.parse(reply[11]);
           }
+          // If circulating supply by market cap exists, use this instead of alphabetical order.
           if (reply[12]) {
-            currZilswapDexReward = JSON.parse(reply[12]);
-          }
-          if (reply[13]) {
-            currZilStakingReward = JSON.parse(reply[13]);
+            currZrcTokensCirculatingSupply = JSON.parse(reply[12]);
           }
 
+          if (reply[13]) {
+            currZilswapDexReward = JSON.parse(reply[13]);
+          }
           if (reply[14]) {
-            currCoinMarketCoingecko = JSON.parse(reply[14]);
+            currZilStakingReward = JSON.parse(reply[14]);
           }
 
           if (reply[15]) {
-            currZrcTokenPrice24hLow = JSON.parse(reply[15]);
+            currCoinMarketCoingecko = JSON.parse(reply[15]);
           }
+
           if (reply[16]) {
-            currZrcTokenPrice24hHigh = JSON.parse(reply[16]);
+            currZrcTokenPrice24hLow = JSON.parse(reply[16]);
+          }
+          if (reply[17]) {
+            currZrcTokenPrice24hHigh = JSON.parse(reply[17]);
           }
 
         } catch (ex) {
