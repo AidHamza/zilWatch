@@ -1,6 +1,8 @@
 var REFRESH_INTERVAL_MS = 30000;
 var activeIntervalId = null;
 
+var REFRESH_INTERVAL_15MINS_MS = 15 * 60000;
+
 document.addEventListener("DOMContentLoaded", () => {
     initDataTableIfNotInitialized();
 
@@ -15,6 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
     activeIntervalId = setInterval(function () {
         refreshCoinPriceStatus();
     }, REFRESH_INTERVAL_MS);
+
+    // Loop forever to refresh simple charts for sidebar
+    setInterval(function () {
+        computeSimpleChartStatus();
+    }, REFRESH_INTERVAL_15MINS_MS);
 
     $(window).resize(function () {
         drawAllBarCharts();
@@ -121,6 +128,7 @@ function onCurrencyChangeCallback(currencyCode) {
 // Callback method defined and called after toggle theme button press
 function onThemeChangeCallback() {
     drawAllBarCharts();
+    simpleChartStatus.refreshChartTheme();
 }
 
 function drawAllBarCharts() {
@@ -177,6 +185,16 @@ function refreshMainContentData(account) {
 
     // (8) Get Potential LP reward next epoch and past epoch, async
     computeZilswapTotalLpZwapReward(walletAddressBech32);
+}
+
+function computeSimpleChartStatus() {
+    simpleChartStatus.computeDataRpc(
+        /* beforeRpcCallback= */
+        function () {},
+        /* onSuccessCallback= */
+        function () {},
+        /* onErrorCallback= */
+        function () {});
 }
 
 function computeZilswapTotalLpZwapReward(walletAddressBech32) {

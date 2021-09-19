@@ -71,6 +71,9 @@
     --custom-select-arrow-black: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
     --custom-select-arrow-white: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23bec4ca' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
 
+    --navbar-toggler-icon-black: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 0, 0, 0.5)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    --navbar-toggler-icon-white: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.5)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+
     /* Mainly for navbar */
     --black-alpha-90: rgba(0, 0, 0, .9);
     --black-alpha-70: rgba(0, 0, 0, .7);
@@ -141,6 +144,7 @@
     --bg-dynamic-3: var(--white-980);
     --bg-dynamic-4: var(--white-990);
     --custom-select-arrow: var(--custom-select-arrow-black);
+    --navbar-toggler-icon: var(--navbar-toggler-icon-black);
 
     --text-color: var(--text-primary-black);
     --text-color-secondary: var(--text-secondary-black);
@@ -201,6 +205,7 @@
     --bg-dynamic-3: var(--black-880);
     --bg-dynamic-4: var(--black-860);
     --custom-select-arrow: var(--custom-select-arrow-white);
+    --navbar-toggler-icon: var(--navbar-toggler-icon-white);
 
     --text-color: var(--text-primary-white);
     --text-color-secondary: var(--text-secondary-white);
@@ -1850,7 +1855,7 @@ pre code {
     }
 }
 
-@media (min-width:1360px) {
+@media (min-width:1650px) {
     .col-xxl {
         -ms-flex-preferred-size: 0;
         flex-basis: 0;
@@ -4821,7 +4826,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .navbar-light .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 0, 0, 0.5)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")
+    background-image: var(--navbar-toggler-icon);
 }
 
 .navbar-light .navbar-text {

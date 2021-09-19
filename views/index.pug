@@ -2,1055 +2,1096 @@ extends layout
 
 block content
 
-  nav(class='navbar navbar-light bg-dynamic-1 justify-content-between')
-    a(class='navbar-brand zilwatch-navbar-brand')
-      img(src='/images/zilWatch-02.svg' width='30' height='30' class='d-inline-block align-top mr-2' alt='zilWatch')
-      = 'zilWatch'
-
-    select(id='currency_selector' class='custom-select my-2 my-sm-0 ml-auto mr-2')
-      each symbol, code in currencyMap
-        option(value=code)= code.toUpperCase() + ' (' + symbol + ')'
-
-    button(id='toggle_theme_btn' class='btn btn-info my-2 my-sm-0 mr-2')
-      i(id='toggle_theme_icon' class='fa fa-sun-o')
-
-    button(id='wallet_refresh' class='btn btn-info my-2 my-sm-0 mr-2')
-      i(id='wallet_refresh_icon' class='fa fa-refresh')
-    button(id='wallet_address' class='btn btn-outline-info my-2 my-sm-0' style='display: none;')
-    button(id='wallet_connect' class='btn btn-info my-2 my-sm-0')= 'Connect'
-
-  // Error Message Container
-  div(id='error_message_container' class='container')
-    hr
-    div(class='balance-box row container')
-      span(id='error_message' class='h5')= 'Loading...'
-
-  // Public Content Container
-  div(id='public_content_container' class='container-xxl')
-
-    hr
-
-    div(class='row accordion')
-
-      div(class='col-xl-12' style='padding: 0;')
-        div(class='box-public')
-
-          div(id='price_content_header_container' class='card-header' data-toggle='collapse' href='#price_content_container')
-            a(id='price_content_header_title' class='card-title font-weight-bold')= 'Token Information'
-          div(id='price_content_container' class='card-body collapse show table-sticky-header')
-            table(id='price_table' class='table table-sm table-borderless' width='100%')
-              thead(class='table-background-color-header')
-                tr(class='table-background-color')
-                  th(class='table-background-color-header' style='text-align: left; white-space: nowrap; width: 7%;' )= 'Token'
-                  th(style='text-align: right; white-space: nowrap; width: 7%;' )
-                    span= 'Price (ZIL)'
-                  th(style='text-align: right; white-space: nowrap; width: 3%;' )
-                    span='24h %'
-                  th(style='text-align: right; white-space: nowrap; width: 10%;' )
-                    span= '24h Low'
-                    span(class='ml-1 mr-1')='/'
-                    span= 'High'
-                  th(style='text-align: right; white-space: nowrap; width: 7%;' )
-                    span= 'Price'
-                    span= ' ('
-                    span(class='currency_symbol')= '$'
-                    span= ')'
-                  th(style='text-align: right; white-space: nowrap; width: 3%;' )
-                    span= '24h %'
-                  th(style='text-align: right; white-space: nowrap; width: 10%;')
-                    span= '24h Volume'
-                    span= ' ('
-                    span(class='currency_symbol')= '$'
-                    span= ')'
-                  th(style='text-align: right; white-space: nowrap; width: 10%;')
-                    span= 'Total Pool'
-                    span= ' ('
-                    span(class='currency_symbol')= '$'
-                    span= ')'
-                  th(style='text-align: right; white-space: nowrap; width: 10%;')
-                    span= 'Circ. Supply (Coin)'
-                  th(style='text-align: right; white-space: nowrap; width: 10%;')
-                    span= 'Market Cap'
-                    span= ' ('
-                    span(class='currency_symbol')= '$'
-                    span= ')'
-                  th(style='text-align: right; white-space: nowrap; width: 10%;')
-                    span= 'Total Supply (Coin)'
-                  th(style='text-align: right; white-space: nowrap; width: 10%;')
-                    span= 'Total Supply'
-                    span= ' ('
-                    span(class='currency_symbol')= '$'
-                    span= ')'
-
-              tbody(class='table-background-color')
-                each coinProperties, key in coinMap 
-                  tr
-                    th(scope='row' style='display:table-cell; white-space: nowrap; vertical-align: middle;')
-                      img(height='18' width='18' src=coinProperties.logo_url loading='lazy')
-                      span(class='ml-2')= coinProperties.ticker
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(class=coinProperties.ticker+'_price_zil')= 'Loading...'
-                    td(class='pr-3' id='public_'+coinProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id='public_'+coinProperties.ticker+'_price_zil_percent_change_24h')
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      div(class='progress' style='height: 0.4rem; margin-top: 0.2rem;')
-                        div(id=coinProperties.ticker+'_price_24h_low_high_progress' class='progress-bar' role='progressbar' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
-                      span(class='currency_symbol mr-1')= '$'
-                      span(id=coinProperties.ticker+'_price_24h_low_fiat')= ''
-                      span(class='ml-1 mr-1')='/'
-                      span(id=coinProperties.ticker+'_price_24h_high_fiat')= ''
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(class=coinProperties.ticker+'_price_fiat')= 'Loading...'
-                    td(class='pr-3' id='public_'+coinProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id='public_'+coinProperties.ticker+'_price_fiat_percent_change_24h')
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id=coinProperties.ticker+'_lp_24h_volume_fiat')= '0'
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id=coinProperties.ticker+'_lp_total_pool_fiat')
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id=coinProperties.ticker+'_circulating_supply_coin')= '0'
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id=coinProperties.ticker+'_circulating_supply_fiat')= '0'
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id=coinProperties.ticker+'_total_supply_coin')
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id=coinProperties.ticker+'_total_supply_fiat')
-
-                each circulatingSupply, ticker in zrcTokensCirculatingSupply
-                  if !(ticker in zrcTokenPropertiesListMap)
-                    - continue
-                  - let tokenProperties = zrcTokenPropertiesListMap[ticker]
-                  - var trStyle = ''
-                  if tokenProperties.ticker === 'XPORT'
-                    div(style='display:none')
-                      span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
-                      span(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h')
-                      span(id=tokenProperties.ticker+'_price_24h_low_high_progress' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
-                      span(id=tokenProperties.ticker+'_price_24h_low')= ''
-                      span(id=tokenProperties.ticker+'_price_24h_high')= ''
-                      span(id='public_'+tokenProperties.ticker+'_price_fiat')= 'Loading...'
-                      span(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h')
-                      span(id=tokenProperties.ticker+'_lp_24h_volume_fiat')= '0'
-                      span(id=tokenProperties.ticker+'_lp_total_pool_fiat')= 'Loading...'
-                      span(id=tokenProperties.ticker+'_circulating_supply_zrc')= '0'
-                      span(id=tokenProperties.ticker+'_circulating_supply_fiat')= '0'
-                      span(id=tokenProperties.ticker+'_total_supply_zrc')= '0'
-                      span(id=tokenProperties.ticker+'_total_supply_fiat')= '0'
-                      span(id='public_'+tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
-                      span(id='public_'+tokenProperties.ticker+'_price_fiat_24h_ago' style='display: none;')
-                    - continue
-
-                  tr(style=trStyle)
-                    th(scope='row' style='display:table-cell; white-space: nowrap; vertical-align: middle;')
-                      img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
-                      span(class='ml-2')= tokenProperties.ticker
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
-                    td(class='pr-3' id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h')
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      div(class='progress' style='height: 0.4rem; margin-top: 0.2rem;')
-                        div(id=tokenProperties.ticker+'_price_24h_low_high_progress' class='progress-bar' role='progressbar' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
-                      span(id=tokenProperties.ticker+'_price_24h_low')= ''
-                      span(class='ml-1 mr-1')='/'
-                      span(id=tokenProperties.ticker+'_price_24h_high')= ''
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id='public_'+tokenProperties.ticker+'_price_fiat')= 'Loading...'
-                    td(class='pr-3' id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h')
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id=tokenProperties.ticker+'_lp_24h_volume_fiat')= '0'
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id=tokenProperties.ticker+'_lp_total_pool_fiat')= 'Loading...'
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id=tokenProperties.ticker+'_circulating_supply_zrc')= '0'
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id=tokenProperties.ticker+'_circulating_supply_fiat')= '0'
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id=tokenProperties.ticker+'_total_supply_zrc')= '0'
-                    td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                      span(id=tokenProperties.ticker+'_total_supply_fiat')= '0'
-
-                    span(id='public_'+tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
-                    span(id='public_'+tokenProperties.ticker+'_price_fiat_24h_ago' style='display: none;')
-
-      if zilswapDexReward || zilStakingReward
-        div(class='col-lg-6 col-xxl-4' style='padding: 0;')
-
-          div(class='box-public')
-            div(id='farming_info_content_header_container' class='card-header' data-toggle='collapse' href='#farming_info_content_container')
-              a(id='farming_info_content_header_title' class='card-title font-weight-bold')= 'Farming Information'
-            div(id='farming_info_content_container' class='card-body collapse show')
-
-              if zilStakingReward
-                table(class='table table-sm table-borderless' width='100%')
-                  tbody(class='table-background-color-header')
-                    tr
-                      th(colspan=2 style='text-align: left; white-space: nowrap; width: 25%;' )= 'Token Staking'
-                      th(style='text-align: right; white-space: nowrap; width: 25%;')
-                        span= 'Unbond'
-                      th(style='text-align: right; white-space: nowrap; width: 25%;')
-                        span= 'Daily %'
-                      th(style='text-align: right; white-space: nowrap; width: 25%;')
-                        span= 'APR %'
-                  tbody
-                    tr
-                      td(rowspan=2 scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                        img(height='18' width='18' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
-                      td(rowspan=2 style='display:table-cell; vertical-align: middle; text-align: left; white-space: nowrap;' )
-                        span= 'Zilliqa'
-                      td(rowspan=2 style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap;' )
-                        span= zilStakingReward.unbonding_period_days + ' days'
-                      td(style='text-align: right; white-space: nowrap;' )
-                        span(class='text-secondary mr-1')= '(ZIL)'
-                        span= zilStakingReward.zil_reward_daily_percent
-                      td(style='text-align: right; white-space: nowrap;' )
-                        span(class='text-secondary mr-1')= '(ZIL)'
-                        span= zilStakingReward.zil_reward_apr_percent
-
-                    tr
-                      td(style='text-align: right; white-space: nowrap;' )
-                        span(class='text-secondary mr-1')= '(gZIL)'
-                        span= zilStakingReward.gzil_reward_daily_percent
-                      td(style='text-align: right; white-space: nowrap;' )
-                        span(class='text-secondary mr-1')= '(gZIL)'
-                        span= zilStakingReward.gzil_reward_apr_percent
-
-              if zilswapDexReward
-                table(class='table table-sm table-borderless' width='100%')
-                  tbody(class='table-background-color-header')
-                    tr
-                      th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Zilswap LP'
-                      th(style='text-align: right; white-space: nowrap; width: 25%;')
-                        span= 'Weekly (ZWAP)'
-                      th(style='text-align: right; white-space: nowrap; width: 20%;')
-                        span= 'Daily %'
-                      th(style='text-align: right; white-space: nowrap; width: 20%;')
-                        span= 'APR %'
-
-                  tbody(class='table-background-color')
-                    each circulatingSupply, ticker in zrcTokensCirculatingSupply
-                      if !(ticker in zrcTokenPropertiesListMap)
-                        - continue
-                      if zilswapDexReward[ticker] && ticker !== 'XPORT'
-                        - let tokenProperties = zrcTokenPropertiesListMap[ticker]
-
-                        tr
-                          td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                            img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
-                          td(style='text-align: left; white-space: nowrap; width: 25%;' )
-                            span= tokenProperties.ticker + '-ZIL'
-                          td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                            span= zilswapDexReward[ticker].zwap_reward
-                          td(style='text-align: right; white-space: nowrap; width: 20%;' )
-                            span= zilswapDexReward[ticker].daily_percent
-                          td(style='text-align: right; white-space: nowrap; width: 20%;' )
-                            span= zilswapDexReward[ticker].apr_percent
-
-
-      //---------------------- Start of Swap DIV ---------------------
-      div(class='col-lg-6 col-xxl-4' style='padding: 0;')
-
-        div(class='box-public')
-          div(id='swap_content_header_container' class='card-header' data-toggle='collapse' href='#swap_content_container')
-            span(id='swap_content_header_title' class='card-title font-weight-bold')= 'Swap'
-            small(class='ml-2')= 'BETA'
-            img(id='swap_content_header_image' class='ml-3' height='20' src='/images/zilswap_long_logo.svg' loading='lazy')
-          div(id='swap_content_container' class='card-body collapse show' style='padding: 0;')
-
-            div(class='swap-box-table')
-              table(class='table table-sm table-borderless' width='100%')
-                tbody
-                  tr
-                    td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-
-                      h5(id='swap_select_token_from' class='swap-mini-button-box')
-                        img(id='swap_select_token_from_img' height='24' width='24' src='' loading='lazy' style='display: none;')
-                        span(id='swap_select_token_from_ticker' class='ml-1 font-weight-bold' style='vertical-align: middle;')= 'Select token'
-                        svg(id='swap_select_token_from_svg' class='ml-1 arrow-down' width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg')
-                          path(d='M0.97168 1L6.20532 6L11.439 1')
-
-                    td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                      h4(style='padding: 0; margin: 0;')
-                        input(id='swap_token_from_amount' class='swap-input' inputmode='decimal' autocomplete='off' autocorrect='off' type='text' pattern='^[0-9]*[.,]?[0-9]*$' placeholder='0.0' minlength='1' maxlength='79' spellcheck='false' value='')
-              table(class='table table-sm table-borderless' width='100%')
-                tbody
-                  tr(id='swap_token_from_balance_container' style='visibility: hidden;')
-                    td(scope='row' style='white-space: nowrap;' )
-                      span= 'Balance: '
-                      span(id='swap_token_from_balance')= '0'
-                      span(id='swap_token_from_max_balance_button' class='swap-mini-button-box ml-2')= 'Max'
-                    td(id='swap_token_from_amount_fiat_container' style='text-align: right; white-space: nowrap; visibility: hidden;')
-                      span= '~'
-                      span(class='currency_symbol mr-1')= '$'
-                      span(id='swap_token_from_amount_fiat')
-
-            div(id='swap_arrow_down_toggle_direction' class='swap-arrow-down-container')
-              svg(id='swap_arrow_down_toggle_direction_svg' class='arrow-down' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg')
-                line(x1='12' y1='5' x2='12' y2='19')
-                polyline(points='19 12 12 19 5 12')
-
-            div(class='swap-box-table')
-              table(class='table table-sm table-borderless' width='100%')
-                tbody
-                  tr
-                    td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                      h5(id='swap_select_token_to' class='swap-mini-button-box')
-                        img(id='swap_select_token_to_img' height='24' width='24' src='' loading='lazy' style='display: none;')
-                        span(id='swap_select_token_to_ticker' class='ml-1 font-weight-bold' style='vertical-align: middle;')= 'Select token'
-                        svg(id='swap_select_token_to_svg' class='ml-1 arrow-down' width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg')
-                          path(d='M0.97168 1L6.20532 6L11.439 1')
-                    td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                      h4(style='padding: 0; margin: 0;')
-                        input(id='swap_token_to_amount' class='swap-input' inputmode='decimal' autocomplete='off' autocorrect='off' type='text' pattern='^[0-9]*[.,]?[0-9]*$' placeholder='0.0' minlength='1' maxlength='79' spellcheck='false' value='')
-              table(class='table table-sm table-borderless' width='100%')
-                tbody
-                  tr
-                    td(id='swap_token_to_balance_container' scope='row' style='white-space: nowrap; visibility: hidden;')
-                      span= 'Balance: '
-                      span(id='swap_token_to_balance')= '0'
-                    td(style='text-align: right; white-space: nowrap;' )
-
-            div(id='swap_error_message_container' style='padding:0.6rem; text-align: right; display: none;')
-              span(id='swap_error_message' class='negative-red')
-
-            div(id='swap_error_message_2_container' style='padding:0.6rem; text-align: right; display: none;')
-              span(id='swap_error_message_2' class='negative-red')
-
-            div(class='swap-box-table-transparent')
-              table(class='table table-sm table-borderless' width='100%')
-                tbody
-                  tr
-                    td(scope='row' style='text-align: left; white-space: nowrap; width: 1%;' )
-                      span(id='swap_token_settings_button' class='swap-mini-button-box' data-toggle='modal' data-target='#swap_token_settings_modal')
-                        i(class='fa fa-cog mr-1')
-                        = 'Set.'
-
-                    td(scope='row' style='text-align: left; white-space: nowrap; width: 1%;' )
-                      span(id='swap_history_button' class='swap-mini-button-box' data-toggle='modal' data-target='#swap_history_modal')
-                        i(class='fa fa-history mr-1')
-                        = 'History'
-
-                    td(scope='row' style='text-align: right; white-space: nowrap; width: 50%;' )
-                      span(id='swap_token_final_rate')=''
-                      span(id='swap_token_final_rate_inverse' style='display: none;')=''
-                      span(id='swap_token_final_rate_inverse_button' class='swap-mini-button-box ml-1' style='display:none;')
-                        i(class='fa fa-refresh ml-1 mr-1')
-                    td(scope='row' style='text-align: right; white-space: nowrap; width: 1%;' )
-                      span(id='swap_token_info_popover_button' class='swap-mini-button-box' tabindex='0' data-toggle='popover' data-trigger='focus' data-popover-content='#swap_token_info_popover' data-placement='bottom')
-                        i(class='fa fa-info-circle ml-1 mr-1')
-
-            div(class='swap-box')
-              button(id='approve_button' class='btn btn-lg btn-info disabled' style='width: 100%; border-radius: 10px; display: none;')= 'Approve'
-              button(id='swap_button' class='btn btn-lg btn-info disabled' style='width: 100%; border-radius: 10px;')= 'Swap'
-
-            div(id='transaction_table_container' class='swap-box-table-transparent' style='display: none;')
-              table(class='table table-sm table-borderless' width='100%')
-                tbody(id='transaction_table_list')
-
-    //---------------------- End of Swap DIV ---------------------
-
-    hr
-
-  // Main Content Container
-  div(id='main_content_container' class='container' style='display: none;')
-
-    div(class='row')
-      div(class='col-12')
-        span(id='wallet_full_address' style='display: none;')
-        span(id='wallet_censored_address' style='display: none;')
-        span(id='wallet_censor_button' class='mini-button-box ml-1')
-          i(id='wallet_censor_icon' class='fa fa-eye-slash ml-1 mr-1')
-        a(id='wallet_viewblock_anchor' target='_blank' style='color: var(--text-color);')
-          span(class='mini-button-box ml-1' )
-            i(class='fa fa-external-link ml-1 mr-1')
-        span(id='wallet_copy_button' class='mini-button-box ml-1')
-          i(class='fa fa-copy ml-1 mr-1')
-          span(id='wallet_copy_message')
-
-    div(class='row')
-      div(class='balance-box col-md-6')
-        div(class='mb-1' style='display:table-cell; vertical-align: middle;')
-          span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Net Worth'
-          div(class='net-worth-spinner ml-3 spinner-border text-info' role='status' style='vertical-align: middle; display: none;')
-            span(class='sr-only')= 'Loading...'
-        span(class='h4')
-          span(class='currency_symbol mr-1')= '$'
-          span(id='net_worth_fiat')= 'Loading...'
-        span(id='net_worth_fiat_percent_change_24h_container' class='tooltip-container tooltip-rounded h6 text-secondary ml-3')
-          span(id='net_worth_fiat_percent_change_24h')
-          span= ' %'
-        span(id='net_worth_fiat_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
-          br
-          span(class='currency_symbol mr-1')= '$'
-          span(id='net_worth_fiat_24h_ago')
-          span(class='ml-1')= '(24h ago)'
-        br
-        span(class='h6')
-          span(id='net_worth_zil')= 'Loading...'
-          span(class='ml-1')= 'ZIL'
-        span(id='net_worth_zil_percent_change_24h_container' class='tooltip-container tooltip-rounded h6 text-secondary ml-3')
-          span(id='net_worth_zil_percent_change_24h')
-          span= ' %'
-        span(id='net_worth_zil_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
-          br
-          span(id='net_worth_zil_24h_ago')
-          span(class='ml-1')= 'ZIL'
-          span(class='ml-1')= '(24h ago)'
-
-      div(class='balance-box col-md-6')
-        div(class='mb-1' style='display:table-cell; vertical-align: middle;')
-          span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Wallet Balance'
-          div(class='wallet-balance-spinner ml-3 spinner-border text-info' role='status' style='vertical-align: middle; display: none;')
-            span(class='sr-only')= 'Loading...'
-        span(class='h4')
-          span(class='currency_symbol mr-1')= '$'
-          span(id='wallet_balance_fiat')= 'Loading...'
-        span(id='wallet_balance_fiat_percent_change_24h_container' class='tooltip-container tooltip-rounded  h6 text-secondary ml-3')
-          span(id='wallet_balance_fiat_percent_change_24h')
-          span= ' %'
-        span(id='wallet_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
-          br
-          span(class='currency_symbol mr-1')= '$'
-          span(id='wallet_balance_fiat_24h_ago')
-          span(class='ml-1')= '(24h ago)'
-        br
-        span(class='h6')
-          span(id='wallet_balance_zil')= 'Loading...'
-          span(class='ml-1')= 'ZIL'
-        span(id='wallet_balance_zil_percent_change_24h_container' class='tooltip-container tooltip-rounded h6 text-secondary ml-3')
-          span(id='wallet_balance_zil_percent_change_24h')
-          span= ' %'
-        span(id='wallet_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
-          br
-          span(id='wallet_balance_zil_24h_ago')
-          span(class='ml-1')= 'ZIL'
-          span(class='ml-1')= '(24h ago)'
-
-      div(class='balance-box col-md-6')
-        div(class='mb-1' style='display:table-cell; vertical-align: middle;')
-          span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'LP Balance'
-          div(class='lp-balance-spinner ml-3 spinner-border text-info' role='status' style='vertical-align: middle; display: none;')
-            span(class='sr-only')= 'Loading...'
-        span(class='h4')
-          span(class='currency_symbol mr-1')= '$'
-          span(id='lp_balance_fiat')= 'Loading...'
-        span(id='lp_balance_fiat_percent_change_24h_container' class='tooltip-container tooltip-rounded h6 text-secondary ml-3')
-          span(id='lp_balance_fiat_percent_change_24h')
-          span= ' %'
-        span(id='lp_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
-          br
-          span(class='currency_symbol mr-1')= '$'
-          span(id='lp_balance_fiat_24h_ago')
-          span(class='ml-1')= '(24h ago)'
-        br
-        span(class='h6')
-          span(id='lp_balance_zil')= 'Loading...'
-          span(class='ml-1')= 'ZIL'
-        span(id='lp_balance_zil_percent_change_24h_container' class='tooltip-container tooltip-rounded h6 text-secondary ml-3')
-          span(id='lp_balance_zil_percent_change_24h')
-          span= ' %'
-        span(id='lp_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
-          br
-          span(id='lp_balance_zil_24h_ago')
-          span(class='ml-1')= 'ZIL'
-          span(class='ml-1')= '(24h ago)'
-
-      div(class='balance-box col-md-6')
-        div(class='mb-1' style='display:table-cell; vertical-align: middle;')
-          span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Staking Balance'
-          div(class='staking-balance-spinner ml-3 spinner-border text-info' role='status' style='vertical-align: middle;  display: none;')
-            span(class='sr-only')= 'Loading...'
-        span(class='h4')
-          span(class='currency_symbol mr-1')= '$'
-          span(id='staking_balance_fiat')= 'Loading...'
-        span(id='staking_balance_fiat_percent_change_24h_container' class='tooltip-container tooltip-rounded h6 text-secondary ml-3')
-          span(id='staking_balance_fiat_percent_change_24h')
-          span= ' %'
-        span(id='staking_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
-          br
-          span(class='currency_symbol mr-1')= '$'
-          span(id='staking_balance_fiat_24h_ago')
-          span(class='ml-1')= '(24h ago)'
-        br
-        span(class='h6')
-          span(id='staking_balance_zil')= 'Loading...'
-          span(class='ml-1')= 'ZIL'
-        span(id='staking_balance_zil_percent_change_24h_container' class='tooltip-container tooltip-rounded h6 text-secondary ml-3')
-          span(id='staking_balance_zil_percent_change_24h')
-          span= ' %'
-        span(id='staking_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
-          br
-          span(id='staking_balance_zil_24h_ago')
-          span(class='ml-1')= 'ZIL'
-          span(class='ml-1')= '(24h ago)'
-
-    div(class='row')
-      div(id='net_worth_chart_container' class='balance-box col-lg-6' style='display: none;')
-        div(id='net_worth_chart')
-      div(id='unique_coin_chart_container' class='balance-box col-lg-6' style='display: none;')
-        div(id='unique_coin_chart')
-
-    hr
-
-    // Wallet Balance
-    div(class='container title-box' style='display:table-cell; vertical-align: middle;')
-      img(class='mr-3' height='36' src=zrcTokenPropertiesListMap['ZLP'].logo_url loading='lazy')
-      span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Wallet Balance'
-      div(class='wallet-balance-spinner ml-3 spinner-border text-info' role='status' style='vertical-align: middle; display: none;')
-        span(class='sr-only')= 'Loading...'
-
-    div(id='wallet_balance' class='container')
-
-      div(class='row')
-
-        div(class='col-lg-6' style='padding: 0;')
-          div(class='box')
-            table(class='table table-sm table-borderless' width='100%')
-              tbody
-                tr
-                  td(scope='row' rowspan='4' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                    img(height='32' width='32' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
-                  td(style='text-align: left; white-space: nowrap; width: 35%;' )
-                    span(class='font-weight-bold')= 'Zilliqa'
-                  td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                    span(id='zil_balance')= 'Loading...'
-                    span(id='zil_balance_unit' class='ml-1')= 'ZIL'
-                tr
-                  td(scope='row' class='font-weight-normal text-secondary' style='white-space: nowrap; width: 35%;' )
-                    span(class='currency_symbol mr-1')= '$'
-                    span(class='ZIL_price_fiat')= 'Loading...'
-                  td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                    span(class='currency_symbol mr-1')= '$'
-                    span(id='zil_balance_fiat')= 'Loading...'
-                  td(id='zil_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
-                    span(id='zil_balance_fiat_percent_change_24h')
-                    span= '%'
-                tr(id='zil_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
-                  td(scope='row' style='white-space: nowrap;' )
-                    span= 'Balance 24h ago'
-                  td(style='text-align: right; white-space: nowrap;' )
-                    span(class='currency_symbol mr-1')= '$'
-                    span(id='zil_balance_fiat_24h_ago')
-                  td(style='text-align: right; white-space: nowrap;' )
-
-        each circulatingSupply, ticker in zrcTokensCirculatingSupply
-          if !(ticker in zrcTokenPropertiesListMap)
-            - continue
-          - let tokenProperties = zrcTokenPropertiesListMap[ticker]
-
-          div(id=tokenProperties.ticker+'_container' class='col-lg-6' style='padding: 0; display: none')
-            div(class='box')
-              table(class='table table-sm table-borderless')
-                tbody
-                  tr
-                    td(scope='row' rowspan='4' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                      img(height='32' width='32' src=tokenProperties.logo_url loading='lazy')
-                    td(style='text-align: left; white-space: nowrap; width: 35%;' )
-                      span(class='font-weight-bold')= tokenProperties.ticker
-                      span(class=tokenProperties.ticker+'_price_zil ml-2 text-secondary')= 'Loading...'
-                      span(class='ml-1 text-secondary')= 'ZIL'
-                      span(class=tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
-                    td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                      span(id=tokenProperties.ticker+'_balance_zil')= 'Loading...'
-                      span(class='ml-1')= 'ZIL'
-                    td(id=tokenProperties.ticker+'_balance_zil_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
-                      span(id=tokenProperties.ticker+'_balance_zil_percent_change_24h')
-                      span= '%'
-                  tr(id=tokenProperties.ticker+'_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
-                    td(style='text-align: left; white-space: nowrap;' )
-                      span= 'Balance 24h ago'
-                    td(style='text-align: right; white-space: nowrap;' )
-                      span(id=tokenProperties.ticker+'_balance_zil_24h_ago')
-                      span(class='ml-1')= 'ZIL'
-                    td(style='text-align: right; white-space: nowrap;' )
-                  tr
-                    td(scope='row' style='text-align: left; white-space: nowrap; width: 35%;' )
-                      span(id=tokenProperties.ticker+'_balance')= 'Loading...'
-                      span(id=tokenProperties.ticker+'_balance_unit' class='ml-1')= tokenProperties.ticker
-                    td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                      span(class='currency_symbol mr-1')= '$'
-                      span(id=tokenProperties.ticker+'_balance_fiat')= 'Loading...'
-                    td(id=tokenProperties.ticker+'_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
-                      span(id=tokenProperties.ticker+'_balance_fiat_percent_change_24h')
-                      span= '%'
-                  tr(id=tokenProperties.ticker+'_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
-                    td(style='text-align: left; white-space: nowrap;' )
-                      span= 'Balance 24h ago'
-                    td(style='text-align: right; white-space: nowrap;' )
-                      span(class='currency_symbol mr-1')= '$'
-                      span(id=tokenProperties.ticker+'_balance_fiat_24h_ago')
-                    td(style='text-align: right; white-space: nowrap;' )
-
-    hr
-
-    div(id='lp_container' style='display: none')
-
-      div(class='container title-box' style='display:table-cell; vertical-align: middle;')
-        img(class='mr-3' height='36' src='/images/zilswap_long_logo.svg' loading='lazy')
-        span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Liquidity Pool Balance'
-        div(class='lp-balance-spinner ml-3 spinner-border text-info' role='status' style='vertical-align: middle; display: none;')
-          span(class='sr-only')= 'Loading...'
-
-      // LP Balance
-      div(id='lp_balance' class='container')
-
-        div(class='row')
-
-          div(id='total_all_lp_reward_next_epoch_container' class='col-lg-6' style='padding: 0; display: none')
-            div(class='highlight-box')
-              table(class='table table-sm table-borderless')
-                tbody
-                  tr
-                    td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                      img(height='18' width='18' src=zrcTokenPropertiesListMap['ZWAP'].logo_url loading='lazy')
-                    td(colspan='2' style='text-align: left; white-space: nowrap; width: 50%;' )
-                      span(class='font-weight-bold')= 'Est. reward'
-                    td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(id='lp_reward_next_epoch_duration_counter' class='font-weight-normal')
-                  tr
-                    td(colspan='2' style='text-align: left; white-space: nowrap; width: 25%;' )
-                      span= 'Next epoch'
-                    td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(id='total_all_lp_reward_next_epoch_zwap' class='ml-1')= 'Loading...'
-                      span(class='ml-1')= zrcTokenPropertiesListMap['ZWAP'].ticker
-                    td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(class='currency_symbol mr-1')= '$'
-                      span(id='total_all_lp_reward_next_epoch_fiat')= 'Loading...'
-                  tr
-                    td(colspan='2' style='text-align: left; white-space: nowrap; width: 25%;' )
-                      span= 'Unclaimed reward'
-                    td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(id='total_all_lp_reward_unclaimed_zwap' class='ml-1')= 'Loading...'
-                      span(class='ml-1')= zrcTokenPropertiesListMap['ZWAP'].ticker
-                    td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(class='currency_symbol mr-1')= '$'
-                      span(id='total_all_lp_reward_unclaimed_fiat')= 'Loading...'
-                  tr(id='total_all_lp_reward_past_epoch_container')
-                    td(colspan='2' style='text-align: left; white-space: nowrap; width: 25%;' )
-                      span= 'Prev epoch'
-                      span= ' ('
-                      span(id='total_all_lp_reward_prev_epoch_number')
-                      span= ')'
-                    td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(id='total_all_lp_reward_prev_epoch_zwap' class='ml-1')= 'Loading...'
-                      span(class='ml-1')= zrcTokenPropertiesListMap['ZWAP'].ticker
-                    td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
-                      span(class='currency_symbol mr-1')= '$'
-                      span(id='total_all_lp_reward_prev_epoch_fiat')= 'Loading...'
-
-                  tbody(id='total_all_lp_reward_past_epoch_tooltip_content' class='tooltip-content' style='display: none')
-
+  div(id='wrapper' class='d-flex')
+    // Sidebar
+    div(id='sidebar-wrapper' class='border-end bg-dynamic-3')
+      div(class=' sidebar-toggler sidebar-heading border-bottom-sidebar bg-dynamic-3')
+        span(class='font-weight-bold')='ZRC-2 Tokens' 
+        button(class='close')
+          span='×'
+      table(class='table-md list-group list-group-flush')
+        tbody
           each circulatingSupply, ticker in zrcTokensCirculatingSupply
             if !(ticker in zrcTokenPropertiesListMap)
               - continue
             - let tokenProperties = zrcTokenPropertiesListMap[ticker]
+            if tokenProperties.ticker === 'XPORT'
+              div(style='display:none')
+                div(id='simple_chart_'+tokenProperties.ticker)
+              - continue
+            tr(class='list-group-item-action list-group-item-sidebar border-bottom-sidebar')
+              th(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                img(height='22' width='22' src=tokenProperties.logo_url loading='lazy')
+              th(style='display: table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                span= tokenProperties.ticker
+              td(style='text-align: right; white-space: nowrap; vertical-align: middle; width: 1%;' )
+                div(id='simple_chart_'+tokenProperties.ticker)
+              td(style='text-align: right; white-space: nowrap; vertical-align: middle; width: 1%;' )
+                span(class=tokenProperties.ticker+'_price_zil')= 'Loading...'
+              td(class=tokenProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle; width: 1%;' )
+                span(class=tokenProperties.ticker+'_price_zil_percent_change_24h')= 'Loading...'
 
-            div(id=tokenProperties.ticker+'_lp_container' class='col-lg-6' style='padding: 0; display: none')
-              div(class='box')
-                table(class='table table-sm table-borderless')
-                  tbody
-                    tr
-                      td(scope='row' style='text-align: left; white-space: nowrap; width: 45%;' )
-                        img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
-                        img(height='18' width='18' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
-                        span(class='font-weight-bold ml-2')= tokenProperties.ticker + '-ZIL'
-                        span(class=tokenProperties.ticker+'_price_zil ml-2 text-secondary')= 'Loading...'
-                        span(class='ml-1 text-secondary')= 'ZIL'
+      div(class=' sidebar-toggler sidebar-heading border-bottom-sidebar bg-dynamic-3')
+        span(class='font-weight-bold')='Close sidebar' 
+        button(class='close')
+          span='×'
 
-                      td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                        span(id=tokenProperties.ticker+'_lp_balance_zil' class='ml-1')
-                        span(class='ml-1')= 'ZIL'
+    // Page content wrapper
+    div(id='page-content-wrapper')
 
-                      td(id=tokenProperties.ticker+'_lp_balance_zil_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
-                        span(id=tokenProperties.ticker+'_lp_balance_zil_percent_change_24h')
-                        span= '%'
+      nav(class='navbar navbar-light bg-dynamic-1 justify-content-between')
+        button(class='sidebar-toggler navbar-toggler mr-1')
+          span(class="navbar-toggler-icon")
 
-                    tbody(id=tokenProperties.ticker+'_lp_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
+        a(class='navbar-brand zilwatch-navbar-brand')
+          img(src='/images/zilWatch-02.svg' width='30' height='30' class='d-inline-block align-top mr-2' alt='zilWatch')
+          = 'zilWatch'
+
+        select(id='currency_selector' class='custom-select my-2 my-sm-0 ml-auto mr-2')
+          each symbol, code in currencyMap
+            option(value=code)= code.toUpperCase() + ' (' + symbol + ')'
+
+        button(id='toggle_theme_btn' class='btn btn-info my-2 my-sm-0 mr-2')
+          i(id='toggle_theme_icon' class='fa fa-sun-o')
+
+        button(id='wallet_refresh' class='btn btn-info my-2 my-sm-0 mr-2')
+          i(id='wallet_refresh_icon' class='fa fa-refresh')
+        button(id='wallet_address' class='btn btn-outline-info my-2 my-sm-0' style='display: none;')
+        button(id='wallet_connect' class='btn btn-info my-2 my-sm-0')= 'Connect'
+
+      // Error Message Container
+      div(id='error_message_container' class='container')
+        hr
+        div(class='balance-box row container')
+          span(id='error_message' class='h5')= 'Loading...'
+
+      // Public Content Container
+      div(id='public_content_container' class='container-xxl')
+
+        hr
+
+        div(class='row accordion')
+
+          div(class='col-xl-12' style='padding: 0;')
+            div(class='box-public')
+
+              div(id='price_content_header_container' class='card-header' data-toggle='collapse' href='#price_content_container')
+                a(id='price_content_header_title' class='card-title font-weight-bold')= 'Token Information'
+              div(id='price_content_container' class='card-body collapse show table-sticky-header')
+                table(id='price_table' class='table table-sm table-borderless' width='100%')
+                  thead(class='table-background-color-header')
+                    tr(class='table-background-color')
+                      th(class='table-background-color-header' style='text-align: left; white-space: nowrap; width: 7%;' )= 'Token'
+                      th(style='text-align: right; white-space: nowrap; width: 7%;' )
+                        span= 'Price (ZIL)'
+                      th(style='text-align: right; white-space: nowrap; width: 3%;' )
+                        span='24h %'
+                      th(style='text-align: right; white-space: nowrap; width: 10%;' )
+                        span= '24h Low'
+                        span(class='ml-1 mr-1')='/'
+                        span= 'High'
+                      th(style='text-align: right; white-space: nowrap; width: 7%;' )
+                        span= 'Price'
+                        span= ' ('
+                        span(class='currency_symbol')= '$'
+                        span= ')'
+                      th(style='text-align: right; white-space: nowrap; width: 3%;' )
+                        span= '24h %'
+                      th(style='text-align: right; white-space: nowrap; width: 10%;')
+                        span= '24h Volume'
+                        span= ' ('
+                        span(class='currency_symbol')= '$'
+                        span= ')'
+                      th(style='text-align: right; white-space: nowrap; width: 10%;')
+                        span= 'Total Pool'
+                        span= ' ('
+                        span(class='currency_symbol')= '$'
+                        span= ')'
+                      th(style='text-align: right; white-space: nowrap; width: 10%;')
+                        span= 'Circ. Supply (Coin)'
+                      th(style='text-align: right; white-space: nowrap; width: 10%;')
+                        span= 'Market Cap'
+                        span= ' ('
+                        span(class='currency_symbol')= '$'
+                        span= ')'
+                      th(style='text-align: right; white-space: nowrap; width: 10%;')
+                        span= 'Total Supply (Coin)'
+                      th(style='text-align: right; white-space: nowrap; width: 10%;')
+                        span= 'Total Supply'
+                        span= ' ('
+                        span(class='currency_symbol')= '$'
+                        span= ')'
+
+                  tbody(class='table-background-color')
+                    each coinProperties, key in coinMap 
                       tr
-                        td(scope='row' style='text-align: left; white-space: nowrap;' )
-                          span= 'Balance 24h ago'
-                        td(style='text-align: right; white-space: nowrap;' class='text-secondary')
-                          span(id=tokenProperties.ticker+'_lp_pool_share_percent_24h_ago')
-                          span(class='ml-1')= '%'
-                        td(style='text-align: right; white-space: nowrap;' )
+                        th(scope='row' style='display:table-cell; white-space: nowrap; vertical-align: middle;')
+                          img(height='18' width='18' src=coinProperties.logo_url loading='lazy')
+                          span(class='ml-2')= coinProperties.ticker
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(class=coinProperties.ticker+'_price_zil')= 'Loading...'
+                        td(class='pr-3' id='public_'+coinProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id='public_'+coinProperties.ticker+'_price_zil_percent_change_24h')
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          div(class='progress' style='height: 0.4rem; margin-top: 0.2rem;')
+                            div(id=coinProperties.ticker+'_price_24h_low_high_progress' class='progress-bar' role='progressbar' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
+                          span(class='currency_symbol mr-1')= '$'
+                          span(id=coinProperties.ticker+'_price_24h_low_fiat')= ''
+                          span(class='ml-1 mr-1')='/'
+                          span(id=coinProperties.ticker+'_price_24h_high_fiat')= ''
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(class=coinProperties.ticker+'_price_fiat')= 'Loading...'
+                        td(class='pr-3' id='public_'+coinProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id='public_'+coinProperties.ticker+'_price_fiat_percent_change_24h')
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id=coinProperties.ticker+'_lp_24h_volume_fiat')= '0'
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id=coinProperties.ticker+'_lp_total_pool_fiat')
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id=coinProperties.ticker+'_circulating_supply_coin')= '0'
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id=coinProperties.ticker+'_circulating_supply_fiat')= '0'
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id=coinProperties.ticker+'_total_supply_coin')
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id=coinProperties.ticker+'_total_supply_fiat')
+
+                    each circulatingSupply, ticker in zrcTokensCirculatingSupply
+                      if !(ticker in zrcTokenPropertiesListMap)
+                        - continue
+                      - let tokenProperties = zrcTokenPropertiesListMap[ticker]
+                      - var trStyle = ''
+                      if tokenProperties.ticker === 'XPORT'
+                        div(style='display:none')
+                          span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
+                          span(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h')
+                          span(id=tokenProperties.ticker+'_price_24h_low_high_progress' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
+                          span(id=tokenProperties.ticker+'_price_24h_low')= ''
+                          span(id=tokenProperties.ticker+'_price_24h_high')= ''
+                          span(id='public_'+tokenProperties.ticker+'_price_fiat')= 'Loading...'
+                          span(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h')
+                          span(id=tokenProperties.ticker+'_lp_24h_volume_fiat')= '0'
+                          span(id=tokenProperties.ticker+'_lp_total_pool_fiat')= 'Loading...'
+                          span(id=tokenProperties.ticker+'_circulating_supply_zrc')= '0'
+                          span(id=tokenProperties.ticker+'_circulating_supply_fiat')= '0'
+                          span(id=tokenProperties.ticker+'_total_supply_zrc')= '0'
+                          span(id=tokenProperties.ticker+'_total_supply_fiat')= '0'
+                          span(id='public_'+tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
+                          span(id='public_'+tokenProperties.ticker+'_price_fiat_24h_ago' style='display: none;')
+                        - continue
+
+                      tr(style=trStyle)
+                        th(scope='row' style='display:table-cell; white-space: nowrap; vertical-align: middle;')
+                          img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
+                          span(class='ml-2')= tokenProperties.ticker
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
+                        td(class='pr-3' id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h')
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          div(class='progress' style='height: 0.4rem; margin-top: 0.2rem;')
+                            div(id=tokenProperties.ticker+'_price_24h_low_high_progress' class='progress-bar' role='progressbar' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
+                          span(id=tokenProperties.ticker+'_price_24h_low')= ''
+                          span(class='ml-1 mr-1')='/'
+                          span(id=tokenProperties.ticker+'_price_24h_high')= ''
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id='public_'+tokenProperties.ticker+'_price_fiat')= 'Loading...'
+                        td(class='pr-3' id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h')
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id=tokenProperties.ticker+'_lp_24h_volume_fiat')= '0'
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id=tokenProperties.ticker+'_lp_total_pool_fiat')= 'Loading...'
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id=tokenProperties.ticker+'_circulating_supply_zrc')= '0'
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id=tokenProperties.ticker+'_circulating_supply_fiat')= '0'
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id=tokenProperties.ticker+'_total_supply_zrc')= '0'
+                        td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(id=tokenProperties.ticker+'_total_supply_fiat')= '0'
+
+                        span(id='public_'+tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
+                        span(id='public_'+tokenProperties.ticker+'_price_fiat_24h_ago' style='display: none;')
+
+          if zilswapDexReward || zilStakingReward
+            div(class='col-xl-6 col-xxl-4' style='padding: 0;')
+
+              div(class='box-public')
+                div(id='farming_info_content_header_container' class='card-header' data-toggle='collapse' href='#farming_info_content_container')
+                  a(id='farming_info_content_header_title' class='card-title font-weight-bold')= 'Farming Information'
+                div(id='farming_info_content_container' class='card-body collapse show')
+
+                  if zilStakingReward
+                    table(class='table table-sm table-borderless' width='100%')
+                      tbody(class='table-background-color-header')
+                        tr
+                          th(colspan=2 style='text-align: left; white-space: nowrap; width: 25%;' )= 'Token Staking'
+                          th(style='text-align: right; white-space: nowrap; width: 25%;')
+                            span= 'Unbond'
+                          th(style='text-align: right; white-space: nowrap; width: 25%;')
+                            span= 'Daily %'
+                          th(style='text-align: right; white-space: nowrap; width: 25%;')
+                            span= 'APR %'
+                      tbody
+                        tr
+                          td(rowspan=2 scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                            img(height='18' width='18' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
+                          td(rowspan=2 style='display:table-cell; vertical-align: middle; text-align: left; white-space: nowrap;' )
+                            span= 'Zilliqa'
+                          td(rowspan=2 style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap;' )
+                            span= zilStakingReward.unbonding_period_days + ' days'
+                          td(style='text-align: right; white-space: nowrap;' )
+                            span(class='text-secondary mr-1')= '(ZIL)'
+                            span= zilStakingReward.zil_reward_daily_percent
+                          td(style='text-align: right; white-space: nowrap;' )
+                            span(class='text-secondary mr-1')= '(ZIL)'
+                            span= zilStakingReward.zil_reward_apr_percent
+
+                        tr
+                          td(style='text-align: right; white-space: nowrap;' )
+                            span(class='text-secondary mr-1')= '(gZIL)'
+                            span= zilStakingReward.gzil_reward_daily_percent
+                          td(style='text-align: right; white-space: nowrap;' )
+                            span(class='text-secondary mr-1')= '(gZIL)'
+                            span= zilStakingReward.gzil_reward_apr_percent
+
+                  if zilswapDexReward
+                    table(class='table table-sm table-borderless' width='100%')
+                      tbody(class='table-background-color-header')
+                        tr
+                          th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Zilswap LP'
+                          th(style='text-align: right; white-space: nowrap; width: 25%;')
+                            span= 'Weekly (ZWAP)'
+                          th(style='text-align: right; white-space: nowrap; width: 20%;')
+                            span= 'Daily %'
+                          th(style='text-align: right; white-space: nowrap; width: 20%;')
+                            span= 'APR %'
+
+                      tbody(class='table-background-color')
+                        each circulatingSupply, ticker in zrcTokensCirculatingSupply
+                          if !(ticker in zrcTokenPropertiesListMap)
+                            - continue
+                          if zilswapDexReward[ticker] && ticker !== 'XPORT'
+                            - let tokenProperties = zrcTokenPropertiesListMap[ticker]
+
+                            tr
+                              td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                                img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
+                              td(style='text-align: left; white-space: nowrap; width: 25%;' )
+                                span= tokenProperties.ticker + '-ZIL'
+                              td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                                span= zilswapDexReward[ticker].zwap_reward
+                              td(style='text-align: right; white-space: nowrap; width: 20%;' )
+                                span= zilswapDexReward[ticker].daily_percent
+                              td(style='text-align: right; white-space: nowrap; width: 20%;' )
+                                span= zilswapDexReward[ticker].apr_percent
+
+
+          //---------------------- Start of Swap DIV ---------------------
+          div(class='col-xl-6 col-xxl-4' style='padding: 0;')
+
+            div(class='box-public')
+              div(id='swap_content_header_container' class='card-header' data-toggle='collapse' href='#swap_content_container')
+                span(id='swap_content_header_title' class='card-title font-weight-bold')= 'Swap'
+                small(class='ml-2')= 'BETA'
+                img(id='swap_content_header_image' class='ml-3' height='20' src='/images/zilswap_long_logo.svg' loading='lazy')
+              div(id='swap_content_container' class='card-body collapse show' style='padding: 0;')
+
+                div(class='swap-box-table')
+                  table(class='table table-sm table-borderless' width='100%')
+                    tbody
                       tr
-                        td(scope='row' style='text-align: left; white-space: nowrap;' )
-                          span(id=tokenProperties.ticker+'_lp_token_balance_24h_ago')
-                          span(class='ml-1')= tokenProperties.ticker
-                          span(class='ml-1')= '-'
-                          span(id=tokenProperties.ticker+'_lp_zil_balance_24h_ago' class='ml-1')
-                          span(class='ml-1')= 'ZIL'
+                        td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+
+                          h5(id='swap_select_token_from' class='swap-mini-button-box')
+                            img(id='swap_select_token_from_img' height='24' width='24' src='' loading='lazy' style='display: none;')
+                            span(id='swap_select_token_from_ticker' class='ml-1 font-weight-bold' style='vertical-align: middle;')= 'Select token'
+                            svg(id='swap_select_token_from_svg' class='ml-1 arrow-down' width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg')
+                              path(d='M0.97168 1L6.20532 6L11.439 1')
+
+                        td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                          h4(style='padding: 0; margin: 0;')
+                            input(id='swap_token_from_amount' class='swap-input' inputmode='decimal' autocomplete='off' autocorrect='off' type='text' pattern='^[0-9]*[.,]?[0-9]*$' placeholder='0.0' minlength='1' maxlength='79' spellcheck='false' value='')
+                  table(class='table table-sm table-borderless' width='100%')
+                    tbody
+                      tr(id='swap_token_from_balance_container' style='visibility: hidden;')
+                        td(scope='row' style='white-space: nowrap;' )
+                          span= 'Balance: '
+                          span(id='swap_token_from_balance')= '0'
+                          span(id='swap_token_from_max_balance_button' class='swap-mini-button-box ml-2')= 'Max'
+                        td(id='swap_token_from_amount_fiat_container' style='text-align: right; white-space: nowrap; visibility: hidden;')
+                          span= '~'
+                          span(class='currency_symbol mr-1')= '$'
+                          span(id='swap_token_from_amount_fiat')
+
+                div(id='swap_arrow_down_toggle_direction' class='swap-arrow-down-container')
+                  svg(id='swap_arrow_down_toggle_direction_svg' class='arrow-down' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg')
+                    line(x1='12' y1='5' x2='12' y2='19')
+                    polyline(points='19 12 12 19 5 12')
+
+                div(class='swap-box-table')
+                  table(class='table table-sm table-borderless' width='100%')
+                    tbody
+                      tr
+                        td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                          h5(id='swap_select_token_to' class='swap-mini-button-box')
+                            img(id='swap_select_token_to_img' height='24' width='24' src='' loading='lazy' style='display: none;')
+                            span(id='swap_select_token_to_ticker' class='ml-1 font-weight-bold' style='vertical-align: middle;')= 'Select token'
+                            svg(id='swap_select_token_to_svg' class='ml-1 arrow-down' width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg')
+                              path(d='M0.97168 1L6.20532 6L11.439 1')
+                        td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                          h4(style='padding: 0; margin: 0;')
+                            input(id='swap_token_to_amount' class='swap-input' inputmode='decimal' autocomplete='off' autocorrect='off' type='text' pattern='^[0-9]*[.,]?[0-9]*$' placeholder='0.0' minlength='1' maxlength='79' spellcheck='false' value='')
+                  table(class='table table-sm table-borderless' width='100%')
+                    tbody
+                      tr
+                        td(id='swap_token_to_balance_container' scope='row' style='white-space: nowrap; visibility: hidden;')
+                          span= 'Balance: '
+                          span(id='swap_token_to_balance')= '0'
                         td(style='text-align: right; white-space: nowrap;' )
-                          span(id=tokenProperties.ticker+'_lp_balance_zil_24h_ago' class='tooltip-whitespace')
-                          span(class='ml-1')= 'ZIL'
-                        td(style='text-align: right; white-space: nowrap;' )
-                    tr
-                      td(style='text-align: left; white-space: nowrap; width: 45%;' )
-                        span(id=tokenProperties.ticker+'_lp_token_balance')
-                        span(id=tokenProperties.ticker+'_lp_token_balance_unit' class='ml-1')= tokenProperties.ticker
-                        span(class='ml-1')= '-'
-                        span(id=tokenProperties.ticker+'_lp_zil_balance' class='ml-1')
-                        span(id=tokenProperties.ticker+'_lp_zil_balance_unit' class='ml-1')= 'ZIL'
-                      td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                        span(class='currency_symbol mr-1')= '$'
-                        span(id=tokenProperties.ticker+'_lp_balance_fiat')= 'Loading...'
-                      td(id=tokenProperties.ticker+'_lp_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
-                        span(id=tokenProperties.ticker+'_lp_balance_fiat_percent_change_24h')
-                        span= '%'
-                    tr(id=tokenProperties.ticker+'_lp_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
-                      td(style='text-align: left; white-space: nowrap;' )
-                        span= 'Balance 24h ago'
-                      td(style='text-align: right; white-space: nowrap;' )
-                        span(class='currency_symbol mr-1')= '$'
-                        span(id=tokenProperties.ticker+'_lp_balance_fiat_24h_ago')
-                      td(style='text-align: right; white-space: nowrap;' )
 
-                    tr
-                      td(class='text-secondary' style='text-align: left; white-space: nowrap; width: 45%;' )
-                        span(id=tokenProperties.ticker+'_lp_pool_reward_zwap')
-                        span(id=tokenProperties.ticker+'_lp_pool_reward_zwap_unit' class='ml-1')
-                      td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 55%;' )
-                        span(id=tokenProperties.ticker+'_lp_pool_share_percent')= 'Loading...'
-                        span(class='ml-1')= '%'
-                      td(style='text-align: right; white-space: nowrap;' )
+                div(id='swap_error_message_container' style='padding:0.6rem; text-align: right; display: none;')
+                  span(id='swap_error_message' class='negative-red')
 
-                    tr
-                      td(class='text-secondary' style='text-align: left; white-space: nowrap; width: 45%;' )
-                        span= 'Est. 0.3% fee earned (24h)'
-                      td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 55%;' )
-                        span(id=tokenProperties.ticker+'_lp_pool_fee_reward_zil')= 'Loading...'
-                        span(class='ml-1')= 'ZIL'
-                      td(style='text-align: right; white-space: nowrap;' )
-      hr
+                div(id='swap_error_message_2_container' style='padding:0.6rem; text-align: right; display: none;')
+                  span(id='swap_error_message_2' class='negative-red')
 
-    div(id='staking_container' style='display: none')
+                div(class='swap-box-table-transparent')
+                  table(class='table table-sm table-borderless' width='100%')
+                    tbody
+                      tr
+                        td(scope='row' style='text-align: left; white-space: nowrap; width: 1%;' )
+                          span(id='swap_token_settings_button' class='swap-mini-button-box' data-toggle='modal' data-target='#swap_token_settings_modal')
+                            i(class='fa fa-cog mr-1')
+                            = 'Set.'
 
-      div(class='container title-box' style='display:table-cell; vertical-align: middle;')
-        span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Staking Balance'
-        div(class='staking-balance-spinner ml-3 spinner-border text-info' role='status' style='vertical-align: middle; display: none;')
-          span(class='sr-only')= 'Loading...'
+                        td(scope='row' style='text-align: left; white-space: nowrap; width: 1%;' )
+                          span(id='swap_history_button' class='swap-mini-button-box' data-toggle='modal' data-target='#swap_history_modal')
+                            i(class='fa fa-history mr-1')
+                            = 'History'
 
-      // ZIL Staking Balance
-      div(id='zil_staking_balance' class='container')
+                        td(scope='row' style='text-align: right; white-space: nowrap; width: 50%;' )
+                          span(id='swap_token_final_rate')=''
+                          span(id='swap_token_final_rate_inverse' style='display: none;')=''
+                          span(id='swap_token_final_rate_inverse_button' class='swap-mini-button-box ml-1' style='display:none;')
+                            i(class='fa fa-refresh ml-1 mr-1')
+                        td(scope='row' style='text-align: right; white-space: nowrap; width: 1%;' )
+                          span(id='swap_token_info_popover_button' class='swap-mini-button-box' tabindex='0' data-toggle='popover' data-trigger='focus' data-popover-content='#swap_token_info_popover' data-placement='bottom')
+                            i(class='fa fa-info-circle ml-1 mr-1')
+
+                div(class='swap-box')
+                  button(id='approve_button' class='btn btn-lg btn-info disabled' style='width: 100%; border-radius: 10px; display: none;')= 'Approve'
+                  button(id='swap_button' class='btn btn-lg btn-info disabled' style='width: 100%; border-radius: 10px;')= 'Swap'
+
+                div(id='transaction_table_container' class='swap-box-table-transparent' style='display: none;')
+                  table(class='table table-sm table-borderless' width='100%')
+                    tbody(id='transaction_table_list')
+
+        //---------------------- End of Swap DIV ---------------------
+
+        hr
+
+      // Main Content Container
+      div(id='main_content_container' class='container' style='display: none;')
 
         div(class='row')
+          div(class='col-12')
+            span(id='wallet_full_address' style='display: none;')
+            span(id='wallet_censored_address' style='display: none;')
+            span(id='wallet_censor_button' class='mini-button-box ml-1')
+              i(id='wallet_censor_icon' class='fa fa-eye-slash ml-1 mr-1')
+            a(id='wallet_viewblock_anchor' target='_blank' style='color: var(--text-color);')
+              span(class='mini-button-box ml-1' )
+                i(class='fa fa-external-link ml-1 mr-1')
+            span(id='wallet_copy_button' class='mini-button-box ml-1')
+              i(class='fa fa-copy ml-1 mr-1')
+              span(id='wallet_copy_message')
 
-          each ssnProperties, ssnAddress in ssnListMap
+        div(class='row')
+          div(class='balance-box col-md-6')
+            div(class='mb-1' style='display:table-cell; vertical-align: middle;')
+              span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Net Worth'
+              div(class='net-worth-spinner ml-3 spinner-border text-info' role='status' style='vertical-align: middle; display: none;')
+                span(class='sr-only')= 'Loading...'
+            span(class='h4')
+              span(class='currency_symbol mr-1')= '$'
+              span(id='net_worth_fiat')= 'Loading...'
+            span(id='net_worth_fiat_percent_change_24h_container' class='tooltip-container tooltip-rounded h6 text-secondary ml-3')
+              span(id='net_worth_fiat_percent_change_24h')
+              span= ' %'
+            span(id='net_worth_fiat_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
+              br
+              span(class='currency_symbol mr-1')= '$'
+              span(id='net_worth_fiat_24h_ago')
+              span(class='ml-1')= '(24h ago)'
+            br
+            span(class='h6')
+              span(id='net_worth_zil')= 'Loading...'
+              span(class='ml-1')= 'ZIL'
+            span(id='net_worth_zil_percent_change_24h_container' class='tooltip-container tooltip-rounded h6 text-secondary ml-3')
+              span(id='net_worth_zil_percent_change_24h')
+              span= ' %'
+            span(id='net_worth_zil_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
+              br
+              span(id='net_worth_zil_24h_ago')
+              span(class='ml-1')= 'ZIL'
+              span(class='ml-1')= '(24h ago)'
 
-            div(id=ssnAddress+'_zil_staking_container' class='col-lg-6' style='padding: 0; display: none')
+          div(class='balance-box col-md-6')
+            div(class='mb-1' style='display:table-cell; vertical-align: middle;')
+              span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Wallet Balance'
+              div(class='wallet-balance-spinner ml-3 spinner-border text-info' role='status' style='vertical-align: middle; display: none;')
+                span(class='sr-only')= 'Loading...'
+            span(class='h4')
+              span(class='currency_symbol mr-1')= '$'
+              span(id='wallet_balance_fiat')= 'Loading...'
+            span(id='wallet_balance_fiat_percent_change_24h_container' class='tooltip-container tooltip-rounded  h6 text-secondary ml-3')
+              span(id='wallet_balance_fiat_percent_change_24h')
+              span= ' %'
+            span(id='wallet_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
+              br
+              span(class='currency_symbol mr-1')= '$'
+              span(id='wallet_balance_fiat_24h_ago')
+              span(class='ml-1')= '(24h ago)'
+            br
+            span(class='h6')
+              span(id='wallet_balance_zil')= 'Loading...'
+              span(class='ml-1')= 'ZIL'
+            span(id='wallet_balance_zil_percent_change_24h_container' class='tooltip-container tooltip-rounded h6 text-secondary ml-3')
+              span(id='wallet_balance_zil_percent_change_24h')
+              span= ' %'
+            span(id='wallet_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
+              br
+              span(id='wallet_balance_zil_24h_ago')
+              span(class='ml-1')= 'ZIL'
+              span(class='ml-1')= '(24h ago)'
+
+          div(class='balance-box col-md-6')
+            div(class='mb-1' style='display:table-cell; vertical-align: middle;')
+              span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'LP Balance'
+              div(class='lp-balance-spinner ml-3 spinner-border text-info' role='status' style='vertical-align: middle; display: none;')
+                span(class='sr-only')= 'Loading...'
+            span(class='h4')
+              span(class='currency_symbol mr-1')= '$'
+              span(id='lp_balance_fiat')= 'Loading...'
+            span(id='lp_balance_fiat_percent_change_24h_container' class='tooltip-container tooltip-rounded h6 text-secondary ml-3')
+              span(id='lp_balance_fiat_percent_change_24h')
+              span= ' %'
+            span(id='lp_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
+              br
+              span(class='currency_symbol mr-1')= '$'
+              span(id='lp_balance_fiat_24h_ago')
+              span(class='ml-1')= '(24h ago)'
+            br
+            span(class='h6')
+              span(id='lp_balance_zil')= 'Loading...'
+              span(class='ml-1')= 'ZIL'
+            span(id='lp_balance_zil_percent_change_24h_container' class='tooltip-container tooltip-rounded h6 text-secondary ml-3')
+              span(id='lp_balance_zil_percent_change_24h')
+              span= ' %'
+            span(id='lp_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
+              br
+              span(id='lp_balance_zil_24h_ago')
+              span(class='ml-1')= 'ZIL'
+              span(class='ml-1')= '(24h ago)'
+
+          div(class='balance-box col-md-6')
+            div(class='mb-1' style='display:table-cell; vertical-align: middle;')
+              span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Staking Balance'
+              div(class='staking-balance-spinner ml-3 spinner-border text-info' role='status' style='vertical-align: middle;  display: none;')
+                span(class='sr-only')= 'Loading...'
+            span(class='h4')
+              span(class='currency_symbol mr-1')= '$'
+              span(id='staking_balance_fiat')= 'Loading...'
+            span(id='staking_balance_fiat_percent_change_24h_container' class='tooltip-container tooltip-rounded h6 text-secondary ml-3')
+              span(id='staking_balance_fiat_percent_change_24h')
+              span= ' %'
+            span(id='staking_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
+              br
+              span(class='currency_symbol mr-1')= '$'
+              span(id='staking_balance_fiat_24h_ago')
+              span(class='ml-1')= '(24h ago)'
+            br
+            span(class='h6')
+              span(id='staking_balance_zil')= 'Loading...'
+              span(class='ml-1')= 'ZIL'
+            span(id='staking_balance_zil_percent_change_24h_container' class='tooltip-container tooltip-rounded h6 text-secondary ml-3')
+              span(id='staking_balance_zil_percent_change_24h')
+              span= ' %'
+            span(id='staking_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content-plain text-secondary' style='display: none;')
+              br
+              span(id='staking_balance_zil_24h_ago')
+              span(class='ml-1')= 'ZIL'
+              span(class='ml-1')= '(24h ago)'
+
+        div(class='row')
+          div(id='net_worth_chart_container' class='balance-box col-lg-6' style='display: none;')
+            div(id='net_worth_chart')
+          div(id='unique_coin_chart_container' class='balance-box col-lg-6' style='display: none;')
+            div(id='unique_coin_chart')
+
+        hr
+
+        // Wallet Balance
+        div(class='container title-box' style='display:table-cell; vertical-align: middle;')
+          img(class='mr-3' height='36' src=zrcTokenPropertiesListMap['ZLP'].logo_url loading='lazy')
+          span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Wallet Balance'
+          div(class='wallet-balance-spinner ml-3 spinner-border text-info' role='status' style='vertical-align: middle; display: none;')
+            span(class='sr-only')= 'Loading...'
+
+        div(id='wallet_balance' class='container')
+
+          div(class='row')
+
+            div(class='col-lg-6' style='padding: 0;')
               div(class='box')
-                table(class='table table-sm table-borderless')
+                table(class='table table-sm table-borderless' width='100%')
                   tbody
                     tr
                       td(scope='row' rowspan='4' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
                         img(height='32' width='32' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
                       td(style='text-align: left; white-space: nowrap; width: 35%;' )
-                        span(class='font-weight-bold')= ssnProperties.arguments[3] + ' seed node'
+                        span(class='font-weight-bold')= 'Zilliqa'
                       td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                        span(id=ssnAddress+'_zil_staking_balance')= 'Loading...'
-                        span(id=ssnAddress+'_zil_staking_balance_unit' class='ml-1')= 'ZIL'
+                        span(id='zil_balance')= 'Loading...'
+                        span(id='zil_balance_unit' class='ml-1')= 'ZIL'
                     tr
                       td(scope='row' class='font-weight-normal text-secondary' style='white-space: nowrap; width: 35%;' )
                         span(class='currency_symbol mr-1')= '$'
                         span(class='ZIL_price_fiat')= 'Loading...'
                       td(style='text-align: right; white-space: nowrap; width: 40%;' )
                         span(class='currency_symbol mr-1')= '$'
-                        span(id=ssnAddress+'_zil_staking_balance_fiat')= 'Loading...'
-                      td(id=ssnAddress+'_zil_staking_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
-                        span(id=ssnAddress+'_zil_staking_balance_fiat_percent_change_24h')
+                        span(id='zil_balance_fiat')= 'Loading...'
+                      td(id='zil_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                        span(id='zil_balance_fiat_percent_change_24h')
                         span= '%'
-                    tr(id=ssnAddress+'_zil_staking_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
+                    tr(id='zil_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
                       td(scope='row' style='white-space: nowrap;' )
                         span= 'Balance 24h ago'
                       td(style='text-align: right; white-space: nowrap;' )
                         span(class='currency_symbol mr-1')= '$'
-                        span(id=ssnAddress+'_zil_staking_balance_fiat_24h_ago')
+                        span(id='zil_balance_fiat_24h_ago')
                       td(style='text-align: right; white-space: nowrap;' )
 
-          div(id='zil_staking_withdrawal_pending_container' class='col-lg-6' style='padding: 0; display: none')
-            div(class='box')
-              table(class='table table-sm table-borderless')
+            each circulatingSupply, ticker in zrcTokensCirculatingSupply
+              if !(ticker in zrcTokenPropertiesListMap)
+                - continue
+              - let tokenProperties = zrcTokenPropertiesListMap[ticker]
+
+              div(id=tokenProperties.ticker+'_container' class='col-lg-6' style='padding: 0; display: none')
+                div(class='box')
+                  table(class='table table-sm table-borderless')
+                    tbody
+                      tr
+                        td(scope='row' rowspan='4' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                          img(height='32' width='32' src=tokenProperties.logo_url loading='lazy')
+                        td(style='text-align: left; white-space: nowrap; width: 35%;' )
+                          span(class='font-weight-bold')= tokenProperties.ticker
+                          span(class=tokenProperties.ticker+'_price_zil ml-2 text-secondary')= 'Loading...'
+                          span(class='ml-1 text-secondary')= 'ZIL'
+                          span(class=tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
+                        td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                          span(id=tokenProperties.ticker+'_balance_zil')= 'Loading...'
+                          span(class='ml-1')= 'ZIL'
+                        td(id=tokenProperties.ticker+'_balance_zil_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                          span(id=tokenProperties.ticker+'_balance_zil_percent_change_24h')
+                          span= '%'
+                      tr(id=tokenProperties.ticker+'_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
+                        td(style='text-align: left; white-space: nowrap;' )
+                          span= 'Balance 24h ago'
+                        td(style='text-align: right; white-space: nowrap;' )
+                          span(id=tokenProperties.ticker+'_balance_zil_24h_ago')
+                          span(class='ml-1')= 'ZIL'
+                        td(style='text-align: right; white-space: nowrap;' )
+                      tr
+                        td(scope='row' style='text-align: left; white-space: nowrap; width: 35%;' )
+                          span(id=tokenProperties.ticker+'_balance')= 'Loading...'
+                          span(id=tokenProperties.ticker+'_balance_unit' class='ml-1')= tokenProperties.ticker
+                        td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                          span(class='currency_symbol mr-1')= '$'
+                          span(id=tokenProperties.ticker+'_balance_fiat')= 'Loading...'
+                        td(id=tokenProperties.ticker+'_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                          span(id=tokenProperties.ticker+'_balance_fiat_percent_change_24h')
+                          span= '%'
+                      tr(id=tokenProperties.ticker+'_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
+                        td(style='text-align: left; white-space: nowrap;' )
+                          span= 'Balance 24h ago'
+                        td(style='text-align: right; white-space: nowrap;' )
+                          span(class='currency_symbol mr-1')= '$'
+                          span(id=tokenProperties.ticker+'_balance_fiat_24h_ago')
+                        td(style='text-align: right; white-space: nowrap;' )
+
+        hr
+
+        div(id='lp_container' style='display: none')
+
+          div(class='container title-box' style='display:table-cell; vertical-align: middle;')
+            img(class='mr-3' height='36' src='/images/zilswap_long_logo.svg' loading='lazy')
+            span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Liquidity Pool Balance'
+            div(class='lp-balance-spinner ml-3 spinner-border text-info' role='status' style='vertical-align: middle; display: none;')
+              span(class='sr-only')= 'Loading...'
+
+          // LP Balance
+          div(id='lp_balance' class='container')
+
+            div(class='row')
+
+              div(id='total_all_lp_reward_next_epoch_container' class='col-lg-6' style='padding: 0; display: none')
+                div(class='highlight-box')
+                  table(class='table table-sm table-borderless')
+                    tbody
+                      tr
+                        td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                          img(height='18' width='18' src=zrcTokenPropertiesListMap['ZWAP'].logo_url loading='lazy')
+                        td(colspan='2' style='text-align: left; white-space: nowrap; width: 50%;' )
+                          span(class='font-weight-bold')= 'Est. reward'
+                        td(style='text-align: right; white-space: nowrap; width: 25%;' )
+                          span(id='lp_reward_next_epoch_duration_counter' class='font-weight-normal')
+                      tr
+                        td(colspan='2' style='text-align: left; white-space: nowrap; width: 25%;' )
+                          span= 'Next epoch'
+                        td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
+                          span(id='total_all_lp_reward_next_epoch_zwap' class='ml-1')= 'Loading...'
+                          span(class='ml-1')= zrcTokenPropertiesListMap['ZWAP'].ticker
+                        td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
+                          span(class='currency_symbol mr-1')= '$'
+                          span(id='total_all_lp_reward_next_epoch_fiat')= 'Loading...'
+                      tr
+                        td(colspan='2' style='text-align: left; white-space: nowrap; width: 25%;' )
+                          span= 'Unclaimed reward'
+                        td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
+                          span(id='total_all_lp_reward_unclaimed_zwap' class='ml-1')= 'Loading...'
+                          span(class='ml-1')= zrcTokenPropertiesListMap['ZWAP'].ticker
+                        td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
+                          span(class='currency_symbol mr-1')= '$'
+                          span(id='total_all_lp_reward_unclaimed_fiat')= 'Loading...'
+                      tr(id='total_all_lp_reward_past_epoch_container')
+                        td(colspan='2' style='text-align: left; white-space: nowrap; width: 25%;' )
+                          span= 'Prev epoch'
+                          span= ' ('
+                          span(id='total_all_lp_reward_prev_epoch_number')
+                          span= ')'
+                        td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
+                          span(id='total_all_lp_reward_prev_epoch_zwap' class='ml-1')= 'Loading...'
+                          span(class='ml-1')= zrcTokenPropertiesListMap['ZWAP'].ticker
+                        td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 25%;' )
+                          span(class='currency_symbol mr-1')= '$'
+                          span(id='total_all_lp_reward_prev_epoch_fiat')= 'Loading...'
+
+                      tbody(id='total_all_lp_reward_past_epoch_tooltip_content' class='tooltip-content' style='display: none')
+
+              each circulatingSupply, ticker in zrcTokensCirculatingSupply
+                if !(ticker in zrcTokenPropertiesListMap)
+                  - continue
+                - let tokenProperties = zrcTokenPropertiesListMap[ticker]
+
+                div(id=tokenProperties.ticker+'_lp_container' class='col-lg-6' style='padding: 0; display: none')
+                  div(class='box')
+                    table(class='table table-sm table-borderless')
+                      tbody
+                        tr
+                          td(scope='row' style='text-align: left; white-space: nowrap; width: 45%;' )
+                            img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
+                            img(height='18' width='18' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
+                            span(class='font-weight-bold ml-2')= tokenProperties.ticker + '-ZIL'
+                            span(class=tokenProperties.ticker+'_price_zil ml-2 text-secondary')= 'Loading...'
+                            span(class='ml-1 text-secondary')= 'ZIL'
+
+                          td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                            span(id=tokenProperties.ticker+'_lp_balance_zil' class='ml-1')
+                            span(class='ml-1')= 'ZIL'
+
+                          td(id=tokenProperties.ticker+'_lp_balance_zil_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                            span(id=tokenProperties.ticker+'_lp_balance_zil_percent_change_24h')
+                            span= '%'
+
+                        tbody(id=tokenProperties.ticker+'_lp_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
+                          tr
+                            td(scope='row' style='text-align: left; white-space: nowrap;' )
+                              span= 'Balance 24h ago'
+                            td(style='text-align: right; white-space: nowrap;' class='text-secondary')
+                              span(id=tokenProperties.ticker+'_lp_pool_share_percent_24h_ago')
+                              span(class='ml-1')= '%'
+                            td(style='text-align: right; white-space: nowrap;' )
+                          tr
+                            td(scope='row' style='text-align: left; white-space: nowrap;' )
+                              span(id=tokenProperties.ticker+'_lp_token_balance_24h_ago')
+                              span(class='ml-1')= tokenProperties.ticker
+                              span(class='ml-1')= '-'
+                              span(id=tokenProperties.ticker+'_lp_zil_balance_24h_ago' class='ml-1')
+                              span(class='ml-1')= 'ZIL'
+                            td(style='text-align: right; white-space: nowrap;' )
+                              span(id=tokenProperties.ticker+'_lp_balance_zil_24h_ago' class='tooltip-whitespace')
+                              span(class='ml-1')= 'ZIL'
+                            td(style='text-align: right; white-space: nowrap;' )
+                        tr
+                          td(style='text-align: left; white-space: nowrap; width: 45%;' )
+                            span(id=tokenProperties.ticker+'_lp_token_balance')
+                            span(id=tokenProperties.ticker+'_lp_token_balance_unit' class='ml-1')= tokenProperties.ticker
+                            span(class='ml-1')= '-'
+                            span(id=tokenProperties.ticker+'_lp_zil_balance' class='ml-1')
+                            span(id=tokenProperties.ticker+'_lp_zil_balance_unit' class='ml-1')= 'ZIL'
+                          td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                            span(class='currency_symbol mr-1')= '$'
+                            span(id=tokenProperties.ticker+'_lp_balance_fiat')= 'Loading...'
+                          td(id=tokenProperties.ticker+'_lp_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                            span(id=tokenProperties.ticker+'_lp_balance_fiat_percent_change_24h')
+                            span= '%'
+                        tr(id=tokenProperties.ticker+'_lp_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
+                          td(style='text-align: left; white-space: nowrap;' )
+                            span= 'Balance 24h ago'
+                          td(style='text-align: right; white-space: nowrap;' )
+                            span(class='currency_symbol mr-1')= '$'
+                            span(id=tokenProperties.ticker+'_lp_balance_fiat_24h_ago')
+                          td(style='text-align: right; white-space: nowrap;' )
+
+                        tr
+                          td(class='text-secondary' style='text-align: left; white-space: nowrap; width: 45%;' )
+                            span(id=tokenProperties.ticker+'_lp_pool_reward_zwap')
+                            span(id=tokenProperties.ticker+'_lp_pool_reward_zwap_unit' class='ml-1')
+                          td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 55%;' )
+                            span(id=tokenProperties.ticker+'_lp_pool_share_percent')= 'Loading...'
+                            span(class='ml-1')= '%'
+                          td(style='text-align: right; white-space: nowrap;' )
+
+                        tr
+                          td(class='text-secondary' style='text-align: left; white-space: nowrap; width: 45%;' )
+                            span= 'Est. 0.3% fee earned (24h)'
+                          td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 55%;' )
+                            span(id=tokenProperties.ticker+'_lp_pool_fee_reward_zil')= 'Loading...'
+                            span(class='ml-1')= 'ZIL'
+                          td(style='text-align: right; white-space: nowrap;' )
+          hr
+
+        div(id='staking_container' style='display: none')
+
+          div(class='container title-box' style='display:table-cell; vertical-align: middle;')
+            span(class='h3 font-weight-bold' style='vertical-align: middle;')= 'Staking Balance'
+            div(class='staking-balance-spinner ml-3 spinner-border text-info' role='status' style='vertical-align: middle; display: none;')
+              span(class='sr-only')= 'Loading...'
+
+          // ZIL Staking Balance
+          div(id='zil_staking_balance' class='container')
+
+            div(class='row')
+
+              each ssnProperties, ssnAddress in ssnListMap
+
+                div(id=ssnAddress+'_zil_staking_container' class='col-lg-6' style='padding: 0; display: none')
+                  div(class='box')
+                    table(class='table table-sm table-borderless')
+                      tbody
+                        tr
+                          td(scope='row' rowspan='4' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                            img(height='32' width='32' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
+                          td(style='text-align: left; white-space: nowrap; width: 35%;' )
+                            span(class='font-weight-bold')= ssnProperties.arguments[3] + ' seed node'
+                          td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                            span(id=ssnAddress+'_zil_staking_balance')= 'Loading...'
+                            span(id=ssnAddress+'_zil_staking_balance_unit' class='ml-1')= 'ZIL'
+                        tr
+                          td(scope='row' class='font-weight-normal text-secondary' style='white-space: nowrap; width: 35%;' )
+                            span(class='currency_symbol mr-1')= '$'
+                            span(class='ZIL_price_fiat')= 'Loading...'
+                          td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                            span(class='currency_symbol mr-1')= '$'
+                            span(id=ssnAddress+'_zil_staking_balance_fiat')= 'Loading...'
+                          td(id=ssnAddress+'_zil_staking_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                            span(id=ssnAddress+'_zil_staking_balance_fiat_percent_change_24h')
+                            span= '%'
+                        tr(id=ssnAddress+'_zil_staking_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
+                          td(scope='row' style='white-space: nowrap;' )
+                            span= 'Balance 24h ago'
+                          td(style='text-align: right; white-space: nowrap;' )
+                            span(class='currency_symbol mr-1')= '$'
+                            span(id=ssnAddress+'_zil_staking_balance_fiat_24h_ago')
+                          td(style='text-align: right; white-space: nowrap;' )
+
+              div(id='zil_staking_withdrawal_pending_container' class='col-lg-6' style='padding: 0; display: none')
+                div(class='box')
+                  table(class='table table-sm table-borderless')
+                    tbody
+                      tr
+                        td(scope='row' rowspan='4' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                          img(height='32' width='32' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
+                        td(style='text-align: left; white-space: nowrap; width: 35%;' )
+                          span(class='font-weight-bold')= 'Withdrawal pending'
+                        td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                          span(id='zil_staking_withdrawal_pending_balance')= 'Loading...'
+                          span(id='zil_staking_withdrawal_pending_balance_unit' class='ml-1')= 'ZIL'
+                      tr
+                        td(scope='row' class='font-weight-normal text-secondary' style='white-space: nowrap; width: 35%;' )
+                          span(class='currency_symbol mr-1')= '$'
+                          span(class='ZIL_price_fiat')= 'Loading...'
+                        td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                          span(class='currency_symbol mr-1')= '$'
+                          span(id='zil_staking_withdrawal_pending_balance_fiat')= 'Loading...'
+                        td(id='zil_staking_withdrawal_pending_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                          span(id='zil_staking_withdrawal_pending_balance_fiat_percent_change_24h')
+                          span= '%'
+                      tr(id='zil_staking_withdrawal_pending_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
+                        td(scope='row' style='white-space: nowrap;' )
+                          span= 'Balance 24h ago'
+                        td(style='text-align: right; white-space: nowrap;' )
+                          span(class='currency_symbol mr-1')= '$'
+                          span(id='zil_staking_withdrawal_pending_balance_fiat_24h_ago')
+                        td(style='text-align: right; white-space: nowrap;' )
+
+              div(id='carbon_staking_container' class='col-lg-6' style='padding: 0; display: none')
+                div(class='box')
+                  table(class='table table-sm table-borderless')
+                    tbody
+                      tr
+                        td(scope='row' rowspan='4' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                          img(height='32' width='32' src=zrcTokenPropertiesListMap['CARB'].logo_url loading='lazy')
+                        td(style='text-align: left; white-space: nowrap; width: 35%;' )
+                          span(class='font-weight-bold')= zrcTokenPropertiesListMap['CARB'].name
+                          span(class=zrcTokenPropertiesListMap['CARB'].ticker+'_price_zil ml-2 text-secondary')= 'Loading...'
+                          span(class='ml-1 text-secondary')= 'ZIL'
+                        td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                          span(id='carbon_staking_balance_zil')= 'Loading...'
+                          span(class='ml-1')= 'ZIL'
+                        td(id='carbon_staking_balance_zil_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                          span(id='carbon_staking_balance_zil_percent_change_24h')
+                          span= '%'
+                        tr(id='carbon_staking_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
+                          td(scope='row' style='white-space: nowrap;' )
+                            span= 'Balance 24h ago'
+                          td(style='text-align: right; white-space: nowrap;' )
+                            span(id='carbon_staking_balance_zil_24h_ago')
+                            span(class='ml-1')= 'ZIL'
+                          td(style='text-align: right; white-space: nowrap;' )
+                      tr
+                        td(style='text-align: left; white-space: nowrap; width: 35%;' )
+                          span(id='carbon_staking_balance')= 'Loading...'
+                          span(id='carbon_zil_staking_balance_unit' class='ml-1')= zrcTokenPropertiesListMap['CARB'].ticker
+                        td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                          span(class='currency_symbol mr-1')= '$'
+                          span(id='carbon_staking_balance_fiat')= 'Loading...'
+                        td(id='carbon_staking_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                          span(id='carbon_staking_balance_fiat_percent_change_24h')
+                          span= '%'
+                        tr(id='carbon_staking_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
+                          td(scope='row' style='white-space: nowrap;' )
+                            span= 'Balance 24h ago'
+                          td(style='text-align: right; white-space: nowrap;' )
+                            span(class='currency_symbol mr-1')= '$'
+                            span(id='carbon_staking_balance_fiat_24h_ago')
+                          td(style='text-align: right; white-space: nowrap;' )
+          hr
+
+      //---------------------- Start of Swap Modals ---------------------
+
+      //- Modal for swap pick tokens
+      div(class='modal fade' id='swap_token_picker_modal' tabindex='-1' role='dialog' aria-labelledby='swap_token_picker_modal_label' aria-hidden='true')
+        div(class='modal-dialog' role='document')
+          div(class='modal-content')
+            div(class='modal-header')
+              h5(class='modal-title')='Select token'
+              button(type='button' class='close' data-dismiss='modal' aria-label='Close')
+                span(aria-hidden='true')='×'
+            div(class='modal-body' style='padding: 0; padding-right: 0.6rem;')
+              table(class='table table-borderless' width='100%')
+                tbody
+                  tr(id='ZIL_token_list_row' class='token-list-row' data-ticker='ZIL')
+                    th(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                      img(height='28' width='28' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
+                    th(style='display: table-cell; vertical-align: middle; white-space: nowrap; line-height: 1.1; width: 1%;')
+                      span= 'ZIL'
+                      br
+                      small(class='text-secondary')= 'Zilliqa'
+                    td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 90%;' )
+                      h5(id='zil_balance_precise' style='vertical-align: middle; margin:0;')= '0'
+
+                  each tokenProperties, ticker in zrcTokenPropertiesListMap
+                    - var trStyle = ''
+                    if tokenProperties.ticker === 'XPORT'
+                      - trStyle = 'display: none;'
+
+                    tr(id=ticker+'_token_list_row' class='token-list-row' data-ticker=ticker style=trStyle)
+                      th(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                        img(height='28' width='28' src=tokenProperties.logo_url loading='lazy')
+                      th(style='display: table-cell; vertical-align: middle; white-space: nowrap; line-height: 1.1; width: 1%;')
+                        span= tokenProperties.ticker
+                        br
+                        small(class='text-secondary')= tokenProperties.name
+                      td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 90%;' )
+                        h5(id=tokenProperties.ticker+'_balance_precise' style='vertical-align: middle; margin:0;')= '0'
+
+      //- Modal for swap token settings
+      div(class='modal fade' id='swap_token_settings_modal' tabindex='-1' role='dialog' aria-labelledby='swap_token_settings_label' aria-hidden='true')
+        div(class='modal-dialog' role='document')
+          div(class='modal-content')
+            div(class='modal-header')
+              h5(class='modal-title')='Swap settings'
+              button(type='button' class='close' data-dismiss='modal' aria-label='Close')
+                span(aria-hidden='true')='×'
+
+            div(class='modal-body' style='padding: 0; padding-right: 0.6rem;')
+              table(class='table table-borderless' width='100%')
                 tbody
                   tr
-                    td(scope='row' rowspan='4' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                      img(height='32' width='32' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
-                    td(style='text-align: left; white-space: nowrap; width: 35%;' )
-                      span(class='font-weight-bold')= 'Withdrawal pending'
-                    td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                      span(id='zil_staking_withdrawal_pending_balance')= 'Loading...'
-                      span(id='zil_staking_withdrawal_pending_balance_unit' class='ml-1')= 'ZIL'
-                  tr
-                    td(scope='row' class='font-weight-normal text-secondary' style='white-space: nowrap; width: 35%;' )
-                      span(class='currency_symbol mr-1')= '$'
-                      span(class='ZIL_price_fiat')= 'Loading...'
-                    td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                      span(class='currency_symbol mr-1')= '$'
-                      span(id='zil_staking_withdrawal_pending_balance_fiat')= 'Loading...'
-                    td(id='zil_staking_withdrawal_pending_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
-                      span(id='zil_staking_withdrawal_pending_balance_fiat_percent_change_24h')
-                      span= '%'
-                  tr(id='zil_staking_withdrawal_pending_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
-                    td(scope='row' style='white-space: nowrap;' )
-                      span= 'Balance 24h ago'
-                    td(style='text-align: right; white-space: nowrap;' )
-                      span(class='currency_symbol mr-1')= '$'
-                      span(id='zil_staking_withdrawal_pending_balance_fiat_24h_ago')
-                    td(style='text-align: right; white-space: nowrap;' )
+                    td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2;  white-space: nowrap; width: 50%;')
+                      span='Slippage Tolerance'
+                      i(class='fa fa-info-circle ml-2' tabindex='0' data-toggle='popover' data-trigger='focus' data-popover-content='#slippage_tolerance_info_popover' data-placement='top')
+                      br
+                      span(class='slippage-tolerance-quick-button swap-mini-button-box')= '0.1%'
+                      span(class='slippage-tolerance-quick-button swap-mini-button-box ml-1')= '0.5%'
+                      span(class='slippage-tolerance-quick-button swap-mini-button-box swap-mini-button-box-highlight ml-1')= '1%'
+                      span(class='slippage-tolerance-quick-button swap-mini-button-box ml-1')= '2%'
+                    td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
+                      div(class='input-group')
+                        input(id='slippage_tolerance_input' class='swap-settings-input form-control' inputmode='decimal' autocomplete='off' autocorrect='off' type='text' pattern='^[0-9]*[.,]?[0-9]*$' placeholder='0.0' minlength='1' maxlength='79' spellcheck='false' value='1')
+                        div(class='input-group-append')
+                          span(class='input-group-text')='%'
 
-          div(id='carbon_staking_container' class='col-lg-6' style='padding: 0; display: none')
-            div(class='box')
-              table(class='table table-sm table-borderless')
+                  tr
+                    td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2; white-space: nowrap; width: 50%;')
+                      span='Transaction deadline'
+                      i(class='fa fa-info-circle ml-2' tabindex='0' data-toggle='popover' data-trigger='focus' data-popover-content='#transaction_deadline_info_popover' data-placement='top')
+                      br
+                      span(class='transaction-deadline-quick-button swap-mini-button-box')= '1 min'
+                      span(class='transaction-deadline-quick-button swap-mini-button-box swap-mini-button-box-highlight ml-1')= '3 mins'
+                      span(class='transaction-deadline-quick-button swap-mini-button-box ml-1')= '10 mins'
+                    td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
+                      div(class='input-group')
+                        input(id='transaction_deadline_input' class='swap-settings-input form-control' inputmode='decimal' autocomplete='off' autocorrect='off' type='text' pattern='^[0-9]*[.,]?[0-9]*$' placeholder='0.0' minlength='1' maxlength='79' spellcheck='false' value='3')
+                        div(class='input-group-append')
+                          span(class='input-group-text')='mins'
+
+                  tr
+                    td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2; white-space: nowrap; width: 50%;')
+                      span='Gas limit'
+                      i(class='fa fa-info-circle ml-2' tabindex='0' data-toggle='popover' data-trigger='focus' data-popover-content='#gas_limit_info_popover' data-placement='top')
+                      br
+                      span(class='gas-limit-quick-button swap-mini-button-box')= '5 ZIL'
+                      span(class='gas-limit-quick-button swap-mini-button-box swap-mini-button-box-highlight ml-1')= '10 ZIL'
+                      span(class='gas-limit-quick-button swap-mini-button-box ml-1')= '25 ZIL'
+                    td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
+                      div(class='input-group')
+                        input(id='gas_limit_input' class='swap-settings-input form-control' inputmode='decimal' autocomplete='off' autocorrect='off' type='text' pattern='^[0-9]*[.,]?[0-9]*$' placeholder='0.0' minlength='1' maxlength='79' spellcheck='false' value='10')
+                        div(class='input-group-append')
+                          span(class='input-group-text')='ZIL'
+
+            div(class='modal-footer')
+              button(id='swap_token_settings_reset' type='button' class='btn btn-secondary')= 'Reset to default'
+              button(type='button' class='btn btn-secondary' data-dismiss='modal')= 'Cancel'
+              button(id='swap_token_settings_save' type='button' class='btn btn-info')= 'Save and close'
+
+      //- Modal for final swap confirmation
+      div(class='modal fade' id='swap_token_confirmation_modal' tabindex='-1' role='dialog' aria-labelledby='swap_token_confirmation_label' aria-hidden='true')
+        div(class='modal-dialog' role='document')
+          div(class='modal-content')
+            div(class='modal-header')
+              h5(class='modal-title')='Swap Confirmation'
+              button(type='button' class='close' data-dismiss='modal' aria-label='Close')
+                span(aria-hidden='true')='×'
+
+            div(class='modal-body' style='padding: 0; padding-right: 0.6rem;')
+
+              div(id='swap_token_confirmation_error_message_container' style='padding:0.6rem; text-align: right; display: none;')
+                span(id='swap_token_confirmation_error_message' class='negative-red')
+
+              table(id='swap_token_confirmation_container' class='table table-borderless' width='100%' style='display: none;')
                 tbody
                   tr
-                    td(scope='row' rowspan='4' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                      img(height='32' width='32' src=zrcTokenPropertiesListMap['CARB'].logo_url loading='lazy')
-                    td(style='text-align: left; white-space: nowrap; width: 35%;' )
-                      span(class='font-weight-bold')= zrcTokenPropertiesListMap['CARB'].name
-                      span(class=zrcTokenPropertiesListMap['CARB'].ticker+'_price_zil ml-2 text-secondary')= 'Loading...'
-                      span(class='ml-1 text-secondary')= 'ZIL'
-                    td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                      span(id='carbon_staking_balance_zil')= 'Loading...'
-                      span(class='ml-1')= 'ZIL'
-                    td(id='carbon_staking_balance_zil_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
-                      span(id='carbon_staking_balance_zil_percent_change_24h')
-                      span= '%'
-                    tr(id='carbon_staking_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
-                      td(scope='row' style='white-space: nowrap;' )
-                        span= 'Balance 24h ago'
-                      td(style='text-align: right; white-space: nowrap;' )
-                        span(id='carbon_staking_balance_zil_24h_ago')
-                        span(class='ml-1')= 'ZIL'
-                      td(style='text-align: right; white-space: nowrap;' )
+                    td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2; white-space: nowrap; width: 50%;')
+                      span='Exact amount to send'
+                    td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
+                      span(id='swap_token_confirmation_send_amount')
                   tr
-                    td(style='text-align: left; white-space: nowrap; width: 35%;' )
-                      span(id='carbon_staking_balance')= 'Loading...'
-                      span(id='carbon_zil_staking_balance_unit' class='ml-1')= zrcTokenPropertiesListMap['CARB'].ticker
-                    td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                      span(class='currency_symbol mr-1')= '$'
-                      span(id='carbon_staking_balance_fiat')= 'Loading...'
-                    td(id='carbon_staking_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
-                      span(id='carbon_staking_balance_fiat_percent_change_24h')
-                      span= '%'
-                    tr(id='carbon_staking_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
-                      td(scope='row' style='white-space: nowrap;' )
-                        span= 'Balance 24h ago'
-                      td(style='text-align: right; white-space: nowrap;' )
-                        span(class='currency_symbol mr-1')= '$'
-                        span(id='carbon_staking_balance_fiat_24h_ago')
-                      td(style='text-align: right; white-space: nowrap;' )
-      hr
+                    td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2; white-space: nowrap; width: 50%;')
+                      span='Est. amount to receive'
+                    td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
+                      span(id='swap_token_confirmation_receive_amount')
+                  tr
+                    td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2; white-space: nowrap; width: 50%;')
+                      span='Min. amount to receive'
+                    td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
+                      span(id='swap_token_confirmation_min_receive_amount')
+                  tr
+                    td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2; white-space: nowrap; width: 50%;')
+                      span='Transaction deadline'
+                    td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
+                      span(id='swap_token_confirmation_transaction_deadline')
+                  tr
+                    td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2; white-space: nowrap; width: 50%;')
+                      span='Gas limit'
+                    td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
+                      span(id='swap_token_confirmation_gas_limit')
 
-  //---------------------- Start of Swap Modals ---------------------
-
-  //- Modal for swap pick tokens
-  div(class='modal fade' id='swap_token_picker_modal' tabindex='-1' role='dialog' aria-labelledby='swap_token_picker_modal_label' aria-hidden='true')
-    div(class='modal-dialog' role='document')
-      div(class='modal-content')
-        div(class='modal-header')
-          h5(class='modal-title')='Select token'
-          button(type='button' class='close' data-dismiss='modal' aria-label='Close')
-            span(aria-hidden='true')='×'
-        div(class='modal-body' style='padding: 0; padding-right: 0.6rem;')
-          table(class='table table-borderless' width='100%')
-            tbody
-              tr(id='ZIL_token_list_row' class='token-list-row' data-ticker='ZIL')
-                th(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                  img(height='28' width='28' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
-                th(style='display: table-cell; vertical-align: middle; white-space: nowrap; line-height: 1.1; width: 1%;')
-                  span= 'ZIL'
-                  br
-                  small(class='text-secondary')= 'Zilliqa'
-                td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 90%;' )
-                  h5(id='zil_balance_precise' style='vertical-align: middle; margin:0;')= '0'
-
-              each tokenProperties, ticker in zrcTokenPropertiesListMap
-                - var trStyle = ''
-                if tokenProperties.ticker === 'XPORT'
-                  - trStyle = 'display: none;'
-
-                tr(id=ticker+'_token_list_row' class='token-list-row' data-ticker=ticker style=trStyle)
-                  th(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                    img(height='28' width='28' src=tokenProperties.logo_url loading='lazy')
-                  th(style='display: table-cell; vertical-align: middle; white-space: nowrap; line-height: 1.1; width: 1%;')
-                    span= tokenProperties.ticker
-                    br
-                    small(class='text-secondary')= tokenProperties.name
-                  td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 90%;' )
-                    h5(id=tokenProperties.ticker+'_balance_precise' style='vertical-align: middle; margin:0;')= '0'
-
-  //- Modal for swap token settings
-  div(class='modal fade' id='swap_token_settings_modal' tabindex='-1' role='dialog' aria-labelledby='swap_token_settings_label' aria-hidden='true')
-    div(class='modal-dialog' role='document')
-      div(class='modal-content')
-        div(class='modal-header')
-          h5(class='modal-title')='Swap settings'
-          button(type='button' class='close' data-dismiss='modal' aria-label='Close')
-            span(aria-hidden='true')='×'
-
-        div(class='modal-body' style='padding: 0; padding-right: 0.6rem;')
-          table(class='table table-borderless' width='100%')
-            tbody
-              tr
-                td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2;  white-space: nowrap; width: 50%;')
-                  span='Slippage Tolerance'
-                  i(class='fa fa-info-circle ml-2' tabindex='0' data-toggle='popover' data-trigger='focus' data-popover-content='#slippage_tolerance_info_popover' data-placement='top')
-                  br
-                  span(class='slippage-tolerance-quick-button swap-mini-button-box')= '0.1%'
-                  span(class='slippage-tolerance-quick-button swap-mini-button-box ml-1')= '0.5%'
-                  span(class='slippage-tolerance-quick-button swap-mini-button-box swap-mini-button-box-highlight ml-1')= '1%'
-                  span(class='slippage-tolerance-quick-button swap-mini-button-box ml-1')= '2%'
-                td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
-                  div(class='input-group')
-                    input(id='slippage_tolerance_input' class='swap-settings-input form-control' inputmode='decimal' autocomplete='off' autocorrect='off' type='text' pattern='^[0-9]*[.,]?[0-9]*$' placeholder='0.0' minlength='1' maxlength='79' spellcheck='false' value='1')
-                    div(class='input-group-append')
-                      span(class='input-group-text')='%'
-
-              tr
-                td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2; white-space: nowrap; width: 50%;')
-                  span='Transaction deadline'
-                  i(class='fa fa-info-circle ml-2' tabindex='0' data-toggle='popover' data-trigger='focus' data-popover-content='#transaction_deadline_info_popover' data-placement='top')
-                  br
-                  span(class='transaction-deadline-quick-button swap-mini-button-box')= '1 min'
-                  span(class='transaction-deadline-quick-button swap-mini-button-box swap-mini-button-box-highlight ml-1')= '3 mins'
-                  span(class='transaction-deadline-quick-button swap-mini-button-box ml-1')= '10 mins'
-                td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
-                  div(class='input-group')
-                    input(id='transaction_deadline_input' class='swap-settings-input form-control' inputmode='decimal' autocomplete='off' autocorrect='off' type='text' pattern='^[0-9]*[.,]?[0-9]*$' placeholder='0.0' minlength='1' maxlength='79' spellcheck='false' value='3')
-                    div(class='input-group-append')
-                      span(class='input-group-text')='mins'
-
-              tr
-                td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2; white-space: nowrap; width: 50%;')
-                  span='Gas limit'
-                  i(class='fa fa-info-circle ml-2' tabindex='0' data-toggle='popover' data-trigger='focus' data-popover-content='#gas_limit_info_popover' data-placement='top')
-                  br
-                  span(class='gas-limit-quick-button swap-mini-button-box')= '5 ZIL'
-                  span(class='gas-limit-quick-button swap-mini-button-box swap-mini-button-box-highlight ml-1')= '10 ZIL'
-                  span(class='gas-limit-quick-button swap-mini-button-box ml-1')= '25 ZIL'
-                td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
-                  div(class='input-group')
-                    input(id='gas_limit_input' class='swap-settings-input form-control' inputmode='decimal' autocomplete='off' autocorrect='off' type='text' pattern='^[0-9]*[.,]?[0-9]*$' placeholder='0.0' minlength='1' maxlength='79' spellcheck='false' value='10')
-                    div(class='input-group-append')
-                      span(class='input-group-text')='ZIL'
-
-        div(class='modal-footer')
-          button(id='swap_token_settings_reset' type='button' class='btn btn-secondary')= 'Reset to default'
-          button(type='button' class='btn btn-secondary' data-dismiss='modal')= 'Cancel'
-          button(id='swap_token_settings_save' type='button' class='btn btn-info')= 'Save and close'
-
-  //- Modal for final swap confirmation
-  div(class='modal fade' id='swap_token_confirmation_modal' tabindex='-1' role='dialog' aria-labelledby='swap_token_confirmation_label' aria-hidden='true')
-    div(class='modal-dialog' role='document')
-      div(class='modal-content')
-        div(class='modal-header')
-          h5(class='modal-title')='Swap Confirmation'
-          button(type='button' class='close' data-dismiss='modal' aria-label='Close')
-            span(aria-hidden='true')='×'
-
-        div(class='modal-body' style='padding: 0; padding-right: 0.6rem;')
-
-          div(id='swap_token_confirmation_error_message_container' style='padding:0.6rem; text-align: right; display: none;')
-            span(id='swap_token_confirmation_error_message' class='negative-red')
-
-          table(id='swap_token_confirmation_container' class='table table-borderless' width='100%' style='display: none;')
-            tbody
-              tr
-                td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2; white-space: nowrap; width: 50%;')
-                  span='Exact amount to send'
-                td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
-                  span(id='swap_token_confirmation_send_amount')
-              tr
-                td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2; white-space: nowrap; width: 50%;')
-                  span='Est. amount to receive'
-                td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
-                  span(id='swap_token_confirmation_receive_amount')
-              tr
-                td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2; white-space: nowrap; width: 50%;')
-                  span='Min. amount to receive'
-                td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
-                  span(id='swap_token_confirmation_min_receive_amount')
-              tr
-                td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2; white-space: nowrap; width: 50%;')
-                  span='Transaction deadline'
-                td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
-                  span(id='swap_token_confirmation_transaction_deadline')
-              tr
-                td(scope='row' style='display:table-cell; vertical-align: middle; text-align: left; line-height: 2; white-space: nowrap; width: 50%;')
-                  span='Gas limit'
-                td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 50%;' )
-                  span(id='swap_token_confirmation_gas_limit')
-
-        div(class='modal-footer')
-          button(type='button' class='btn btn-secondary' data-dismiss='modal')= 'Cancel'
-          button(id='swap_token_confirmation_confirm_button' type='button' class='btn btn-info disabled')= 'Swap'
+            div(class='modal-footer')
+              button(type='button' class='btn btn-secondary' data-dismiss='modal')= 'Cancel'
+              button(id='swap_token_confirmation_confirm_button' type='button' class='btn btn-info disabled')= 'Swap'
 
 
-  //- Modal for swap history
-  div(class='modal fade' id='swap_history_modal' tabindex='-1' role='dialog' aria-labelledby='swap_history_label' aria-hidden='true')
-    div(class='modal-dialog' role='document')
-      div(class='modal-content')
-        div(class='modal-header')
-          h5(class='modal-title')='Transaction History'
-          button(type='button' class='close' data-dismiss='modal' aria-label='Close')
-            span(aria-hidden='true')='×'
+      //- Modal for swap history
+      div(class='modal fade' id='swap_history_modal' tabindex='-1' role='dialog' aria-labelledby='swap_history_label' aria-hidden='true')
+        div(class='modal-dialog' role='document')
+          div(class='modal-content')
+            div(class='modal-header')
+              h5(class='modal-title')='Transaction History'
+              button(type='button' class='close' data-dismiss='modal' aria-label='Close')
+                span(aria-hidden='true')='×'
 
-        div(class='modal-body' style='padding: 0; padding-right: 0.6rem;')
+            div(class='modal-body' style='padding: 0; padding-right: 0.6rem;')
 
-          table(class='table table-borderless' width='100%')
-            tbody(id='swap_history_placeholder')
-              tr
-                td(scope='row' style='white-space: nowrap; width: 20%;')
-                  span='No transaction history'
-                td(style='white-space: nowrap; width: 20%;' )
-                td(style='white-space: nowrap; width: 50%;' )
-            tbody(id='swap_history_table_list')
+              table(class='table table-borderless' width='100%')
+                tbody(id='swap_history_placeholder')
+                  tr
+                    td(scope='row' style='white-space: nowrap; width: 20%;')
+                      span='No transaction history'
+                    td(style='white-space: nowrap; width: 20%;' )
+                    td(style='white-space: nowrap; width: 50%;' )
+                tbody(id='swap_history_table_list')
 
-        div(class='modal-footer')
-          button(id='swap_history_reset' type='button' class='btn btn-secondary')= 'Clear history'
-          button(type='button' class='btn btn-secondary' data-dismiss='modal')= 'Close'
+            div(class='modal-footer')
+              button(id='swap_history_reset' type='button' class='btn btn-secondary')= 'Clear history'
+              button(type='button' class='btn btn-secondary' data-dismiss='modal')= 'Close'
 
-  //---------------------- End of Swap Modals ---------------------
+      //---------------------- End of Swap Modals ---------------------
 
-  //---------------------- Start of Swap Popovers ---------------------
-  div(id='swap_token_info_popover' style='display: none;')
-    div(class='popover-body')
-      table(style='width: 100%;')
-        tr
-          td(scope='row' style='text-align: left; white-space: nowrap; width: 50%;')
-            span(class='mr-2')= 'Minimum received'
-          td(style='text-align: right; white-space: nowrap; width: 50%;')
-            b(id='popover_minimum_received_amount')= 'N.A.'
-        tr
-          td(scope='row' style='text-align: left; white-space: nowrap; width: 50%;')
-            span(class='mr-2')= 'Slippage tolerance'
-          td(style='text-align: right; white-space: nowrap; width: 50%;')
-            b(id='popover_slippage_tolerance_percent')= 'N.A.'
-            b(class='ml-1')='%'
-        tr
-          td(scope='row' style='text-align: left; white-space: nowrap; width: 50%;')
-            span(class='mr-2')= 'Price impact'
-          td(style='text-align: right; white-space: nowrap; width: 50%;')
-            b(id='popover_price_impact_percent')= 'N.A.'
-            b(class='ml-1')= '%'
-        tr
-          td(scope='row' style='text-align: left; white-space: nowrap; width: 50%;')
-            span(class='mr-2')= 'Liquidity provider fee'
-          td(style='text-align: right; width: 50%;')
-            b(id='popover_liquidity_provider_fee_amount')= 'N.A.'
+      //---------------------- Start of Swap Popovers ---------------------
+      div(id='swap_token_info_popover' style='display: none;')
+        div(class='popover-body')
+          table(style='width: 100%;')
+            tr
+              td(scope='row' style='text-align: left; white-space: nowrap; width: 50%;')
+                span(class='mr-2')= 'Minimum received'
+              td(style='text-align: right; white-space: nowrap; width: 50%;')
+                b(id='popover_minimum_received_amount')= 'N.A.'
+            tr
+              td(scope='row' style='text-align: left; white-space: nowrap; width: 50%;')
+                span(class='mr-2')= 'Slippage tolerance'
+              td(style='text-align: right; white-space: nowrap; width: 50%;')
+                b(id='popover_slippage_tolerance_percent')= 'N.A.'
+                b(class='ml-1')='%'
+            tr
+              td(scope='row' style='text-align: left; white-space: nowrap; width: 50%;')
+                span(class='mr-2')= 'Price impact'
+              td(style='text-align: right; white-space: nowrap; width: 50%;')
+                b(id='popover_price_impact_percent')= 'N.A.'
+                b(class='ml-1')= '%'
+            tr
+              td(scope='row' style='text-align: left; white-space: nowrap; width: 50%;')
+                span(class='mr-2')= 'Liquidity provider fee'
+              td(style='text-align: right; width: 50%;')
+                b(id='popover_liquidity_provider_fee_amount')= 'N.A.'
 
-  div(id='slippage_tolerance_info_popover' style='display: none;')
-    div(class='popover-body')='Transaction will revert if the price changes unfavorably by more than this percentage.'
+      div(id='slippage_tolerance_info_popover' style='display: none;')
+        div(class='popover-body')='Transaction will revert if the price changes unfavorably by more than this percentage.'
 
-  div(id='transaction_deadline_info_popover' style='display: none;')
-    div(class='popover-body')='Transaction will revert if it is pending for more than this period of time. We assume that 1 block is equal to 30 seconds.'
+      div(id='transaction_deadline_info_popover' style='display: none;')
+        div(class='popover-body')='Transaction will revert if it is pending for more than this period of time. We assume that 1 block is equal to 30 seconds.'
 
-  div(id='gas_limit_info_popover' style='display: none;')
-    div(class='popover-body')='The maximum amount of ZIL you are willing to spend for gas fee. The higher the amount, the quicker the transaction will be executed.'
+      div(id='gas_limit_info_popover' style='display: none;')
+        div(class='popover-body')='The maximum amount of ZIL you are willing to spend for gas fee. The higher the amount, the quicker the transaction will be executed.'
 
-  //---------------------- End of Swap Popovers ---------------------
+      //---------------------- End of Swap Popovers ---------------------
 
 block script
+  script(src='https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js')
   script(src='https://www.gstatic.com/charts/loader.js')
   script(src='/javascripts/main.index.min.js')
 
@@ -1075,6 +1116,7 @@ block script
     var zrcTokenPrice24hHighData = !{JSON.stringify(zrcTokenPrice24hHigh)};
 
     const barChartDrawer = new BarChartDrawer();
+    const simpleChartStatus = new SimpleChartStatus(zrcTokenPropertiesListMap, /* simpleAllTokensData= */ null);
 
     const coinPriceStatus = new CoinPriceStatus(coinMap, currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
     const zilswapDexStatus = new ZilswapDexStatus(zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData,  zilswapDexSmartContractState24hAgoData, zrcTokensCirculatingSupplyData, zrcTokensTotalSupplyData);
