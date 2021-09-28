@@ -40,8 +40,10 @@ describe('CoinPriceStatus', function () {
             assert.strictEqual(coinPriceStatus.getCoinPriceFiat24hAgo('ETH'), null);
             
             // Assert UI
+            $('.ZIL_price_zil_percent_change_24h').each(function () {
+                assert.strictEqual($(this).text(), '');
+            });
             assert.strictEqual($('#public_ZIL_price_fiat_percent_change_24h').text(), '');
-            assert.strictEqual($('#public_ZIL_price_zil_percent_change_24h').text(), '');
             $('.ZIL_price_fiat').each(function () {
                 assert.strictEqual($(this).text(), '0.1182');
             });
@@ -75,8 +77,10 @@ describe('CoinPriceStatus', function () {
                 assert.strictEqual($(this).text(), '$');
             });
 
+            $('.ZIL_price_zil_percent_change_24h').each(function () {
+                assert.strictEqual($(this).text(), '0.0');
+            });
             assert.strictEqual($('#public_ZIL_price_fiat_percent_change_24h').text(), '9.2');
-            assert.strictEqual($('#public_ZIL_price_zil_percent_change_24h').text(), '0.0');
             $('.ZIL_price_fiat').each(function () {
                 assert.strictEqual($(this).text(), '0.1182');
             });
@@ -109,8 +113,10 @@ describe('CoinPriceStatus', function () {
                 assert.strictEqual($(this).text(), '$');
             });
 
+            $('.ZIL_price_zil_percent_change_24h').each(function () {
+                assert.strictEqual($(this).text(), '0.0');
+            });
             assert.strictEqual($('#public_ZIL_price_fiat_percent_change_24h').text(), '-7.7');
-            assert.strictEqual($('#public_ZIL_price_zil_percent_change_24h').text(), '0.0');
             $('.ZIL_price_fiat').each(function () {
                 assert.strictEqual($(this).text(), '0.1194');
             });
@@ -118,8 +124,10 @@ describe('CoinPriceStatus', function () {
                 assert.strictEqual($(this).text(), '1.00');
             });
 
+            $('.ETH_price_zil_percent_change_24h').each(function () {
+                assert.strictEqual($(this).text(), '-11.7');
+            });
             assert.strictEqual($('#public_ETH_price_fiat_percent_change_24h').text(), '-18.5');
-            assert.strictEqual($('#public_ETH_price_zil_percent_change_24h').text(), '-11.7');
             $('.ETH_price_fiat').each(function () {
                 assert.strictEqual($(this).text(), '2,619.41');
             });
@@ -127,8 +135,10 @@ describe('CoinPriceStatus', function () {
                 assert.strictEqual($(this).text(), '21,945.83');
             });
 
+            $('.BTC_price_zil_percent_change_24h').each(function () {
+                assert.strictEqual($(this).text(), '11.6');
+            });
             assert.strictEqual($('#public_BTC_price_fiat_percent_change_24h').text(), '3.0');
-            assert.strictEqual($('#public_BTC_price_zil_percent_change_24h').text(), '11.6');
             $('.BTC_price_fiat').each(function () {
                 assert.strictEqual($(this).text(), '36,849.00');
             });
@@ -163,8 +173,10 @@ describe('CoinPriceStatus', function () {
                 assert.strictEqual($(this).text(), 'Rp');
             });
 
+            $('.ZIL_price_zil_percent_change_24h').each(function () {
+                assert.strictEqual($(this).text(), '0.0');
+            });
             assert.strictEqual($('#public_ZIL_price_fiat_percent_change_24h').text(), '-22.0');
-            assert.strictEqual($('#public_ZIL_price_zil_percent_change_24h').text(), '0.0');
             $('.ZIL_price_fiat').each(function () {
                 assert.strictEqual($(this).text(), '1,700');
             });
@@ -172,8 +184,10 @@ describe('CoinPriceStatus', function () {
                 assert.strictEqual($(this).text(), '1.00');
             });
 
+            $('.ETH_price_zil_percent_change_24h').each(function () {
+                assert.strictEqual($(this).text(), '-6.8');
+            });
             assert.strictEqual($('#public_ETH_price_fiat_percent_change_24h').text(), '-27.3');
-            assert.strictEqual($('#public_ETH_price_zil_percent_change_24h').text(), '-6.8');
             $('.ETH_price_fiat').each(function () {
                 assert.strictEqual($(this).text(), '37,299,229');
             });
@@ -181,8 +195,10 @@ describe('CoinPriceStatus', function () {
                 assert.strictEqual($(this).text(), '21,945.89');
             });
 
+            $('.BTC_price_zil_percent_change_24h').each(function () {
+                assert.strictEqual($(this).text(), '38.8');
+            });
             assert.strictEqual($('#public_BTC_price_fiat_percent_change_24h').text(), '8.3');
-            assert.strictEqual($('#public_BTC_price_zil_percent_change_24h').text(), '38.8');
             $('.BTC_price_fiat').each(function () {
                 assert.strictEqual($(this).text(), '524,710,026');
             });
@@ -217,8 +233,10 @@ describe('CoinPriceStatus', function () {
                 assert.strictEqual($(this).text(), '$');
             });
 
+            $('.ZIL_price_zil_percent_change_24h').each(function () {
+                assert.strictEqual($(this).text(), '0.0');
+            });
             assert.strictEqual($('#public_ZIL_price_fiat_percent_change_24h').text(), '-7.7');
-            assert.strictEqual($('#public_ZIL_price_zil_percent_change_24h').text(), '0.0');
             $('.ZIL_price_fiat').each(function () {
                 assert.strictEqual($(this).text(), '0.1194');
             });
@@ -226,8 +244,10 @@ describe('CoinPriceStatus', function () {
                 assert.strictEqual($(this).text(), '1.00');
             });
 
+            $('.ETH_price_zil_percent_change_24h').each(function () {
+                assert.strictEqual($(this).text(), '-11.7');
+            });
             assert.strictEqual($('#public_ETH_price_fiat_percent_change_24h').text(), '-18.5');
-            assert.strictEqual($('#public_ETH_price_zil_percent_change_24h').text(), '-11.7');
             $('.ETH_price_fiat').each(function () {
                 assert.strictEqual($(this).text(), '2,619.41');
             });
@@ -235,8 +255,10 @@ describe('CoinPriceStatus', function () {
                 assert.strictEqual($(this).text(), '21,945.83');
             });
 
+            $('.BTC_price_zil_percent_change_24h').each(function () {
+                assert.strictEqual($(this).text(), '11.6');
+            });
             assert.strictEqual($('#public_BTC_price_fiat_percent_change_24h').text(), '3.0');
-            assert.strictEqual($('#public_BTC_price_zil_percent_change_24h').text(), '11.6');
             $('.BTC_price_fiat').each(function () {
                 assert.strictEqual($(this).text(), '36,849.00');
             });
@@ -315,7 +337,9 @@ describe('CoinPriceStatus', function () {
                 coinPriceStatus.bindViewCoinPriceInZil24hAgo('0.123', coinTicker);
 
                 // Assert
-                assert.strictEqual($('#public_' + coinTicker + '_price_zil_percent_change_24h').text(), '0.123');
+                $('.' + coinTicker + '_price_zil_percent_change_24h').each(function () {
+                    assert.strictEqual($(this).text(), '0.123');
+                });
             }
         });
 
@@ -326,7 +350,9 @@ describe('CoinPriceStatus', function () {
                 coinPriceStatus.bindViewCoinPriceInZil24hAgo('asdf', coinTicker);
 
                 // Assert
-                assert.strictEqual($('#public_' + coinTicker + '_price_zil_percent_change_24h').text(), 'asdf');
+                $('.' + coinTicker + '_price_zil_percent_change_24h').each(function () {
+                    assert.strictEqual($(this).text(), 'asdf');
+                });
             }
         });
     });

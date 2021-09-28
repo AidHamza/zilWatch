@@ -449,10 +449,8 @@ class ZilswapDexStatus {
                 continue;
             }
             let zrcTokenPriceInZilNumber24hAgo = zilswapSinglePairPublicStatus24hAgo.zrcTokenPriceInZil;
-            let userFriendlyZrcTokenPriceInZil24hAgo = convertNumberQaToDecimalString(zrcTokenPriceInZilNumber24hAgo, /* decimals= */ 0);
-            let publicUserFriendlyZrcTokenPriceInZil24hAgo = commafyNumberToString(zrcTokenPriceInZilNumber24hAgo, 2);
             let zrcTokenPriceInZilPercentChange24h = getPercentChange(zrcTokenPriceInZilNumber, zrcTokenPriceInZilNumber24hAgo).toFixed(1);
-            this.bindViewZrcTokenPriceInZil24hAgo(userFriendlyZrcTokenPriceInZil24hAgo, publicUserFriendlyZrcTokenPriceInZil24hAgo, zrcTokenPriceInZilPercentChange24h, zrcTokenProperties.ticker);
+            this.bindViewZrcTokenPriceInZil24hAgo(zrcTokenPriceInZilPercentChange24h, zrcTokenProperties.ticker);
         }
 
         this.bindViewZrcTokenPriceFiat();
@@ -588,13 +586,7 @@ class ZilswapDexStatus {
 
 
     /** Private static method. public. */
-    bindViewZrcTokenPriceInZil24hAgo(zrcTokenPriceInZil24hAgo, publicZrcTokenPriceInZil24hAgo, publicZrcTokenPriceInZilPercentChange24h, ticker) {
-        $('.' + ticker + '_price_zil_24h_ago').text(zrcTokenPriceInZil24hAgo);
-        $('#public_' + ticker + '_price_zil_24h_ago').text(publicZrcTokenPriceInZil24hAgo);
-        $('#public_' + ticker + '_price_zil_percent_change_24h').text(publicZrcTokenPriceInZilPercentChange24h);
-        bindViewPercentChangeColorContainer('#public_' + ticker + '_price_zil_percent_change_24h_container', publicZrcTokenPriceInZilPercentChange24h);
-
-        // This needs to be combined with the #public
+    bindViewZrcTokenPriceInZil24hAgo(publicZrcTokenPriceInZilPercentChange24h, ticker) {
         $('.' + ticker + '_price_zil_percent_change_24h').text(publicZrcTokenPriceInZilPercentChange24h);
         bindViewPercentChangeColorContainer('.' + ticker + '_price_zil_percent_change_24h_container', publicZrcTokenPriceInZilPercentChange24h);
     }
@@ -607,7 +599,6 @@ class ZilswapDexStatus {
 
     /** Private static method. public. */
     bindViewZrcTokenPriceInFiat24hAgo(zrcTokenPriceInFiat24hAgo, zrcTokenPriceInFiatPercentChange24h, ticker) {
-        $('#public_' + ticker + '_price_fiat_24h_ago').text(zrcTokenPriceInFiat24hAgo);
         $('#public_' + ticker + '_price_fiat_percent_change_24h').text(zrcTokenPriceInFiatPercentChange24h);
         bindViewPercentChangeColorContainer('#public_' + ticker + '_price_fiat_percent_change_24h_container', zrcTokenPriceInFiatPercentChange24h);
     }

@@ -29,7 +29,7 @@ block content
               td(style='text-align: right; white-space: nowrap; vertical-align: middle; width: 1%;' )
                 span(class=tokenProperties.ticker+'_price_zil')= 'Loading...'
               td(class=tokenProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle; width: 1%;' )
-                span(class=tokenProperties.ticker+'_price_zil_percent_change_24h')= 'Loading...'
+                span(class=tokenProperties.ticker+'_price_zil_percent_change_24h')
 
       div(class=' sidebar-toggler sidebar-heading border-bottom-sidebar bg-dynamic-3')
         span(class='font-weight-bold')='Close sidebar' 
@@ -130,8 +130,8 @@ block content
                           span(class='ml-2')= coinProperties.ticker
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           span(class=coinProperties.ticker+'_price_zil')= 'Loading...'
-                        td(class='pr-3' id='public_'+coinProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                          span(id='public_'+coinProperties.ticker+'_price_zil_percent_change_24h')
+                        td(class='pr-3' class=coinProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(class=coinProperties.ticker+'_price_zil_percent_change_24h')
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           div(class='progress' style='height: 0.4rem; margin-top: 0.2rem;')
                             div(id=coinProperties.ticker+'_price_24h_low_high_progress' class='progress-bar' role='progressbar' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
@@ -164,7 +164,7 @@ block content
                       if tokenProperties.ticker === 'XPORT'
                         div(style='display:none')
                           span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
-                          span(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h')
+                          span(class=tokenProperties.ticker+'_price_zil_percent_change_24h')
                           span(id=tokenProperties.ticker+'_price_24h_low_high_progress' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
                           span(id=tokenProperties.ticker+'_price_24h_low')= ''
                           span(id=tokenProperties.ticker+'_price_24h_high')= ''
@@ -176,8 +176,6 @@ block content
                           span(id=tokenProperties.ticker+'_circulating_supply_fiat')= '0'
                           span(id=tokenProperties.ticker+'_total_supply_zrc')= '0'
                           span(id=tokenProperties.ticker+'_total_supply_fiat')= '0'
-                          span(id='public_'+tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
-                          span(id='public_'+tokenProperties.ticker+'_price_fiat_24h_ago' style='display: none;')
                         - continue
 
                       tr(style=trStyle)
@@ -186,8 +184,8 @@ block content
                           span(class='ml-2')= tokenProperties.ticker
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
-                        td(class='pr-3' id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                          span(id='public_'+tokenProperties.ticker+'_price_zil_percent_change_24h')
+                        td(class='pr-3' class=tokenProperties.ticker+'_price_zil_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(class=tokenProperties.ticker+'_price_zil_percent_change_24h')
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           div(class='progress' style='height: 0.4rem; margin-top: 0.2rem;')
                             div(id=tokenProperties.ticker+'_price_24h_low_high_progress' class='progress-bar' role='progressbar' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
@@ -210,9 +208,6 @@ block content
                           span(id=tokenProperties.ticker+'_total_supply_zrc')= '0'
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           span(id=tokenProperties.ticker+'_total_supply_fiat')= '0'
-
-                        span(id='public_'+tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
-                        span(id='public_'+tokenProperties.ticker+'_price_fiat_24h_ago' style='display: none;')
 
           if zilswapDexReward || zilStakingReward
             div(class='col-xl-6 col-xxl-4' style='padding: 0;')
@@ -590,7 +585,6 @@ block content
                           span(class='font-weight-bold')= tokenProperties.ticker
                           span(class=tokenProperties.ticker+'_price_zil ml-2 text-secondary')= 'Loading...'
                           span(class='ml-1 text-secondary')= 'ZIL'
-                          span(class=tokenProperties.ticker+'_price_zil_24h_ago' style='display: none;')
                         td(style='text-align: right; white-space: nowrap; width: 40%;' )
                           span(id=tokenProperties.ticker+'_balance_zil')= 'Loading...'
                           span(class='ml-1')= 'ZIL'

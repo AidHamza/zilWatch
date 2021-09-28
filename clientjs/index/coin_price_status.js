@@ -191,8 +191,8 @@ class CoinPriceStatus {
 
     /** Private static method */
     bindViewCoinPriceInZil24hAgo(coinPriceInZilPercentChange24h, coinTicker) {
-        $("#public_" + coinTicker + "_price_zil_percent_change_24h").text(coinPriceInZilPercentChange24h);
-        bindViewPercentChangeColorContainer('#public_' + coinTicker + '_price_zil_percent_change_24h_container', coinPriceInZilPercentChange24h);
+        $("." + coinTicker + "_price_zil_percent_change_24h").text(coinPriceInZilPercentChange24h);
+        bindViewPercentChangeColorContainer('.' + coinTicker + '_price_zil_percent_change_24h_container', coinPriceInZilPercentChange24h);
     }
 
     /** Private static method */
