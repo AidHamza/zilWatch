@@ -455,6 +455,14 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil1s8xzysqcxva2x6aducncv9um3zxr36way3fx9g/logo",
     "decimals": 6,
   },
+  'zETH': {
+    "ticker": "zETH",
+    "name": "Bridged ETH",
+    "address": "zil19j33tapjje2xzng7svslnsjjjgge930jx0w09v",
+    "address_base16": "0x2cA315F4329654614d1E8321f9C252921192c5f2",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil19j33tapjje2xzng7svslnsjjjgge930jx0w09v/logo",
+    "decimals": 18,
+  },
   'ZILLEX': {
     "ticker": "ZILLEX",
     "name": "Zilliqa Index Compound",
@@ -487,6 +495,14 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil1qldr63ds7yuspqcf02263y2lctmtqmr039vrht/logo",
     "decimals": 4,
   },
+  'zUSDT': {
+    "ticker": "zUSDT",
+    "name": "Bridged USDT",
+    "address": "zil1sxx29cshups269ahh5qjffyr58mxjv9ft78jqy",
+    "address_base16": "0x818Ca2e217E060aD17B7bD0124a483a1f66930a9",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1sxx29cshups269ahh5qjffyr58mxjv9ft78jqy/logo",
+    "decimals": 6,
+  },
   'ZWALL': {
     "ticker": "ZWALL",
     "name": "ZilWall",
@@ -502,6 +518,14 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1p5suryq6q647usxczale29cu3336hhp376c627/logo",
     "decimals": 12,
+  },
+  'zWBTC': {
+    "ticker": "zWBTC",
+    "name": "Bridged WBTC",
+    "address": "zil1wha8mzaxhm22dpm5cav2tepuldnr8kwkvmqtjq",
+    "address_base16": "0x75fA7D8BA6BEd4a68774c758A5e43Cfb6633D9d6",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1wha8mzaxhm22dpm5cav2tepuldnr8kwkvmqtjq/logo",
+    "decimals": 8,
   },
   'ZYRO': {
     "ticker": "ZYRO",
