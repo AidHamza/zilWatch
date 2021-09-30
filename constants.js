@@ -335,14 +335,6 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil12htx8pdfwk39e47fhd7t3vd3rftyxeuf9px354/logo",
     "decimals": 5,
   },
-  'PLANET': {
-    "ticker": "PLANET",
-    "name": "Planetarize",
-    "address": "zil1nhuzjg452rkdzrfh7swllr4eq2g8t0lfgu2z38",
-    "address_base16": "0x9DF82922B450eCd10D37F41dff8eb9029075bFE9",
-    "logo_url": "https://meta.viewblock.io/ZIL.zil1nhuzjg452rkdzrfh7swllr4eq2g8t0lfgu2z38/logo",
-    "decimals": 8,
-  },
   'RECAP': {
     "ticker": "RECAP",
     "name": "Review Capital",
