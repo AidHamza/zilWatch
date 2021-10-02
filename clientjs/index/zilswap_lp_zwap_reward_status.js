@@ -1,8 +1,9 @@
+const ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16 = "0xea57c6b7b5475107688bc70aabefdd5352d0bed0";
+
 /** A class to represent Zilswap LP ZWAP reward status.  */
 class ZilswapLpZwapRewardStatus {
 
     constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ walletAddressBech32, /* nullable= */ epochInfoData, /* nullable= */ contractAddressToRewardMapData, /* nullable= */ pastRewardListData, /* nullable= */ unclaimedRewardListData) {
-        this.zilswapRewardDistributorAddressBase16_ = "0xe5e274f59482759c1a0c13682ff3ec3efeb22d2a";
 
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
@@ -52,7 +53,7 @@ class ZilswapLpZwapRewardStatus {
         if (!this.contractAddressToRewardMapData_) {
             return;
         }
-        let contractAddressToRewardMap = this.contractAddressToRewardMapData_[this.zilswapRewardDistributorAddressBase16_];
+        let contractAddressToRewardMap = this.contractAddressToRewardMapData_[ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16];
         if (!contractAddressToRewardMap) {
             return;
         }
@@ -63,7 +64,7 @@ class ZilswapLpZwapRewardStatus {
         for (let ticker in this.zrcTokenPropertiesListMap_) {
             let zrcTokenAddress = this.zrcTokenPropertiesListMap_[ticker].address;
 
-            if (contractAddressToRewardMap[zrcTokenAddress]) {
+            if (zrcTokenAddress in contractAddressToRewardMap) {
                 let zwapRewardQa = parseInt(contractAddressToRewardMap[zrcTokenAddress]);
                 if (zwapRewardQa) {
                     totalZwapRewardQa += zwapRewardQa;
@@ -175,7 +176,7 @@ class ZilswapLpZwapRewardStatus {
                 continue;
             }
             // If it's not ZWAP reward
-            if (currUnclaimedReward.distributor_address != this.zilswapRewardDistributorAddressBase16_) {
+            if (currUnclaimedReward.distributor_address != ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16) {
                 continue;
             }
             let currUnclaimedZwapQa = parseInt(currUnclaimedReward.amount)
@@ -509,5 +510,6 @@ if (typeof exports !== 'undefined') {
     if (typeof $ === 'undefined') {
         $ = global.jQuery = require('jquery');
     }
+    exports.ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16 = ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16;
     exports.ZilswapLpZwapRewardStatus = ZilswapLpZwapRewardStatus;
 }

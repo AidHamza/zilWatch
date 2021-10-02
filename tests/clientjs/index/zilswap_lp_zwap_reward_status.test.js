@@ -9,6 +9,8 @@ var ZilswapLpZwapRewardStatus = require('../../../clientjs/index//zilswap_lp_zwa
 var Constants = require('../../../constants.js');
 var sinon = require('sinon');
 
+const ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16 = ZilswapLpZwapRewardStatus.ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16;
+
 describe('ZilswapLpZwapRewardStatus', function () {
 
     beforeEach(function (done) {
@@ -103,9 +105,10 @@ describe('ZilswapLpZwapRewardStatus', function () {
                     "zil14pzuzq6v6pmmmrfjhczywguu0e97djepxt8g3e": "12548281867",
                     "zil1l0g8u6f9g0fsvjuu74ctyla2hltefrdyt7k5f4": "15783071977"
                 };
-                let newApiContractAddressToRewardMap = {
-                    "0xe5e274f59482759c1a0c13682ff3ec3efeb22d2a": contractAddressToRewardMap,
-                };
+
+                let newApiContractAddressToRewardMap = {}
+                newApiContractAddressToRewardMap[ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16] = contractAddressToRewardMap;
+
                 let contractAddressToUserFriendlyRewardString = {
                     "zil1p5suryq6q647usxczale29cu3336hhp376c627": "0.01271",
                     "zil1zu72vac254htqpg3mtywdcfm84l3dfd9qzww8t": "0.02698",
@@ -142,9 +145,9 @@ describe('ZilswapLpZwapRewardStatus', function () {
                     "zil14pzuzq6v6pmmmrfjhczywguu0e97djepxt8g3e": "1287",
                     "zil1l0g8u6f9g0fsvjuu74ctyla2hltefrdyt7k5f4": "124"
                 };
-                let newApiContractAddressToRewardMap = {
-                    "0xe5e274f59482759c1a0c13682ff3ec3efeb22d2a": contractAddressToRewardMap,
-                };
+
+                let newApiContractAddressToRewardMap = {}
+                newApiContractAddressToRewardMap[ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16] = contractAddressToRewardMap;
 
                 zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, newApiContractAddressToRewardMap, /* pastRewardListData= */ null, /* unclaimedRewardListData= */ null);
 
@@ -155,6 +158,7 @@ describe('ZilswapLpZwapRewardStatus', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     let currAddress = Constants.zrcTokenPropertiesListMap[ticker].address;
                     if (!contractAddressToRewardMap[currAddress]) {
+
                         assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap').text(), 'No reward');
                         assert.strictEqual($('#' + ticker + '_lp_pool_reward_zwap_unit').text(), 'ZWAP');
                     } else {
@@ -173,9 +177,9 @@ describe('ZilswapLpZwapRewardStatus', function () {
                     "zil1zu72vac254htqpg3mtywdcfm84l3dfd9qzww8t": "asdf",
                     "zil14pzuzq6v6pmmmrfjhczywguu0e97djepxt8g3e": "fds",
                 };
-                let newApiContractAddressToRewardMap = {
-                    "0xe5e274f59482759c1a0c13682ff3ec3efeb22d2a": contractAddressToRewardMap,
-                };
+
+                let newApiContractAddressToRewardMap = {}
+                newApiContractAddressToRewardMap[ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16] = contractAddressToRewardMap;
 
                 zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, newApiContractAddressToRewardMap, /* pastRewardListData= */ null, /* unclaimedRewardListData= */ null);
 
