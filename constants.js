@@ -191,14 +191,6 @@ const ssnListMap = {
 
 // IF changed, also change in zilWatch-backend/core/constants.py
 const zrcTokenPropertiesListMap = {
-  'BOLT': {
-    "ticker": "BOLT",
-    "name": "Bolt Token",
-    "address": "zil1x6z064fkssmef222gkhz3u5fhx57kyssn7vlu0",
-    "address_base16": "0x3684Fd5536843794a94a45AE28f289B9a9eB1210",
-    "logo_url": "https://meta.viewblock.io/ZIL.zil1x6z064fkssmef222gkhz3u5fhx57kyssn7vlu0/logo",
-    "decimals": 18,
-  },
   'BLOX': {
     "ticker": "BLOX",
     "name": "Blox Token",
@@ -206,6 +198,14 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x4268C34dA6Ad41a4cDeAa25cdEF6531Ed0c9a1A2",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1gf5vxndx44q6fn025fwdaajnrmgvngdzel0jzp/logo",
     "decimals": 2,
+  },
+  'BOLT': {
+    "ticker": "BOLT",
+    "name": "Bolt Token",
+    "address": "zil1x6z064fkssmef222gkhz3u5fhx57kyssn7vlu0",
+    "address_base16": "0x3684Fd5536843794a94a45AE28f289B9a9eB1210",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1x6z064fkssmef222gkhz3u5fhx57kyssn7vlu0/logo",
+    "decimals": 18,
   },
   'CARB': {
     "ticker": "CARB",

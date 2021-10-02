@@ -2,7 +2,7 @@ var indexJsdom = require('../../index.jsdom.js');
 var $ = indexJsdom.$;
 
 var BindView = require('../../../clientjs/index//bind_view.js');
-var ZilpayUtils = require('../../../clientjs/index//zilpay_utils.js');
+var ZilpayUtils = require('../../../clientjs/index/zilpay_utils.js');
 var assert = require('assert');
 
 describe('BindView1', function () {
