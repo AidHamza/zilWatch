@@ -1,5 +1,3 @@
-const ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16 = "0xea57c6b7b5475107688bc70aabefdd5352d0bed0";
-
 /** A class to represent Zilswap LP ZWAP reward status.  */
 class ZilswapLpZwapRewardStatus {
 
@@ -53,7 +51,7 @@ class ZilswapLpZwapRewardStatus {
         if (!this.contractAddressToRewardMapData_) {
             return;
         }
-        let contractAddressToRewardMap = this.contractAddressToRewardMapData_[ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16];
+        let contractAddressToRewardMap = this.contractAddressToRewardMapData_[CONST_ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16];
         if (!contractAddressToRewardMap) {
             return;
         }
@@ -176,7 +174,7 @@ class ZilswapLpZwapRewardStatus {
                 continue;
             }
             // If it's not ZWAP reward
-            if (currUnclaimedReward.distributor_address != ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16) {
+            if (currUnclaimedReward.distributor_address != CONST_ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16) {
                 continue;
             }
             let currUnclaimedZwapQa = parseInt(currUnclaimedReward.amount)
@@ -326,7 +324,7 @@ class ZilswapLpZwapRewardStatus {
         beforeRpcCallback();
         queryUrlGetAjax(
             /* urlToGet= */
-            "https://stats.zilswap.org/epoch/info",
+            CONST_STATS_ZILSWAP_ROOT_URL + "/epoch/info",
             /* successCallback= */
             function (data) {
                 self.epochInfoData_ = data;
@@ -346,7 +344,7 @@ class ZilswapLpZwapRewardStatus {
         beforeRpcCallback();
         queryUrlGetAjax(
             /* urlToGet= */
-            "https://stats.zilswap.org/distribution/estimated_amounts/" + self.walletAddressBech32_,
+            CONST_STATS_ZILSWAP_ROOT_URL + "/distribution/estimated_amounts/" + self.walletAddressBech32_,
             /* successCallback= */
             function (data) {
                 self.contractAddressToRewardMapData_ = data;
@@ -363,7 +361,7 @@ class ZilswapLpZwapRewardStatus {
         beforeRpcCallback();
         queryUrlGetAjax(
             /* urlToGet= */
-            "https://zilwatch.io/api/reward/prevepoch?token_symbol=ZWAP&wallet_address=" + self.walletAddressBech32_ + "&requester=zilwatch_dashboard",
+            CONST_ZILWATCH_ROOT_URL + "/api/reward/prevepoch?token_symbol=ZWAP&wallet_address=" + self.walletAddressBech32_ + "&requester=zilwatch_dashboard",
             /* successCallback= */
             function (data) {
                 self.pastRewardListData_ = data;
@@ -379,7 +377,7 @@ class ZilswapLpZwapRewardStatus {
         beforeRpcCallback();
         queryUrlGetAjax(
             /* urlToGet= */
-            "https://stats.zilswap.org/distribution/claimable_data/" + self.walletAddressBech32_,
+            CONST_STATS_ZILSWAP_ROOT_URL + "/distribution/claimable_data/" + self.walletAddressBech32_,
             /* successCallback= */
             function (data) {
                 self.unclaimedRewardListData_ = data;
@@ -504,9 +502,12 @@ if (typeof exports !== 'undefined') {
         UtilsDuration = require('./utils_duration.js');
         Duration = UtilsDuration.Duration;
     }
+    if (typeof CONST_ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16  === 'undefined') {
+        UtilsConstants = require('../utils_constants.js');
+        CONST_ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16 = UtilsConstants.CONST_ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16;
+    }
     if (typeof $ === 'undefined') {
         $ = global.jQuery = require('jquery');
     }
-    exports.ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16 = ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16;
     exports.ZilswapLpZwapRewardStatus = ZilswapLpZwapRewardStatus;
 }

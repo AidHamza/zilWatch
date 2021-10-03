@@ -3,13 +3,12 @@ var fs = require('fs')
 var $ = indexJsdom.$;
 
 var assert = require('assert');
-var ZilswapDexStatus = require('../../../clientjs/index//zilswap_dex_status.js');
-var CoinPriceStatus = require('../../../clientjs/index//coin_price_status.js');
-var ZilswapLpZwapRewardStatus = require('../../../clientjs/index//zilswap_lp_zwap_reward_status.js');
+var ZilswapDexStatus = require('../../../clientjs/index/zilswap_dex_status.js');
+var CoinPriceStatus = require('../../../clientjs/index/coin_price_status.js');
+var ZilswapLpZwapRewardStatus = require('../../../clientjs/index/zilswap_lp_zwap_reward_status.js');
+var UtilsConstants = require('../../../clientjs/utils_constants.js');
 var Constants = require('../../../constants.js');
 var sinon = require('sinon');
-
-const ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16 = ZilswapLpZwapRewardStatus.ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16;
 
 describe('ZilswapLpZwapRewardStatus', function () {
 
@@ -107,7 +106,7 @@ describe('ZilswapLpZwapRewardStatus', function () {
                 };
 
                 let newApiContractAddressToRewardMap = {}
-                newApiContractAddressToRewardMap[ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16] = contractAddressToRewardMap;
+                newApiContractAddressToRewardMap[UtilsConstants.CONST_ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16] = contractAddressToRewardMap;
 
                 let contractAddressToUserFriendlyRewardString = {
                     "zil1p5suryq6q647usxczale29cu3336hhp376c627": "0.01271",
@@ -147,7 +146,7 @@ describe('ZilswapLpZwapRewardStatus', function () {
                 };
 
                 let newApiContractAddressToRewardMap = {}
-                newApiContractAddressToRewardMap[ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16] = contractAddressToRewardMap;
+                newApiContractAddressToRewardMap[UtilsConstants.CONST_ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16] = contractAddressToRewardMap;
 
                 zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, newApiContractAddressToRewardMap, /* pastRewardListData= */ null, /* unclaimedRewardListData= */ null);
 
@@ -179,7 +178,7 @@ describe('ZilswapLpZwapRewardStatus', function () {
                 };
 
                 let newApiContractAddressToRewardMap = {}
-                newApiContractAddressToRewardMap[ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16] = contractAddressToRewardMap;
+                newApiContractAddressToRewardMap[UtilsConstants.CONST_ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16] = contractAddressToRewardMap;
 
                 zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus.ZilswapLpZwapRewardStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBech32= */ null, /* epochInfoData= */ null, newApiContractAddressToRewardMap, /* pastRewardListData= */ null, /* unclaimedRewardListData= */ null);
 

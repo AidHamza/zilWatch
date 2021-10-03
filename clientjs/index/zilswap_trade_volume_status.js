@@ -90,7 +90,7 @@ class ZilswapTradeVolumeStatus {
         let self = this;
         queryUrlGetAjax(
             /* urlToGet= */
-            "https://stats.zilswap.org/volume?from=" + oneDayAgoSeconds.toFixed(0),
+            CONST_STATS_ZILSWAP_ROOT_URL + "/volume?from=" + oneDayAgoSeconds.toFixed(0),
             /* successCallback= */
             function (data) {
                 self.zilswapDex24hTradeVolumeData_ = data;

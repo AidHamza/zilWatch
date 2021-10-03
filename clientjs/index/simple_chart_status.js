@@ -47,7 +47,7 @@ class SimpleChartStatus {
         let self = this;
         queryUrlGetAjax(
             /* urlToGet= */
-            "https://zilwatch.io/api/tokenprice/24h_simple_all_tokens?requester=zilwatch_dashboard",
+            CONST_ZILWATCH_ROOT_URL + "/api/tokenprice/24h_simple_all_tokens?requester=zilwatch_dashboard",
             /* successCallback= */
             function (data) {
                 self.simpleAllTokensData_ = data;

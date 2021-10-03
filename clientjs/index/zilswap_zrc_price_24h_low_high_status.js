@@ -85,7 +85,7 @@ class ZilswapZrcPrice24hLowHighStatus {
         let self = this;
         queryUrlGetAjax(
             /* urlToGet= */
-            "https://zilwatch.io/api/tokenprice/lowhigh?range=24h&requester=zilwatch_dashboard",
+            CONST_ZILWATCH_ROOT_URL + "/api/tokenprice/lowhigh?range=24h&requester=zilwatch_dashboard",
             /* successCallback= */
             function (data) {
                 let currZrcTokenPrice24hLowData = data['low'];
