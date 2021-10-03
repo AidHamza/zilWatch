@@ -6,6 +6,8 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var licenseGrantsRouter = require('./routes/license-grants');
+var disclaimerRouter = require('./routes/disclaimer');
+var termsRouter = require('./routes/terms');
 var apiTokenPriceRouter = require('./routes/api_tokenprice');
 var apiRewardRouter = require('./routes/api_reward');
 
@@ -23,6 +25,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/license-grants', licenseGrantsRouter);
+app.use('/disclaimer', disclaimerRouter);
+app.use('/terms', termsRouter);
 app.use('/api/tokenprice',  apiTokenPriceRouter);
 app.use('/api/reward',  apiRewardRouter);
 

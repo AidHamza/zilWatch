@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    nav(class='navbar navbar-light bg-dynamic-1 justify-content-between')
+        a(class='navbar-brand zilwatch-navbar-brand')
+            img(src='/images/zilWatch-02.svg' width='30' height='30' class='d-inline-block align-top mr-2' alt='zilWatch')
+            = 'zilWatch'
+
+        button(id='toggle_theme_btn' class='btn btn-info my-2 my-sm-0 mr-2')
+            i(id='toggle_theme_icon' class='fa fa-sun-o')
+
+    div(class='container')
+        hr
+        a(href='https://zilwatch.io')='← Back to dashboard'
+        hr
+        
+        block static_info_content
+
+        hr
+        a(href='https://zilwatch.io')='← Back to dashboard'
+        hr
+
+    block script
+        script(src='/javascripts/main.theme.min.js')

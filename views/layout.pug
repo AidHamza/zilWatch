@@ -77,7 +77,19 @@ html(lang='en' class='dark-mode')
           role='button')
             i(class='fa fa-github')
 
-    p()= '© 2021 zilWatch.io'
+    p= '© 2021 zilWatch.io'
+
+    div(class='container pt-2')
+      section(class='mb-4')
+        a(class='mx-2'
+          href='https://zilwatch.io')= 'Dashboard'
+        span='|'
+        a(class='mx-2'
+          href='https://zilwatch.io/disclaimer')= 'Disclaimer'
+        span='|'
+        a(class='mx-2'
+          href='https://zilwatch.io/terms')= 'Terms'
+
     p= '―'
 
     div(class='container pt-1')
@@ -91,7 +103,7 @@ html(lang='en' class='dark-mode')
         a(class='btn-lg text-dark'
           href='https://zilpay.io'
           role='button')
-            img(height='24' width='24' src=zrcTokenPropertiesListMap['ZLP'].logo_url loading='lazy' alt='ZilPay Wallet and API')
+            img(height='24' width='24' src='https://meta.viewblock.io/ZIL.zil1l0g8u6f9g0fsvjuu74ctyla2hltefrdyt7k5f4/logo' loading='lazy' alt='ZilPay Wallet and API')
 
         a(class='btn-lg text-dark'
           href='https://zilswap.io'

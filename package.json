@@ -5,8 +5,9 @@
   "scripts": {
     "start": "npm run uglifyjs && npm run uglifycss && node ./bin/www",
     "test": "nyc mocha --parallel --recursive tests/ --timeout 5000",
-    "uglifyjs": "npm run uglifyjs-index",
+    "uglifyjs": "npm run uglifyjs-index && npm run uglifyjs-theme",
     "uglifyjs-index": "uglifyjs clientjs/*.js clientjs/index/*.js --compress --mangle --output public/javascripts/main.index.min.js",
+    "uglifyjs-theme": "uglifyjs clientjs/utils_theme.js --compress --mangle --output public/javascripts/main.theme.min.js",
     "uglifycss": "uglifycss clientcss/*.css --ugly-comments --output public/stylesheets/main.min.css"
   },
   "dependencies": {

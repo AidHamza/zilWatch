@@ -1,4 +1,4 @@
 
-$("#wallet_refresh").click(function () {
+$("#wallet_refresh").on('click', function () {
     window.location.reload();
 });
