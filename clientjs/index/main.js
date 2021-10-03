@@ -50,7 +50,7 @@ window.addEventListener("load", async () => {
     }
 });
 
-$("#wallet_connect").click(function () {
+$(".wallet_connect_button").on('click', function () {
     window.zilPay.wallet.connect().then(
         function (isUnlockSuccessful) {
             console.log("Wallet connect unlock successful: " + isUnlockSuccessful);

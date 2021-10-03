@@ -57,13 +57,7 @@ block content
         button(id='wallet_refresh' class='btn btn-info my-2 my-sm-0 mr-2')
           i(id='wallet_refresh_icon' class='fa fa-refresh')
         button(id='wallet_address' class='btn btn-outline-info my-2 my-sm-0' style='display: none;')
-        button(id='wallet_connect' class='btn btn-info my-2 my-sm-0')= 'Connect'
-
-      // Error Message Container
-      div(id='error_message_container' class='container')
-        hr
-        div(class='balance-box row container')
-          span(id='error_message' class='h5')= 'Loading...'
+        button(id='topbar_wallet_connect_button' class='wallet_connect_button btn btn-info my-2 my-sm-0')= 'Connect'
 
       // Public Content Container
       div(id='public_content_container' class='container-xxl')
@@ -873,6 +867,16 @@ block content
                             span(id='carbon_staking_balance_fiat_24h_ago')
                           td(style='text-align: right; white-space: nowrap;' )
           hr
+
+      // Error Message Container
+      div(id='error_message_container' class='container')
+        div(class='balance-box row container')
+          span(id='error_message' class='h5')= 'Loading...'
+
+          button(id='error_wallet_connect_button' class='wallet_connect_button btn btn-info mx-2 my-sm-0' style='display: none;')= 'Connect'
+          a(id='error_download_zilpay_button' href='https://zilpay.io' target='_blank' style='display: none;')
+            button(class='btn btn-info mx-2 my-sm-0')= 'Download ZilPay'
+        hr
 
       //---------------------- Start of Swap Modals ---------------------
 

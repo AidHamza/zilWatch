@@ -18,7 +18,7 @@ function getNumberFromView(viewId) {
  */
 
 function bindViewLoggedInButton(walletAddress) {
-    $('#wallet_connect').hide();
+    $('#topbar_wallet_connect_button').hide();
     $('#wallet_address').text(walletAddress);
     $('#wallet_address').show();
     $('#wallet_refresh').show();
@@ -54,21 +54,29 @@ function hideFullWalletAddress() {
 function bindViewMainContainer(zilpayStatus) {
     if (ZilpayStatus.connected === zilpayStatus) {
         $('#main_content_container').show();
+        $('#error_wallet_connect_button').hide();
+        $('#error_download_zilpay_button').hide();
         $('#error_message_container').hide();
         return;
     } else if (ZilpayStatus.not_installed === zilpayStatus) {
         $('#main_content_container').hide();
-        $('#error_message').html('ZilPay not installed! <a href="https://zilpay.io">Download here</a>');
+        $('#error_message').html('ZilPay wallet not installed!');
+        $('#error_wallet_connect_button').hide();
+        $('#error_download_zilpay_button').show();
         $('#error_message_container').show();
         return;
     } else if (ZilpayStatus.locked === zilpayStatus || ZilpayStatus.not_connected === zilpayStatus) {
         $('#main_content_container').hide();
-        $('#error_message').html('Please connect to ZilPay! (top right button)');
+        $('#error_message').html('ZilPay wallet not connected!');
+        $('#error_wallet_connect_button').show();
+        $('#error_download_zilpay_button').hide();
         $('#error_message_container').show();
         return;
     } else if (ZilpayStatus.not_mainnet === zilpayStatus) {
         $('#main_content_container').hide();
         $('#error_message').html('Please switch to mainnet!');
+        $('#error_wallet_connect_button').hide();
+        $('#error_download_zilpay_button').hide();
         $('#error_message_container').show();
         return;
     }

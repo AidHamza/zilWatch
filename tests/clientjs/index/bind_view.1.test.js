@@ -23,7 +23,7 @@ describe('BindView1', function () {
             assert.strictEqual($('#wallet_address').text(), '');
             assert.strictEqual($('#wallet_address').css('display'), 'none');
             assert.strictEqual($('#wallet_refresh').css('display'), 'inline-block');
-            assert.strictEqual($('#wallet_connect').css('display'), 'inline-block');
+            assert.strictEqual($('#topbar_wallet_connect_button').css('display'), 'inline-block');
         });
 
         it('bind view random string', function () {
@@ -34,7 +34,7 @@ describe('BindView1', function () {
             assert.strictEqual($('#wallet_address').text(), 'abcd');
             assert.strictEqual($('#wallet_address').css('display'), 'inline-block');
             assert.strictEqual($('#wallet_refresh').css('display'), 'inline-block');
-            assert.strictEqual($('#wallet_connect').css('display'), 'none');
+            assert.strictEqual($('#topbar_wallet_connect_button').css('display'), 'none');
         });
 
         it('bind view empty string', function () {
@@ -45,7 +45,7 @@ describe('BindView1', function () {
             assert.strictEqual($('#wallet_address').text(), '');
             assert.strictEqual($('#wallet_address').css('display'), 'inline-block');
             assert.strictEqual($('#wallet_refresh').css('display'), 'inline-block');
-            assert.strictEqual($('#wallet_connect').css('display'), 'none');
+            assert.strictEqual($('#topbar_wallet_connect_button').css('display'), 'none');
         });
 
         it('bind view null', function () {
@@ -56,7 +56,7 @@ describe('BindView1', function () {
             assert.strictEqual($('#wallet_address').text(), '');
             assert.strictEqual($('#wallet_address').css('display'), 'inline-block');
             assert.strictEqual($('#wallet_refresh').css('display'), 'inline-block');
-            assert.strictEqual($('#wallet_connect').css('display'), 'none');
+            assert.strictEqual($('#topbar_wallet_connect_button').css('display'), 'none');
         });
     });
 
@@ -114,6 +114,8 @@ describe('BindView1', function () {
         beforeEach(function () {
             assert.strictEqual($('#main_content_container').css('display'), 'none');
             assert.strictEqual($('#error_message_container').css('display'), 'block');
+            assert.strictEqual($('#error_wallet_connect_button').css('display'), 'none');
+            assert.strictEqual($('#error_download_zilpay_button').css('display'), 'none');
         });
 
         it('bindView ZilpayStatus.connected', function () {
@@ -123,6 +125,8 @@ describe('BindView1', function () {
             // Assert
             assert.strictEqual($('#main_content_container').css('display'), 'block');
             assert.strictEqual($('#error_message_container').css('display'), 'none');
+            assert.strictEqual($('#error_wallet_connect_button').css('display'), 'none');
+            assert.strictEqual($('#error_download_zilpay_button').css('display'), 'none');
         });
 
         it('bindView ZilpayStatus.not_installed', function () {
@@ -132,7 +136,9 @@ describe('BindView1', function () {
             // Assert
             assert.strictEqual($('#main_content_container').css('display'), 'none');
             assert.strictEqual($('#error_message_container').css('display'), 'block');
-            assert.strictEqual($('#error_message').html(), 'ZilPay not installed! <a href="https://zilpay.io">Download here</a>');
+            assert.strictEqual($('#error_message').html(), 'ZilPay wallet not installed!');
+            assert.strictEqual($('#error_wallet_connect_button').css('display'), 'none');
+            assert.strictEqual($('#error_download_zilpay_button').css('display'), '');
         });
 
         it('bindView ZilpayStatus.locked', function () {
@@ -142,7 +148,9 @@ describe('BindView1', function () {
             // Assert
             assert.strictEqual($('#main_content_container').css('display'), 'none');
             assert.strictEqual($('#error_message_container').css('display'), 'block');
-            assert.strictEqual($('#error_message').html(), 'Please connect to ZilPay! (top right button)');
+            assert.strictEqual($('#error_message').html(), 'ZilPay wallet not connected!');
+            assert.strictEqual($('#error_wallet_connect_button').css('display'), 'inline-block');
+            assert.strictEqual($('#error_download_zilpay_button').css('display'), 'none');
         });
 
         it('bindView ZilpayStatus.not_connected', function () {
@@ -152,7 +160,9 @@ describe('BindView1', function () {
             // Assert
             assert.strictEqual($('#main_content_container').css('display'), 'none');
             assert.strictEqual($('#error_message_container').css('display'), 'block');
-            assert.strictEqual($('#error_message').html(), 'Please connect to ZilPay! (top right button)');
+            assert.strictEqual($('#error_message').html(), 'ZilPay wallet not connected!');
+            assert.strictEqual($('#error_wallet_connect_button').css('display'), 'inline-block');
+            assert.strictEqual($('#error_download_zilpay_button').css('display'), 'none');
         });
 
         it('bindView ZilpayStatus.not_mainnet', function () {
