@@ -199,14 +199,6 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil1gf5vxndx44q6fn025fwdaajnrmgvngdzel0jzp/logo",
     "decimals": 2,
   },
-  'BUTTON': {
-    "ticker": "BUTTON",
-    "name": "The Button",
-    "address": "zil1epq9dyctg0m5yaxeqv7ph0j532qze28psqfu8h",
-    "address_base16": "0xC84056930B43F74274d9033c1bbE548A802CA8E1",
-    "logo_url": "https://meta.viewblock.io/ZIL.zil1epq9dyctg0m5yaxeqv7ph0j532qze28psqfu8h/logo",
-    "decimals": 12,
-  },
   'BOLT': {
     "ticker": "BOLT",
     "name": "Bolt Token",
@@ -214,6 +206,14 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x3684Fd5536843794a94a45AE28f289B9a9eB1210",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1x6z064fkssmef222gkhz3u5fhx57kyssn7vlu0/logo",
     "decimals": 18,
+  },
+  'BUTTON': {
+    "ticker": "BUTTON",
+    "name": "The Button",
+    "address": "zil1epq9dyctg0m5yaxeqv7ph0j532qze28psqfu8h",
+    "address_base16": "0xC84056930B43F74274d9033c1bbE548A802CA8E1",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1epq9dyctg0m5yaxeqv7ph0j532qze28psqfu8h/logo",
+    "decimals": 12,
   },
   'CARB': {
     "ticker": "CARB",
