@@ -88,9 +88,6 @@ router.get('/', function (req, res, next) {
       let data_low = null
       if (!err && reply) {
         try {
-          if (reply[0]) {
-            data_arr = JSON.parse(reply[0]);
-          }
           if (reply[1]) {
             curr_data_low = JSON.parse(reply[1]);
             if (tokenSymbol in curr_data_low) {
@@ -103,17 +100,22 @@ router.get('/', function (req, res, next) {
               data_high = curr_data_high[tokenSymbol];
             }
           }
-          if (reply[3]) {
-            zrc_price_in_zil = JSON.parse(reply[3]);
-            // Add the current (latest) price to the back of the historical price
-            // to show most up to date data point
-            if (tokenSymbol in zrc_price_in_zil) {
-              let currentDate = new Date();
-              let currentTimeSeconds = Math.round(currentDate.getTime() / 1000);
-              data_arr.push({
-                'time': currentTimeSeconds,
-                'value': zrc_price_in_zil[tokenSymbol],
-              });
+          if (reply[0]) {
+            data_arr = JSON.parse(reply[0]);
+
+            // Only need to get current price (i.e., reply[3]), if there is historical data, else, do nothing.
+            if (reply[3]) {
+              zrc_price_in_zil = JSON.parse(reply[3]);
+              // Add the current (latest) price to the back of the historical price
+              // to show most up to date data point
+              if (tokenSymbol in zrc_price_in_zil) {
+                let currentDate = new Date();
+                let currentTimeSeconds = Math.round(currentDate.getTime() / 1000);
+                data_arr.push({
+                  'time': currentTimeSeconds,
+                  'value': zrc_price_in_zil[tokenSymbol],
+                });
+              }
             }
           }
         } catch (ex) {
@@ -121,10 +123,12 @@ router.get('/', function (req, res, next) {
         }
       }
       if (!data_arr) {
+        console.log("Data not available: %s: %s", tokenSymbol, queryRange);
         res.send("Data not available!");
         return;
       }
       let dataObject = {
+        'ticker': tokenSymbol,
         'range': queryRange,
         'low': data_low,
         'high': data_high,
