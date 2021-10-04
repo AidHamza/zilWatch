@@ -198,6 +198,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x4268C34dA6Ad41a4cDeAa25cdEF6531Ed0c9a1A2",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1gf5vxndx44q6fn025fwdaajnrmgvngdzel0jzp/logo",
     "decimals": 2,
+    "website": "https://blox-sdk.com/",
+    "telegram": "https://t.me/zilliqaroyale",
   },
   'BOLT': {
     "ticker": "BOLT",
@@ -206,6 +208,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x3684Fd5536843794a94a45AE28f289B9a9eB1210",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1x6z064fkssmef222gkhz3u5fhx57kyssn7vlu0/logo",
     "decimals": 18,
+    "website": "https://www.bolt.global/",
+    "telegram": "https://t.me/BoltGlobal",
   },
   'BUTTON': {
     "ticker": "BUTTON",
@@ -214,6 +218,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xC84056930B43F74274d9033c1bbE548A802CA8E1",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1epq9dyctg0m5yaxeqv7ph0j532qze28psqfu8h/logo",
     "decimals": 12,
+    "website" : "https://button.claims",
+    "telegram" : "https://t.me/bridge_button",
   },
   'CARB': {
     "ticker": "CARB",
@@ -222,6 +228,9 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xbF79E16872fAd92C16810ddD2A7B9B6858C7b756",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1hau7z6rjltvjc95pphwj57umdpvv0d6kh2t8zk/logo",
     "decimals": 8,
+    "website": "https://www.carbontoken.info/",
+    "telegram": "https://t.me/carbonholders",
+    "whitepaper": "https://github.com/Carbon-Labs/whitepapers",
   },
   'CONSULT': {
     "ticker": "CONSULT",
@@ -230,6 +239,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x79F268CfB16B1d390281AcFf0A8A28910E936b5A",
     "logo_url": "https://meta.viewblock.io/ZIL.zil108ex3na3dvwnjq5p4nls4z3gjy8fx66693hf4d/logo",
     "decimals": 6,
+    "website": "https://www.consultcrypto.net/",
+    "telegram": "https://t.me/stokenlaunch",
   },
   'DMZ': {
     "ticker": "DMZ",
@@ -238,6 +249,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x2fc7167c3Baff89E2805Aef72636ccD98eE6Bbb2",
     "logo_url": "https://meta.viewblock.io/ZIL.zil19lr3vlpm4lufu2q94mmjvdkvmx8wdwajuntzx2/logo",
     "decimals": 18,
+    "website": "https://demons.world/",
+    "telegram": "https://t.me/de_monsters",
   },
   'DogZilliqa': {
     "ticker": "DogZilliqa",
@@ -246,6 +259,7 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xf5DbC28eb7A95bE412E787856cDe24eac095E95c",
     "logo_url": "https://meta.viewblock.io/ZIL.zil17hdu9r4h49d7gyh8s7zkeh3yatqft62uvsu8ep/logo",
     "decimals": 4,
+    "website": "https://godzilliqadefi.medium.com/dogzilliqa-token-9141f33beba5",
   },
   'DUCK': {
     "ticker": "DUCK",
@@ -254,6 +268,9 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xC6Bb661eDA683BdC792b3e456A206a92cc3cB92e",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1c6akv8k6dqaac7ft8ezk5gr2jtxrewfw8hc27d/logo",
     "decimals": 2,
+    "website": "https://duck.community/",
+    "telegram": "https://t.me/zilduck",
+    "whitepaper": "https://duck.community/papers/DUCK%20-%20Widepaper.pdf",
   },
   'ELONS': {
     "ticker": "ELONS",
@@ -262,6 +279,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xF8228Bce24e82CF779205C04Ca46F99726122497",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1lq3ghn3yaqk0w7fqtszv53hejunpyfyh3rx9gc/logo",
     "decimals": 3,
+    "website": "https://elons.io/",
+    "telegram": "https://t.me/elonstoken",
   },
   'FLAT': {
     "ticker": "FLAT",
@@ -270,6 +289,7 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x8C583bD0B96Ffe01791C07Aeb4AeF2DcbC8c2E92",
     "logo_url": "https://meta.viewblock.io/ZIL.zil133vrh59edllqz7guq7htfthjmj7gct5jxqqtl7/logo",
     "decimals": 5,
+    "telegram": "https://t.me/Flattoken",
   },
   'FRANC': {
     "ticker": "FRANC",
@@ -278,6 +298,9 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x156e674C162A39a5F7787579B342057483B1Dae2",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1z4hxwnqk9gu6tamcw4umxss9wjpmrkhzdh4n85/logo",
     "decimals": 6,
+    "website" : "https://mambo.li/stablecoins/franc/",
+    "telegram" : "https://t.me/MamboToken",
+    "whitepaper" : "https://mambo.li/downloads/francchocolatestabelcoinwhitepaper.pdf",
   },
   'GARY': {
     "ticker": "GARY",
@@ -286,6 +309,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x752eEe051828Cc4e11beaa90AC17B39bBb7E2066",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1w5hwupgc9rxyuyd742g2c9annwahugrx80fw9h/logo",
     "decimals": 4,
+    "website": "https://blog.thegarytoken.com/",
+    "telegram": "https://t.me/TheGARYToken",
   },
   'gZIL': {
     "ticker": "gZIL",
@@ -293,7 +318,8 @@ const zrcTokenPropertiesListMap = {
     "address": "zil14pzuzq6v6pmmmrfjhczywguu0e97djepxt8g3e",
     "address_base16": "0xa845C1034CD077bD8D32be0447239c7E4be6cb21",
     "logo_url": "https://meta.viewblock.io/ZIL.zil14pzuzq6v6pmmmrfjhczywguu0e97djepxt8g3e/logo",
-    "decimals": 15
+    "decimals": 15,
+    "website": "https://zilliqa.com",
   },
   'HODL': {
     "ticker": "HODL",
@@ -302,6 +328,7 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xF7B9195E86Adc1CEfD4a113D050f9146144A9014",
     "logo_url": "https://meta.viewblock.io/ZIL.zil177u3jh5x4hqual22zy7s2ru3gc2y4yq5wnq2un/logo",
     "decimals": 0,
+    "telegram": "https://t.me/thehodltoken",
   },
   'MAMBO': {
     "ticker": "MAMBO",
@@ -310,6 +337,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x25B0DBAd04c8f1B67A6d4996f7BB6530820ADBd7",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1ykcdhtgyercmv7ndfxt00wm9xzpq4k7hjmfm4e/logo",
     "decimals": 12,
+    "website" : "https://mambo.li/",
+    "telegram" : "https://t.me/MamboToken",
   },
   'MESSI': {
     "ticker": "MESSI",
@@ -318,6 +347,9 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x009C66062e14414Cb8488f539871650813D33E12",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1qzwxvp3wz3q5ewzg3afesut9pqfax0sjdyna42/logo",
     "decimals": 2,
+    "website" : "https://messitokens.me/",
+    "telegram" : "https://t.me/TheMessiProject",
+    "whitepaper": "https://messitokens.me/assets/docs/Messi%20-%20Whitepaper.pdf",
   },
   'NFTDEX': {
     "ticker": "NFTDEX",
@@ -326,6 +358,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x3fFD9271675d51Cd1DdeDA1f8B6b55cE631D92c3",
     "logo_url": "https://meta.viewblock.io/ZIL.zil18l7eyut8t4gu68w7mg0ck664ee33mykrycps6l/logo",
     "decimals": 0,
+    "website": "https://zilall.com/",
+    "telegram": "https://t.me/zilall_community",
   },
   'PORT': {
     "ticker": "PORT",
@@ -334,6 +368,9 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x3A683Fdc022b26D755c70E9ed7cFCc446658018b",
     "logo_url": "https://meta.viewblock.io/ZIL.zil18f5rlhqz9vndw4w8p60d0n7vg3n9sqvta7n6t2/logo",
     "decimals": 4,
+    "website": "https://www.packageportal.com/",
+    "telegram": "https://t.me/packageportal",
+    "whitepaper": "https://docs.google.com/document/d/1-3qjW4bozTt72CzfGcwDGzcm8---opu0fN1pxs34RyE/edit",
   },
   'PELE': {
     "ticker": "PELE",
@@ -342,6 +379,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x55d66385a975A25Cd7c9bB7Cb8b1B11A56436789",
     "logo_url": "https://meta.viewblock.io/ZIL.zil12htx8pdfwk39e47fhd7t3vd3rftyxeuf9px354/logo",
     "decimals": 5,
+    "website": "https://pele.network/",
+    "telegram": "https://t.me/getyousomePELE",
   },
   'RECAP': {
     "ticker": "RECAP",
@@ -350,6 +389,9 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x5346c4ff16Dc347f5529e725869A5Ea0fbD67EA4",
     "logo_url": "https://meta.viewblock.io/ZIL.zil12drvflckms6874ffuujcdxj75raavl4yfn4ssc/logo",
     "decimals": 12,
+    "website" : "https://reviewcapital.org/",
+    "telegram" : "https://t.me/RECAPCommunity",
+    "whitepaper": "https://github.com/Review-Capital-Blockchain-Ecosystem/RCIP/blob/master/RECAP-Whitepaper.md",
   },
   'REDC': {
     "ticker": "REDC",
@@ -358,6 +400,9 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xaCb721d989c095c64A24d16DfD23b08D738e2552",
     "logo_url": "https://meta.viewblock.io/ZIL.zil14jmjrkvfcz2uvj3y69kl6gas34ecuf2j5ggmye/logo",
     "decimals": 9,
+    "website": "https://zilchill.com/",
+    "telegram": "https://t.me/redchilliesREDC",
+    "whitepaper": "https://github.com/RedChillies-Core/RedChillies-IP/blob/main/Whitepaper.md",
   },
   'SCO': {
     "ticker": "SCO",
@@ -366,6 +411,9 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xb393C898b3d261C362a4987CaE5a833232AA666E",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1kwfu3x9n6fsuxc4ynp72uk5rxge25enw7zsf9z/logo",
     "decimals": 4,
+    "website": "https://www.uffsports.com/",
+    "telegram": "https://t.me/uffsports",
+    "whitepaper": "https://a2410bb1-7d7b-4996-a99b-ef91046e37c6.filesusr.com/ugd/fec035_8655866acaf04bae83f16eb3c8d860f3.pdf",
   },
   'SHARDS': {
     "ticker": "SHARDS",
@@ -374,6 +422,9 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xAb74E767F08039Be69c5C6aDDe604A1D3C28d706",
     "logo_url": "https://meta.viewblock.io/ZIL.zil14d6wwelssqumu6w9c6kaucz2r57z34cxuh96lf/logo",
     "decimals": 12,
+    "website": "https://shards.robounicats.com/",
+    "telegram": "https://t.me/ruc_shards",
+    "whitepaper": "https://shards.robounicats.com/data/shards_whitepaper_0.1.pdf",
   },
   'SHRK': {
     "ticker": "SHRK",
@@ -382,6 +433,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xF2E1bf811317d26802b966F5356966dA8df0d2f9",
     "logo_url": "https://meta.viewblock.io/ZIL.zil17tsmlqgnzlfxsq4evm6n26txm2xlp5hele0kew/logo",
     "decimals": 6,
+    "website" : "https://bafybeihjzjcpghxq3aa6kupzzq3jcxjslsfxq43k2qkump6q2bu75cd5wy.ipfs.infura-ipfs.io/",
+    "telegram" : "https://t.me/SHRKFINTECH",
   },
   'SIMP': {
     "ticker": "SIMP",
@@ -390,6 +443,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xE8391C01af98fE460637DC28810181E672d6aB27",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1aqu3cqd0nrlyvp3hms5gzqvpueedd2e806e9rs/logo",
     "decimals": 4,
+    "website" : "https://zilsimp.com/",
+    "telegram" : "https://t.me/ZilSIMP",
   },
   'SPW': {
     "ticker": "SPW",
@@ -398,6 +453,9 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x083196549637fAf95C91EcCD157E60430e69E1A7",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1pqcev4ykxla0jhy3anx32lnqgv8xncd8q57ql2/logo",
     "decimals": 4,
+    "website": "https://www.spardawallet.com/",
+    "telegram": "https://t.me/SpardaWalletOfficial",
+    "whitepaper": "https://drive.google.com/file/d/1nuJGF_OeAEtZDtyQzaBSoKQkClkFObRt/view",
   },
   'SRV': {
     "ticker": "SRV",
@@ -406,6 +464,9 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xD1c0DF82a6873BAEE0b7E20535809D824E887BBC",
     "logo_url": "https://meta.viewblock.io/ZIL.zil168qdlq4xsua6ac9hugzntqyasf8gs7aund882v/logo",
     "decimals": 2,
+    "website": "https://zilsurvey.com/",
+    "telegram": "https://t.me/zilSurveyChat",
+    "whitepaper": "https://zilsurvey.com/whitepaper.pdf",
   },
   'STREAM': {
     "ticker": "STREAM",
@@ -414,6 +475,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xa3eAFd5021F6B9c36fD02Ed58aa1d015F2238791",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1504065pp76uuxm7s9m2c4gwszhez8pu3mp6r8c/logo",
     "decimals": 8,
+    "website": "https://zilstream.com/",
+    "telegram": "https://t.me/zilstream",
   },
   'UNIDEX': {
     "ticker": "UNIDEX",
@@ -422,6 +485,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x2E081d5a5E10C51c28147Ae0a9fc9aB8Ee31f983",
     "logo_url": "https://meta.viewblock.io/ZIL.zil19cyp6kj7zrz3c2q50ts2nly6hrhrr7vr89g9gf/logo",
     "decimals": 2,
+    "website": "https://zilall.com/",
+    "telegram": "https://t.me/zilall_community",
   },
   'XCAD': {
     "ticker": "XCAD",
@@ -430,6 +495,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xBeA37A0Fe8F759D5CFE2Ba66913a676260175Ba1",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1h63h5rlg7avatnlzhfnfzwn8vfspwkapzdy2aw/logo",
     "decimals": 6,
+    "website": "https://xcadnetwork.com/",
+    "telegram": "https://t.me/xcademy",
   },
   'XPORT': {
     "ticker": "XPORT",
@@ -446,6 +513,7 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x173Ca6770Aa56EB00511Dac8e6E13B3D7f16a5a5",
     "logo_url": "https://meta.viewblock.io/ZIL.zil180v66mlw007ltdv8tq5t240y7upwgf7djklmwh/logo",
     "decimals": 6,
+    "website": "https://www.xfers.com/sg-blog/introducing-xsgd-the-singapore-dollar-backed-and-travel-rule1-compliant-stablecoin",
   },
   'YODA': {
     "ticker": "YODA",
@@ -454,6 +522,9 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x6371E2A51eA41772E8d35E8DB05134a41D86d17a",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1vdc79fg75sth96xnt6xmq5f55swcd5t6m5zhvn/logo",
     "decimals": 5,
+    "website": "https://yodamerch.co.za/",
+    "telegram": "https://t.me/Yodaco",
+    "whitepaper": "https://www.yodaco.co.za/",
   },
   'ZCH': {
     "ticker": "ZCH",
@@ -462,6 +533,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x81cc224018333aA36baDe62786179b888C38e9dd",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1s8xzysqcxva2x6aducncv9um3zxr36way3fx9g/logo",
     "decimals": 6,
+    "website" : "https://www.zilchess.com/",
+    "whitepaper" : "https://www.zilchess.com/whitepaper/",
   },
   'zETH': {
     "ticker": "zETH",
@@ -470,6 +543,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x2cA315F4329654614d1E8321f9C252921192c5f2",
     "logo_url": "https://meta.viewblock.io/ZIL.zil19j33tapjje2xzng7svslnsjjjgge930jx0w09v/logo",
     "decimals": 18,
+    "website" : "https://ethereum.org/",
+    "whitepaper" : "https://ethereum.org/en/whitepaper/",
   },
   'ZILLEX': {
     "ticker": "ZILLEX",
@@ -478,6 +553,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x1E034f4f0AE65Ef4AAF6F6606EF632380B130F26",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1rcp57nc2ue00f2hk7esxaa3j8q93xrexgrmpz7/logo",
     "decimals": 12,
+    "website": "https://zilall.com/",
+    "telegram": "https://t.me/zilall_community",
   },
   'ZLF': {
     "ticker": "ZLF",
@@ -486,6 +563,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x195B880c9DA927C34C5D14f8f7e757BC6c15f997",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1r9dcsrya4ynuxnzaznu00e6hh3kpt7vhvzgva0/logo",
     "decimals": 5,
+    "website" : "https://zilflip.com/",
+    "telegram" : "https://t.me/zilFlip",
   },
   'ZLP': {
     "ticker": "ZLP",
@@ -494,6 +573,9 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xfbd07e692543d3064B9CF570b27faaBfd7948DA4",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1l0g8u6f9g0fsvjuu74ctyla2hltefrdyt7k5f4/logo",
     "decimals": 18,
+    "website": "https://zilpay.io/",
+    "telegram": "https://t.me/zilpaychat",
+    "whitepaper": "https://drive.google.com/file/d/1X-z5AHBp2cOwyXo4ZuVCCBuk7MIX-r6k/view",
   },
   'ZPAINT': {
     "ticker": "ZPAINT",
@@ -502,6 +584,9 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x07dA3D45b0F1390083097a95A8915fC2F6b06c6f",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1qldr63ds7yuspqcf02263y2lctmtqmr039vrht/logo",
     "decimals": 4,
+    "website": "https://zilwall.com/",
+    "telegram": "https://t.me/zilwall_community",
+    "whitepaper": "https://zilwall.com/whitepaper",
   },
   'zUSDT': {
     "ticker": "zUSDT",
@@ -510,6 +595,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x818Ca2e217E060aD17B7bD0124a483a1f66930a9",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1sxx29cshups269ahh5qjffyr58mxjv9ft78jqy/logo",
     "decimals": 6,
+    "website" : "https://tether.to/",
+    "whitepaper" : "https://tether.to/wp-content/uploads/2016/06/TetherWhitePaper.pdf",
   },
   'ZWALL': {
     "ticker": "ZWALL",
@@ -518,6 +605,9 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x341dD67D0880376696Cd6E02Fe7f1906cb75C748",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1xswavlggsqmkd9kddcp0ulceqm9ht36gqkt8ua/logo",
     "decimals": 12,
+    "website": "https://zilwall.com/",
+    "telegram": "https://t.me/zilwall_community",
+    "whitepaper": "https://zilwall.com/whitepaper",
   },
   'ZWAP': {
     "ticker": "ZWAP",
@@ -526,6 +616,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x0D21C1901A06aBEE40d8177F95171c8c63AbdC31",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1p5suryq6q647usxczale29cu3336hhp376c627/logo",
     "decimals": 12,
+    "website": "https://zilswap.io/",
+    "telegram": "https://t.me/zilswapcommunity",
   },
   'zWBTC': {
     "ticker": "zWBTC",
@@ -534,6 +626,8 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x75fA7D8BA6BEd4a68774c758A5e43Cfb6633D9d6",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1wha8mzaxhm22dpm5cav2tepuldnr8kwkvmqtjq/logo",
     "decimals": 8,
+    "website" : "https://bitcoin.org/",
+    "whitepaper" : "https://bitcoin.org/bitcoin.pdf",
   },
   'ZYRO': {
     "ticker": "ZYRO",
@@ -542,6 +636,7 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0xE61839a9463c75a6082eA2FD0E6B24Dfd5De605C",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1ucvrn22x8366vzpw5t7su6eyml2auczu6wnqqg/logo",
     "decimals": 8,
+    "website": "https://zyro.finance/",
   },
 }
 
