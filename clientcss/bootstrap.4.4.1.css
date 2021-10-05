@@ -328,7 +328,7 @@ sup {
 }
 
 a {
-    color: var(--blue);
+    color: var(--info);
     text-decoration: none;
     background-color: transparent
 }
@@ -4472,8 +4472,8 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-    color: var(--white);
-    background-color: var(--blue)
+    color: var(--dark-alpha-90);
+    background-color: var(--info)
 }
 
 .nav-fill .nav-item {

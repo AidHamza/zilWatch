@@ -48,21 +48,7 @@ class ZilswapZrcPrice24hLowHighStatus {
                     continue
                 }
 
-                let normalizedCurrentPrice = zrcTokenPriceInZil - zrcPrice24hLow;
-                if (normalizedCurrentPrice < 0) {
-                    normalizedCurrentPrice = 0;
-                }
-                let normalizedMaxPrice = zrcPrice24hHigh - zrcPrice24hLow;
-                if (normalizedCurrentPrice > normalizedMaxPrice) {
-                    normalizedCurrentPrice = normalizedMaxPrice;
-                }
-
-                let currentPricePercent = 100.0 * normalizedCurrentPrice / normalizedMaxPrice;
-
-                // Special case, if there is no price change, set progress as 50%
-                if (zrcPrice24hHigh === zrcPrice24hLow) {
-                    currentPricePercent = 50.0;
-                }
+                let currentPricePercent = getNormalizedPercent(zrcTokenPriceInZil, zrcPrice24hLow, zrcPrice24hHigh);
                 this.bindViewZrcPriceProgress24hPercent(currentPricePercent, ticker);
             }
         }
@@ -126,6 +112,10 @@ if (typeof exports !== 'undefined') {
     if (typeof convertNumberQaToDecimalString === 'undefined') {
         FormattingUtils = require('./formatting_utils.js');
         commafyNumberToString = FormattingUtils.commafyNumberToString;
+    }
+    if (typeof getNormalizedPercent === 'undefined') {
+        TokenUtils = require('./token_utils.js');
+        getNormalizedPercent = TokenUtils.getNormalizedPercent;
     }
     if (typeof $ === 'undefined') {
         $ = global.jQuery = require('jquery');

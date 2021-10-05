@@ -395,10 +395,10 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] {
 #sidebar-wrapper {
   min-height: 100vh;
   margin-left: -23rem;
-  -webkit-transition: margin .25s ease-out;
-  -moz-transition: margin .25s ease-out;
-  -o-transition: margin .25s ease-out;
-  transition: margin .25s ease-out;
+  -webkit-transition: margin .2s ease-out;
+  -moz-transition: margin .2s ease-out;
+  -o-transition: margin .2s ease-out;
+  transition: margin .2s ease-out;
 }
 
 #sidebar-wrapper .sidebar-heading {
@@ -454,6 +454,7 @@ body.sidenav-shown #wrapper #sidebar-wrapper {
 .list-group-item-sidebar.list-group-item-action:focus, .list-group-item-sidebar.list-group-item-action:hover {
   color: var(--text-color);
   background-color: var(--bg-dynamic-1);
+  cursor: pointer;
 }
 
 .list-group-item-sidebar.list-group-item-action.active {

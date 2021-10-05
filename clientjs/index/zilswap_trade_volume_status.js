@@ -7,10 +7,26 @@ class ZilswapTradeVolumeStatus {
         this.coinPriceStatus_ = coinPriceStatus;
         this.zilswapDex24hTradeVolumeData_ = zilswapDex24hTradeVolumeData;
 
-        // private variable
-        this.coinTo24hVolumeMap_ = {};
+        this.timeRangeStringToSecondsMap_ = {
+            '1h' : 60 * 30 * 2, // Make it 1.5-hrs because zilswap API doesn't update in real time, so most values shows as 0
+            '24h' : 60 * 60 * 24,
+            '7d' : 60 * 60 * 24 * 7,
+            '1m' : 60 * 60 * 24 * 30,
+            '3m' : 60 * 60 * 24 * 90,
+            '1y' : 60 * 60 * 24 * 365,
+        }
 
-        this.computeCoinToVolumeMap();
+        // private variable
+        this.coinToVolumeMap_ = {
+            '1h' : {},
+            '24h' : {},
+            '7d' : {},
+            '1m' : {},
+            '3m' : {},
+            '1y' : {},
+        }
+
+        this.computeCoinToVolumeMap(this.zilswapDex24hTradeVolumeData_, '24h');
         this.bindView24hTradeVolumeFiat();
     }
 
@@ -21,18 +37,21 @@ class ZilswapTradeVolumeStatus {
         this.bindView24hTradeVolumeFiat();
     }
 
-    get24hTradeVolumeInZil(coinSymbol) {
-        return this.coinTo24hVolumeMap_[coinSymbol];
+    getTradeVolumeInZil(coinSymbol, timeRange) {
+        if (!(timeRange in this.coinToVolumeMap_)) {
+            return null;
+        }
+        return this.coinToVolumeMap_[timeRange][coinSymbol];
     }
 
-    computeCoinToVolumeMap() {
-        if (!this.zilswapDex24hTradeVolumeData_) {
+    computeCoinToVolumeMap(currData, timeRange) {
+        if (!currData) {
             return;
         }
         let poolToVolumeMap = {}
-        for (let i = 0; i < this.zilswapDex24hTradeVolumeData_.length; i++) {
-            let key = this.zilswapDex24hTradeVolumeData_[i].pool;
-            poolToVolumeMap[key] = this.zilswapDex24hTradeVolumeData_[i];
+        for (let i = 0; i < currData.length; i++) {
+            let key = currData[i].pool;
+            poolToVolumeMap[key] = currData[i];
         }
 
         for (let ticker in this.zrcTokenPropertiesListMap_) {
@@ -45,7 +64,7 @@ class ZilswapTradeVolumeStatus {
             let outZilAmount = parseInt(volumeList.out_zil_amount);
             let totalVolumeZilAmount = inZilAmount + outZilAmount;
 
-            this.coinTo24hVolumeMap_[ticker] = totalVolumeZilAmount / Math.pow(10, 12);
+            this.coinToVolumeMap_[timeRange][ticker] = totalVolumeZilAmount / Math.pow(10, 12);
         }
     }
 
@@ -59,7 +78,7 @@ class ZilswapTradeVolumeStatus {
         }
 
         for (let ticker in this.zrcTokenPropertiesListMap_) {
-            let tradeVolumeInZil = this.get24hTradeVolumeInZil(ticker);
+            let tradeVolumeInZil = this.getTradeVolumeInZil(ticker, '24h');
             if (!tradeVolumeInZil) {
                 continue;
             }
@@ -73,7 +92,7 @@ class ZilswapTradeVolumeStatus {
     computeDataRpcIfDataNoExist(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
         if (this.zilswapDex24hTradeVolumeData_) {
             beforeRpcCallback();
-            this.computeCoinToVolumeMap();
+            this.computeCoinToVolumeMap(this.zilswapDex24hTradeVolumeData_, '24h');
             this.bindView24hTradeVolumeFiat();
             onSuccessCallback();
         }
@@ -81,27 +100,34 @@ class ZilswapTradeVolumeStatus {
     }
 
     computeDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
-        beforeRpcCallback();
 
-        let currentDate = new Date();
-        let currentTimeSeconds = currentDate.getTime() / 1000;
-        let oneDayAgoSeconds = currentTimeSeconds - (60 * 60 * 24);
+        for (let timeRange in this.timeRangeStringToSecondsMap_) {
+            beforeRpcCallback();
 
-        let self = this;
-        queryUrlGetAjax(
-            /* urlToGet= */
-            CONST_STATS_ZILSWAP_ROOT_URL + "/volume?from=" + oneDayAgoSeconds.toFixed(0),
-            /* successCallback= */
-            function (data) {
-                self.zilswapDex24hTradeVolumeData_ = data;
-                self.computeCoinToVolumeMap();
-                self.bindView24hTradeVolumeFiat();
-                onSuccessCallback();
-            },
-            /* errorCallback= */
-            function () {
-                onErrorCallback();
-            });
+            let timeDifferenceSeconds = this.timeRangeStringToSecondsMap_[timeRange];
+
+            let currentDate = new Date();
+            let currentTimeSeconds = currentDate.getTime() / 1000;
+            let oneDayAgoSeconds = currentTimeSeconds - timeDifferenceSeconds;
+
+            let self = this;
+            queryUrlGetAjax(
+                /* urlToGet= */
+                CONST_STATS_ZILSWAP_ROOT_URL + "/volume?from=" + oneDayAgoSeconds.toFixed(0),
+                /* successCallback= */
+                function (data) {
+                    self.computeCoinToVolumeMap(data, timeRange);
+                    if (timeRange === '24h') {
+                        self.zilswapDex24hTradeVolumeData_ = data;
+                        self.bindView24hTradeVolumeFiat();
+                    }
+                    onSuccessCallback();
+                },
+                /* errorCallback= */
+                function () {
+                    onErrorCallback();
+                });
+        }
     }
 
     // Exception, no need reset

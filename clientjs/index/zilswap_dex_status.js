@@ -217,6 +217,22 @@ class ZilswapDexStatus {
         return pairPublicStatus.zrcTokenPriceInZil;
     }
 
+    getCirculatingSupply(zrcSymbol) {
+        if (!this.zrcTokensCirculatingSupplyData_) {
+            return null;
+        }
+        let zrcTokenProperties = this.zrcTokenPropertiesListMap_[zrcSymbol];
+        if (!zrcTokenProperties) {
+            return null;
+        }
+        let zrcCirculatingSupply = parseInt(this.zrcTokensCirculatingSupplyData_[zrcSymbol]);
+        if (!zrcCirculatingSupply) {
+            return null;
+        }
+        zrcCirculatingSupply = zrcCirculatingSupply / Math.pow(10, zrcTokenProperties.decimals);
+        return zrcCirculatingSupply;
+    }
+
     /**
      * Returns ZilswapPairPersonalStatus given a zrcSymbol.
      * ZilswapPairPersonalStatus contains share ratio and the amount of ZRC and ZIL in a personal wallet's LP pair.
@@ -524,16 +540,10 @@ class ZilswapDexStatus {
         }
 
         for (let ticker in this.zrcTokensCirculatingSupplyData_) {
-            let zrcTokenProperties = this.zrcTokenPropertiesListMap_[ticker];
-            if (!zrcTokenProperties) {
-                continue;
-            }
-            let zrcCirculatingSupply = parseInt(this.zrcTokensCirculatingSupplyData_[ticker]);
+            let zrcCirculatingSupply = this.getCirculatingSupply(ticker);
             if (!zrcCirculatingSupply) {
                 continue;
             }
-
-            zrcCirculatingSupply = zrcCirculatingSupply / Math.pow(10, zrcTokenProperties.decimals);
             let zrcCirculatingSupplyString = convertNumberQaToDecimalString(zrcCirculatingSupply, /* decimals= */ 0);
             this.bindViewZrcTokenCirculatingSupply(zrcCirculatingSupplyString, ticker);
 

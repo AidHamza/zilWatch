@@ -1,13 +1,3 @@
-// Constants for this class
-const WHITE_TRANSPARENT_RGBA = 'rgba(255, 255, 255, 0)';
-const BLACK_TRANSPARENT_RGBA = 'rgba(0, 0, 0, 0)';
-
-const GREEN_LINE_RGBA = 'rgba(83, 165, 81, 1.0)';
-const RED_LINE_RGBA = 'rgba(203, 68, 74, 1.0)';
-
-const GREEN_TOP_GRADIENT_RGBA = 'rgba(83, 255, 81, 1.0)';
-const RED_TOP_GRADIENT_RGBA = 'rgba(255, 68, 74, 1.0)';
-
 /**
  * A utility class to draw price charts on the sidebar.
  * Requires lightweight charts library script src='https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js'.
@@ -31,7 +21,7 @@ class SimpleChartStatus {
     }
 
     refreshChartTheme() {
-        let currThemeBottomColor = $("html").hasClass("dark-mode") ? BLACK_TRANSPARENT_RGBA : WHITE_TRANSPARENT_RGBA;
+        let currThemeBottomColor = $("html").hasClass("dark-mode") ? CONST_BLACK_TRANSPARENT_RGBA_STRING : CONST_WHITE_TRANSPARENT_RGBA_STRING;
         for (let i = 0; i < this.chartSeriesList_.length; i++) {
             this.chartSeriesList_[i].applyOptions({
                 bottomColor: currThemeBottomColor,
@@ -88,7 +78,7 @@ class SimpleChartStatus {
             height: 30,
             priceLineVisible: false,
             layout: {
-                backgroundColor: WHITE_TRANSPARENT_RGBA,
+                backgroundColor: CONST_WHITE_TRANSPARENT_RGBA_STRING,
             },
             rightPriceScale: {
                 mode: LightweightCharts.PriceScaleMode.Normal, // Can be .Logarithmic or .Percentage
@@ -127,9 +117,9 @@ class SimpleChartStatus {
 
         let priceDifference = data[data.length - 1].value - data[0].value;
         let series = chart.addAreaSeries({
-            topColor: priceDifference >= 0 ? GREEN_TOP_GRADIENT_RGBA : RED_TOP_GRADIENT_RGBA,
-            bottomColor: $("html").hasClass("dark-mode") ? BLACK_TRANSPARENT_RGBA : WHITE_TRANSPARENT_RGBA,
-            lineColor: priceDifference >= 0 ? GREEN_LINE_RGBA : RED_LINE_RGBA,
+            topColor: priceDifference >= 0 ? CONST_GREEN_TOP_GRADIENT_RGBA_STRING : CONST_RED_TOP_GRADIENT_RGBA_STRING,
+            bottomColor: $("html").hasClass("dark-mode") ? CONST_BLACK_TRANSPARENT_RGBA_STRING : CONST_WHITE_TRANSPARENT_RGBA_STRING,
+            lineColor: priceDifference >= 0 ? CONST_GREEN_LINE_RGBA_STRING : CONST_RED_LINE_RGBA_STRING,
             lineWidth: 2,
             priceLineVisible: false,
         });

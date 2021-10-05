@@ -87,6 +87,32 @@ function getZilswapSinglePairShareRatio(dataObject, zrcTokenAddressBase16, walle
     return null;
 }
 
+
+/**
+ * Compute normalized percent given current price, price low, and price high
+ * 
+ * For example, zrcTokenPriceInZil is 30, zrcPriceLow is 20 zrcPriceHigh is 40.
+ * This method will return 50, 50% in the normalized scale of [20, 40].
+ */
+ function getNormalizedPercent(zrcTokenPriceInZil, zrcPriceLow, zrcPriceHigh) {
+    let normalizedCurrentPrice = zrcTokenPriceInZil - zrcPriceLow;
+    if (normalizedCurrentPrice < 0) {
+        normalizedCurrentPrice = 0;
+    }
+    let normalizedMaxPrice = zrcPriceHigh - zrcPriceLow;
+    if (normalizedCurrentPrice > normalizedMaxPrice) {
+        normalizedCurrentPrice = normalizedMaxPrice;
+    }
+
+    let currentPricePercent = 100.0 * normalizedCurrentPrice / normalizedMaxPrice;
+
+    // Special case, if there is no price change, set progress as 50%
+    if (zrcPriceHigh === zrcPriceLow) {
+        currentPricePercent = 50.0;
+    }
+    return currentPricePercent;
+}
+
 /**
  * Compute percentage change given current balance vs past balance.
  * 
@@ -138,6 +164,7 @@ if (typeof exports !== 'undefined') {
     exports.getZilswapSinglePairPublicStatusFromDexState = getZilswapSinglePairPublicStatusFromDexState;
     exports.getZilswapSinglePairShareRatio = getZilswapSinglePairShareRatio;
     exports.getPercentChange = getPercentChange;
+    exports.getNormalizedPercent = getNormalizedPercent;
     exports.ZilswapSinglePairPublicStatus = ZilswapSinglePairPublicStatus;
     exports.ZilswapSinglePairPersonalStatus = ZilswapSinglePairPersonalStatus;
     exports.getZilswapSinglePairPersonalStatus = getZilswapSinglePairPersonalStatus;

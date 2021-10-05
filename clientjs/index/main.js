@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     computeZilswapTradeVolumeStatus();
     computeCoinMarketStatus();
     computeZilswapZrcPrice24hLowHighStatus();
+    computePriceChartStatus();
 
     // Loop forever to refresh coin price in fiat
     clearInterval(activeIntervalId);
@@ -23,8 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
         computeSimpleChartStatus();
     }, REFRESH_INTERVAL_15MINS_MS);
 
-    $(window).resize(function () {
-        drawAllBarCharts();
+    $(window).on('resize', function () {
+        onScreenResizeCallback();
     });
 });
 
@@ -116,11 +117,6 @@ function refreshDataTable() {
     $('#price_table').DataTable().rows().invalidate().draw();
 }
 
-function collapsePublicCards() {
-    $('.card-header').addClass('collapsed');
-    $('.card-body').removeClass('show');
-}
-
 function onCurrencyChangeCallback(currencyCode) {
     computeCoinPriceStatus(currencyCode);
 }
@@ -129,6 +125,12 @@ function onCurrencyChangeCallback(currencyCode) {
 function onThemeChangeCallback() {
     drawAllBarCharts();
     simpleChartStatus.refreshChartTheme();
+    priceChartStatus.refreshChartTheme();
+}
+
+function onScreenResizeCallback() {
+    drawAllBarCharts();
+    priceChartStatus.refreshChartSize();
 }
 
 function drawAllBarCharts() {
@@ -148,9 +150,6 @@ function refreshMainContentData(account) {
         return;
     }
     currentActiveAccountBech32 = walletAddressBech32;
-
-    // (1) Collapse all public cards.
-    collapsePublicCards();
 
     // (2) Refresh login button state
     let censoredWalletAddress = censorBech32Address(walletAddressBech32);
@@ -185,6 +184,22 @@ function refreshMainContentData(account) {
 
     // (8) Get Potential LP reward next epoch and past epoch, async
     computeZilswapTotalLpZwapReward(walletAddressBech32);
+}
+
+function computePriceChartStatus() {
+    priceChartStatus.computeDataRpc(
+        /* beforeRpcCallback= */
+        function () {
+            incrementShowSpinnerFullPriceChart();
+        },
+        /* onSuccessCallback= */
+        function () {
+            decrementShowSpinnerFullPriceChart();
+        },
+        /* onErrorCallback= */
+        function () {
+            decrementShowSpinnerFullPriceChart();
+        });
 }
 
 function computeSimpleChartStatus() {
@@ -269,6 +284,7 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
             zilswapLpFeeRewardStatus.onZilswapDexStatusChange();
             zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
             zilswapZrcPrice24hLowHighStatus.onZilswapDexStatusChange();
+            priceChartStatus.onZilswapDexStatusChange();
 
             swapStatus.onZilswapDexStatusChange();
             refreshDataTable();
@@ -293,6 +309,7 @@ function computeZilswapDexPublicStatus() {
             uniqueCoinStatus.onZilswapDexStatusChange();
             zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
             zilswapZrcPrice24hLowHighStatus.onZilswapDexStatusChange();
+            priceChartStatus.onZilswapDexStatusChange();
 
             swapStatus.onZilswapDexStatusChange();
             refreshDataTable();
@@ -314,6 +331,7 @@ function computeCoinPriceStatus(currencyCode) {
             netWorthStatus.onCoinPriceStatusChange();
             zilswapTradeVolumeStatus.onCoinPriceStatusChange();
             zilswapLpZwapRewardStatus.onCoinPriceStatusChange();
+            priceChartStatus.onCoinPriceStatusChange();
 
             swapStatus.onCoinPriceStatusChange();
 

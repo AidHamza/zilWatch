@@ -53,6 +53,9 @@ function hideFullWalletAddress() {
 
 function bindViewMainContainer(zilpayStatus) {
     if (ZilpayStatus.connected === zilpayStatus) {
+        // Show Wallet tab if there is zilpay connected event
+        $('#pills-wallet-tab').tab('show');
+
         $('#main_content_container').show();
         $('#error_wallet_connect_button').hide();
         $('#error_download_zilpay_button').hide();
@@ -128,6 +131,7 @@ var walletBalanceProcessingCounter = 0;
 var lpBalanceProcessingCounter = 0;
 var stakingBalanceProcessingCounter = 0;
 var netWorthProcessingCounter = 0;
+var fullPriceChartProcessingCounter = 0;
 
 function incrementShowSpinnerWalletBalance() {
     walletBalanceProcessingCounter++;
@@ -192,6 +196,21 @@ function decrementShowSpinnerNetWorth() {
     if (netWorthProcessingCounter <= 0) {
         netWorthProcessingCounter = 0;
         $('.net-worth-spinner').hide();
+    }
+}
+
+function incrementShowSpinnerFullPriceChart() {
+    fullPriceChartProcessingCounter++;
+    if (fullPriceChartProcessingCounter > 0) {
+        $('.full-price-chart-spinner').show();
+    }
+}
+
+function decrementShowSpinnerFullPriceChart() {
+    fullPriceChartProcessingCounter--;
+    if (fullPriceChartProcessingCounter <= 0) {
+        fullPriceChartProcessingCounter = 0;
+        $('.full-price-chart-spinner').hide();
     }
 }
 

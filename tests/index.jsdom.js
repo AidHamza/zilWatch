@@ -67,6 +67,11 @@ function resetHtmlView(done) {
 }
 
 const $ = require('jquery');
+// This is to simulate bootstrap pill tabbing.
+$.fn.tab = function () {
+    // Do nothing
+    return this;
+};
 var assert = require('assert');
 
 function assertDefaultStateMainContent() {

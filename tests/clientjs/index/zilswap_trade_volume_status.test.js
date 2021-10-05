@@ -16,7 +16,14 @@ describe('ZilswapTradeVolumeStatus', function () {
             assert.strictEqual(zilswapTradeVolumeStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
             assert.strictEqual(zilswapTradeVolumeStatus.coinPriceStatus_, null);
             assert.strictEqual(zilswapTradeVolumeStatus.zilswapDex24hTradeVolumeData_, null);
-            assert.deepStrictEqual(zilswapTradeVolumeStatus.coinTo24hVolumeMap_, {});
+            assert.deepStrictEqual(zilswapTradeVolumeStatus.coinToVolumeMap_, {
+                '1h': {},
+                '24h': {},
+                '7d': {},
+                '1m': {},
+                '3m': {},
+                '1y': {},
+            });
         });
 
         it('create proper object', function () {
@@ -31,7 +38,14 @@ describe('ZilswapTradeVolumeStatus', function () {
             assert.strictEqual(zilswapTradeVolumeStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
             assert.strictEqual(zilswapTradeVolumeStatus.coinPriceStatus_, coinPriceStatus);
             assert.strictEqual(zilswapTradeVolumeStatus.zilswapDex24hTradeVolumeData_, zilswap24hTradeVolumeData);
-            assert.notDeepStrictEqual(zilswapTradeVolumeStatus.coinTo24hVolumeMap_, {});
+            assert.notDeepStrictEqual(zilswapTradeVolumeStatus.coinToVolumeMap_, {
+                '1h': {},
+                '24h': {},
+                '7d': {},
+                '1m': {},
+                '3m': {},
+                '1y': {},
+            });
         });
     });
 
@@ -137,7 +151,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             let zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus.ZilswapTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswap24hTradeVolumeData);
 
             // Assert
-            assert.deepStrictEqual(zilswapTradeVolumeStatus.coinTo24hVolumeMap_, expectedCoinToVolumeMap);
+            assert.deepStrictEqual(zilswapTradeVolumeStatus.coinToVolumeMap_['24h'], expectedCoinToVolumeMap);
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_24h_volume_fiat').text(), expectedTotalVolumeFiatUsdMap[ticker]);
             }
