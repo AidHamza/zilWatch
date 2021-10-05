@@ -53,9 +53,6 @@ function hideFullWalletAddress() {
 
 function bindViewMainContainer(zilpayStatus) {
     if (ZilpayStatus.connected === zilpayStatus) {
-        // Show Wallet tab if there is zilpay connected event
-        $('#pills-wallet-tab').tab('show');
-
         $('#main_content_container').show();
         $('#error_wallet_connect_button').hide();
         $('#error_download_zilpay_button').hide();

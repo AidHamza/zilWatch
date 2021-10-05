@@ -35,6 +35,8 @@ window.addEventListener("load", async () => {
     if (ZilpayStatus.connected !== zilpayStatus) {
         return;
     }
+    // Show Wallet tab if there is zilpay connected event
+    $('#pills-wallet-tab').tab('show');
 
     // Subscribe if there are changes with the account
     window.zilPay.wallet.observableAccount().subscribe(account => {
@@ -57,6 +59,8 @@ $(".wallet_connect_button").on('click', function () {
             console.log("Wallet connect unlock successful: " + isUnlockSuccessful);
             if (isUnlockSuccessful) {
                 refreshMainContentData(window.zilPay.wallet.defaultAccount)
+                // Show Wallet tab if there is zilpay connected event
+                $('#pills-wallet-tab').tab('show');
             }
         },
         function () {
