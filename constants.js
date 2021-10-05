@@ -282,6 +282,17 @@ const zrcTokenPropertiesListMap = {
     "website": "https://elons.io/",
     "telegram": "https://t.me/elonstoken",
   },
+  'FEES': {
+    "ticker": "FEES",
+    "name": "Unifees",
+    "address": "zil1jy3g5j9w5njqwxuuv3zwkz9syyueelmu7g080v",
+    "address_base16": "0x91228A48AEA4E4071B9C6444Eb08B021399CfF7c",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1jy3g5j9w5njqwxuuv3zwkz9syyueelmu7g080v/logo",
+    "decimals": 4,
+    "website": "https://unifees.io/",
+    "telegram": "https://t.me/unifees",
+    "whitepaper": "https://unifees.io/Unifees-Whitepaper.pdf",
+  },
   'FLAT': {
     "ticker": "FLAT",
     "name": "Flat Lazy Ass Token",
