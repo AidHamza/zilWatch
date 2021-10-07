@@ -58,6 +58,9 @@ class SimpleChartStatus {
                 continue;
             }
             let currContainer = document.getElementById('simple_chart_' + ticker);
+            if (!currContainer) {
+                continue;
+            }
             currContainer.innerHTML = "";
             let series = this.bindViewSimpleChart(currContainer, currSimpleAllTokensData[ticker]);
             if (series) {
