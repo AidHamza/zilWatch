@@ -383,6 +383,16 @@ const zrcTokenPropertiesListMap = {
     "website": "https://zilall.com/",
     "telegram": "https://t.me/zilall_community",
   },
+  'OKI': {
+    "ticker": "OKI",
+    "name": "Okipad",
+    "address": "zil12jhxfcsfyaylhrf9gu8lc82ddgvudu4tzvduum",
+    "address_base16": "0x54aE64e2092749fb8d25470ffc1d4D6A19c6f2Ab",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil12jhxfcsfyaylhrf9gu8lc82ddgvudu4tzvduum/logo",
+    "decimals": 5,
+    "website": "https://okimoto.io/",
+    "telegram": "https://t.me/Okipad",
+  },
   'PORT': {
     "ticker": "PORT",
     "name": "PackagePortal",
