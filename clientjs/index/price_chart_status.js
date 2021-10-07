@@ -4,7 +4,7 @@
  */
 class PriceChartStatus {
 
-    constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ zilswapTradeVolumeStatus) {
+    constructor(zrcTokenPropertiesListMap, defaultTokenSymbol, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ zilswapTradeVolumeStatus) {
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
 
@@ -12,12 +12,15 @@ class PriceChartStatus {
         this.zilswapDexStatus_ = zilswapDexStatus;
         this.zilswapTradeVolumeStatus_ = zilswapTradeVolumeStatus;
 
-        // Default to gZIL, 24h
+        let initTokenSymbol = defaultTokenSymbol? defaultTokenSymbol : 'gZIL';
+
+        // Default to defaultTokenSymbol if set, else gZIL, 24h
         // This is subject to change for future logic
         this.historicalPriceData_ = {
-            'ticker': 'gZIL',
+            'ticker': initTokenSymbol,
             'range': '24h',
         };
+        this.updateTokenUrlState(initTokenSymbol, /* isUserAction= */ false);
     }
 
     onCoinPriceStatusChange() {
@@ -54,6 +57,20 @@ class PriceChartStatus {
 
     refreshChartSize() {
         this.bindViewAllInformation();
+    }
+
+    updateTokenUrlState(tokenSymbol, isUserAction) {
+        let state = {
+            'tokenSymbol': tokenSymbol
+        };
+        let title = "zilWatch - " + tokenSymbol;
+        let queryAttr = "?token=" + tokenSymbol;
+
+        if (isUserAction) {
+            history.pushState(state, title, queryAttr);
+        } else {
+            history.replaceState(state, title, queryAttr);
+        }
     }
 
     computePriceChartTicker(ticker) {
@@ -102,7 +119,13 @@ class PriceChartStatus {
         if (!('ticker' in this.historicalPriceData_) || !('range' in this.historicalPriceData_)) {
             return;
         }
+        if (!(this.historicalPriceData_.ticker in this.zrcTokenPropertiesListMap_)) {
+            return;
+        }
         beforeRpcCallback();
+
+        // Still try to bindView all first to update the static information, to make the page doesn't look hanging.
+        this.bindViewAllInformation();
 
         let self = this;
         queryUrlGetAjax(

@@ -11,6 +11,11 @@ redisClient.on("error", function (error) {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+  let currTargetTokenSymbol = null;
+  if (req.query.token && req.query.token in constants.zrcTokenPropertiesListMap) {
+    currTargetTokenSymbol = req.query.token;
+  }
+
   redisClient.mget(
     ["zilswap_dex_smart_contract_state_timestamp_seconds", // 0
       "zilswap_dex_smart_contract_state", // 1
@@ -141,6 +146,7 @@ router.get('/', function (req, res, next) {
         currencyMap: constants.currencyMap,
         zrcTokenPropertiesListMap: constants.zrcTokenPropertiesListMap,
         ssnListMap: constants.ssnListMap,
+        targetTokenSymbol: currTargetTokenSymbol,
         zilswapDexSmartContractState: currZilswapDexSmartContractState,
         zilswapDexSmartContractState24hAgo: currZilswapDexSmartContractState24hAgo,
         coinPriceCoingecko: currCoinPriceCoingecko,

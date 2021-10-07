@@ -1,5 +1,8 @@
+function showPriceChart(tokenSymbol) {
+    priceChartStatus.computePriceChartTicker(tokenSymbol);
+    $('#pills-price-chart-tab').tab('show');
+}
 window.addEventListener('DOMContentLoaded', event => {
-    
     // Toggle the side navigation
     $('#pills-price-chart-1h-tab').on('click', function () {
         priceChartStatus.computePriceChartRange('1h');
@@ -22,12 +25,20 @@ window.addEventListener('DOMContentLoaded', event => {
 
     $('.list-group-item-action').on('click', function () {
         let tokenSymbol = $(this).attr('tokenSymbol');
-        
+
+        priceChartStatus.updateTokenUrlState(tokenSymbol, /* isUserAction= */ true);
+
         // If smaller than 576 px, i.e., phone screen, auto-close the sidebar upon tapping.
         if ($(document).width() < 576) {
             toggleSidebar();
         }
-        priceChartStatus.computePriceChartTicker(tokenSymbol);
-        $('#pills-price-chart-tab').tab('show');
+        showPriceChart(tokenSymbol);
     });
+});
+
+$(window).on('popstate', function (event) {
+    var state = event.originalEvent.state;
+    if (state) {
+        showPriceChart(state.tokenSymbol);
+    }
 });

@@ -1228,6 +1228,7 @@ block script
     var currencyMap = !{JSON.stringify(currencyMap)};
     var ssnListMap = !{JSON.stringify(ssnListMap)};
     var zrcTokenPropertiesListMap = !{JSON.stringify(zrcTokenPropertiesListMap)};
+    var targetTokenSymbol = !{JSON.stringify(targetTokenSymbol)};
     // Cache from redis (if any). If there are no cache, we will fallback to RPC network call.
     var coinPriceCoingeckoData = !{JSON.stringify(coinPriceCoingecko)};
     var coinPriceCoingecko24hAgoData = !{JSON.stringify(coinPriceCoingecko24hAgo)};
@@ -1263,7 +1264,7 @@ block script
 
     const swapStatus = new SwapStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletBalanceStatus)
 
-    const priceChartStatus = new PriceChartStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, zilswapTradeVolumeStatus);
+    const priceChartStatus = new PriceChartStatus(zrcTokenPropertiesListMap, targetTokenSymbol, coinPriceStatus, zilswapDexStatus, zilswapTradeVolumeStatus);
 
     function newBlockListenerCallback(blockchainStatusNotifyType, blockNum, txHashArr) {
       console.log('NewBlock-%s: %s', blockchainStatusNotifyType, blockNum);
