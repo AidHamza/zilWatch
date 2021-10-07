@@ -122,11 +122,14 @@ class PriceChartStatus {
                 } catch {
                     console.warn("Failed to get historical price data for price chart!");
                 }
+                self.bindViewAllInformation();
                 self.bindViewChartErrorDataNotAvailable();
                 onErrorCallback();
             },
             /* errorCallback= */
             function () {
+                self.bindViewAllInformation();
+                self.bindViewChartErrorDataNotAvailable();
                 onErrorCallback();
             });
     }
@@ -154,7 +157,6 @@ class PriceChartStatus {
         if (!('data' in this.historicalPriceData_)) {
             return;
         }
-
         let currContainer = document.getElementById('full_price_chart');
         currContainer.innerHTML = "";
         this.bindViewPriceChart(currContainer, this.historicalPriceData_.data);
@@ -201,6 +203,22 @@ class PriceChartStatus {
     }
 
     bindViewPriceTextInformation(ticker) {
+        let currPriceInZil = null;
+        if (this.zilswapDexStatus_) {
+            currPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil(ticker);
+            let userFriendlyZrcTokenPriceInZil = convertNumberQaToDecimalString(currPriceInZil, /* decimals= */ 0);
+            $('#price_chart_current_token_price_zil').text(userFriendlyZrcTokenPriceInZil);
+        }
+
+        if (this.coinPriceStatus_) {
+            let zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
+            if (zilPriceInFiatFloat) {
+                let currPriceInFiat = zilPriceInFiatFloat * currPriceInZil;
+                let currPriceInFiatString = commafyNumberToString(currPriceInFiat, /* decimals= */ 2);
+                $('#price_chart_current_token_price_fiat').text(currPriceInFiatString);
+            }
+        }
+
         if (!('data' in this.historicalPriceData_)) {
             return;
         }
@@ -209,10 +227,6 @@ class PriceChartStatus {
         }
         if (!('high' in this.historicalPriceData_)) {
             return;
-        }
-        let currPriceInZil = null;
-        if (this.zilswapDexStatus_) {
-            currPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil(ticker);
         }
 
         let currRange = this.historicalPriceData_.range;
@@ -242,17 +256,6 @@ class PriceChartStatus {
         let currentPricePercentString = currentPricePercent.toString();
         $('#price_chart_low_high_progress').attr('aria-valuenow', currentPricePercentString);
         $('#price_chart_low_high_progress').width(currentPricePercentString + '%');
-
-        if (!this.coinPriceStatus_) {
-            return;
-        }
-        let zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
-        if (!zilPriceInFiatFloat) {
-            return;
-        }
-        let currPriceInFiat = zilPriceInFiatFloat * currPriceInZil;
-        let currPriceInFiatString = commafyNumberToString(currPriceInFiat, /* decimals= */ 2);
-        $('#price_chart_current_token_price_fiat').text(currPriceInFiatString);
     }
 
     bindViewZilswapDexAndFiatInformation(ticker, range) {
@@ -271,6 +274,7 @@ class PriceChartStatus {
             return;
         }
         $('.price-chart-ticker').text(ticker);
+        $('.price_chart_range').text(range);
 
         // ---- Circulating supply and market cap ----
         let zrcCirculatingSupply = this.zilswapDexStatus_.getCirculatingSupply(ticker);
