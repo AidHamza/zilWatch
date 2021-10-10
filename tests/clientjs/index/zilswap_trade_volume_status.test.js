@@ -23,6 +23,7 @@ describe('ZilswapTradeVolumeStatus', function () {
                 '1m': {},
                 '3m': {},
                 '1y': {},
+                'all': {},
             });
         });
 
@@ -45,6 +46,7 @@ describe('ZilswapTradeVolumeStatus', function () {
                 '1m': {},
                 '3m': {},
                 '1y': {},
+                'all': {},
             });
         });
     });

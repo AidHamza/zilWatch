@@ -74,18 +74,24 @@ router.get('/', function (req, res, next) {
   let redis_key = "zilswap_dex_zrc_tokens_price_in_zil_" + queryRange + "_" + tokenSymbol;
   let redis_key_low = "zilswap_dex_zrc_tokens_price_in_zil_" + queryRange + "_low";
   let redis_key_high = "zilswap_dex_zrc_tokens_price_in_zil_" + queryRange + "_high";
+  let redis_key_atl = "zilswap_dex_zrc_tokens_price_in_zil_all_time_low";
+  let redis_key_ath = "zilswap_dex_zrc_tokens_price_in_zil_all_time_high";
   let redis_key_zilswap_dex_zrc_tokens_price_in_zil = "zilswap_dex_zrc_tokens_price_in_zil";
 
   redisClient.mget(
     [redis_key,
       redis_key_low,
       redis_key_high,
+      redis_key_atl,
+      redis_key_ath,
       redis_key_zilswap_dex_zrc_tokens_price_in_zil,
     ],
     function (err, reply) {
       let data_arr = null;
+      let data_low = null;
       let data_high = null;
-      let data_low = null
+      let data_atl = null;
+      let data_ath = null;
       if (!err && reply) {
         try {
           if (reply[1]) {
@@ -100,12 +106,24 @@ router.get('/', function (req, res, next) {
               data_high = curr_data_high[tokenSymbol];
             }
           }
+          if (reply[3]) {
+            curr_data_atl = JSON.parse(reply[3]);
+            if (tokenSymbol in curr_data_atl) {
+              data_atl = curr_data_atl[tokenSymbol];
+            }
+          }
+          if (reply[4]) {
+            curr_data_ath = JSON.parse(reply[4]);
+            if (tokenSymbol in curr_data_ath) {
+              data_ath = curr_data_ath[tokenSymbol];
+            }
+          }
           if (reply[0]) {
             data_arr = JSON.parse(reply[0]);
 
-            // Only need to get current price (i.e., reply[3]), if there is historical data, else, do nothing.
-            if (reply[3]) {
-              zrc_price_in_zil = JSON.parse(reply[3]);
+            // Only need to get current price (i.e., reply[5]), if there is historical data, else, do nothing.
+            if (reply[5]) {
+              zrc_price_in_zil = JSON.parse(reply[5]);
               // Add the current (latest) price to the back of the historical price
               // to show most up to date data point
               if (tokenSymbol in zrc_price_in_zil) {
@@ -132,6 +150,8 @@ router.get('/', function (req, res, next) {
         'range': queryRange,
         'low': data_low,
         'high': data_high,
+        'all_time_low': data_atl,
+        'all_time_high': data_ath,
         'data': data_arr,
       };
       res.setHeader('Content-Type', 'application/json');

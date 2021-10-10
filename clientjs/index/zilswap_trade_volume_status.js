@@ -14,6 +14,7 @@ class ZilswapTradeVolumeStatus {
             '1m' : 60 * 60 * 24 * 30,
             '3m' : 60 * 60 * 24 * 90,
             '1y' : 60 * 60 * 24 * 365,
+            'all' : 3 * 60 * 60 * 24 * 365,
         }
 
         // private variable
@@ -24,6 +25,7 @@ class ZilswapTradeVolumeStatus {
             '1m' : {},
             '3m' : {},
             '1y' : {},
+            'all' : {},
         }
 
         this.computeCoinToVolumeMap(this.zilswapDex24hTradeVolumeData_, '24h');

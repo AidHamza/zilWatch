@@ -22,6 +22,9 @@ window.addEventListener('DOMContentLoaded', event => {
     $('#pills-price-chart-1y-tab').on('click', function () {
         priceChartStatus.computePriceChartRange('1y');
     });
+    $('#pills-price-chart-all-tab').on('click', function () {
+        priceChartStatus.computePriceChartRange('all');
+    });
 
     $('.list-group-item-action').on('click', function () {
         let tokenSymbol = $(this).attr('tokenSymbol');

@@ -482,6 +482,19 @@ block content
                 p(class='h6')='Trade volume / Market cap'
                 span(id='price_chart_trade_volume_market_cap_ratio' class='h5 font-weight-bold')='-'
 
+              div(class='col-6 col-xl-3 my-2')
+                p(class='h6')='All time high'
+                span(id='price_chart_all_time_high' class='h5 font-weight-bold')='-'
+                span(class='ml-1')= 'ZIL'
+                br
+                span(id='price_chart_all_time_high_timestamp' class='h6')
+
+              div(class='col-6 col-xl-3 my-2')
+                p(class='h6')='All time low'
+                span(id='price_chart_all_time_low' class='h5 font-weight-bold')='-'
+                span(class='ml-1')= 'ZIL'
+                br
+                span(id='price_chart_all_time_low_timestamp' class='h6')
 
             div(class='row')
               div(id='price_chart_period_tabs_container' class='container')
@@ -493,11 +506,13 @@ block content
                   li(class='nav-item')
                     a(class='nav-link' id='pills-price-chart-7d-tab' data-toggle='pill' href='#pills-price-chart-7d' role='tab' aria-controls='pills-price-chart-7d' aria-selected='false')='7d'
                   li(class='nav-item')
-                    a(class='nav-link disabled' id='pills-price-chart-1m-tab' data-toggle='pill' href='#pills-price-chart-1m' role='tab' aria-controls='pills-price-chart-1m' aria-selected='false')='1m'
+                    a(class='nav-link' id='pills-price-chart-1m-tab' data-toggle='pill' href='#pills-price-chart-1m' role='tab' aria-controls='pills-price-chart-1m' aria-selected='false')='1m'
                   li(class='nav-item')
-                    a(class='nav-link disabled' id='pills-price-chart-3m-tab' data-toggle='pill' href='#pills-price-chart-3m' role='tab' aria-controls='pills-price-chart-3m' aria-selected='false')='3m'
+                    a(class='nav-link' id='pills-price-chart-3m-tab' data-toggle='pill' href='#pills-price-chart-3m' role='tab' aria-controls='pills-price-chart-3m' aria-selected='false')='3m'
                   li(class='nav-item')
-                    a(class='nav-link disabled' id='pills-price-chart-1y-tab' data-toggle='pill' href='#pills-price-chart-1y' role='tab' aria-controls='pills-price-chart-1y' aria-selected='false')='1y'
+                    a(class='nav-link' id='pills-price-chart-1y-tab' data-toggle='pill' href='#pills-price-chart-1y' role='tab' aria-controls='pills-price-chart-1y' aria-selected='false')='1y'
+                  li(class='nav-item')
+                    a(class='nav-link' id='pills-price-chart-all-tab' data-toggle='pill' href='#pills-price-chart-all' role='tab' aria-controls='pills-price-chart-all' aria-selected='false')='All'
 
             div(class='full-price-chart-spinner ml-3 spinner-border text-info' role='status' style='vertical-align: middle; display: none;')
               span(class='sr-only')= 'Loading...'

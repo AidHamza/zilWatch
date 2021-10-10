@@ -242,6 +242,52 @@ class PriceChartStatus {
             }
         }
 
+        if ('all_time_high' in this.historicalPriceData_) {
+            let ath_dict = this.historicalPriceData_.all_time_high;
+            if ('value' in ath_dict) {
+                let athValue = ath_dict.value;
+                let athValueString = convertNumberQaToDecimalString(athValue, /* decimals= */ 0);
+                $('#price_chart_all_time_high').text(athValueString);
+
+                if ('time' in ath_dict) {
+                    let athTimestampEpoch = ath_dict.time;
+                    let dateTimestamp = new Date(athTimestampEpoch * 1000).toLocaleTimeString([], {
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: false
+                    });
+                    $('#price_chart_all_time_high_timestamp').text(dateTimestamp);
+                }
+            }
+        }
+
+        if ('all_time_low' in this.historicalPriceData_) {
+            let atl_dict = this.historicalPriceData_.all_time_low;
+            if ('value' in atl_dict) {
+                let athValue = atl_dict.value;
+                let athValueString = convertNumberQaToDecimalString(athValue, /* decimals= */ 0);
+                $('#price_chart_all_time_low').text(athValueString);
+
+                if ('time' in atl_dict) {
+                    let atlTimestampEpoch = atl_dict.time;
+                    let dateTimestamp = new Date(atlTimestampEpoch * 1000).toLocaleTimeString([], {
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: false
+                    });
+                    $('#price_chart_all_time_low_timestamp').text(dateTimestamp);
+                }
+            }
+        }
+
         if (!('data' in this.historicalPriceData_)) {
             return;
         }
