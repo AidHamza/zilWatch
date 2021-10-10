@@ -14,6 +14,12 @@ class PriceChartStatus {
 
         let initTokenSymbol = defaultTokenSymbol? defaultTokenSymbol : 'gZIL';
 
+        this.lightweightChartData_ = {
+            'ticker': null,
+            'range': null,
+            'series' : null,
+        }
+
         // Default to defaultTokenSymbol if set, else gZIL, 24h
         // This is subject to change for future logic
         this.historicalPriceData_ = {
@@ -52,11 +58,11 @@ class PriceChartStatus {
     }
 
     refreshChartTheme() {
-        this.bindViewAllInformation();
+        this.bindViewPriceChart(/* isForceRedraw= */ true);
     }
 
     refreshChartSize() {
-        this.bindViewAllInformation();
+        this.bindViewPriceChart(/* isForceRedraw= */ true);
     }
 
     updateTokenUrlState(tokenSymbol, isUserAction) {
@@ -138,6 +144,7 @@ class PriceChartStatus {
                         if (data.ticker === self.historicalPriceData_.ticker && data.range === self.historicalPriceData_.range) {
                             self.historicalPriceData_ = data;
                             self.bindViewAllInformation();
+                            self.bindViewPriceChart();
                             onSuccessCallback();
                             return;
                         }
@@ -176,13 +183,6 @@ class PriceChartStatus {
         this.bindViewStaticInformation(this.historicalPriceData_.ticker);
         this.bindViewPriceTextInformation(this.historicalPriceData_.ticker);
         this.bindViewZilswapDexAndFiatInformation(this.historicalPriceData_.ticker, this.historicalPriceData_.range);
-
-        if (!('data' in this.historicalPriceData_)) {
-            return;
-        }
-        let currContainer = document.getElementById('full_price_chart');
-        currContainer.innerHTML = "";
-        this.bindViewPriceChart(currContainer, this.historicalPriceData_.data);
     }
 
     bindViewStaticInformation(ticker) {
@@ -399,12 +399,37 @@ class PriceChartStatus {
         }
     }
 
-    bindViewPriceChart(container, data) {
+    bindViewPriceChart(isForceRedraw) {
         if (typeof LightweightCharts === 'undefined') {
             // Skip if undefined, this is to cater for test.
             // LightweightCharts are not testable because it's 3rd party library.
-            return null;
+            return;
         }
+        if (!('data' in this.historicalPriceData_)) {
+            return;
+        }
+        if (!('ticker' in this.historicalPriceData_)) {
+            return;
+        }
+        if (!('range' in this.historicalPriceData_)) {
+            return;
+        }
+
+        let data = this.historicalPriceData_.data;
+
+        // If not force redraw, and ticker and range are the same, means it's just data update.
+        // Hence we just setData not to reset the view (e.g., if user is already scrolling and zooming on the graph)
+        if (!isForceRedraw) {
+            if (this.lightweightChartData_.ticker === this.historicalPriceData_.ticker && this.lightweightChartData_.range === this.historicalPriceData_.range) {
+                if (this.lightweightChartData_.series) {
+                    this.lightweightChartData_.series.setData(data);
+                    return;
+                }
+            }
+        }
+
+        let container = document.getElementById('full_price_chart');
+        container.innerHTML = "";
 
         let chart = LightweightCharts.createChart(container, {
             width: $('#full_price_chart').width(),
@@ -445,6 +470,10 @@ class PriceChartStatus {
             lineWidth: 2,
         });
         series.setData(data);
+
+        this.lightweightChartData_.ticker = this.historicalPriceData_.ticker;
+        this.lightweightChartData_.range = this.historicalPriceData_.range;
+        this.lightweightChartData_.series = series;
     }
 }
 
