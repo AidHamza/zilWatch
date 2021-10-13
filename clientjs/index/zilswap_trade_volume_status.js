@@ -7,25 +7,15 @@ class ZilswapTradeVolumeStatus {
         this.coinPriceStatus_ = coinPriceStatus;
         this.zilswapDex24hTradeVolumeData_ = zilswapDex24hTradeVolumeData;
 
-        this.timeRangeStringToSecondsMap_ = {
-            '1h' : 60 * 30 * 2, // Make it 1.5-hrs because zilswap API doesn't update in real time, so most values shows as 0
-            '24h' : 60 * 60 * 24,
-            '7d' : 60 * 60 * 24 * 7,
-            '1m' : 60 * 60 * 24 * 30,
-            '3m' : 60 * 60 * 24 * 90,
-            '1y' : 60 * 60 * 24 * 365,
-            'all' : 3 * 60 * 60 * 24 * 365,
-        }
-
         // private variable
         this.coinToVolumeMap_ = {
-            '1h' : {},
-            '24h' : {},
-            '7d' : {},
-            '1m' : {},
-            '3m' : {},
-            '1y' : {},
-            'all' : {},
+            '1h': {},
+            '24h': {},
+            '7d': {},
+            '1m': {},
+            '3m': {},
+            '1y': {},
+            'all': {},
         }
 
         this.computeCoinToVolumeMap(this.zilswapDex24hTradeVolumeData_, '24h');
@@ -103,33 +93,31 @@ class ZilswapTradeVolumeStatus {
 
     computeDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
 
-        for (let timeRange in this.timeRangeStringToSecondsMap_) {
-            beforeRpcCallback();
-
-            let timeDifferenceSeconds = this.timeRangeStringToSecondsMap_[timeRange];
-
-            let currentDate = new Date();
-            let currentTimeSeconds = currentDate.getTime() / 1000;
-            let oneDayAgoSeconds = currentTimeSeconds - timeDifferenceSeconds;
-
-            let self = this;
-            queryUrlGetAjax(
-                /* urlToGet= */
-                CONST_STATS_ZILSWAP_ROOT_URL + "/volume?from=" + oneDayAgoSeconds.toFixed(0),
-                /* successCallback= */
-                function (data) {
-                    self.computeCoinToVolumeMap(data, timeRange);
+        beforeRpcCallback();
+        let self = this;
+        queryUrlGetAjax(
+            /* urlToGet= */
+            CONST_ZILWATCH_ROOT_URL + "/api/volume" + "?requester=zilwatch_dashboard",
+            /* successCallback= */
+            function (data) {
+                if (!data) {
+                    onErrorCallback();
+                    return;
+                }
+                for (let timeRange in data) {
+                    let currRangeData = data[timeRange];
+                    self.computeCoinToVolumeMap(currRangeData, timeRange);
                     if (timeRange === '24h') {
-                        self.zilswapDex24hTradeVolumeData_ = data;
+                        self.zilswapDex24hTradeVolumeData_ = currRangeData;
                         self.bindView24hTradeVolumeFiat();
                     }
-                    onSuccessCallback();
-                },
-                /* errorCallback= */
-                function () {
-                    onErrorCallback();
-                });
-        }
+                }
+                onSuccessCallback();
+            },
+            /* errorCallback= */
+            function () {
+                onErrorCallback();
+            });
     }
 
     // Exception, no need reset

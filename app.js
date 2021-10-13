@@ -10,6 +10,7 @@ var disclaimerRouter = require('./routes/disclaimer');
 var termsRouter = require('./routes/terms');
 var apiTokenPriceRouter = require('./routes/api_tokenprice');
 var apiRewardRouter = require('./routes/api_reward');
+var apiVolumeRouter = require('./routes/api_volume');
 
 var app = express();
 
@@ -29,6 +30,7 @@ app.use('/disclaimer', disclaimerRouter);
 app.use('/terms', termsRouter);
 app.use('/api/tokenprice',  apiTokenPriceRouter);
 app.use('/api/reward',  apiRewardRouter);
+app.use('/api/volume',  apiVolumeRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
