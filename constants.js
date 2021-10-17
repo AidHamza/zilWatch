@@ -414,6 +414,16 @@ const zrcTokenPropertiesListMap = {
     "website": "https://pele.network/",
     "telegram": "https://t.me/getyousomePELE",
   },
+  'PIL': {
+    "ticker": "PIL",
+    "name": "Pillar Protocol",
+    "address": "zil1v5s3f9dds05et8mhtwlzh4l7klyrcnc679y27s",
+    "address_base16": "0x65211495AD83E9959f775Bbe2BD7FEb7C83C4f1A",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1v5s3f9dds05et8mhtwlzh4l7klyrcnc679y27s/logo",
+    "decimals": 6,
+    "website": "https://pillarprotocol.com/",
+    "telegram": "https://t.me/PillarProtocol",
+  },
   'RECAP': {
     "ticker": "RECAP",
     "name": "Review Capital",
