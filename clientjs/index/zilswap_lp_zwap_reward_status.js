@@ -8,8 +8,16 @@ class ZilswapLpZwapRewardStatus {
         this.coinPriceStatus_ = coinPriceStatus;
         this.zilswapDexStatus_ = zilswapDexStatus;
 
+        this.defaultEpochInfoData_ = {
+            'epoch_period':  604800,
+            'next_epoch_start': 1629878400,
+        }
+        this.epochInfoData_ = this.defaultEpochInfoData_;
+
         this.walletAddressBech32_ = walletAddressBech32;
-        this.epochInfoData_ = epochInfoData;
+        if (epochInfoData) {
+            this.epochInfoData_ = epochInfoData;
+        }
         this.contractAddressToRewardMapData_ = contractAddressToRewardMapData;
         this.pastRewardListData_ = pastRewardListData;
         this.unclaimedRewardListData_ = unclaimedRewardListData;
@@ -319,28 +327,15 @@ class ZilswapLpZwapRewardStatus {
     }
 
     computeDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
-        let self = this;
-
-        beforeRpcCallback();
-        queryUrlGetAjax(
-            /* urlToGet= */
-            CONST_STATS_ZILSWAP_ROOT_URL + "/epoch/info",
-            /* successCallback= */
-            function (data) {
-                self.epochInfoData_ = data;
-                self.computeLpCurrentEpochInfoLoaded();
-
-                onSuccessCallback();
-            },
-            /* errorCallback= */
-            function () {
-                onErrorCallback();
-            });
+        // This is now hardcoded because the value are static to reduce RPC.
+        this.epochInfoData_ = this.defaultEpochInfoData_;
+        this.computeLpCurrentEpochInfoLoaded();
 
         if (!this.walletAddressBech32_) {
             return;
         }
 
+        let self = this;
         beforeRpcCallback();
         queryUrlGetAjax(
             /* urlToGet= */

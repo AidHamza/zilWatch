@@ -10,18 +10,21 @@ class ZilswapLpFeeRewardStatus {
         // private variable
         this.coinToFeeRewardMap_ = {};
 
-        this.computeCoinToFeeRewardMap();
-        this.bindViewAllLpFeeReward();
+        if (this.computeCoinToFeeRewardMap()) {
+            this.bindViewAllLpFeeReward();
+        }
     }
 
     onZilswapDexStatusChange() {
-        this.computeCoinToFeeRewardMap();
-        this.bindViewAllLpFeeReward();
+        if (this.computeCoinToFeeRewardMap()) {
+            this.bindViewAllLpFeeReward();
+        }
     }
 
-    onZilswapTradeVolumeStatusChange() { 
-        this.computeCoinToFeeRewardMap();
-        this.bindViewAllLpFeeReward();
+    onZilswapTradeVolumeStatusChange() {
+        if (this.computeCoinToFeeRewardMap()) {
+            this.bindViewAllLpFeeReward();
+        }
     }
 
     reset() {
@@ -30,17 +33,20 @@ class ZilswapLpFeeRewardStatus {
     }
 
     getLpFeeRewardInZil(zrcSymbol) {
+        
         return this.coinToFeeRewardMap_[zrcSymbol];
     }
 
+    /** Returns true if there is some data processed, false otherwise. */
     computeCoinToFeeRewardMap() {
         if (!this.zilswapDexStatus_) {
-            return;
+            return false;
         }
         if (!this.zilswapTradeVolumeStatus_) {
-            return;
+            return false;
         }
-        
+
+        let isProcessed = false;
         for (let ticker in this.zrcTokenPropertiesListMap_) {
             let zilswapPairPersonalStatus = this.zilswapDexStatus_.getZilswapPairPersonalStatus(ticker);
             if (!zilswapPairPersonalStatus) {
@@ -56,13 +62,17 @@ class ZilswapLpFeeRewardStatus {
             }
             let lpFeeInZil = 0.003 * shareRatio * tradeVolume24hInZil;
             this.coinToFeeRewardMap_[ticker] = lpFeeInZil;
+
+            isProcessed = true;
         }
+        return isProcessed;
     }
 
     bindViewAllLpFeeReward() {
         for (let ticker in this.zrcTokenPropertiesListMap_) {
             let currLpFeeReward = this.getLpFeeRewardInZil(ticker);
             if (!currLpFeeReward) {
+                this.bindViewLpFeeReward('0', ticker);
                 continue;
             }
             let currLpFeeRewardString = convertNumberQaToDecimalString(currLpFeeReward, /* decimals= */ 0);
