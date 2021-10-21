@@ -341,6 +341,16 @@ const zrcTokenPropertiesListMap = {
     "decimals": 0,
     "telegram": "https://t.me/thehodltoken",
   },
+  'LUNR': {
+    "ticker": "LUNR",
+    "name": "Lunr",
+    "address": "zil1xxl6yp2twxvljdnn87g9fk7wykdrcv66xdy4rc",
+    "address_base16": "0x31bFa2054B7199F936733f9054DBCE259a3c335a",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1xxl6yp2twxvljdnn87g9fk7wykdrcv66xdy4rc/logo",
+    "decimals": 4,
+    "website": "https://www.lunrtoken.com/",
+    "whitepaper": "https://www.lunrtoken.com/documents/lunr.pdf",
+  },
   'MAMBO': {
     "ticker": "MAMBO",
     "name": "Mambo",
