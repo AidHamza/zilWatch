@@ -179,8 +179,8 @@ class CoinPriceStatus {
 
     /** Private static method */
     bindViewCoinPriceInFiat24hAgo(coinPriceInFiatPercentChange24h, coinTicker) {
-        $("#public_" + coinTicker + "_price_fiat_percent_change_24h").text(coinPriceInFiatPercentChange24h);
-        bindViewPercentChangeColorContainer('#public_' + coinTicker + '_price_fiat_percent_change_24h_container', coinPriceInFiatPercentChange24h);
+        $("." + coinTicker + "_price_fiat_percent_change_24h").text(coinPriceInFiatPercentChange24h);
+        bindViewPercentChangeColorContainer('.' + coinTicker + '_price_fiat_percent_change_24h_container', coinPriceInFiatPercentChange24h);
     }
 
     /** Private static method */

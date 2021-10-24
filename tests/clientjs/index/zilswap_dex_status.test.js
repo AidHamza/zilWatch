@@ -114,23 +114,23 @@ for (let ticker in Constants.zrcTokenPropertiesListMap) {
 
 let expectedZrcPriceIdr24hAgoMap = {
     'gZIL': ['-25.7', '-20.1'],
-    'XSGD': ['45.2','56.3'],
-    'ZWAP': ['-31.0',  '-25.7'],
+    'XSGD': ['45.2', '56.3'],
+    'ZWAP': ['-31.0', '-25.7'],
     'PORT': ['-62.0', '-59.1'],
     'XPORT': ['-62.0', '-59.1'],
     'ZLP': ['-40.8', '-36.3'],
     'REDC': ['34.1', '44.3'],
     'CARB': ['-10.6', '-3.8'],
-    'SRV': ['45.1','56.2'],
-    'DUCK': ['55.3',  '67.1'],
-    'ELONS': ['13.5',  '22.2'],
-    'ZCH': ['82.3','96.2'],
+    'SRV': ['45.1', '56.2'],
+    'DUCK': ['55.3', '67.1'],
+    'ELONS': ['13.5', '22.2'],
+    'ZCH': ['82.3', '96.2'],
     'BOLT': ['-52.5', '-48.9'],
     'ZYRO': ['-0.4', '7.2'],
     'ZLF': ['276.6', '305.2'],
     'GARY': ['821.5', '891.6'],
     'RECAP': ['314.0', '345.5'],
-    'AXT': ['13.8','22.4'],
+    'AXT': ['13.8', '22.4'],
     'GOD': ['-65.6', '-62.9'],
     'SHRK': ['-25.0', '-19.3'],
 }
@@ -328,7 +328,9 @@ describe('ZilswapDexStatus', function () {
                 $('.' + ticker + '_price_zil_percent_change_24h').each(function () {
                     assert.strictEqual($(this).text(), expectedZrcPrice24hAgoMap[ticker][0]);
                 });
-                assert.strictEqual($('#public_' + ticker + '_price_fiat_percent_change_24h').text(), expectedZrcPrice24hAgoMap[ticker][1]);
+                $('.' + ticker + '_price_fiat_percent_change_24h').each(function () {
+                    assert.strictEqual($(this).text(), expectedZrcPrice24hAgoMap[ticker][1]);
+                });
 
                 $('.' + ticker + '_price_zil').each(function () {
                     assert.strictEqual($(this).text(), expectedZrcPriceMap[ticker][0]);
@@ -358,7 +360,9 @@ describe('ZilswapDexStatus', function () {
                 $('.' + ticker + '_price_zil_percent_change_24h').each(function () {
                     assert.strictEqual($(this).text(), expectedZrcPriceIdr24hAgoMap[ticker][0]);
                 });
-                assert.strictEqual($('#public_' + ticker + '_price_fiat_percent_change_24h').text(), expectedZrcPriceIdr24hAgoMap[ticker][1]);
+                $('.' + ticker + '_price_fiat_percent_change_24h').each(function () {
+                    assert.strictEqual($(this).text(), expectedZrcPriceIdr24hAgoMap[ticker][1]);
+                });
 
                 $('.' + ticker + '_price_zil').each(function () {
                     assert.strictEqual($(this).text(), expectedZrcPriceIdrMap[ticker][0]);
@@ -561,7 +565,9 @@ describe('ZilswapDexStatus', function () {
                 $('.' + ticker + '_price_zil_percent_change_24h').each(function () {
                     assert.strictEqual($(this).text(), expectedZrcPrice24hAgoMap[ticker][0]);
                 });
-                assert.strictEqual($('#public_' + ticker + '_price_fiat_percent_change_24h').text(), expectedZrcPrice24hAgoMap[ticker][1]);
+                $('.' + ticker + '_price_fiat_percent_change_24h').each(function () {
+                    assert.strictEqual($(this).text(), expectedZrcPrice24hAgoMap[ticker][1]);
+                });
 
                 $('.' + ticker + '_price_zil').each(function () {
                     assert.strictEqual($(this).text(), expectedZrcPriceMap[ticker][0]);
@@ -610,7 +616,9 @@ describe('ZilswapDexStatus', function () {
                 $('.' + ticker + '_price_zil_percent_change_24h').each(function () {
                     assert.strictEqual($(this).text(), expectedZrcPriceIdr24hAgoMap[ticker][0]);
                 });
-                assert.strictEqual($('#public_' + ticker + '_price_fiat_percent_change_24h').text(), expectedZrcPriceIdr24hAgoMap[ticker][1]);
+                $('.' + ticker + '_price_fiat_percent_change_24h').each(function () {
+                    assert.strictEqual($(this).text(), expectedZrcPriceIdr24hAgoMap[ticker][1]);
+                });
 
                 $('.' + ticker + '_price_zil').each(function () {
                     assert.strictEqual($(this).text(), expectedZrcPriceIdrMap[ticker][0]);
@@ -991,20 +999,25 @@ describe('ZilswapDexStatus', function () {
             it('bind view happy case', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
-                    zilswapDexStatus.bindViewZrcTokenPriceInFiat24hAgo('1234.4', '4322', ticker);
+                    zilswapDexStatus.bindViewZrcTokenPriceInFiat24hAgo('4322', ticker);
 
                     // Assert
-                    assert.strictEqual($('#public_' + ticker + '_price_fiat_percent_change_24h').text(), '4322');
+
+                    $('.' + ticker + '_price_fiat_percent_change_24h').each(function () {
+                        assert.strictEqual($(this).text(), '4322');
+                    });
                 }
             });
 
             it('bind view random string', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
-                    zilswapDexStatus.bindViewZrcTokenPriceInFiat24hAgo('asdf', 'qwer', ticker);
+                    zilswapDexStatus.bindViewZrcTokenPriceInFiat24hAgo('qwer', ticker);
 
                     // Assert
-                    assert.strictEqual($('#public_' + ticker + '_price_fiat_percent_change_24h').text(), 'qwer');
+                    $('.' + ticker + '_price_fiat_percent_change_24h').each(function () {
+                        assert.strictEqual($(this).text(), 'qwer');
+                    });
                 }
             });
         });

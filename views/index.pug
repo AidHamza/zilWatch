@@ -6,7 +6,12 @@ block content
     // Sidebar
     div(id='sidebar-wrapper' class='border-end bg-dynamic-3')
       div(class=' sidebar-toggler sidebar-heading border-bottom-sidebar bg-dynamic-3')
-        span(class='font-weight-bold')='ZRC-2 Tokens' 
+        span='ZIL = '
+        span(class='font-weight-bold currency_symbol mr-1')= '$'
+        span(class='font-weight-bold ZIL_price_fiat')= 'Loading...'
+        span(class='ml-2 mr-2 text-secondary')='|'
+        span(class='font-weight-bold ZIL_price_fiat_percent_change_24h_container ZIL_price_fiat_percent_change_24h')
+        span(class='ml-1 font-weight-bold ZIL_price_fiat_percent_change_24h_container')='%'
         button(class='close')
           span='×'
       table(class='table-md list-group list-group-flush')
@@ -135,8 +140,8 @@ block content
                           span(id=coinProperties.ticker+'_price_24h_high_fiat')= ''
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           span(class=coinProperties.ticker+'_price_fiat')= 'Loading...'
-                        td(class='pr-3' id='public_'+coinProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                          span(id='public_'+coinProperties.ticker+'_price_fiat_percent_change_24h')
+                        td(class=coinProperties.ticker+'_price_fiat_percent_change_24h_container pr-3' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(class=coinProperties.ticker+'_price_fiat_percent_change_24h')
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           span(id=coinProperties.ticker+'_lp_24h_volume_fiat')= '0'
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
@@ -188,8 +193,8 @@ block content
                           span(id=tokenProperties.ticker+'_price_24h_high')= ''
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           span(id='public_'+tokenProperties.ticker+'_price_fiat')= 'Loading...'
-                        td(class='pr-3' id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h_container' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                          span(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h')
+                        td(class=tokenProperties.ticker+'_price_fiat_percent_change_24h_container pr-3' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
+                          span(class=tokenProperties.ticker+'_price_fiat_percent_change_24h')
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           span(id=tokenProperties.ticker+'_lp_24h_volume_fiat')= '0'
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )

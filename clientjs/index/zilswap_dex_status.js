@@ -509,9 +509,8 @@ class ZilswapDexStatus {
                 let zrcTokenPriceInZil24hAgo = zilswapSinglePairPublicStatus24hAgo.zrcTokenPriceInZil;
                 if (zilPriceInFiat24hAgoFloat && zrcTokenPriceInZil24hAgo) {
                     let zrcTokenPriceInFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zrcTokenPriceInZil24hAgo;
-                    let zrcTokenPriceInFiat24hAgoString = commafyNumberToString(zrcTokenPriceInFiat24hAgo, decimals);
                     let zrcTokenPriceInFiatPercentChange24h = getPercentChange(zrcTokenPriceInFiat, zrcTokenPriceInFiat24hAgo).toFixed(1);
-                    this.bindViewZrcTokenPriceInFiat24hAgo(zrcTokenPriceInFiat24hAgoString, zrcTokenPriceInFiatPercentChange24h, ticker);
+                    this.bindViewZrcTokenPriceInFiat24hAgo(zrcTokenPriceInFiatPercentChange24h, ticker);
                 }
             }
 
@@ -608,9 +607,9 @@ class ZilswapDexStatus {
     }
 
     /** Private static method. public. */
-    bindViewZrcTokenPriceInFiat24hAgo(zrcTokenPriceInFiat24hAgo, zrcTokenPriceInFiatPercentChange24h, ticker) {
-        $('#public_' + ticker + '_price_fiat_percent_change_24h').text(zrcTokenPriceInFiatPercentChange24h);
-        bindViewPercentChangeColorContainer('#public_' + ticker + '_price_fiat_percent_change_24h_container', zrcTokenPriceInFiatPercentChange24h);
+    bindViewZrcTokenPriceInFiat24hAgo(zrcTokenPriceInFiatPercentChange24h, ticker) {
+        $('.' + ticker + '_price_fiat_percent_change_24h').text(zrcTokenPriceInFiatPercentChange24h);
+        bindViewPercentChangeColorContainer('.' + ticker + '_price_fiat_percent_change_24h_container', zrcTokenPriceInFiatPercentChange24h);
     }
 
     /** Private static method. public. */
