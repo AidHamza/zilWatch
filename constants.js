@@ -191,6 +191,16 @@ const ssnListMap = {
 
 // IF changed, also change in zilWatch-backend/core/constants.py
 const zrcTokenPropertiesListMap = {
+  'ADS': {
+    "ticker": "ADS",
+    "name": "ZilAds",
+    "address": "zil1cs2au702hcx779yxdg49txjqe7rn989rty3wwy",
+    "address_base16": "0xC415dE79eaBe0deF14866A2A559A40CF87329CA3",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1cs2au702hcx779yxdg49txjqe7rn989rty3wwy/logo",
+    "decimals": 6,
+    "website": "https://zilads.github.io/",
+    "telegram": "https://t.me/ziladschat",
+  },
   'BLOX': {
     "ticker": "BLOX",
     "name": "Blox Token",
