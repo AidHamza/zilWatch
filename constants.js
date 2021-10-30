@@ -550,6 +550,16 @@ const zrcTokenPropertiesListMap = {
     "website": "https://zilall.com/",
     "telegram": "https://t.me/zilall_community",
   },
+  'UNIDEX-V2': {
+    "ticker": "UNIDEX-V2",
+    "name": "United DEX Index Compound V2",
+    "address": "zil1jqkdlkfxdcd2xxjeg7m3xcpyhrgy2yjx2cul6d",
+    "address_base16": "0x902cdfD9266e1AA31a5947B7136024B8D0451246",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1jqkdlkfxdcd2xxjeg7m3xcpyhrgy2yjx2cul6d/logo",
+    "decimals": 2,
+    "website": "https://zilall.com/",
+    "telegram": "https://t.me/zilall_community",
+  },
   'XCAD': {
     "ticker": "XCAD",
     "name": "XCAD Network",
