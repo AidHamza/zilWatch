@@ -129,12 +129,12 @@ function onCurrencyChangeCallback(currencyCode) {
 function onThemeChangeCallback() {
     drawAllBarCharts();
     simpleChartStatus.refreshChartTheme();
-    priceChartStatus.refreshChartTheme();
+    priceChartStatus.redrawChart();
 }
 
 function onScreenResizeCallback() {
     drawAllBarCharts();
-    priceChartStatus.refreshChartSize();
+    priceChartStatus.redrawChart();
 }
 
 function drawAllBarCharts() {

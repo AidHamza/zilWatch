@@ -57,11 +57,7 @@ class PriceChartStatus {
         this.bindViewZilswapDexAndFiatInformation(this.historicalPriceData_.ticker, this.historicalPriceData_.range);
     }
 
-    refreshChartTheme() {
-        this.bindViewPriceChart(/* isForceRedraw= */ true);
-    }
-
-    refreshChartSize() {
+    redrawChart() {
         this.bindViewPriceChart(/* isForceRedraw= */ true);
     }
 
@@ -144,7 +140,7 @@ class PriceChartStatus {
                         if (data.ticker === self.historicalPriceData_.ticker && data.range === self.historicalPriceData_.range) {
                             self.historicalPriceData_ = data;
                             self.bindViewAllInformation();
-                            self.bindViewPriceChart();
+                            self.bindViewPriceChart(/* isForceRedraw= */ false);
                             onSuccessCallback();
                             return;
                         }
@@ -432,7 +428,9 @@ class PriceChartStatus {
         container.innerHTML = "";
 
         let chart = LightweightCharts.createChart(container, {
-            width: $('#full_price_chart').width(),
+            // Use #main_content_tabs_container instead of #full_price_chart because when the view is hidden/gone
+            // the width becomes 0px and it will be invisible
+            width: $('#main_content_tabs_container').width(),
             height: 400,
             priceLineVisible: false,
             layout: {
