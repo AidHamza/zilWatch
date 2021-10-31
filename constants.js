@@ -712,6 +712,27 @@ const zrcTokenPropertiesListMap = {
   },
 }
 
+const nftTokenPropertiesListMap = {
+  'BEAR': {
+    "ticker": "BEAR",
+    "name": "The Bear Market",
+    "address": "zil167flx79fykulp57ykmh9gnf3curcnyux6dcj5e",
+    "address_base16": "0xD793F378a925b9f0d3C4b6Ee544D31C707899386",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil167flx79fykulp57ykmh9gnf3curcnyux6dcj5e/logo",
+    "image_dict_path" : ["image"],
+    "website": "https://thebear.market/",
+  },
+  'DZT': {
+    "ticker": "DZT",
+    "name": "DragonZIL",
+    "address": "zil1knvrhm9e2rqfdvqp50gu02a3pat34e6lst9d36",
+    "address_base16": "0xb4D83BECB950c096B001a3D1c7aBb10F571ae75f",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1knvrhm9e2rqfdvqp50gu02a3pat34e6lst9d36/logo",
+    "image_dict_path" : [],
+    "website": "https://dragonzil.xyz/",
+  },
+}
+
 // IF changed, also change in zilWatch-backend/core/constants.py
 const emptyZrcTokensSupply = {};
 for (let key in zrcTokenPropertiesListMap) {
@@ -723,5 +744,6 @@ module.exports = {
   currencyMap: currencyMap,
   ssnListMap: ssnListMap,
   zrcTokenPropertiesListMap: zrcTokenPropertiesListMap,
+  nftTokenPropertiesListMap: nftTokenPropertiesListMap,
   emptyZrcTokensSupply: emptyZrcTokensSupply,
 };

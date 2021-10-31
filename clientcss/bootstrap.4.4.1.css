@@ -4894,10 +4894,10 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     flex-direction: column;
     min-width: 0;
     word-wrap: break-word;
-    background-color: var(--white);
+    background-color: var(--bg-dynamic-2);
     background-clip: border-box;
-    border: 1px solid rgba(0, 0, 0, .125);
-    border-radius: .25rem
+    border: 1px solid var(--light-alpha-10);
+    border-radius: .5rem
 }
 
 .card>hr {
@@ -4906,20 +4906,20 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .card>.list-group:first-child .list-group-item:first-child {
-    border-top-left-radius: .25rem;
-    border-top-right-radius: .25rem
+    border-top-left-radius: .5rem;
+    border-top-right-radius: .5rem
 }
 
 .card>.list-group:last-child .list-group-item:last-child {
-    border-bottom-right-radius: .25rem;
-    border-bottom-left-radius: .25rem
+    border-bottom-right-radius: .5rem;
+    border-bottom-left-radius: .5rem
 }
 
 .card-body {
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
     min-height: 1px;
-    padding: 1.25rem
+    padding: 1rem
 }
 
 .card-title {
@@ -4951,7 +4951,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .card-header:first-child {
-    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0
+    border-radius: calc(.5rem - 1px) calc(.5rem - 1px) 0 0
 }
 
 .card-header+.list-group .list-group-item:first-child {
@@ -4965,7 +4965,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .card-footer:last-child {
-    border-radius: 0 0 calc(.25rem - 1px) calc(.25rem - 1px)
+    border-radius: 0 0 calc(.5rem - 1px) calc(.5rem - 1px)
 }
 
 .card-header-tabs {
@@ -4996,13 +4996,13 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .card-img, .card-img-top {
-    border-top-left-radius: calc(.25rem - 1px);
-    border-top-right-radius: calc(.25rem - 1px)
+    border-top-left-radius: calc(.5rem - 1px);
+    border-top-right-radius: calc(.5rem - 1px)
 }
 
 .card-img, .card-img-bottom {
-    border-bottom-right-radius: calc(.25rem - 1px);
-    border-bottom-left-radius: calc(.25rem - 1px)
+    border-bottom-right-radius: calc(.5rem - 1px);
+    border-bottom-left-radius: calc(.5rem - 1px)
 }
 
 .card-deck .card {

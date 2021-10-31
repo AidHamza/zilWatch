@@ -383,6 +383,8 @@ block content
             a(class='nav-link active' id='pills-price-chart-tab' data-toggle='pill' href='#pills-price-chart' role='tab' aria-controls='pills-price-chart' aria-selected='true')='Price chart'
           li(class='nav-item')
             a(class='nav-link' id='pills-wallet-tab' data-toggle='pill' href='#pills-wallet' role='tab' aria-controls='pills-wallet' aria-selected='false')='Wallet contents'
+          li(class='nav-item')
+            a(class='nav-link' id='pills-wallet-nft-tab' data-toggle='pill' href='#pills-wallet-nft' role='tab' aria-controls='pills-wallet-nft' aria-selected='false')='NFT Collections'
 
       div(class='tab-content')
 
@@ -1029,6 +1031,47 @@ block content
                                 td(style='text-align: right; white-space: nowrap;' )
                 hr
 
+        // Contents for pills-wallet-nft tab
+        div(class='tab-pane fade' id='pills-wallet-nft' role='tabpanel' aria-labelledby='pills-wallet-nft-tab')
+
+          // Wallet NFT content container
+          div(id='wallet_nft_contents_container')
+
+            div(id='empty_nft_container' class='container')
+              div(class='balance-box container')
+                span(class='h5')= 'There are no supported NFTs in the wallet.'
+
+              div(class='balance-box container')
+                span(class='h5')= 'We currently support:'
+                ul
+                  each nftTokenProperty, nftTicker in nftTokenPropertiesListMap
+                    li
+                      a(href=nftTokenProperty.website)=nftTokenProperty.name + ' (' + nftTicker + ')'
+
+              div(class='balance-box container')
+                span(class='h5')= 'Looking to get some NFTs? Visit any of the NFT marketplace below.'
+                ul
+                  li
+                    a(href='https://zilswap.io/ark/collections')='ZilSwap ARK'
+                  li
+                    a(href='https://okimoto.io')='Okimoto'
+                  li
+                    a(href='https://spardawallet.com')='SpardaWallet'
+
+            each nftTokenProperty, nftTicker in nftTokenPropertiesListMap
+
+              div(id=nftTicker+'_container' class='container' style='display:none')
+
+                // Single NFT provider contents
+                div(class='container title-box' style='display:table-cell; vertical-align: middle;')
+                  img(class='mr-3' height='36' src=nftTokenProperty.logo_url loading='lazy')
+                  span(class='h3 font-weight-bold' style='vertical-align: middle;')= nftTokenProperty.name
+
+                div(class='container')
+                  div(id=nftTicker+'_content_list' class='row')
+
+                hr
+
       //---------------------- Start of Swap Modals ---------------------
 
       //- Modal for swap pick tokens
@@ -1248,6 +1291,7 @@ block script
     var currencyMap = !{JSON.stringify(currencyMap)};
     var ssnListMap = !{JSON.stringify(ssnListMap)};
     var zrcTokenPropertiesListMap = !{JSON.stringify(zrcTokenPropertiesListMap)};
+    var nftTokenPropertiesListMap = !{JSON.stringify(nftTokenPropertiesListMap)};
     var targetTokenSymbol = !{JSON.stringify(targetTokenSymbol)};
     // Cache from redis (if any). If there are no cache, we will fallback to RPC network call.
     var coinPriceCoingeckoData = !{JSON.stringify(coinPriceCoingecko)};
@@ -1285,6 +1329,8 @@ block script
     const swapStatus = new SwapStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletBalanceStatus)
 
     const priceChartStatus = new PriceChartStatus(zrcTokenPropertiesListMap, targetTokenSymbol, coinPriceStatus, zilswapDexStatus, zilswapTradeVolumeStatus);
+
+    const nftCollectionStatus = new NftCollectionStatus(nftTokenPropertiesListMap);
 
     function newBlockListenerCallback(blockchainStatusNotifyType, blockNum, txHashArr) {
       console.log('NewBlock-%s: %s', blockchainStatusNotifyType, blockNum);

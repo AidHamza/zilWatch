@@ -11,6 +11,7 @@ var termsRouter = require('./routes/terms');
 var apiTokenPriceRouter = require('./routes/api_tokenprice');
 var apiRewardRouter = require('./routes/api_reward');
 var apiVolumeRouter = require('./routes/api_volume');
+var apiNftRouter = require('./routes/api_nft');
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use('/terms', termsRouter);
 app.use('/api/tokenprice',  apiTokenPriceRouter);
 app.use('/api/reward',  apiRewardRouter);
 app.use('/api/volume',  apiVolumeRouter);
+app.use('/api/nft',  apiNftRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

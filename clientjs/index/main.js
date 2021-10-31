@@ -188,6 +188,20 @@ function refreshMainContentData(account) {
 
     // (8) Get Potential LP reward next epoch and past epoch, async
     computeZilswapTotalLpZwapReward(walletAddressBech32);
+
+    // (9) Get NFT Collection
+    computeNftCollectionStatus(walletAddressBase16);
+}
+
+function computeNftCollectionStatus(walletAddressBase16) {
+    nftCollectionStatus.setWalletAddressBase16(walletAddressBase16);
+    nftCollectionStatus.computeDataRpc(
+        /* beforeRpcCallback= */
+        function () {},
+        /* onSuccessCallback= */
+        function () {},
+        /* onErrorCallback= */
+        function () {});
 }
 
 function computePriceChartStatus() {

@@ -1,6 +1,11 @@
 const CONST_ZILWATCH_ROOT_URL = 'https://zilwatch.io';
+const CONST_ZILSWAP_ARK_ROOT_URL = 'https://zilswap.io/ark/collections'; // e.g., https://zilswap.io/ark/collections/<nft_address>/<nft_id>
 const CONST_STATS_ZILSWAP_ROOT_URL = 'https://stats.zilswap.org';
 const CONST_ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16 = "0xea57c6b7b5475107688bc70aabefdd5352d0bed0";
+
+// e.g., https://viewblock.io/zilliqa/address/zil167flx79fykulp57ykmh9gnf3curcnyux6dcj5e?txsType=nft&specific=5496
+const CONST_VIEWBLOCK_ROOT_URL = 'https://viewblock.io/zilliqa/address';
+const CONST_VIEWBLOCK_SUFFIX_PARAM_NFT_ID = 'txsType=nft&specific=';
 
 // For lightweight charts
 const CONST_WHITE_TRANSPARENT_RGBA_STRING = 'rgba(255, 255, 255, 0)';
