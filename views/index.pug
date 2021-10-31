@@ -534,12 +534,12 @@ block content
           div(id='wallet_content_container')
 
             // Error Message Container
-            div(id='error_message_container' class='container')
+            div(class='error_message_container container')
               div(class='balance-box row container')
-                span(id='error_message' class='h5')= 'Loading...'
+                span(class='error_message h5')= 'Loading...'
 
-                button(id='error_wallet_connect_button' class='wallet_connect_button btn btn-info mx-2 my-sm-0' style='display: none;')= 'Connect'
-                a(id='error_download_zilpay_button' href='https://zilpay.io' target='_blank' style='display: none;')
+                button(class='error_wallet_connect_button wallet_connect_button btn btn-info mx-2 my-sm-0' style='display: none;')= 'Connect'
+                a(class='error_download_zilpay_button' href='https://zilpay.io' target='_blank' style='display: none;')
                   button(class='btn btn-info mx-2 my-sm-0')= 'Download ZilPay'
               hr
 
@@ -1034,29 +1034,42 @@ block content
         // Contents for pills-wallet-nft tab
         div(class='tab-pane fade' id='pills-wallet-nft' role='tabpanel' aria-labelledby='pills-wallet-nft-tab')
 
+          // Error Message Container
+          div(class='error_message_container container')
+            div(class='balance-box row container')
+              span(class='error_message h5')= 'Loading...'
+
+              button(class='error_wallet_connect_button wallet_connect_button btn btn-info mx-2 my-sm-0' style='display: none;')= 'Connect'
+              a(class='error_download_zilpay_button' href='https://zilpay.io' target='_blank' style='display: none;')
+                button(class='btn btn-info mx-2 my-sm-0')= 'Download ZilPay'
+            hr
+          
+          // Empty NFT container
+          div(id='empty_nft_container' class='container')
+            div(class='balance-box container')
+              span(class='h5')= 'There are no supported NFTs in the wallet.'
+
+            div(class='balance-box container')
+              span(class='h5')= 'We currently support:'
+              ul
+                each nftTokenProperty, nftTicker in nftTokenPropertiesListMap
+                  li
+                    a(href=nftTokenProperty.website)=nftTokenProperty.name + ' (' + nftTicker + ')'
+
+            div(class='balance-box container')
+              span(class='h5')= 'Looking to get some NFTs? Visit any of the NFT marketplace below.'
+              ul
+                li
+                  a(href='https://zilswap.io/ark/collections')='ZilSwap ARK'
+                li
+                  a(href='https://okimoto.io')='Okimoto'
+                li
+                  a(href='https://spardawallet.com')='SpardaWallet'
+            
+            hr
+
           // Wallet NFT content container
-          div(id='wallet_nft_contents_container')
-
-            div(id='empty_nft_container' class='container')
-              div(class='balance-box container')
-                span(class='h5')= 'There are no supported NFTs in the wallet.'
-
-              div(class='balance-box container')
-                span(class='h5')= 'We currently support:'
-                ul
-                  each nftTokenProperty, nftTicker in nftTokenPropertiesListMap
-                    li
-                      a(href=nftTokenProperty.website)=nftTokenProperty.name + ' (' + nftTicker + ')'
-
-              div(class='balance-box container')
-                span(class='h5')= 'Looking to get some NFTs? Visit any of the NFT marketplace below.'
-                ul
-                  li
-                    a(href='https://zilswap.io/ark/collections')='ZilSwap ARK'
-                  li
-                    a(href='https://okimoto.io')='Okimoto'
-                  li
-                    a(href='https://spardawallet.com')='SpardaWallet'
+          div(id='wallet_nft_content_container' style='display: none;')
 
             each nftTokenProperty, nftTicker in nftTokenPropertiesListMap
 

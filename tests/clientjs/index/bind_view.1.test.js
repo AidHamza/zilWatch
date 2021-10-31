@@ -113,9 +113,17 @@ describe('BindView1', function () {
 
         beforeEach(function () {
             assert.strictEqual($('#main_content_container').css('display'), 'none');
-            assert.strictEqual($('#error_message_container').css('display'), 'block');
-            assert.strictEqual($('#error_wallet_connect_button').css('display'), 'none');
-            assert.strictEqual($('#error_download_zilpay_button').css('display'), 'none');
+            assert.strictEqual($('#wallet_nft_content_container').css('display'), 'none');
+
+            $('.error_message_container').each(function () {
+                assert.strictEqual($(this).css('display'), 'block');
+            });
+            $('.error_wallet_connect_button').each(function () {
+                assert.strictEqual($(this).css('display'), 'none');
+            });
+            $('.error_download_zilpay_button').each(function () {
+                assert.strictEqual($(this).css('display'), 'none');
+            });
         });
 
         it('bindView ZilpayStatus.connected', function () {
@@ -124,9 +132,16 @@ describe('BindView1', function () {
 
             // Assert
             assert.strictEqual($('#main_content_container').css('display'), 'block');
-            assert.strictEqual($('#error_message_container').css('display'), 'none');
-            assert.strictEqual($('#error_wallet_connect_button').css('display'), 'none');
-            assert.strictEqual($('#error_download_zilpay_button').css('display'), 'none');
+            assert.strictEqual($('#wallet_nft_content_container').css('display'), 'block');
+            $('.error_message_container').each(function () {
+                assert.strictEqual($(this).css('display'), 'none');
+            });
+            $('.error_wallet_connect_button').each(function () {
+                assert.strictEqual($(this).css('display'), 'none');
+            });
+            $('.error_download_zilpay_button').each(function () {
+                assert.strictEqual($(this).css('display'), 'none');
+            });
         });
 
         it('bindView ZilpayStatus.not_installed', function () {
@@ -135,10 +150,19 @@ describe('BindView1', function () {
 
             // Assert
             assert.strictEqual($('#main_content_container').css('display'), 'none');
-            assert.strictEqual($('#error_message_container').css('display'), 'block');
-            assert.strictEqual($('#error_message').html(), 'ZilPay wallet not installed!');
-            assert.strictEqual($('#error_wallet_connect_button').css('display'), 'none');
-            assert.strictEqual($('#error_download_zilpay_button').css('display'), '');
+            assert.strictEqual($('#wallet_nft_content_container').css('display'), 'none');
+            $('.error_message_container').each(function () {
+                assert.strictEqual($(this).css('display'), 'block');
+            });
+            $('.error_message').each(function () {
+                assert.strictEqual($(this).html(), 'ZilPay wallet not installed!');
+            });
+            $('.error_wallet_connect_button').each(function () {
+                assert.strictEqual($(this).css('display'), 'none');
+            });
+            $('.error_download_zilpay_button').each(function () {
+                assert.strictEqual($(this).css('display'), '');
+            });
         });
 
         it('bindView ZilpayStatus.locked', function () {
@@ -147,10 +171,20 @@ describe('BindView1', function () {
 
             // Assert
             assert.strictEqual($('#main_content_container').css('display'), 'none');
-            assert.strictEqual($('#error_message_container').css('display'), 'block');
-            assert.strictEqual($('#error_message').html(), 'ZilPay wallet not connected!');
-            assert.strictEqual($('#error_wallet_connect_button').css('display'), 'inline-block');
-            assert.strictEqual($('#error_download_zilpay_button').css('display'), 'none');
+            assert.strictEqual($('#wallet_nft_content_container').css('display'), 'none');
+
+            $('.error_message_container').each(function () {
+                assert.strictEqual($(this).css('display'), 'block');
+            });
+            $('.error_message').each(function () {
+                assert.strictEqual($(this).html(), 'ZilPay wallet not connected!');
+            });
+            $('.error_wallet_connect_button').each(function () {
+                assert.strictEqual($(this).css('display'), 'inline-block');
+            });
+            $('.error_download_zilpay_button').each(function () {
+                assert.strictEqual($(this).css('display'), 'none');
+            });
         });
 
         it('bindView ZilpayStatus.not_connected', function () {
@@ -159,10 +193,19 @@ describe('BindView1', function () {
 
             // Assert
             assert.strictEqual($('#main_content_container').css('display'), 'none');
-            assert.strictEqual($('#error_message_container').css('display'), 'block');
-            assert.strictEqual($('#error_message').html(), 'ZilPay wallet not connected!');
-            assert.strictEqual($('#error_wallet_connect_button').css('display'), 'inline-block');
-            assert.strictEqual($('#error_download_zilpay_button').css('display'), 'none');
+            assert.strictEqual($('#wallet_nft_content_container').css('display'), 'none');
+            $('.error_message_container').each(function () {
+                assert.strictEqual($(this).css('display'), 'block');
+            });
+            $('.error_message').each(function () {
+                assert.strictEqual($(this).html(), 'ZilPay wallet not connected!');
+            });
+            $('.error_wallet_connect_button').each(function () {
+                assert.strictEqual($(this).css('display'), 'inline-block');
+            });
+            $('.error_download_zilpay_button').each(function () {
+                assert.strictEqual($(this).css('display'), 'none');
+            });
         });
 
         it('bindView ZilpayStatus.not_mainnet', function () {
@@ -171,8 +214,14 @@ describe('BindView1', function () {
 
             // Assert
             assert.strictEqual($('#main_content_container').css('display'), 'none');
-            assert.strictEqual($('#error_message_container').css('display'), 'block');
-            assert.strictEqual($('#error_message').html(), 'Please switch to mainnet!');
+            assert.strictEqual($('#wallet_nft_content_container').css('display'), 'none');
+
+            $('.error_message_container').each(function () {
+                assert.strictEqual($(this).css('display'), 'block');
+            });
+            $('.error_message').each(function () {
+                assert.strictEqual($(this).html(), 'Please switch to mainnet!');
+            });
         });
 
         it('bindView ZilpayStatus illegal enum', function () {
@@ -181,8 +230,14 @@ describe('BindView1', function () {
 
             // Assert
             assert.strictEqual($('#main_content_container').css('display'), 'none');
-            assert.strictEqual($('#error_message_container').css('display'), 'block');
-            assert.strictEqual($('#error_message').html(), 'Unknown Error! Please contact zilWatch team on <a href="https://t.me/zilWatch_community">Telegram</a>!');
+            assert.strictEqual($('#wallet_nft_content_container').css('display'), 'none');
+
+            $('.error_message_container').each(function () {
+                assert.strictEqual($(this).css('display'), 'block');
+            });
+            $('.error_message').each(function () {
+                assert.strictEqual($(this).html(), 'Unknown Error! Please contact zilWatch team on <a href="https://t.me/zilWatch_community">Telegram</a>!');
+            });
         });
     });
 });

@@ -54,36 +54,41 @@ function hideFullWalletAddress() {
 function bindViewMainContainer(zilpayStatus) {
     if (ZilpayStatus.connected === zilpayStatus) {
         $('#main_content_container').show();
-        $('#error_wallet_connect_button').hide();
-        $('#error_download_zilpay_button').hide();
-        $('#error_message_container').hide();
+        $('#wallet_nft_content_container').show();
+        $('.error_wallet_connect_button').hide();
+        $('.error_download_zilpay_button').hide();
+        $('.error_message_container').hide();
         return;
     } else if (ZilpayStatus.not_installed === zilpayStatus) {
         $('#main_content_container').hide();
-        $('#error_message').html('ZilPay wallet not installed!');
-        $('#error_wallet_connect_button').hide();
-        $('#error_download_zilpay_button').show();
-        $('#error_message_container').show();
+        $('#wallet_nft_content_container').hide();
+        $('.error_message').html('ZilPay wallet not installed!');
+        $('.error_wallet_connect_button').hide();
+        $('.error_download_zilpay_button').show();
+        $('.error_message_container').show();
         return;
     } else if (ZilpayStatus.locked === zilpayStatus || ZilpayStatus.not_connected === zilpayStatus) {
         $('#main_content_container').hide();
-        $('#error_message').html('ZilPay wallet not connected!');
-        $('#error_wallet_connect_button').show();
-        $('#error_download_zilpay_button').hide();
-        $('#error_message_container').show();
+        $('#wallet_nft_content_container').hide();
+        $('.error_message').html('ZilPay wallet not connected!');
+        $('.error_wallet_connect_button').show();
+        $('.error_download_zilpay_button').hide();
+        $('.error_message_container').show();
         return;
     } else if (ZilpayStatus.not_mainnet === zilpayStatus) {
         $('#main_content_container').hide();
-        $('#error_message').html('Please switch to mainnet!');
-        $('#error_wallet_connect_button').hide();
-        $('#error_download_zilpay_button').hide();
-        $('#error_message_container').show();
+        $('#wallet_nft_content_container').hide();
+        $('.error_message').html('Please switch to mainnet!');
+        $('.error_wallet_connect_button').hide();
+        $('.error_download_zilpay_button').hide();
+        $('.error_message_container').show();
         return;
     }
     // Should not reach here.
     $('#main_content_container').hide();
-    $('#error_message').html('Unknown Error! Please contact zilWatch team on <a href="https://t.me/zilWatch_community">Telegram</a>!');
-    $('#error_message_container').show();
+    $('#wallet_nft_content_container').hide();
+    $('.error_message').html('Unknown Error! Please contact zilWatch team on <a href="https://t.me/zilWatch_community">Telegram</a>!');
+    $('.error_message_container').show();
 }
 
 function resetMainContainerContent() {
