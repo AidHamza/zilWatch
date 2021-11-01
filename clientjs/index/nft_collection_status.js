@@ -51,6 +51,10 @@ class NftCollectionStatus {
     }
 
     bindViewSingleNft(nftTicker, singleNftAttr, nftImageSrc) {
+        if ('image_url_replace_from' in this.nftTokenPropertiesListMap_[nftTicker] && 'image_url_replace_to' in this.nftTokenPropertiesListMap_[nftTicker]) {
+            nftImageSrc = nftImageSrc.replace(this.nftTokenPropertiesListMap_[nftTicker].image_url_replace_from, this.nftTokenPropertiesListMap_[nftTicker].image_url_replace_to);
+        }
+
         let zilswapHref = CONST_ZILSWAP_ARK_ROOT_URL + '/' + this.nftTokenPropertiesListMap_[nftTicker].address + '/' + singleNftAttr.id;
         let viewblockHref = CONST_VIEWBLOCK_ROOT_URL + '/' + this.nftTokenPropertiesListMap_[nftTicker].address + '/?' + CONST_VIEWBLOCK_SUFFIX_PARAM_NFT_ID + singleNftAttr.id;
         let singleNftAttributesHref = null;

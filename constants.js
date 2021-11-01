@@ -720,7 +720,18 @@ const nftTokenPropertiesListMap = {
     "address_base16": "0xD793F378a925b9f0d3C4b6Ee544D31C707899386",
     "logo_url": "https://meta.viewblock.io/ZIL.zil167flx79fykulp57ykmh9gnf3curcnyux6dcj5e/logo",
     "image_dict_path" : ["image"],
-    "website": "https://thebear.market/",
+    "website": "https://thebear.market",
+  },
+  'NFD': {
+    "ticker": "NFD",
+    "name": "Non Fungible Ducks",
+    "address": "zil1qmmsv4w54fvpnec32cltywpk24zf7f8fftmfmp",
+    "address_base16": "0x06f70655d4AA5819E711563EB2383655449f24E9",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1qmmsv4w54fvpnec32cltywpk24zf7f8fftmfmp/logo",
+    "image_dict_path" : [],
+    "website": "https://app.duck.community",
+    "image_url_replace_from" : "https://gateway.pinata.cloud/ipfs",
+    "image_url_replace_to" : "https://ipfs.io/ipfs",
   },
   'DZT': {
     "ticker": "DZT",
@@ -729,8 +740,18 @@ const nftTokenPropertiesListMap = {
     "address_base16": "0xb4D83BECB950c096B001a3D1c7aBb10F571ae75f",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1knvrhm9e2rqfdvqp50gu02a3pat34e6lst9d36/logo",
     "image_dict_path" : [],
-    "website": "https://dragonzil.xyz/",
+    "website": "https://dragonzil.xyz",
     "website_nft_attributes_prefix" : "https://dragonzil.xyz/dragon", // e.g., https://dragonzil.xyz/dragon/4128
+  },
+  'UCUTE': {
+    "ticker": "UCUTE",
+    "name": "Unicutes NFT",
+    "address": "zil1afr40j968jqx8puvxhgtp6c9c77w3y4p49a0hw",
+    "address_base16": "0xEA4757C8Ba3C8063878C35D0B0eB05C7bCe892a1",
+    "logo_url": "https://unicutes.app/favicon.ico",
+    "image_dict_path" : [],
+    "website": "https://unicutes.app",
+    "website_nft_attributes_prefix": "https://unicutes.app/explore/unicutes", // e.g., https://unicutes.app/explore/unicutes/211
   },
 }
 
