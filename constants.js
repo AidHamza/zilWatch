@@ -730,6 +730,7 @@ const nftTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil1knvrhm9e2rqfdvqp50gu02a3pat34e6lst9d36/logo",
     "image_dict_path" : [],
     "website": "https://dragonzil.xyz/",
+    "website_nft_attributes_prefix" : "https://dragonzil.xyz/dragon", // e.g., https://dragonzil.xyz/dragon/4128
   },
 }
 
