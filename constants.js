@@ -722,6 +722,16 @@ const nftTokenPropertiesListMap = {
     "image_dict_path" : ["image"],
     "website": "https://thebear.market",
   },
+  'DZT': {
+    "ticker": "DZT",
+    "name": "DragonZIL",
+    "address": "zil1knvrhm9e2rqfdvqp50gu02a3pat34e6lst9d36",
+    "address_base16": "0xb4D83BECB950c096B001a3D1c7aBb10F571ae75f",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1knvrhm9e2rqfdvqp50gu02a3pat34e6lst9d36/logo",
+    "image_dict_path" : [],
+    "website": "https://dragonzil.xyz",
+    "website_nft_attributes_prefix" : "https://dragonzil.xyz/dragon", // e.g., https://dragonzil.xyz/dragon/4128
+  },
   'NFD': {
     "ticker": "NFD",
     "name": "Non Fungible Ducks",
@@ -732,16 +742,6 @@ const nftTokenPropertiesListMap = {
     "website": "https://app.duck.community",
     "image_url_replace_from" : "https://gateway.pinata.cloud/ipfs",
     "image_url_replace_to" : "https://ipfs.io/ipfs",
-  },
-  'DZT': {
-    "ticker": "DZT",
-    "name": "DragonZIL",
-    "address": "zil1knvrhm9e2rqfdvqp50gu02a3pat34e6lst9d36",
-    "address_base16": "0xb4D83BECB950c096B001a3D1c7aBb10F571ae75f",
-    "logo_url": "https://meta.viewblock.io/ZIL.zil1knvrhm9e2rqfdvqp50gu02a3pat34e6lst9d36/logo",
-    "image_dict_path" : [],
-    "website": "https://dragonzil.xyz",
-    "website_nft_attributes_prefix" : "https://dragonzil.xyz/dragon", // e.g., https://dragonzil.xyz/dragon/4128
   },
   'UCUTE': {
     "ticker": "UCUTE",
