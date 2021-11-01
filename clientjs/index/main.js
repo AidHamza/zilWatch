@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Loop forever to refresh simple charts for sidebar
     setInterval(function () {
         computeSimpleChartStatus();
+        refreshZilswapTradeVolumeStatus();
     }, REFRESH_INTERVAL_15MINS_MS);
 
     $(window).on('resize', function () {
