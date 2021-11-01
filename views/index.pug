@@ -1043,7 +1043,7 @@ block content
               a(class='error_download_zilpay_button' href='https://zilpay.io' target='_blank' style='display: none;')
                 button(class='btn btn-info mx-2 my-sm-0')= 'Download ZilPay'
             hr
-          
+
           // Empty NFT container
           div(id='empty_nft_container' class='container')
             div(class='balance-box container')
@@ -1065,7 +1065,7 @@ block content
                   a(href='https://okimoto.io')='Okimoto'
                 li
                   a(href='https://spardawallet.com')='SpardaWallet'
-            
+
             hr
 
           // Wallet NFT content container
@@ -1350,6 +1350,10 @@ block script
 
     const nftCollectionStatus = new NftCollectionStatus(nftTokenPropertiesListMap);
 
+    function getRandomInt(max) {
+      return Math.floor(Math.random() * max);
+    }
+
     function newBlockListenerCallback(blockchainStatusNotifyType, blockNum, txHashArr) {
       console.log('NewBlock-%s: %s', blockchainStatusNotifyType, blockNum);
 
@@ -1362,8 +1366,18 @@ block script
         refreshWalletBalanceStatus();
         refreshStakingBalanceStatus();
         refreshCoinMarketStatus();
-        refreshZilswapZrcPrice24hLowHighStatus();
-        refreshPriceChartStatus();
+
+        // Random timeout delay of max 4s not to overload API server
+        let lowHighRandomTimeoutDelayMs = getRandomInt(4000)
+        setTimeout(function () {
+          refreshZilswapZrcPrice24hLowHighStatus();
+        }, lowHighRandomTimeoutDelayMs);
+
+        // Random timeout delay of max 8s not to overload API server
+        let priceChartRandomTimeoutDelayMs = getRandomInt(8000)
+        setTimeout(function () {
+          refreshPriceChartStatus();
+        }, priceChartRandomTimeoutDelayMs);
       }
     }
 
