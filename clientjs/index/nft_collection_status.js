@@ -75,7 +75,14 @@ class NftCollectionStatus {
             "<div class='card' >" +
             "<img class='card-img-top' src='" + nftImageSrc + "' alt='NFT_picture' loading='lazy' />" +
             "<div class='card-body' >" +
-            "<h5 class='card-title'>" + nftTicker + " #" + nftId + "</h5>" +
+            "<div class='card-title'>" +
+            "<span class='h5 font-weight-bold'>" + nftTicker + " #" + nftId + "</span>";
+        if (singleNftAttributesHref && nftTokenLogo) {
+            htmlTemplate += "<a class='mini-button-box ml-2' href='" + singleNftAttributesHref + "' target='_blank' style='color: var(--text-color);') >" +
+                "<i class='fa fa-external-link ml-1 mr-1'></i>" +
+                "</a>";
+        }
+        htmlTemplate += "</div>" +
             "<a class='mini-button-box' href='" + viewblockHref + "' target='_blank' style='color: var(--text-color);') >" +
             "<img height='20' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo' />" +
             "<i class='fa fa-external-link ml-2 mr-1'></i>" +
@@ -84,13 +91,6 @@ class NftCollectionStatus {
             "<img height='20' src='https://meta.viewblock.io/ZIL.zil1p5suryq6q647usxczale29cu3336hhp376c627/logo' alt='ZilSwap logo' />" +
             "<i class='fa fa-external-link ml-2 mr-1'></i>" +
             "</a>";
-        if (singleNftAttributesHref && nftTokenLogo) {
-            htmlTemplate += "<a class='mini-button-box ml-1' href='" + singleNftAttributesHref + "' target='_blank' style='color: var(--text-color);') >" +
-                "<img height='20' src='" + nftTokenLogo + "' alt='ZilSwap logo' />" +
-                "<i class='fa fa-external-link ml-2 mr-1'></i>" +
-                "</a>";
-        }
-        htmlTemplate += "</a>" +
             "</div>" +
             "</div>" +
             "</div>";
