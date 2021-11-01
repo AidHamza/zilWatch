@@ -1378,6 +1378,12 @@ block script
         setTimeout(function () {
           refreshPriceChartStatus();
         }, priceChartRandomTimeoutDelayMs);
+
+        // Random timeout delay of max 30s not to overload API server
+        let tradeVolumeRandomTimeoutDelayMs = getRandomInt(30000)
+        setTimeout(function () {
+          refreshZilswapTradeVolumeStatus();
+        }, tradeVolumeRandomTimeoutDelayMs);
       }
     }
 
