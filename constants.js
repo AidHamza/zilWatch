@@ -734,6 +734,18 @@ const nftTokenPropertiesListMap = {
     "website": "https://dragonzil.xyz",
     "website_nft_attributes_prefix" : "https://dragonzil.xyz/dragon", // e.g., https://dragonzil.xyz/dragon/4128
   },
+  'MORPH': {
+    "ticker": "MORPH",
+    "name": "Zilmorphs",
+    "address": "zil1s5kyzptxp2eg35xl3vjfra6x93n2rs9wd3gwal",
+    "address_base16": "0x852c4105660ab288d0DF8B2491F7462c66a1C0ae",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1s5kyzptxp2eg35xl3vjfra6x93n2rs9wd3gwal/logo",
+    "image_dict_path" : [], // In the ideal case, this should be ["image"] just like bear market, if not blocked by CORS
+    "is_zilswap_ark_supported" : true,
+    "website": "https://zilmorphs.com/dapp",
+    "image_url_by_id" : "https://storage.googleapis.com/morphs", // Actually no need this, but blocked by CORS same origin policy
+    "image_url_by_id_suffix" : ".png",
+  },
   'NFD': {
     "ticker": "NFD",
     "name": "Non Fungible Ducks",
