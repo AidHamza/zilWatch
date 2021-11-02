@@ -723,6 +723,16 @@ const nftTokenPropertiesListMap = {
     "is_zilswap_ark_supported" : true,
     "website": "https://thebear.market",
   },
+  'DEM': {
+    "ticker": "DEM",
+    "name": "DeMons",
+    "address": "zil1j2h8ayhqspzsr3nu7slakveundumcr79g4vxwr",
+    "address_base16": "0x92ae7E92E0804501c67cF43Fdb333c9B79bc0Fc5",
+    "logo_url": "https://arkstatic.s3.ap-southeast-1.amazonaws.com/prod/collection/0x92ae7e92e0804501c67cf43fdb333c9b79bc0fc5/profile.png",
+    "image_dict_path" : [],
+    "is_zilswap_ark_supported" : true,
+    "website": "https://demons.world",
+  },
   'DZT': {
     "ticker": "DZT",
     "name": "DragonZIL",
