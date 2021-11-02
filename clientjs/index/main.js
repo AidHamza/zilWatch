@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(function () {
         computeSimpleChartStatus();
         refreshZilswapTradeVolumeStatus();
+        refreshZilswapZrcPrice24hLowHighStatus();
     }, REFRESH_INTERVAL_15MINS_MS);
 
     $(window).on('resize', function () {
