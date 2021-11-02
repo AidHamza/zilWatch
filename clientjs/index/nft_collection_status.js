@@ -51,8 +51,19 @@ class NftCollectionStatus {
     }
 
     bindViewSingleNft(nftTicker, singleNftAttr, nftImageSrc) {
+        // First logic: if we want to replace the prefix image URL from blockchain to a CDN 
         if ('image_url_replace_from' in this.nftTokenPropertiesListMap_[nftTicker] && 'image_url_replace_to' in this.nftTokenPropertiesListMap_[nftTicker]) {
             nftImageSrc = nftImageSrc.replace(this.nftTokenPropertiesListMap_[nftTicker].image_url_replace_from, this.nftTokenPropertiesListMap_[nftTicker].image_url_replace_to);
+            if ('image_url_replace_to_suffix' in this.nftTokenPropertiesListMap_[nftTicker]) {
+                nftImageSrc += this.nftTokenPropertiesListMap_[nftTicker].image_url_replace_to_suffix;
+            }
+        }
+        // Second logic: if we want to get the image URL using the ID of the nft using a CDN
+        if ('image_url_by_id' in this.nftTokenPropertiesListMap_[nftTicker]) {
+            nftImageSrc = this.nftTokenPropertiesListMap_[nftTicker].image_url_by_id + '/' + singleNftAttr.id;
+            if ('image_url_by_id_suffix' in this.nftTokenPropertiesListMap_[nftTicker]) {
+                nftImageSrc += this.nftTokenPropertiesListMap_[nftTicker].image_url_by_id_suffix;
+            }
         }
 
         let zilswapHref = CONST_ZILSWAP_ARK_ROOT_URL + '/' + this.nftTokenPropertiesListMap_[nftTicker].address + '/' + singleNftAttr.id;

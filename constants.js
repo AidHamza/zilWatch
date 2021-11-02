@@ -744,7 +744,20 @@ const nftTokenPropertiesListMap = {
     "is_zilswap_ark_supported" : true,
     "website": "https://app.duck.community",
     "image_url_replace_from" : "https://gateway.pinata.cloud/ipfs",
-    "image_url_replace_to" : "https://ipfs.io/ipfs",
+    "image_url_replace_to" : "https://cloudflare-ipfs.com/ipfs",
+  },
+  'G-UCUTE': {
+    "ticker": "G-UCUTE",
+    "name": "Ghost Unicutes NFT",
+    "address": "zil1cgltah4j78e0fy79nagwx3dgzzkehtdfwt7dez",
+    "address_base16": "0xC23EBEDEb2F1F2f493C59f50E345A810Ad9baDa9",
+    "logo_url": "https://unicutes.app/favicon.ico",
+    "image_dict_path" : [],
+    "is_zilswap_ark_supported" : false,
+    "website": "https://unicutes.app/explore/ghost-unicutes",
+    "image_url_replace_from" : "https://ipfs.io/ipfs",
+    "image_url_replace_to" : "https://images.unicutes.app/ghost-unicutes",
+    "image_url_replace_to_suffix" : ".png",
   },
   'UCUTE': {
     "ticker": "UCUTE",
@@ -756,6 +769,8 @@ const nftTokenPropertiesListMap = {
     "is_zilswap_ark_supported" : true,
     "website": "https://unicutes.app",
     "website_nft_attributes_prefix": "https://unicutes.app/explore/unicutes", // e.g., https://unicutes.app/explore/unicutes/211
+    "image_url_by_id" : "https://images.unicutes.app/09-12-2021-05-52-31-output",
+    "image_url_by_id_suffix" : ".png",
   },
 }
 
