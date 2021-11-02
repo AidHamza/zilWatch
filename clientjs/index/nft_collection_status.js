@@ -63,31 +63,37 @@ class NftCollectionStatus {
             singleNftAttributesHref = this.nftTokenPropertiesListMap_[nftTicker].website_nft_attributes_prefix + "/" + singleNftAttr.id;
             nftTokenLogo = this.nftTokenPropertiesListMap_[nftTicker].logo_url;
         }
-        let singleNftTemplate = this.getSingleNftHtmlTemplate(nftTicker, singleNftAttr.id, nftImageSrc, viewblockHref, zilswapHref, singleNftAttributesHref, nftTokenLogo);
+        let isZilswapArkSupported = false;
+        if ('is_zilswap_ark_supported' in this.nftTokenPropertiesListMap_[nftTicker]) {
+            isZilswapArkSupported = this.nftTokenPropertiesListMap_[nftTicker].is_zilswap_ark_supported;
+        }
+        let singleNftTemplate = this.getSingleNftHtmlTemplate(nftTicker, singleNftAttr.id, nftImageSrc, viewblockHref, zilswapHref, singleNftAttributesHref, nftTokenLogo, isZilswapArkSupported);
         $('#' + nftTicker + '_content_list').append(singleNftTemplate)
 
         $('#empty_nft_container').hide();
         $('#' + nftTicker + '_container').show();
     }
 
-    getSingleNftHtmlTemplate(nftTicker, nftId, nftImageSrc, viewblockHref, zilswapHref, singleNftAttributesHref, nftTokenLogo) {
+    getSingleNftHtmlTemplate(nftTicker, nftId, nftImageSrc, viewblockHref, zilswapHref, singleNftAttributesHref, nftTokenLogo, isZilswapArkSupported) {
         let htmlTemplate = "<div class='col-6 col-lg-4 col-xl-3' style='padding: 0.35rem;' >" +
             "<div class='card' >" +
             "<img class='card-img-top' src='" + nftImageSrc + "' alt='NFT " + nftTicker + " " + nftId + "' loading='lazy' />" +
             "<div class='card-body'>" +
             "<div class='card-title'>" +
-            "<span class='h5 font-weight-bold'>" + nftTicker + " #" + nftId + "</span>";
-        htmlTemplate += "</div>" +
-            "<a class='mini-button-box mr-1' href='" + viewblockHref + "' target='_blank') >" +
+            "<span class='h5 font-weight-bold'>" + nftTicker + " #" + nftId + "</span>" +
+            "</div>" +
+            "<a class='mini-button-box mr-1' href='" + viewblockHref + "' target='_blank' >" +
             "<img height='20' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo' />" +
             "<i class='fa fa-external-link ml-2 mr-1'></i>" +
-            "</a>" +
-            "<a class='mini-button-box mr-1' href='" + zilswapHref + "' target='_blank') >" +
-            "<img height='20' src='https://meta.viewblock.io/ZIL.zil1p5suryq6q647usxczale29cu3336hhp376c627/logo' alt='ZilSwap logo' />" +
-            "<i class='fa fa-external-link ml-2 mr-1'></i>" +
             "</a>";
+        if (isZilswapArkSupported) {
+            htmlTemplate += "<a class='mini-button-box mr-1' href='" + zilswapHref + "' target='_blank' >" +
+                "<img height='20' src='https://meta.viewblock.io/ZIL.zil1p5suryq6q647usxczale29cu3336hhp376c627/logo' alt='ZilSwap logo' />" +
+                "<i class='fa fa-external-link ml-2 mr-1'></i>" +
+                "</a>";
+        }
         if (singleNftAttributesHref && nftTokenLogo) {
-            htmlTemplate += "<a class='mini-button-box mr-1' href='" + singleNftAttributesHref + "' target='_blank') >" +
+            htmlTemplate += "<a class='mini-button-box mr-1' href='" + singleNftAttributesHref + "' target='_blank' >" +
                 "<img height='20' src='" + nftTokenLogo + "' alt='" + nftTicker + " logo' />" +
                 "<i class='fa fa-external-link ml-2 mr-1'></i>" +
                 "</a>";
