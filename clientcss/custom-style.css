@@ -333,9 +333,12 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] {
 
 .mini-button-box {
   margin: 0;
+  margin-top: 0.3rem;
   padding: 0.3rem;
   background-color: var(--primary-alpha-1);
   border-radius: 6px;
+  color: var(--text-color);
+  display: inline-block;
 }
 
 .mini-button-box:hover {

@@ -73,24 +73,25 @@ class NftCollectionStatus {
     getSingleNftHtmlTemplate(nftTicker, nftId, nftImageSrc, viewblockHref, zilswapHref, singleNftAttributesHref, nftTokenLogo) {
         let htmlTemplate = "<div class='col-6 col-lg-4 col-xl-3' style='padding: 0.35rem;' >" +
             "<div class='card' >" +
-            "<img class='card-img-top' src='" + nftImageSrc + "' alt='NFT_picture' loading='lazy' />" +
-            "<div class='card-body' >" +
+            "<img class='card-img-top' src='" + nftImageSrc + "' alt='NFT " + nftTicker + " " + nftId + "' loading='lazy' />" +
+            "<div class='card-body'>" +
             "<div class='card-title'>" +
             "<span class='h5 font-weight-bold'>" + nftTicker + " #" + nftId + "</span>";
-        if (singleNftAttributesHref && nftTokenLogo) {
-            htmlTemplate += "<a class='mini-button-box ml-2' href='" + singleNftAttributesHref + "' target='_blank' style='color: var(--text-color);') >" +
-                "<i class='fa fa-external-link ml-1 mr-1'></i>" +
-                "</a>";
-        }
         htmlTemplate += "</div>" +
-            "<a class='mini-button-box' href='" + viewblockHref + "' target='_blank' style='color: var(--text-color);') >" +
+            "<a class='mini-button-box mr-1' href='" + viewblockHref + "' target='_blank') >" +
             "<img height='20' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo' />" +
             "<i class='fa fa-external-link ml-2 mr-1'></i>" +
             "</a>" +
-            "<a class='mini-button-box ml-1' href='" + zilswapHref + "' target='_blank' style='color: var(--text-color);') >" +
+            "<a class='mini-button-box mr-1' href='" + zilswapHref + "' target='_blank') >" +
             "<img height='20' src='https://meta.viewblock.io/ZIL.zil1p5suryq6q647usxczale29cu3336hhp376c627/logo' alt='ZilSwap logo' />" +
             "<i class='fa fa-external-link ml-2 mr-1'></i>" +
             "</a>";
+        if (singleNftAttributesHref && nftTokenLogo) {
+            htmlTemplate += "<a class='mini-button-box mr-1' href='" + singleNftAttributesHref + "' target='_blank') >" +
+                "<img height='20' src='" + nftTokenLogo + "' alt='" + nftTicker + " logo' />" +
+                "<i class='fa fa-external-link ml-2 mr-1'></i>" +
+                "</a>";
+        }
             "</div>" +
             "</div>" +
             "</div>";
