@@ -768,6 +768,28 @@ const nftTokenPropertiesListMap = {
     "image_url_replace_from" : "https://gateway.pinata.cloud/ipfs",
     "image_url_replace_to" : "https://cloudflare-ipfs.com/ipfs",
   },
+  'APE': {
+    "ticker": "APE",
+    "name": "ZILAPES",
+    "address": "zil15uqy4c6sagcfgd0gyvy8274eggpknwnzlnaest",
+    "address_base16": "0xa7004ae350eA309435E82308757AB9420369bA62",
+    "logo_url": "https://zilapes.com/wp-content/uploads/2021/09/Zilapes-This-One-253x300.png",
+    "image_dict_path" : [],
+    "is_zilswap_ark_supported" : false,
+    "website": "https://zilapes.com",
+    "website_nft_attributes_prefix" : "https://okimoto.io/contracts/APE", // e.g., https://okimoto.io/contracts/APE/2015
+  },
+  'OPEN': {
+    "ticker": "OPEN",
+    "name": "Okimoto Open NFT",
+    "address": "zil15xycxe26ly2p489ac8zym6zkt4zw953e6sl5zq",
+    "address_base16": "0xA18983655AF9141A9cBDC1c44dE8565d44E2d239",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil15xycxe26ly2p489ac8zym6zkt4zw953e6sl5zq/logo",
+    "image_dict_path" : ["image"],
+    "is_zilswap_ark_supported" : false,
+    "website": "https://okimoto.io",
+    "website_nft_attributes_prefix" : "https://okimoto.io/contracts/OPEN", // e.g., https://okimoto.io/contracts/OPEN/2015
+  },
   'G-UCUTE': {
     "ticker": "G-UCUTE",
     "name": "Ghost Unicutes NFT",

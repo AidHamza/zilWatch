@@ -65,6 +65,10 @@ class NftCollectionStatus {
                 nftImageSrc += this.nftTokenPropertiesListMap_[nftTicker].image_url_by_id_suffix;
             }
         }
+        // Third logic: if there is no http in the starting of the image URL, it's an IPFS ID, we add the prefix.
+        if (!nftImageSrc.startsWith('http')) {
+            nftImageSrc = "https://gateway.ipfs.io/ipfs/" + nftImageSrc;
+        }
 
         let zilswapHref = CONST_ZILSWAP_ARK_ROOT_URL + '/' + this.nftTokenPropertiesListMap_[nftTicker].address + '/' + singleNftAttr.id;
         let viewblockHref = CONST_VIEWBLOCK_ROOT_URL + '/' + this.nftTokenPropertiesListMap_[nftTicker].address + '/?' + CONST_VIEWBLOCK_SUFFIX_PARAM_NFT_ID + singleNftAttr.id;
@@ -145,10 +149,15 @@ class NftCollectionStatus {
     }
 
     computeSingleNftImageRpc(nftTicker, singleNftAttr, imageDictPathArr) {
+        // If URL doesn't start with http, it's an IPFS ID, we add the prefix.
+        let currUri = singleNftAttr.uri;
+        if (!currUri.startsWith('http')) {
+            currUri = "https://gateway.ipfs.io/ipfs/" + currUri;
+        }
         let self = this;
         queryUrlGetAjax(
             /* urlToGet= */
-            singleNftAttr.uri,
+            currUri,
             /* successCallback= */
             function (data) {
                 if (!data) {
