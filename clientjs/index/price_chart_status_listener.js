@@ -28,7 +28,6 @@ window.addEventListener('DOMContentLoaded', event => {
 
     $('.list-group-item-action').on('click', function () {
         let tokenSymbol = $(this).attr('tokenSymbol');
-
         priceChartStatus.updateTokenUrlState(tokenSymbol, /* isUserAction= */ true);
 
         // If smaller than 576 px, i.e., phone screen, auto-close the sidebar upon tapping.
@@ -37,6 +36,13 @@ window.addEventListener('DOMContentLoaded', event => {
         }
         showPriceChart(tokenSymbol);
     });
+});
+
+$("#price_chart_token_ticker_selector").on('change', function () {
+    let tokenSymbol = $(this).val();
+    priceChartStatus.updateTokenUrlState(tokenSymbol, /* isUserAction= */ true);
+
+    showPriceChart(tokenSymbol);
 });
 
 $(window).on('popstate', function (event) {

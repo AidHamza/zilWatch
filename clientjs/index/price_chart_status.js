@@ -194,7 +194,8 @@ class PriceChartStatus {
         }
         $('#price_chart_token_logo').attr('src', imgSrc);
         $('#price_chart_token_name').text(this.zrcTokenPropertiesListMap_[ticker].name);
-        $('#price_chart_token_ticker').text(this.zrcTokenPropertiesListMap_[ticker].ticker);
+        // Do not trigger change() on purpose, this is just updating the value of the selector.
+        $('#price_chart_token_ticker_selector').val(this.zrcTokenPropertiesListMap_[ticker].ticker);
 
         $('#price_chart_token_address_anchor').attr('href', 'https://viewblock.io/zilliqa/address/' + address);
         $('#price_chart_token_address_span').text(address);

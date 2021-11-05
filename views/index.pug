@@ -397,8 +397,11 @@ block content
               div(class='col-xl-8 my-2')
                 div(style='display:table-cell; vertical-align: middle;')
                   img(id='price_chart_token_logo' class='mr-3' height='36' src='' loading='lazy')
-                  span(id='price_chart_token_name' class='h3 font-weight-bold' style='vertical-align: middle;')='-'
-                  span(id='price_chart_token_ticker' class='ml-3 mini-button-box')='-'
+                  span(id='price_chart_token_name' class='h3 font-weight-bold mr-3' style='vertical-align: middle;')='-'
+
+                  select(id='price_chart_token_ticker_selector' class='custom-select my-2 my-sm-0 ml-auto mr-2')
+                    each singleTokenProperty in zrcTokenPropertiesListMap
+                      option(value=singleTokenProperty.ticker)= singleTokenProperty.ticker
 
                 // token address and external anchor to viewblock
                 div(class='mt-1')
