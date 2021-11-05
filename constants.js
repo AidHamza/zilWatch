@@ -719,8 +719,8 @@ const nftTokenPropertiesListMap = {
     "address": "zil167flx79fykulp57ykmh9gnf3curcnyux6dcj5e",
     "address_base16": "0xD793F378a925b9f0d3C4b6Ee544D31C707899386",
     "logo_url": "https://meta.viewblock.io/ZIL.zil167flx79fykulp57ykmh9gnf3curcnyux6dcj5e/logo",
-    "image_dict_path" : ["image"],
-    "is_zilswap_ark_supported" : true,
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": true,
     "website": "https://thebear.market",
   },
   'DEM': {
@@ -729,8 +729,8 @@ const nftTokenPropertiesListMap = {
     "address": "zil1j2h8ayhqspzsr3nu7slakveundumcr79g4vxwr",
     "address_base16": "0x92ae7E92E0804501c67cF43Fdb333c9B79bc0Fc5",
     "logo_url": "https://arkstatic.s3.ap-southeast-1.amazonaws.com/prod/collection/0x92ae7e92e0804501c67cf43fdb333c9b79bc0fc5/profile.png",
-    "image_dict_path" : [],
-    "is_zilswap_ark_supported" : true,
+    "image_dict_path": [],
+    "is_zilswap_ark_supported": true,
     "website": "https://demons.world",
   },
   'DZT': {
@@ -739,10 +739,10 @@ const nftTokenPropertiesListMap = {
     "address": "zil1knvrhm9e2rqfdvqp50gu02a3pat34e6lst9d36",
     "address_base16": "0xb4D83BECB950c096B001a3D1c7aBb10F571ae75f",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1knvrhm9e2rqfdvqp50gu02a3pat34e6lst9d36/logo",
-    "image_dict_path" : [],
-    "is_zilswap_ark_supported" : true,
+    "image_dict_path": [],
+    "is_zilswap_ark_supported": true,
     "website": "https://dragonzil.xyz",
-    "website_nft_attributes_prefix" : "https://dragonzil.xyz/dragon", // e.g., https://dragonzil.xyz/dragon/4128
+    "website_nft_attributes_prefix": "https://dragonzil.xyz/dragon", // e.g., https://dragonzil.xyz/dragon/4128
   },
   'MORPH': {
     "ticker": "MORPH",
@@ -750,11 +750,11 @@ const nftTokenPropertiesListMap = {
     "address": "zil1s5kyzptxp2eg35xl3vjfra6x93n2rs9wd3gwal",
     "address_base16": "0x852c4105660ab288d0DF8B2491F7462c66a1C0ae",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1s5kyzptxp2eg35xl3vjfra6x93n2rs9wd3gwal/logo",
-    "image_dict_path" : [], // In the ideal case, this should be ["image"] just like bear market, if not blocked by CORS
-    "is_zilswap_ark_supported" : true,
+    "image_dict_path": [], // In the ideal case, this should be ["image"] just like bear market, if not blocked by CORS
+    "is_zilswap_ark_supported": true,
     "website": "https://zilmorphs.com/dapp",
-    "image_url_by_id" : "https://storage.googleapis.com/morphs", // Actually no need this, but blocked by CORS same origin policy
-    "image_url_by_id_suffix" : ".png",
+    "image_url_by_id": "https://storage.googleapis.com/morphs", // Actually no need this, but blocked by CORS same origin policy
+    "image_url_by_id_suffix": ".png",
   },
   'NFD': {
     "ticker": "NFD",
@@ -762,11 +762,11 @@ const nftTokenPropertiesListMap = {
     "address": "zil1qmmsv4w54fvpnec32cltywpk24zf7f8fftmfmp",
     "address_base16": "0x06f70655d4AA5819E711563EB2383655449f24E9",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1qmmsv4w54fvpnec32cltywpk24zf7f8fftmfmp/logo",
-    "image_dict_path" : [],
-    "is_zilswap_ark_supported" : true,
+    "image_dict_path": [],
+    "is_zilswap_ark_supported": true,
     "website": "https://app.duck.community",
-    "image_url_replace_from" : "https://gateway.pinata.cloud/ipfs",
-    "image_url_replace_to" : "https://cloudflare-ipfs.com/ipfs",
+    "image_url_replace_from": "https://gateway.pinata.cloud/ipfs",
+    "image_url_replace_to": "https://cloudflare-ipfs.com/ipfs",
   },
   'APE': {
     "ticker": "APE",
@@ -774,10 +774,10 @@ const nftTokenPropertiesListMap = {
     "address": "zil15uqy4c6sagcfgd0gyvy8274eggpknwnzlnaest",
     "address_base16": "0xa7004ae350eA309435E82308757AB9420369bA62",
     "logo_url": "https://zilapes.com/wp-content/uploads/2021/09/Zilapes-This-One-253x300.png",
-    "image_dict_path" : [],
-    "is_zilswap_ark_supported" : false,
+    "image_dict_path": [],
+    "is_zilswap_ark_supported": false,
     "website": "https://zilapes.com",
-    "website_nft_attributes_prefix" : "https://okimoto.io/contracts/APE", // e.g., https://okimoto.io/contracts/APE/2015
+    "website_nft_attributes_prefix": "https://okimoto.io/contracts/APE", // e.g., https://okimoto.io/contracts/APE/2015
   },
   'OPEN': {
     "ticker": "OPEN",
@@ -785,10 +785,10 @@ const nftTokenPropertiesListMap = {
     "address": "zil15xycxe26ly2p489ac8zym6zkt4zw953e6sl5zq",
     "address_base16": "0xA18983655AF9141A9cBDC1c44dE8565d44E2d239",
     "logo_url": "https://meta.viewblock.io/ZIL.zil15xycxe26ly2p489ac8zym6zkt4zw953e6sl5zq/logo",
-    "image_dict_path" : ["image"],
-    "is_zilswap_ark_supported" : false,
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": false,
     "website": "https://okimoto.io",
-    "website_nft_attributes_prefix" : "https://okimoto.io/contracts/OPEN", // e.g., https://okimoto.io/contracts/OPEN/2015
+    "website_nft_attributes_prefix": "https://okimoto.io/contracts/OPEN", // e.g., https://okimoto.io/contracts/OPEN/2015
   },
   'G-UCUTE': {
     "ticker": "G-UCUTE",
@@ -796,12 +796,12 @@ const nftTokenPropertiesListMap = {
     "address": "zil1cgltah4j78e0fy79nagwx3dgzzkehtdfwt7dez",
     "address_base16": "0xC23EBEDEb2F1F2f493C59f50E345A810Ad9baDa9",
     "logo_url": "https://unicutes.app/favicon.ico",
-    "image_dict_path" : [],
-    "is_zilswap_ark_supported" : false,
+    "image_dict_path": [],
+    "is_zilswap_ark_supported": false,
     "website": "https://unicutes.app/explore/ghost-unicutes",
-    "image_url_replace_from" : "https://ipfs.io/ipfs",
-    "image_url_replace_to" : "https://images.unicutes.app/ghost-unicutes",
-    "image_url_replace_to_suffix" : ".png",
+    "image_url_replace_from": "https://ipfs.io/ipfs",
+    "image_url_replace_to": "https://images.unicutes.app/ghost-unicutes",
+    "image_url_replace_to_suffix": ".png",
   },
   'UCUTE': {
     "ticker": "UCUTE",
@@ -809,12 +809,33 @@ const nftTokenPropertiesListMap = {
     "address": "zil1afr40j968jqx8puvxhgtp6c9c77w3y4p49a0hw",
     "address_base16": "0xEA4757C8Ba3C8063878C35D0B0eB05C7bCe892a1",
     "logo_url": "https://unicutes.app/favicon.ico",
-    "image_dict_path" : [],
-    "is_zilswap_ark_supported" : true,
+    "image_dict_path": [],
+    "is_zilswap_ark_supported": true,
     "website": "https://unicutes.app",
     "website_nft_attributes_prefix": "https://unicutes.app/explore/unicutes", // e.g., https://unicutes.app/explore/unicutes/211
-    "image_url_by_id" : "https://images.unicutes.app/09-12-2021-05-52-31-output",
-    "image_url_by_id_suffix" : ".png",
+    "image_url_by_id": "https://images.unicutes.app/09-12-2021-05-52-31-output",
+    "image_url_by_id_suffix": ".png",
+  },
+  // From here onwards it's artists' smart contract minted on SpardaWallet
+  'ICED': {
+    "ticker": "ICED",
+    "name": "Zillicones",
+    "address": "zil1p75qj26gkj4z0ldnmn7e5ukw5lvc5853wxe0lg",
+    "address_base16": "0x0Fa8092B48b4AA27fdb3DCfd9a72Cea7D98A1E91",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1p75qj26gkj4z0ldnmn7e5ukw5lvc5853wxe0lg/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": false,
+    "website": "https://www.spardawallet.com/marketsearch.html?0fa8092b48b4aa27fdb3dcfd9a72cea7d98a1e91",
+  },
+  'OAC': {
+    "ticker": "OAC",
+    "name": "Oasis of Amazing Creatures",
+    "address": "zil1gcdkmkuunj0l6hjl48zzye50g397dgslzdf4uk",
+    "address_base16": "0x461B6DDb9C9C9FfD5E5FA9C422668f444BE6A21f",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1gcdkmkuunj0l6hjl48zzye50g397dgslzdf4uk/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": false,
+    "website": "https://www.spardawallet.com/marketsearch.html?461b6ddb9c9c9ffd5e5fa9c422668f444be6a21f",
   },
 }
 
