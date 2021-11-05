@@ -35,6 +35,13 @@ window.addEventListener('DOMContentLoaded', event => {
             toggleSidebar();
         }
         showPriceChart(tokenSymbol);
+
+        // Scroll to the top of the price chart upon tapping a token on the sidebar
+        // This is because the screen is not focused on the right elements after scrolling through the sidebar.
+        // If use use the dropdown box, don't scroll because the field is visible anyway.
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $("#price_chart_content_container").offset().top
+        }, 200);
     });
 });
 
