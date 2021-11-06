@@ -1083,10 +1083,11 @@ block content
                   img(class='mr-3' height='36' src=nftTokenProperty.logo_url loading='lazy')
                   span(class='h3 font-weight-bold mr-3' style='vertical-align: middle;')= nftTokenProperty.name
 
-                  a(class='mini-button-box' href=nftTokenProperty.website target='_blank')
-                    i(class='fa fa-globe ml-1 mr-2')
-                    span='Website'
-                    i(class='fa fa-external-link ml-2 mr-1')
+                  if nftTokenProperty.website
+                    a(class='mini-button-box' href=nftTokenProperty.website target='_blank')
+                      i(class='fa fa-globe ml-1 mr-2')
+                      span='Website'
+                      i(class='fa fa-external-link ml-2 mr-1')
 
                 div(class='container')
                   div(id=nftTicker+'_content_list' class='row')

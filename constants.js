@@ -817,6 +817,16 @@ const nftTokenPropertiesListMap = {
     "image_url_by_id_suffix": ".png",
   },
   // From here onwards it's artists' smart contract minted on SpardaWallet
+  'DZB': {
+    "ticker": "DZB",
+    "name": "DRAGON-ZIL-BATZ NFT",
+    "address": "zil1usmdpndav207ash095txmmn7pkjj0023x2w48c",
+    "address_base16": "0xe436d0CDbD629feeC2EF2D166dEe7e0da527bD51",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1usmdpndav207ash095txmmn7pkjj0023x2w48c/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": false,
+    "website": "https://zilloween.heygo.me/",
+  },
   'ICED': {
     "ticker": "ICED",
     "name": "Zillicones",
@@ -836,6 +846,15 @@ const nftTokenPropertiesListMap = {
     "image_dict_path": ["image"],
     "is_zilswap_ark_supported": false,
     "website": "https://www.spardawallet.com/marketsearch.html?461b6ddb9c9c9ffd5e5fa9c422668f444be6a21f",
+  },
+  'SMOOTHIE': {
+    "ticker": "SMOOTHIE",
+    "name": "ZILSMOOTHIES",
+    "address": "zil1atyskxud7j48k6dfl43uttujr0t4rszdwrk3q4",
+    "address_base16": "0xEAc90B1B8Df4AA7B69a9fd63c5Af921bd751c04D",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1atyskxud7j48k6dfl43uttujr0t4rszdwrk3q4/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": false,
   },
 }
 
