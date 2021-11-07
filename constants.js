@@ -817,6 +817,16 @@ const nftTokenPropertiesListMap = {
     "image_url_by_id_suffix": ".png",
   },
   // From here onwards it's artists' smart contract minted on SpardaWallet
+  'BATZ': {
+    "ticker": "BATZ",
+    "name": "ZILBATZ NFT",
+    "address": "zil1uydfxf7xw5xjmxs7jduwkgc2sgmm2astsfq7hc",
+    "address_base16": "0xe11a9327c6750D2D9A1e9378eB230A8237B5760b",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1uydfxf7xw5xjmxs7jduwkgc2sgmm2astsfq7hc/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": false,
+    "website": "https://www.spardawallet.com/marketsearch.html?e11a9327c6750d2d9a1e9378eb230a8237b5760b",
+  },
   'DZB': {
     "ticker": "DZB",
     "name": "DRAGON-ZIL-BATZ NFT",
@@ -836,6 +846,16 @@ const nftTokenPropertiesListMap = {
     "image_dict_path": ["image"],
     "is_zilswap_ark_supported": false,
     "website": "https://www.spardawallet.com/marketsearch.html?0fa8092b48b4aa27fdb3dcfd9a72cea7d98a1e91",
+  },
+  'ICED-2': {
+    "ticker": "ICED-2",
+    "name": "Zillicones Batch 2",
+    "address": "zil1xnn9lspfx696x5yw3jcvuzfnnqpxsnfzq0pzdp",
+    "address_base16": "0x34E65FC029368BA3508e8CB0Ce09339802684d22",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1xnn9lspfx696x5yw3jcvuzfnnqpxsnfzq0pzdp/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": false,
+    "website": "https://www.spardawallet.com/marketsearch.html?34e65fc029368ba3508e8cb0ce09339802684d22",
   },
   'OAC': {
     "ticker": "OAC",
