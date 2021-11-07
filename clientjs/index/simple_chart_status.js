@@ -139,5 +139,10 @@ if (typeof exports !== 'undefined') {
         $ = global.jQuery = require('jquery');
     }
 
+    if (typeof isCurrentDarkMode === 'undefined') {
+        UtilsTheme = require('../utils_theme.js');
+        isCurrentDarkMode = UtilsTheme.isCurrentDarkMode;
+    }
+
     exports.SimpleChartStatus = SimpleChartStatus;
 }

@@ -190,7 +190,7 @@ class PriceChartStatus {
 
         let imgSrc = this.zrcTokenPropertiesListMap_[ticker].logo_url;
         if (isCurrentDarkMode()) {
-            imgSrc = imgSrc + '?t=dark';
+            imgSrc = imgSrc + CONST_VIEWBLOCK_LOGO_DARK_SUFFIX;
         }
         $('#price_chart_token_logo').attr('src', imgSrc);
         $('#price_chart_token_name').text(this.zrcTokenPropertiesListMap_[ticker].name);
@@ -485,6 +485,15 @@ if (typeof exports !== 'undefined') {
     if (typeof getNormalizedPercent === 'undefined') {
         TokenUtils = require('./token_utils.js');
         getNormalizedPercent = TokenUtils.getNormalizedPercent;
+    }
+
+    if (typeof isCurrentDarkMode === 'undefined') {
+        UtilsTheme = require('../utils_theme.js');
+        isCurrentDarkMode = UtilsTheme.isCurrentDarkMode;
+    }
+    if (typeof CONST_VIEWBLOCK_LOGO_DARK_SUFFIX === 'undefined') {
+        UtilsConstants = require('../utils_constants.js');
+        CONST_VIEWBLOCK_LOGO_DARK_SUFFIX = UtilsConstants.CONST_VIEWBLOCK_LOGO_DARK_SUFFIX;
     }
 
     exports.PriceChartStatus = PriceChartStatus;

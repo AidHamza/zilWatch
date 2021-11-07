@@ -78,6 +78,18 @@ class NftCollectionStatus {
             singleNftAttributesHref = this.nftTokenPropertiesListMap_[nftTicker].website_nft_attributes_prefix + "/" + singleNftAttr.id;
             nftTokenLogo = this.nftTokenPropertiesListMap_[nftTicker].logo_url;
         }
+
+        if (isCurrentDarkMode()) {
+            zilswapHref += CONST_VIEWBLOCK_LOGO_DARK_SUFFIX;
+            viewblockHref += CONST_VIEWBLOCK_LOGO_DARK_SUFFIX;
+            if (singleNftAttributesHref && isContainsMetaViewBlock(singleNftAttributesHref)) {
+                singleNftAttributesHref += CONST_VIEWBLOCK_LOGO_DARK_SUFFIX;
+            }
+            if (nftTokenLogo && isContainsMetaViewBlock(nftTokenLogo)) {
+                nftTokenLogo += CONST_VIEWBLOCK_LOGO_DARK_SUFFIX;
+            }
+        }
+
         let isZilswapArkSupported = false;
         if ('is_zilswap_ark_supported' in this.nftTokenPropertiesListMap_[nftTicker]) {
             isZilswapArkSupported = this.nftTokenPropertiesListMap_[nftTicker].is_zilswap_ark_supported;
@@ -90,6 +102,11 @@ class NftCollectionStatus {
     }
 
     getSingleNftHtmlTemplate(nftTicker, nftId, nftImageSrc, viewblockHref, zilswapHref, singleNftAttributesHref, nftTokenLogo, isZilswapArkSupported) {
+        let viewblockLogo = "https://cdn.viewblock.io/viewblock-light.png";
+        if (isCurrentDarkMode()) {
+            viewblockLogo = "https://cdn.viewblock.io/viewblock-dark.png";
+        }
+
         let htmlTemplate = "<div class='col-6 col-lg-4 col-xl-3' style='padding: 0.35rem;' >" +
             "<div class='card' >" +
             "<img class='card-img-top' src='" + nftImageSrc + "' alt='NFT " + nftTicker + " " + nftId + "' loading='lazy' />" +
@@ -98,7 +115,7 @@ class NftCollectionStatus {
             "<span class='h5 font-weight-bold'>" + nftTicker + " #" + nftId + "</span>" +
             "</div>" +
             "<a class='mini-button-box mr-1' href='" + viewblockHref + "' target='_blank' >" +
-            "<img height='20' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo' />" +
+            "<img height='20' src='" + viewblockLogo + "' alt='ViewBlock logo' />" +
             "<i class='fa fa-external-link ml-2 mr-1'></i>" +
             "</a>";
         if (isZilswapArkSupported) {
@@ -113,9 +130,9 @@ class NftCollectionStatus {
                 "<i class='fa fa-external-link ml-2 mr-1'></i>" +
                 "</a>";
         }
-            "</div>" +
-            "</div>" +
-            "</div>";
+        "</div>" +
+        "</div>" +
+        "</div>";
         return htmlTemplate;
     }
 

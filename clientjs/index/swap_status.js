@@ -295,9 +295,8 @@ class SwapStatus {
             return;
         }
 
-        let isCurrentDark = isCurrentDarkMode();
-        if (isCurrentDark) {
-            tokenLogoSrc += '?t=dark';
+        if (isCurrentDarkMode()) {
+            tokenLogoSrc += CONST_VIEWBLOCK_LOGO_DARK_SUFFIX;
         }
 
         // Compute necessary data
@@ -1181,6 +1180,15 @@ if (typeof exports !== 'undefined') {
     if (typeof SwapTxnWrapper === 'undefined') {
         Stw = require('./swap_txn_wrapper.js');
         SwapTxnWrapper = Stw.SwapTxnWrapper;
+    }
+
+    if (typeof isCurrentDarkMode === 'undefined') {
+        UtilsTheme = require('../utils_theme.js');
+        isCurrentDarkMode = UtilsTheme.isCurrentDarkMode;
+    }
+    if (typeof CONST_VIEWBLOCK_LOGO_DARK_SUFFIX === 'undefined') {
+        UtilsConstants = require('../utils_constants.js');
+        CONST_VIEWBLOCK_LOGO_DARK_SUFFIX = UtilsConstants.CONST_VIEWBLOCK_LOGO_DARK_SUFFIX;
     }
 
     if (typeof $ === 'undefined') {

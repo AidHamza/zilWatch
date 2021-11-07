@@ -3,6 +3,7 @@ var fs = require('fs')
 var $ = indexJsdom.$;
 
 var assert = require('assert');
+var UtilsConstants = require('../../../clientjs/utils_constants.js');
 var ZilswapDexStatus = require('../../../clientjs/index//zilswap_dex_status.js');
 var CoinPriceStatus = require('../../../clientjs/index//coin_price_status.js');
 var WalletBalanceStatus = require('../../../clientjs/index//wallet_balance_status.js');
@@ -63,11 +64,11 @@ function assertDefaultToToken() {
 
 function assertFromToken(ticker) {
     if (ticker === 'ZIL') {
-        assert.strictEqual($('#swap_select_token_from_img').attr('src'), 'https://meta.viewblock.io/ZIL/logo?t=dark');
+        assert.strictEqual($('#swap_select_token_from_img').attr('src'), 'https://meta.viewblock.io/ZIL/logo' + UtilsConstants.CONST_VIEWBLOCK_LOGO_DARK_SUFFIX);
         assert.strictEqual($('#swap_select_token_from_img').css('display'), '');
         assert.strictEqual($('#swap_select_token_from_ticker').text(), 'ZIL');
     } else {
-        assert.strictEqual($('#swap_select_token_from_img').attr('src'), Constants.zrcTokenPropertiesListMap[ticker].logo_url + "?t=dark");
+        assert.strictEqual($('#swap_select_token_from_img').attr('src'), Constants.zrcTokenPropertiesListMap[ticker].logo_url + UtilsConstants.CONST_VIEWBLOCK_LOGO_DARK_SUFFIX);
         assert.strictEqual($('#swap_select_token_from_img').css('display'), '');
         assert.strictEqual($('#swap_select_token_from_ticker').text(), ticker);
     }
@@ -76,11 +77,11 @@ function assertFromToken(ticker) {
 function assertToToken(ticker) {
 
     if (ticker === 'ZIL') {
-        assert.strictEqual($('#swap_select_token_to_img').attr('src'), 'https://meta.viewblock.io/ZIL/logo?t=dark');
+        assert.strictEqual($('#swap_select_token_to_img').attr('src'), 'https://meta.viewblock.io/ZIL/logo' + UtilsConstants.CONST_VIEWBLOCK_LOGO_DARK_SUFFIX);
         assert.strictEqual($('#swap_select_token_to_img').css('display'), '');
         assert.strictEqual($('#swap_select_token_to_ticker').text(), 'ZIL');
     } else {
-        assert.strictEqual($('#swap_select_token_to_img').attr('src'), Constants.zrcTokenPropertiesListMap[ticker].logo_url + "?t=dark");
+        assert.strictEqual($('#swap_select_token_to_img').attr('src'), Constants.zrcTokenPropertiesListMap[ticker].logo_url + UtilsConstants.CONST_VIEWBLOCK_LOGO_DARK_SUFFIX);
         assert.strictEqual($('#swap_select_token_to_img').css('display'), '');
         assert.strictEqual($('#swap_select_token_to_ticker').text(), ticker);
     }
