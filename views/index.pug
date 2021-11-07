@@ -1057,6 +1057,9 @@ block content
               ul
                 each nftTokenProperty, nftTicker in nftTokenPropertiesListMap
                   li
+                    a(class='mini-button-box mr-2' href='https://viewblock.io/zilliqa/address/' + nftTokenProperty.address target='_blank')
+                      img(height='20' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo')
+                      i(class='fa fa-external-link ml-2 mr-1')
                     a(href=nftTokenProperty.website)=nftTokenProperty.name + ' (' + nftTicker + ')'
 
             div(class='balance-box container')
@@ -1084,10 +1087,14 @@ block content
                   span(class='h3 font-weight-bold mr-3' style='vertical-align: middle;')= nftTokenProperty.name
 
                   if nftTokenProperty.website
-                    a(class='mini-button-box' href=nftTokenProperty.website target='_blank')
+                    a(class='mini-button-box mr-1' href=nftTokenProperty.website target='_blank')
                       i(class='fa fa-globe ml-1 mr-2')
                       span='Website'
                       i(class='fa fa-external-link ml-2 mr-1')
+
+                  a(class='mini-button-box mr-1' href='https://viewblock.io/zilliqa/address/' + nftTokenProperty.address target='_blank')
+                    img(height='20' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo')
+                    i(class='fa fa-external-link ml-2 mr-1')
 
                 div(class='container')
                   div(id=nftTicker+'_content_list' class='row')
