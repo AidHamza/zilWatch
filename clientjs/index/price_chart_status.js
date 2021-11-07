@@ -189,7 +189,7 @@ class PriceChartStatus {
         let address = this.zrcTokenPropertiesListMap_[ticker].address;
 
         let imgSrc = this.zrcTokenPropertiesListMap_[ticker].logo_url;
-        if ($("html").hasClass("dark-mode")) {
+        if (isCurrentDarkMode()) {
             imgSrc = imgSrc + '?t=dark';
         }
         $('#price_chart_token_logo').attr('src', imgSrc);
@@ -436,7 +436,7 @@ class PriceChartStatus {
             priceLineVisible: false,
             layout: {
                 backgroundColor: CONST_WHITE_TRANSPARENT_RGBA_STRING,
-                textColor: $("html").hasClass("dark-mode") ? '#d5d9dd' : '#212529',
+                textColor: isCurrentDarkMode() ? '#d5d9dd' : '#212529',
             },
             rightPriceScale: {
                 mode: LightweightCharts.PriceScaleMode.Normal, // Can be .Logarithmic or .Percentage
@@ -448,10 +448,10 @@ class PriceChartStatus {
             },
             grid: {
                 vertLines: {
-                    color: $("html").hasClass("dark-mode") ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)',
+                    color: isCurrentDarkMode() ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)',
                 },
                 horzLines: {
-                    color: $("html").hasClass("dark-mode") ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)',
+                    color: isCurrentDarkMode() ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)',
                 },
             },
         });
@@ -464,7 +464,7 @@ class PriceChartStatus {
         let priceDifference = data[data.length - 1].value - data[0].value;
         let series = chart.addAreaSeries({
             topColor: priceDifference >= 0 ? CONST_GREEN_TOP_GRADIENT_RGBA_STRING : CONST_RED_TOP_GRADIENT_RGBA_STRING,
-            bottomColor: $("html").hasClass("dark-mode") ? CONST_BLACK_TRANSPARENT_RGBA_STRING : CONST_WHITE_TRANSPARENT_RGBA_STRING,
+            bottomColor: isCurrentDarkMode() ? CONST_BLACK_TRANSPARENT_RGBA_STRING : CONST_WHITE_TRANSPARENT_RGBA_STRING,
             lineColor: priceDifference >= 0 ? CONST_GREEN_LINE_RGBA_STRING : CONST_RED_LINE_RGBA_STRING,
             lineWidth: 2,
         });

@@ -21,7 +21,7 @@ class SimpleChartStatus {
     }
 
     refreshChartTheme() {
-        let currThemeBottomColor = $("html").hasClass("dark-mode") ? CONST_BLACK_TRANSPARENT_RGBA_STRING : CONST_WHITE_TRANSPARENT_RGBA_STRING;
+        let currThemeBottomColor = isCurrentDarkMode() ? CONST_BLACK_TRANSPARENT_RGBA_STRING : CONST_WHITE_TRANSPARENT_RGBA_STRING;
         for (let i = 0; i < this.chartSeriesList_.length; i++) {
             this.chartSeriesList_[i].applyOptions({
                 bottomColor: currThemeBottomColor,
@@ -121,7 +121,7 @@ class SimpleChartStatus {
         let priceDifference = data[data.length - 1].value - data[0].value;
         let series = chart.addAreaSeries({
             topColor: priceDifference >= 0 ? CONST_GREEN_TOP_GRADIENT_RGBA_STRING : CONST_RED_TOP_GRADIENT_RGBA_STRING,
-            bottomColor: $("html").hasClass("dark-mode") ? CONST_BLACK_TRANSPARENT_RGBA_STRING : CONST_WHITE_TRANSPARENT_RGBA_STRING,
+            bottomColor: isCurrentDarkMode() ? CONST_BLACK_TRANSPARENT_RGBA_STRING : CONST_WHITE_TRANSPARENT_RGBA_STRING,
             lineColor: priceDifference >= 0 ? CONST_GREEN_LINE_RGBA_STRING : CONST_RED_LINE_RGBA_STRING,
             lineWidth: 2,
             priceLineVisible: false,

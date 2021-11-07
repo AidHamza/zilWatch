@@ -41,7 +41,7 @@ class BarChartDrawer {
         if (customChartColor) {
             chartColor = customChartColor;
         }
-        if ($("html").hasClass("dark-mode")) {
+        if (isCurrentDarkMode()) {
             fontColor = this.fontColorDarkMode_;
             chartColor = this.chartColorDarkMode_;
             if (customChartColorDarkMode) {

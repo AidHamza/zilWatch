@@ -295,7 +295,7 @@ class SwapStatus {
             return;
         }
 
-        let isCurrentDark = $("html").hasClass("dark-mode");
+        let isCurrentDark = isCurrentDarkMode();
         if (isCurrentDark) {
             tokenLogoSrc += '?t=dark';
         }
