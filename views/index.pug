@@ -1124,10 +1124,19 @@ block content
                     td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 90%;' )
                       h5(id='zil_balance_precise' style='vertical-align: middle; margin:0;')= '0'
 
+                  - let currTokenStartingAlphabet = '-';
                   each tokenProperties, ticker in zrcTokenPropertiesListMap
-                    - var trStyle = ''
+                    - let trStyle = ''
                     if tokenProperties.ticker === 'XPORT'
                       - trStyle = 'display: none;'
+
+                    //- This is for Alphabet header for each new letter.
+                    - let isNewCharStart = tokenProperties.ticker.charAt(0).toUpperCase() !== currTokenStartingAlphabet;
+                    if isNewCharStart 
+                      - currTokenStartingAlphabet = tokenProperties.ticker.charAt(0).toUpperCase();
+                      tr
+                        th(colspan=3 style="border-top: 1px solid var(--light-alpha-10);")
+                          span=currTokenStartingAlphabet
 
                     tr(id=ticker+'_token_list_row' class='token-list-row' data-ticker=ticker style=trStyle)
                       th(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
