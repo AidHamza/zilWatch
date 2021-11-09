@@ -246,32 +246,44 @@ block content
                     table(class='table table-sm table-borderless' width='100%')
                       tbody(class='table-background-color-header')
                         tr
-                          th(colspan=2 style='text-align: left; white-space: nowrap; width: 35%;' )= 'Zilswap LP'
-                          th(style='text-align: right; white-space: nowrap; width: 25%;')
-                            span= 'Weekly (ZWAP)'
-                          th(style='text-align: right; white-space: nowrap; width: 20%;')
+                          th(colspan=2 style='text-align: left; white-space: nowrap; width: 10%;' )= 'Zilswap LP'
+                          th(colspan=2 style='text-align: right; white-space: nowrap; width: 10%;')
+                            span= 'Weekly Reward'
+                          th(style='text-align: right; white-space: nowrap; width: 10%;')
                             span= 'Daily %'
-                          th(style='text-align: right; white-space: nowrap; width: 20%;')
+                          th(style='text-align: right; white-space: nowrap; width: 10%;')
                             span= 'APR %'
 
-                      tbody(class='table-background-color')
+                      tbody
+                        - let oddRow = false
                         each circulatingSupply, ticker in zrcTokensCirculatingSupply
                           if !(ticker in zrcTokenPropertiesListMap)
                             - continue
-                          if zilswapDexReward[ticker] && ticker !== 'XPORT'
-                            - let tokenProperties = zrcTokenPropertiesListMap[ticker]
 
-                            tr
-                              td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                                img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
-                              td(style='text-align: left; white-space: nowrap; width: 25%;' )
-                                span= tokenProperties.ticker + '-ZIL'
-                              td(style='text-align: right; white-space: nowrap; width: 25%;' )
-                                span= zilswapDexReward[ticker].zwap_reward
-                              td(style='text-align: right; white-space: nowrap; width: 20%;' )
-                                span= zilswapDexReward[ticker].daily_percent
-                              td(style='text-align: right; white-space: nowrap; width: 20%;' )
-                                span= zilswapDexReward[ticker].apr_percent
+                          if zilswapDexReward[ticker] && ticker !== 'XPORT'
+                            - oddRow = !oddRow
+                            - let tokenProperties = zrcTokenPropertiesListMap[ticker]
+                            - let numOfRewardTickers = Object.keys(zilswapDexReward[ticker]).length
+                            - let firstIteration = true
+
+                            each rewardAttributes, rewardTicker in zilswapDexReward[ticker]
+                              - let currLogoUrl = rewardTicker in zrcTokenPropertiesListMap ? zrcTokenPropertiesListMap[rewardTicker].logo_url : 'https://meta.viewblock.io/ZIL/logo';
+                              tr(class= oddRow ? 'table-background-dark' : 'table-background-light')
+                                if firstIteration
+                                  td(rowspan=numOfRewardTickers scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                                    img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
+                                  td(rowspan=numOfRewardTickers style='display:table-cell; vertical-align: middle; text-align: left; white-space: nowrap;' )
+                                    span= tokenProperties.ticker + '-ZIL'
+                                  - firstIteration = false
+
+                                td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                                  span= rewardAttributes.reward_amount
+                                td(style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                                  img(height='18' width='18' src=currLogoUrl loading='lazy')
+                                td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                                  span= rewardAttributes.daily_percent
+                                td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                                  span= rewardAttributes.apr_percent
 
 
           //---------------------- Start of Swap DIV ---------------------
