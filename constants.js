@@ -875,6 +875,7 @@ const nftTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil1atyskxud7j48k6dfl43uttujr0t4rszdwrk3q4/logo",
     "image_dict_path": ["image"],
     "is_zilswap_ark_supported": false,
+    "website": "https://www.spardawallet.com/marketsearch.html?eac90b1b8df4aa7b69a9fd63c5af921bd751c04d",
   },
 }
 
