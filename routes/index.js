@@ -25,16 +25,15 @@ router.get('/', function (req, res, next) {
       "coin_price_coingecko_24h_ago", // 5
       "zilswap_dex_24h_trade_volume_timestamp_seconds", // 6
       "zilswap_dex_24h_trade_volume", // 7
-      "zilswap_dex_epoch_info_timestamp_seconds", // 8
-      "zilswap_dex_epoch_info", // 9
+      "coin_market_coingecko", // 8
+      "zilswap_distributor_to_ticker_map", // 9
       "zrc_tokens_total_supply", // 10
       "zrc_tokens_circulating_supply", // 11
       "zrc_tokens_circulating_supply_sorted_market_cap", // 12
       "zilswap_dex_reward_and_apr", // 13
       "zil_staking_reward_and_apr", // 14
-      "coin_market_coingecko", // 15
-      "zilswap_dex_zrc_tokens_price_in_zil_24h_low", // 16
-      "zilswap_dex_zrc_tokens_price_in_zil_24h_high", // 17
+      "zilswap_dex_zrc_tokens_price_in_zil_24h_low", // 15
+      "zilswap_dex_zrc_tokens_price_in_zil_24h_high", // 16
     ],
     function (err, reply) {
       let currZilswapDexSmartContractStateTimestampSeconds = null; // 0
@@ -48,19 +47,17 @@ router.get('/', function (req, res, next) {
       let currZilswapDex24hTradeVolumeTimestampSeconds = null; // 6
       let currZilswapDex24hTradeVolume = null; // 7
 
-      let currZilswapDexEpochInfoTimestampSeconds = null; // 8
-      let currZilswapDexEpochInfo = null; // 9
+      let currCoinMarketCoingecko = null; // 8
+
+      let currZilswapDistributorToTickerMap = null; // 9
 
       let currZrcTokensTotalSupply = constants.emptyZrcTokensSupply; // 10
       let currZrcTokensCirculatingSupply = constants.emptyZrcTokensSupply; // 11 and 12
 
       let currZilswapDexReward = null; // 13
       let currZilStakingReward = null; // 14
-
-      let currCoinMarketCoingecko = null; // 15
-
-      let currZrcTokenPrice24hLow = null // 16
-      let currZrcTokenPrice24hHigh = null // 17
+      let currZrcTokenPrice24hLow = null; // 15
+      let currZrcTokenPrice24hHigh = null; // 16
 
       let currentDate = new Date();
       let currentTimeSeconds = currentDate.getTime() / 1000;
@@ -88,7 +85,7 @@ router.get('/', function (req, res, next) {
           if (reply[5]) {
             currCoinPriceCoingecko24hAgo = JSON.parse(reply[5]);
           }
-          
+
           if (reply[6]) {
             currZilswapDex24hTradeVolumeTimestampSeconds = parseInt(reply[6]);
             // Only use the cache if it's within 200 seconds.
@@ -98,13 +95,13 @@ router.get('/', function (req, res, next) {
           }
 
           if (reply[8]) {
-            currZilswapDexEpochInfoTimestampSeconds = parseInt(reply[8]);
-            // Only use the cache if it's within 300 seconds.
-            if (currentTimeSeconds - currZilswapDexEpochInfoTimestampSeconds <= 300 && reply[9]) {
-              currZilswapDexEpochInfo = JSON.parse(reply[9]);
-            }
+            currCoinMarketCoingecko = JSON.parse(reply[8]);
           }
-          
+
+          if (reply[9]) {
+            currZilswapDistributorToTickerMap = JSON.parse(reply[9]);
+          }
+
           if (reply[10]) {
             currZrcTokensTotalSupply = JSON.parse(reply[10]);
           }
@@ -125,14 +122,10 @@ router.get('/', function (req, res, next) {
           }
 
           if (reply[15]) {
-            currCoinMarketCoingecko = JSON.parse(reply[15]);
+            currZrcTokenPrice24hLow = JSON.parse(reply[15]);
           }
-
           if (reply[16]) {
-            currZrcTokenPrice24hLow = JSON.parse(reply[16]);
-          }
-          if (reply[17]) {
-            currZrcTokenPrice24hHigh = JSON.parse(reply[17]);
+            currZrcTokenPrice24hHigh = JSON.parse(reply[16]);
           }
 
         } catch (ex) {
@@ -153,12 +146,12 @@ router.get('/', function (req, res, next) {
         coinPriceCoingecko: currCoinPriceCoingecko,
         coinPriceCoingecko24hAgo: currCoinPriceCoingecko24hAgo,
         zilswapDex24hTradeVolume: currZilswapDex24hTradeVolume,
-        zilswapDexEpochInfo: currZilswapDexEpochInfo,
+        coinMarketCoingecko: currCoinMarketCoingecko,
+        zilswapDistributorToTickerMap: currZilswapDistributorToTickerMap,
         zrcTokensTotalSupply: currZrcTokensTotalSupply,
         zrcTokensCirculatingSupply: currZrcTokensCirculatingSupply,
         zilswapDexReward: currZilswapDexReward,
         zilStakingReward: currZilStakingReward,
-        coinMarketCoingecko: currCoinMarketCoingecko,
         zrcTokenPrice24hLow: currZrcTokenPrice24hLow,
         zrcTokenPrice24hHigh: currZrcTokenPrice24hHigh,
       });
