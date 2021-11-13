@@ -149,6 +149,9 @@ class ZilswapLpZwapRewardStatus {
 
     /** Generic function to compute all types of reward except next epoch (e.g., unclaimed, prev) */
     computeUnclaimedOrPrevEpochLoaded(unclaimedOrPrevRewardList, appendViewSingleRewardAllLpFunction, bindViewAllLpFiatFunction) {
+        if (!this.zilswapDistributorToTickerMap_) {
+            return;
+        }
         let rewardList = unclaimedOrPrevRewardList;
         if (!rewardList || rewardList.length < 1) {
             // If there is no data, it means user has no unclaimed or prev reward, show 0 to user
