@@ -817,6 +817,17 @@ const nftTokenPropertiesListMap = {
     "website": "https://zilapes.com",
     "website_nft_attributes_prefix": "https://okimoto.io/contracts/APE", // e.g., https://okimoto.io/contracts/APE/2015
   },
+  'GODZ': {
+    "ticker": "GODZ",
+    "name": "Godzilliqa NFT",
+    "address": "zil1z0eeqa7t673gv94v83sdrk9fyffuayuxpkscna",
+    "address_base16": "0x13F39077CBd7a28616ac3c60D1D8A92253CE9386",
+    "logo_url": "https://pbs.twimg.com/media/FEGJlrCXIAQNIZE?format=png&name=small",
+    "image_dict_path": ['image'],
+    "is_zilswap_ark_supported": false,
+    "website": "https://okimoto.io/godzilliqa",
+    "website_nft_attributes_prefix": "https://okimoto.io/contracts/GODZ", // e.g., https://okimoto.io/contracts/GODZ/371
+  },
   'OPEN': {
     "ticker": "OPEN",
     "name": "Okimoto Open NFT",
