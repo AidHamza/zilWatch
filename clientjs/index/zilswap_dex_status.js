@@ -95,20 +95,37 @@ class ZilswapDexStatus {
         }
         let hasBalanceData = this.hasBalanceData();
 
-        // Special case for XPORT: 100 XPORT = 1 PORT
-        let xportKey = 'XPORT';
-        let hasXport = false;
-        if (xportKey in this.zrcTokenPropertiesListMap_) {
-            hasXport = true;
-        }
+        // Special token with fixed rate contract must be defined at the end, so that we finished
+        // processing the rest of the zrc tokens before processing the fixed rate ones.
         for (let key in this.zrcTokenPropertiesListMap_) {
-            // Special case for XPORT: 100 XPORT = 1 PORT
-            if (hasXport && key === xportKey) {
+            let zrcTokenProperties = this.zrcTokenPropertiesListMap_[key];
+            let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();
+
+            // Special case if it's a fixed token rate
+            if ('fixed_token_rate' in zrcTokenProperties) {
+                let zilswapSinglePairPublicStatus = null;
+                // Special token with fixed rate
+                let fixedRate = parseFloat(zrcTokenProperties['fixed_token_rate']['value']);
+                let fixedRateTicker = zrcTokenProperties['fixed_token_rate']['ticker'];
+
+                if (fixedRateTicker in this.zrcTokenPropertiesListMap_) {
+                    let baseSinglePairPublicStatus = this.getZilswapPairPublicStatus(fixedRateTicker);
+                    if (baseSinglePairPublicStatus) {
+                        zilswapSinglePairPublicStatus = new ZilswapSinglePairPublicStatus(baseSinglePairPublicStatus.totalPoolZilAmount * fixedRate, baseSinglePairPublicStatus.totalPoolZrcTokenAmount);
+                    }
+                } else if (fixedRateTicker.toLowerCase() === 'zil') {
+                    // It's pegged to ZIL, there is no need for a pool, put a random 100mil pool
+                    zilswapSinglePairPublicStatus = new ZilswapSinglePairPublicStatus(100000000 * fixedRate, 100000000)
+                }
+
+                if (zilswapSinglePairPublicStatus) {
+                    // Set public data
+                    this.zilswapPairPublicStatusMap_[key] = zilswapSinglePairPublicStatus;
+                }
                 continue;
             }
 
-            let zrcTokenProperties = this.zrcTokenPropertiesListMap_[key];
-            let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();
+            // Regular case if it's a regular token
 
             // To get pool status and zrc token price in ZIL
             let zilswapSinglePairPublicStatus = getZilswapSinglePairPublicStatusFromDexState(this.zilswapDexSmartContractStateData_, zrcTokenAddressBase16, zrcTokenProperties.decimals);
@@ -117,12 +134,6 @@ class ZilswapDexStatus {
             }
             // Set public data
             this.zilswapPairPublicStatusMap_[key] = zilswapSinglePairPublicStatus;
-
-            // Special case for XPORT: 100 XPORT = 1 PORT
-            if (hasXport && key === 'PORT') {
-                let xportZilswapSinglePairPublicStatus = new ZilswapSinglePairPublicStatus(zilswapSinglePairPublicStatus.totalPoolZilAmount, zilswapSinglePairPublicStatus.totalPoolZrcTokenAmount * 100);
-                this.zilswapPairPublicStatusMap_[xportKey] = xportZilswapSinglePairPublicStatus;
-            }
 
             // Compute personal status
             if (!hasBalanceData || !this.walletAddressBase16_) {
@@ -146,26 +157,40 @@ class ZilswapDexStatus {
             this.zilswapDexSmartContractState24hAgoData_.result.balances = this.zilswapDexSmartContractStateData_.result.balances;
         }
         for (let key in this.zrcTokenPropertiesListMap_) {
-            // Special case for XPORT: 100 XPORT = 1 PORT
-            if (hasXport && key === xportKey) {
-                continue;
-            }
-
             let zrcTokenProperties = this.zrcTokenPropertiesListMap_[key];
             let zrcTokenAddressBase16 = zrcTokenProperties.address_base16.toLowerCase();
 
+            // Special case if it's a fixed token rate
+            if ('fixed_token_rate' in zrcTokenProperties) {
+                let zilswapSinglePairPublicStatus = null;
+                // Special token with fixed rate
+                let fixedRate = parseFloat(zrcTokenProperties['fixed_token_rate']['value']);
+                let fixedRateTicker = zrcTokenProperties['fixed_token_rate']['ticker'];
+
+                if (fixedRateTicker in this.zrcTokenPropertiesListMap_) {
+                    let baseSinglePairPublicStatus = this.getZilswapPairPublicStatus24hAgo(fixedRateTicker);
+                    if (baseSinglePairPublicStatus) {
+                        zilswapSinglePairPublicStatus = new ZilswapSinglePairPublicStatus(baseSinglePairPublicStatus.totalPoolZilAmount * fixedRate, baseSinglePairPublicStatus.totalPoolZrcTokenAmount);
+                    }
+                } else if (fixedRateTicker.toLowerCase() === 'zil') {
+                    // It's pegged to ZIL, there is no need for a pool, put a random 100mil pool
+                    zilswapSinglePairPublicStatus = new ZilswapSinglePairPublicStatus(100000000 * fixedRate, 100000000)
+                }
+
+                if (zilswapSinglePairPublicStatus) {
+                    // Set public data
+                    this.zilswapPairPublicStatus24hAgoMap_[key] = zilswapSinglePairPublicStatus;
+                }
+                continue;
+            }
+
+            // Regular case if it's a regular token
             let zilswapSinglePairPublicStatus24hAgo = getZilswapSinglePairPublicStatusFromDexState(this.zilswapDexSmartContractState24hAgoData_, zrcTokenAddressBase16, zrcTokenProperties.decimals);
             if (!zilswapSinglePairPublicStatus24hAgo) {
                 continue;
             }
             // Set public data
             this.zilswapPairPublicStatus24hAgoMap_[key] = zilswapSinglePairPublicStatus24hAgo;
-
-            // Special case for XPORT: 100 XPORT = 1 PORT
-            if (hasXport && key === 'PORT') {
-                let xportZilswapSinglePairPublicStatus24hAgo = new ZilswapSinglePairPublicStatus(zilswapSinglePairPublicStatus24hAgo.totalPoolZilAmount, zilswapSinglePairPublicStatus24hAgo.totalPoolZrcTokenAmount * 100);
-                this.zilswapPairPublicStatus24hAgoMap_[xportKey] = xportZilswapSinglePairPublicStatus24hAgo;
-            }
 
             if (!hasBalanceData || !this.walletAddressBase16_) {
                 continue;

@@ -570,14 +570,6 @@ const zrcTokenPropertiesListMap = {
     "website": "https://xcadnetwork.com/",
     "telegram": "https://t.me/xcademy",
   },
-  'XPORT': {
-    "ticker": "XPORT",
-    "name": "PackagePortal",
-    "address": "zil1hpwshtxspjakjh5sn7vn4e7pp4gaqkefup24h2",
-    "address_base16": "0xB85D0BAcd00Cbb695e909f993aE7c10D51D05B29",
-    "logo_url": "https://meta.viewblock.io/ZIL.zil1hpwshtxspjakjh5sn7vn4e7pp4gaqkefup24h2/logo",
-    "decimals": 4,
-  },
   'XSGD': {
     "ticker": "XSGD",
     "name": "SGD Stablecoin",
@@ -709,6 +701,32 @@ const zrcTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil1ucvrn22x8366vzpw5t7su6eyml2auczu6wnqqg/logo",
     "decimals": 8,
     "website": "https://zyro.finance/",
+  },
+  // Special token with fixed rate contract needs to be defined at the end, so that we finished
+  // processing the rest of the tokens before processing these.
+  'wZIL': {
+    "ticker": "wZIL",
+    "name": "Wrapped ZIL",
+    "address": "zil1gvr0jgwfsfmxsyx0xsnhtlte4gks6r3yk8x5fn",
+    "address_base16": "0x4306F921c982766810CF342775FD79AA2D0D0E24",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1gvr0jgwfsfmxsyx0xsnhtlte4gks6r3yk8x5fn/logo",
+    "decimals": 12,
+    "fixed_token_rate": {
+      "value": 1,
+      "ticker": "ZIL"
+    },
+  },
+  'XPORT': {
+    "ticker": "XPORT",
+    "name": "PackagePortal",
+    "address": "zil1hpwshtxspjakjh5sn7vn4e7pp4gaqkefup24h2",
+    "address_base16": "0xB85D0BAcd00Cbb695e909f993aE7c10D51D05B29",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1hpwshtxspjakjh5sn7vn4e7pp4gaqkefup24h2/logo",
+    "decimals": 4,
+    "fixed_token_rate": {
+      "value": 0.01,
+      "ticker": "PORT"
+    },
   },
 }
 

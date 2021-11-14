@@ -4,7 +4,7 @@
  */
 class PriceChartStatus {
 
-    constructor(zrcTokenPropertiesListMap, defaultTokenSymbol, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ zilswapTradeVolumeStatus) {
+    constructor(zrcTokenPropertiesListMap, /* nullable= */ defaultTokenSymbol, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ zilswapTradeVolumeStatus) {
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
 
@@ -12,7 +12,12 @@ class PriceChartStatus {
         this.zilswapDexStatus_ = zilswapDexStatus;
         this.zilswapTradeVolumeStatus_ = zilswapTradeVolumeStatus;
 
-        let initTokenSymbol = defaultTokenSymbol? defaultTokenSymbol : 'gZIL';
+        let initTokenSymbol = 'gZIL';
+        if (defaultTokenSymbol in this.zrcTokenPropertiesListMap_) {
+            if (!('fixed_token_rate' in this.zrcTokenPropertiesListMap_[defaultTokenSymbol])) {
+                initTokenSymbol = defaultTokenSymbol;
+            }
+        }
 
         this.lightweightChartData_ = {
             'ticker': null,

@@ -20,9 +20,7 @@ block content
             if !(ticker in zrcTokenPropertiesListMap)
               - continue
             - let tokenProperties = zrcTokenPropertiesListMap[ticker]
-            if tokenProperties.ticker === 'XPORT'
-              div(style='display:none')
-                div(id='simple_chart_'+tokenProperties.ticker)
+            if ('fixed_token_rate' in tokenProperties)
               - continue
             tr(class='list-group-item-action list-group-item-sidebar border-bottom-sidebar' tokenSymbol=ticker)
               th(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
@@ -159,8 +157,7 @@ block content
                       if !(ticker in zrcTokenPropertiesListMap)
                         - continue
                       - let tokenProperties = zrcTokenPropertiesListMap[ticker]
-                      - var trStyle = ''
-                      if tokenProperties.ticker === 'XPORT'
+                      if ('fixed_token_rate' in tokenProperties)
                         div(style='display:none')
                           span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
                           span(class=tokenProperties.ticker+'_price_zil_percent_change_24h')
@@ -168,7 +165,7 @@ block content
                           span(id=tokenProperties.ticker+'_price_24h_low')= ''
                           span(id=tokenProperties.ticker+'_price_24h_high')= ''
                           span(id='public_'+tokenProperties.ticker+'_price_fiat')= 'Loading...'
-                          span(id='public_'+tokenProperties.ticker+'_price_fiat_percent_change_24h')
+                          span(class=tokenProperties.ticker+'_price_fiat_percent_change_24h')
                           span(id=tokenProperties.ticker+'_lp_24h_volume_fiat')= '0'
                           span(id=tokenProperties.ticker+'_lp_total_pool_fiat')= 'Loading...'
                           span(id=tokenProperties.ticker+'_circulating_supply_zrc')= '0'
@@ -177,7 +174,7 @@ block content
                           span(id=tokenProperties.ticker+'_total_supply_fiat')= '0'
                         - continue
 
-                      tr(style=trStyle)
+                      tr
                         th(scope='row' style='display:table-cell; white-space: nowrap; vertical-align: middle;')
                           img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
                           span(class='ml-2')= tokenProperties.ticker
@@ -259,10 +256,12 @@ block content
                         each circulatingSupply, ticker in zrcTokensCirculatingSupply
                           if !(ticker in zrcTokenPropertiesListMap)
                             - continue
+                          - let tokenProperties = zrcTokenPropertiesListMap[ticker]
+                          if ('fixed_token_rate' in tokenProperties)
+                            - continue
 
-                          if zilswapDexReward[ticker] && ticker !== 'XPORT'
+                          if zilswapDexReward[ticker]
                             - oddRow = !oddRow
-                            - let tokenProperties = zrcTokenPropertiesListMap[ticker]
                             - let numOfRewardTickers = Object.keys(zilswapDexReward[ticker]).length
                             - let firstIteration = true
 
@@ -412,7 +411,9 @@ block content
                   span(id='price_chart_token_name' class='h3 font-weight-bold mr-3' style='vertical-align: middle;')='-'
 
                   select(id='price_chart_token_ticker_selector' class='custom-select my-2 my-sm-0 ml-auto mr-2')
-                    each singleTokenProperty in zrcTokenPropertiesListMap
+                    each singleTokenProperty, ticker in zrcTokenPropertiesListMap
+                      if ('fixed_token_rate' in singleTokenProperty)
+                        - continue
                       option(value=singleTokenProperty.ticker)= singleTokenProperty.ticker
 
                 // token address and external anchor to viewblock
@@ -1125,14 +1126,14 @@ block content
                   - let currTokenStartingAlphabet = '-';
                   each tokenProperties, ticker in zrcTokenPropertiesListMap
                     - let trStyle = ''
-                    if tokenProperties.ticker === 'XPORT'
+                     if ('fixed_token_rate' in tokenProperties)
                       - trStyle = 'display: none;'
 
                     //- This is for Alphabet header for each new letter.
                     - let isNewCharStart = tokenProperties.ticker.charAt(0).toUpperCase() !== currTokenStartingAlphabet;
                     if isNewCharStart 
                       - currTokenStartingAlphabet = tokenProperties.ticker.charAt(0).toUpperCase();
-                      tr
+                      tr(style=trStyle)
                         th(colspan=3 style="border-top: 1px solid var(--light-alpha-10);")
                           span=currTokenStartingAlphabet
 
