@@ -872,7 +872,7 @@ const nftTokenPropertiesListMap = {
     "address_base16": "0xA18983655AF9141A9cBDC1c44dE8565d44E2d239",
     "logo_url": "https://meta.viewblock.io/ZIL.zil15xycxe26ly2p489ac8zym6zkt4zw953e6sl5zq/logo",
     "image_dict_path": ["image"],
-    "is_zilswap_ark_supported": false,
+    "is_zilswap_ark_supported": true,
     "website": "https://okimoto.io",
     "website_nft_attributes_prefix": "https://okimoto.io/contracts/OPEN", // e.g., https://okimoto.io/contracts/OPEN/2015
   },
@@ -927,6 +927,15 @@ const nftTokenPropertiesListMap = {
     "is_zilswap_ark_supported": true,
     "website": "https://www.spardawallet.com/marketsearch.html?34e65fc029368ba3508e8cb0ce09339802684d22",
   },
+  'LORDS': {
+    "ticker": "LORDS",
+    "name": "Overlords",
+    "address": "zil18j3wql5xe6vw8c99jj4qaq0wxqx979kakxxu8m",
+    "address_base16": "0x3Ca2e07e86Ce98E3e0A594Aa0E81Ee300c5f16DD",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil18j3wql5xe6vw8c99jj4qaq0wxqx979kakxxu8m/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": false,
+  },
   'MNM': {
     "ticker": "MNM",
     "name": "Markhors & More",
@@ -956,6 +965,25 @@ const nftTokenPropertiesListMap = {
     "image_dict_path": ["image"],
     "is_zilswap_ark_supported": false,
     "website": "https://www.spardawallet.com/marketsearch.html?eac90b1b8df4aa7b69a9fd63c5af921bd751c04d",
+  },
+  'SNEKS': {
+    "ticker": "SNEKS",
+    "name": "ZIL SNEKS",
+    "address": "zil1h8a9tzel4hjz44gtpl384758crzfln4fptya7j",
+    "address_base16": "0xB9Fa558b3fadE42ad50B0FE27AFa87C0c49fcEa9",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1h8a9tzel4hjz44gtpl384758crzfln4fptya7j/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": false,
+  },
+  'SOULS': {
+    "ticker": "SOULS",
+    "name": "SOULFUL SAINTS",
+    "address": "zil1dm584qxhqqu46rgn50cj74yp47x7w3gf7q4j36",
+    "address_base16": "0x6EE87a80d700395d0D13A3f12f5481aF8DE74509",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1dm584qxhqqu46rgn50cj74yp47x7w3gf7q4j36/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": false,
+    "website": "https://www.spardawallet.com/marketsearch.html?6ee87a80d700395d0d13a3f12f5481af8de74509",
   },
 }
 
