@@ -935,6 +935,7 @@ const nftTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil18j3wql5xe6vw8c99jj4qaq0wxqx979kakxxu8m/logo",
     "image_dict_path": ["image"],
     "is_zilswap_ark_supported": false,
+    "website": "https://www.spardawallet.com/marketsearch.html?3ca2e07e86ce98e3e0a594aa0e81ee300c5f16dd",
   },
   'MNM': {
     "ticker": "MNM",
@@ -974,6 +975,7 @@ const nftTokenPropertiesListMap = {
     "logo_url": "https://meta.viewblock.io/ZIL.zil1h8a9tzel4hjz44gtpl384758crzfln4fptya7j/logo",
     "image_dict_path": ["image"],
     "is_zilswap_ark_supported": false,
+    "website": "https://www.spardawallet.com/marketsearch.html?b9fa558b3fade42ad50b0fe27afa87c0c49fcea9",
   },
   'SOULS': {
     "ticker": "SOULS",
