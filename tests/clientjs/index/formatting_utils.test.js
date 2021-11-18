@@ -537,6 +537,76 @@ describe('FormattingUtils', function () {
     });
   });
 
+  describe('#getAutoPrecisionFromNumberDecimal', function () {
+
+    it('>>1000 = 0', function () {
+      let result = FormattingUtils.getAutoPrecisionFromNumberDecimal( /* numberDecimal= */ 14213541242343.23, );
+      let expected = 0;
+      assert.strictEqual(result, expected);
+    });
+
+    it('>1000 = 0', function () {
+      let result = FormattingUtils.getAutoPrecisionFromNumberDecimal( /* numberDecimal= */ 14243.23);
+      let expected = 0;
+      assert.strictEqual(result, expected);
+    });
+
+    it('>100 = 1', function () {
+      let result = FormattingUtils.getAutoPrecisionFromNumberDecimal( /* numberDecimal= */ 123.23);
+      let expected = 1;
+      assert.strictEqual(result, expected);
+    });
+
+    it('>10 = 2', function () {
+      let result = FormattingUtils.getAutoPrecisionFromNumberDecimal( /* numberDecimal= */ 12.23);
+      let expected = 2;
+      assert.strictEqual(result, expected);
+    });
+
+    it('>1 = 3', function () {
+      let result = FormattingUtils.getAutoPrecisionFromNumberDecimal( /* numberDecimal= */ 1.23);
+      let expected = 3;
+      assert.strictEqual(result, expected);
+    });
+
+    it('>0.1 = 4', function () {
+      let result = FormattingUtils.getAutoPrecisionFromNumberDecimal( /* numberDecimal= */ 0.123);
+      let expected = 4;
+      assert.strictEqual(result, expected);
+    });
+
+    it('>0.01 = 5', function () {
+      let result = FormattingUtils.getAutoPrecisionFromNumberDecimal( /* numberDecimal= */ 0.0123);
+      let expected = 5;
+      assert.strictEqual(result, expected);
+    });
+
+    it('>>0.000001 = 6', function () {
+      let result = FormattingUtils.getAutoPrecisionFromNumberDecimal( /* numberDecimal= */ 0.00123);
+      let expected = 6;
+      assert.strictEqual(result, expected);
+    });
+
+    it('>0.000001 = 6', function () {
+      let result = FormattingUtils.getAutoPrecisionFromNumberDecimal( /* numberDecimal= */ 0.00000123);
+      let expected = 6;
+      assert.strictEqual(result, expected);
+    });
+
+    it('<0.000001 = -1', function () {
+      let result = FormattingUtils.getAutoPrecisionFromNumberDecimal( /* numberDecimal= */ 0.0000009);
+      let expected = -1;
+      assert.strictEqual(result, expected);
+    });
+
+    it('both not number: null', function () {
+      let result = FormattingUtils.getAutoPrecisionFromNumberDecimal(null);
+      let expected = -1;
+      assert.strictEqual(result, expected);
+    });
+  });
+
+
   describe('#censorBech32Address()', function () {
 
     it('ZilSwap DEX address', function () {

@@ -79,21 +79,35 @@ function convertNumberQaToDecimalString(numberQa, decimals, isCommafied = true) 
         if (isCommafied) {
             return commafyNumberToString(numberDecimal, /* decimalPlace= */ 0);
         }
-        return numberDecimal.toFixed(0);
-    } else if (numberDecimal > 100) {
-        return numberDecimal.toFixed(1);
-    } else if (numberDecimal > 10) {
-        return numberDecimal.toFixed(2);
-    } else if (numberDecimal > 1) {
-        return numberDecimal.toFixed(3);
-    } else if (numberDecimal > 0.1) {
-        return numberDecimal.toFixed(4);
-    } else if (numberDecimal > 0.01) {
-        return numberDecimal.toFixed(5);
-    } else if (numberDecimal > 0.000001) {
-        return numberDecimal.toFixed(6);
+    } 
+    let precision = getAutoPrecisionFromNumberDecimal(numberDecimal);
+    if (precision >= 0) {
+        return numberDecimal.toFixed(precision);
     }
     return null;
+}
+
+function getAutoPrecisionFromNumberDecimal(numberDecimal) {
+    if (typeof numberDecimal !== 'number' && typeof numberDecimal !== 'bigint') {
+        return -1;
+    }
+
+    if (numberDecimal > 1000) {
+        return 0;
+    } else if (numberDecimal > 100) {
+        return 1;
+    } else if (numberDecimal > 10) {
+        return 2;
+    } else if (numberDecimal > 1) {
+        return 3;
+    } else if (numberDecimal > 0.1) {
+        return 4;
+    } else if (numberDecimal > 0.01) {
+        return 5;
+    } else if (numberDecimal > 0.000001) {
+        return 6;
+    }
+    return -1;
 }
 
 /**
@@ -138,6 +152,7 @@ if (typeof exports !== 'undefined') {
     exports.parseFloatFromCommafiedNumberString = parseFloatFromCommafiedNumberString;
     exports.commafyNumberToString = commafyNumberToString;
     exports.convertNumberQaToDecimalString = convertNumberQaToDecimalString;
+    exports.getAutoPrecisionFromNumberDecimal = getAutoPrecisionFromNumberDecimal;
     exports.censorBech32Address = censorBech32Address;
 
     exports.isStartsWithNegative = isStartsWithNegative;

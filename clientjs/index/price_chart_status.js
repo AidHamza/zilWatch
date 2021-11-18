@@ -22,7 +22,7 @@ class PriceChartStatus {
         this.lightweightChartData_ = {
             'ticker': null,
             'range': null,
-            'series' : null,
+            'series': null,
         }
 
         // Default to defaultTokenSymbol if set, else gZIL, 24h
@@ -63,7 +63,7 @@ class PriceChartStatus {
     }
 
     redrawChart() {
-        this.bindViewPriceChart(/* isForceRedraw= */ true);
+        this.bindViewPriceChart( /* isForceRedraw= */ true);
     }
 
     updateTokenUrlState(tokenSymbol, isUserAction) {
@@ -145,7 +145,7 @@ class PriceChartStatus {
                         if (data.ticker === self.historicalPriceData_.ticker && data.range === self.historicalPriceData_.range) {
                             self.historicalPriceData_ = data;
                             self.bindViewAllInformation();
-                            self.bindViewPriceChart(/* isForceRedraw= */ false);
+                            self.bindViewPriceChart( /* isForceRedraw= */ false);
                             onSuccessCallback();
                             return;
                         }
@@ -418,6 +418,16 @@ class PriceChartStatus {
         }
 
         let data = this.historicalPriceData_.data;
+        let dataPrecision = 2;
+        try {
+            let latestPrice = data[data.length - 1].value;
+            let userFriendlyPrecision = getAutoPrecisionFromNumberDecimal(latestPrice);
+            if (userFriendlyPrecision >= 0) {
+                dataPrecision = userFriendlyPrecision + 1; // Want to be more precise in price chart
+            }
+        } catch (ex) {
+            console.log(ex);
+        }
 
         // If not force redraw, and ticker and range are the same, means it's just data update.
         // Hence we just setData not to reset the view (e.g., if user is already scrolling and zooming on the graph)
@@ -472,6 +482,10 @@ class PriceChartStatus {
             bottomColor: isCurrentDarkMode() ? CONST_BLACK_TRANSPARENT_RGBA_STRING : CONST_WHITE_TRANSPARENT_RGBA_STRING,
             lineColor: priceDifference >= 0 ? CONST_GREEN_LINE_RGBA_STRING : CONST_RED_LINE_RGBA_STRING,
             lineWidth: 2,
+            priceFormat: {
+                minMove: Math.pow(10, (-1 * dataPrecision)),
+                precision: dataPrecision,
+            },
         });
         series.setData(data);
 
