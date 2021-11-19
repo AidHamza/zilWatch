@@ -333,6 +333,16 @@ const zrcTokenPropertiesListMap = {
     "website": "https://blog.thegarytoken.com/",
     "telegram": "https://t.me/TheGARYToken",
   },
+  'GEMZ': {
+    "ticker": "GEMZ",
+    "name": "GEMZ",
+    "address": "zil1eg7dcyn8dxcgfshxmf9za2ljxju6kyq0vunszu",
+    "address_base16": "0xca3cdC126769B084c2e6DA4A2EaBf234B9AB100F",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1eg7dcyn8dxcgfshxmf9za2ljxju6kyq0vunszu/logo",
+    "decimals": 0,
+    "website": "https://battlemechs.co/",
+    "telegram": "https://t.me/zilliqaroyale",
+  },
   'gZIL': {
     "ticker": "gZIL",
     "name": "Governance ZIL",
