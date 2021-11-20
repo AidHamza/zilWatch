@@ -763,7 +763,7 @@ const nftTokenPropertiesListMap = {
   },
   'CMSTAR': {
     "ticker": "CMSTAR",
-    "name": "111 Crypto Music Stars",
+    "name": "111 Music Stars",
     "address": "zil14xtt68lnc8ddk4atrrzygyws5tc8x27z73utg8",
     "address_base16": "0xa996BD1Ff3C1DADB57aB18c44411D0A2f0732bc2",
     "logo_url": "https://arkstatic.s3.ap-southeast-1.amazonaws.com/prod/collection/0xa996bd1ff3c1dadb57ab18c44411d0a2f0732bc2/profile.jpg",
