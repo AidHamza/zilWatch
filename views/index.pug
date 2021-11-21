@@ -62,7 +62,7 @@ block content
         a(class='wallet-viewblock-anchor' target='_blank')
           button(id='topbar_wallet_address_container' class='btn btn-outline-info my-2 my-sm-0' style='display: none;')
             img(class='ark-profile-pic rounded-circle mr-2' height='24' src='' alt='ARK profile pic' style='display: none;')
-            span(id='topbar_wallet_address')
+            span(id='topbar_wallet_address' style='vertical-align: middle;')
         button(id='topbar_wallet_connect_button' class='wallet_connect_button btn btn-info my-2 my-sm-0')= 'Connect'
 
       // Public Content Container
@@ -574,7 +574,7 @@ block content
                   span(id='wallet_censor_button' class='mini-button-box ml-1')
                     i(id='wallet_censor_icon' class='fa fa-eye-slash ml-1 mr-1')
                   a(class='wallet-viewblock-anchor mini-button-box ml-1' target='_blank' style='color: var(--text-color);')
-                    img(height='20' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo')
+                    img(height='18' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo')
                     i(class='fa fa-external-link ml-1 mr-1')
                   span(id='wallet_copy_button' class='mini-button-box ml-1')
                     i(class='fa fa-copy ml-1 mr-1')
@@ -1062,7 +1062,7 @@ block content
                 each nftTokenProperty, nftTicker in nftTokenPropertiesListMap
                   li
                     a(class='mini-button-box mr-2' href='https://viewblock.io/zilliqa/address/' + nftTokenProperty.address target='_blank')
-                      img(height='20' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo')
+                      img(height='18' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo')
                       i(class='fa fa-external-link ml-2 mr-1')
                     a(href=nftTokenProperty.website)=nftTokenProperty.name + ' (' + nftTicker + ')'
 
@@ -1097,7 +1097,7 @@ block content
                       i(class='fa fa-external-link ml-2 mr-1')
 
                   a(class='mini-button-box mr-1' href='https://viewblock.io/zilliqa/address/' + nftTokenProperty.address target='_blank')
-                    img(height='20' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo')
+                    img(height='18' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo')
                     i(class='fa fa-external-link ml-2 mr-1')
 
                 div(class='container')
