@@ -74,8 +74,8 @@ $(".wallet_connect_button").on('click', function () {
     );
 });
 
-$("#wallet_censor_button").on('click', function () {
-    let isShowingFullAddress = $("#wallet_full_address").css("display") !== 'none';
+$(".wallet-censor-button").on('click', function () {
+    let isShowingFullAddress = $(".wallet-full-address:first").css("display") !== 'none';
     if (isShowingFullAddress) {
         hideFullWalletAddress();
     } else {
@@ -83,8 +83,8 @@ $("#wallet_censor_button").on('click', function () {
     }
 });
 
-$("#wallet_copy_button").on('click', function () {
-    let copyText = $('#wallet_full_address').text();
+$(".wallet-copy-button").on('click', function () {
+    let copyText = $(".wallet-full-address:first").text();
 
     var $temp = $("<input>");
     $("body").append($temp);
@@ -93,9 +93,9 @@ $("#wallet_copy_button").on('click', function () {
     $temp.remove();
 
     // Show copied text for 5 seconds
-    $('#wallet_copy_message').text("Copied!");
+    $('.wallet-copy-message').text("Copied!");
     setTimeout(function () {
-        $('#wallet_copy_message').text("");
+        $('.wallet-copy-message').text("");
     }, 5000);
 });
 

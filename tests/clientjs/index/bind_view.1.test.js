@@ -66,10 +66,14 @@ describe('BindView1', function () {
         let walletCensoredAddress = 'abc...xyz';
 
         beforeEach(function () {
-            assert.strictEqual($('#wallet_full_address').text(), '');
-            assert.strictEqual($('#wallet_censored_address').text(), '');
-            assert.strictEqual($('#wallet_full_address').css('display'), 'none');
-            assert.strictEqual($('#wallet_censored_address').css('display'), 'none');
+            $('.wallet-full-address').each(function() {
+                assert.strictEqual($(this).text(), '');
+                assert.strictEqual($(this).css('display'), 'none');
+            });
+            $('.wallet-censored-address').each(function() {
+                assert.strictEqual($(this).text(), '');
+                assert.strictEqual($(this).css('display'), 'none');
+            });
         });
 
         it('#bindViewFullWalletAddress()', function () {
@@ -77,15 +81,20 @@ describe('BindView1', function () {
             BindView.bindViewFullWalletAddress(walletFullAddress, walletCensoredAddress);
 
             // Assert
-            assert.strictEqual($('#wallet_full_address').text(), walletFullAddress);
-            assert.strictEqual($('#wallet_censored_address').text(), walletCensoredAddress);
-            assert.strictEqual($('#wallet_full_address').css('display'), 'none');
-            assert.strictEqual($('#wallet_censored_address').css('display'), '');
-            assert.strictEqual($('#wallet_censor_icon').hasClass('fa-eye'), true);
-            assert.strictEqual($('#wallet_censor_icon').hasClass('fa-eye-slash'), false);
-
+            $('.wallet-full-address').each(function() {
+                assert.strictEqual($(this).text(), walletFullAddress);
+                assert.strictEqual($(this).css('display'), 'none');
+            });
+            $('.wallet-censored-address').each(function() {
+                assert.strictEqual($(this).text(), walletCensoredAddress);
+                assert.strictEqual($(this).css('display'), '');
+            });
+            $('.wallet-censor-icon').each(function() {
+                assert.strictEqual($(this).hasClass('fa-eye'), true);
+                assert.strictEqual($(this).hasClass('fa-eye-slash'), false);
+            });
             $('.wallet_viewblock_anchor').each(function() {
-                assert.strictEqual(this.attr('href'), "https://viewblock.io/zilliqa/address/" + walletFullAddress);
+                assert.strictEqual($(this).attr('href'), "https://viewblock.io/zilliqa/address/" + walletFullAddress);
             })
         });
 
@@ -94,10 +103,16 @@ describe('BindView1', function () {
             BindView.showFullWalletAddress();
 
             // Assert
-            assert.strictEqual($('#wallet_full_address').css('display'), '');
-            assert.strictEqual($('#wallet_censored_address').css('display'), 'none');
-            assert.strictEqual($('#wallet_censor_icon').hasClass('fa-eye'), false);
-            assert.strictEqual($('#wallet_censor_icon').hasClass('fa-eye-slash'), true);
+            $('.wallet-full-address').each(function() {
+                assert.strictEqual($(this).css('display'), '');
+            });
+            $('.wallet-censored-address').each(function() {
+                assert.strictEqual($(this).css('display'), 'none');
+            });
+            $('.wallet-censor-icon').each(function() {
+                assert.strictEqual($(this).hasClass('fa-eye'), false);
+                assert.strictEqual($(this).hasClass('fa-eye-slash'), true);
+            });
         });
 
         it('#hideFullWalletAddress()', function () {
@@ -105,10 +120,16 @@ describe('BindView1', function () {
             BindView.hideFullWalletAddress();
 
             // Assert
-            assert.strictEqual($('#wallet_full_address').css('display'), 'none');
-            assert.strictEqual($('#wallet_censored_address').css('display'), '');
-            assert.strictEqual($('#wallet_censor_icon').hasClass('fa-eye'), true);
-            assert.strictEqual($('#wallet_censor_icon').hasClass('fa-eye-slash'), false);
+            $('.wallet-full-address').each(function() {
+                assert.strictEqual($(this).css('display'), 'none');
+            });
+            $('.wallet-censored-address').each(function() {
+                assert.strictEqual($(this).css('display'), '');
+            });
+            $('.wallet-censor-icon').each(function() {
+                assert.strictEqual($(this).hasClass('fa-eye'), true);
+                assert.strictEqual($(this).hasClass('fa-eye-slash'), false);
+            });
         });
     });
 

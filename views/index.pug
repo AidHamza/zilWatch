@@ -569,16 +569,16 @@ block content
                 div(class='col-12')
                   a(class='ark-profile-anchor' target='_blank')
                     img(class='ark-profile-pic rounded-circle mr-2' height='60' src='' alt='ARK profile pic' style='display: none;')
-                  span(id='wallet_full_address' style='display: none;')
-                  span(id='wallet_censored_address' style='display: none;')
-                  span(id='wallet_censor_button' class='mini-button-box ml-1')
-                    i(id='wallet_censor_icon' class='fa fa-eye-slash ml-1 mr-1')
+                  span(class='wallet-full-address' style='display: none;')
+                  span(class='wallet-censored-address' style='display: none;')
+                  span(class='wallet-censor-button' class='mini-button-box ml-1')
+                    i(class='wallet-censor-icon fa fa-eye-slash ml-1 mr-1')
                   a(class='wallet-viewblock-anchor mini-button-box ml-1' target='_blank' style='color: var(--text-color);')
                     img(height='18' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo')
                     i(class='fa fa-external-link ml-1 mr-1')
-                  span(id='wallet_copy_button' class='mini-button-box ml-1')
+                  span(class='wallet-copy-button mini-button-box ml-1')
                     i(class='fa fa-copy ml-1 mr-1')
-                    span(id='wallet_copy_message')
+                    span(class='wallet-copy-message')
 
               div(class='row')
                 div(class='balance-box col-md-6')
@@ -1080,6 +1080,22 @@ block content
 
           // Wallet NFT content container
           div(id='wallet_nft_content_container' style='display: none;')
+
+            div(class='container')
+              div(class='row')
+                div(class='col-12')
+                  a(class='ark-profile-anchor' target='_blank')
+                    img(class='ark-profile-pic rounded-circle mr-2' height='60' src='' alt='ARK profile pic' style='display: none;')
+                  span(class='wallet-full-address' style='display: none;')
+                  span(class='wallet-censored-address' style='display: none;')
+                  span(class='wallet-censor-button' class='mini-button-box ml-1')
+                    i(class='wallet-censor-icon fa fa-eye-slash ml-1 mr-1')
+                  a(class='wallet-viewblock-anchor mini-button-box ml-1' target='_blank' style='color: var(--text-color);')
+                    img(height='18' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo')
+                    i(class='fa fa-external-link ml-1 mr-1')
+                  span(class='wallet-copy-button mini-button-box ml-1')
+                    i(class='fa fa-copy ml-1 mr-1')
+                    span(class='wallet-copy-message')
 
             each nftTokenProperty, nftTicker in nftTokenPropertiesListMap
 

@@ -24,26 +24,26 @@ function bindViewLoggedInButton(walletCensoredAddress) {
 }
 
 function bindViewFullWalletAddress(walletFullAddress, walletCensoredAddress) {
-    $('#wallet_full_address').text(walletFullAddress);
-    $('#wallet_censored_address').text(walletCensoredAddress);
-    $('#wallet_full_address').hide();
-    $('#wallet_censored_address').show();
+    $('.wallet-full-address').text(walletFullAddress);
+    $('.wallet-censored-address').text(walletCensoredAddress);
+    $('.wallet-full-address').hide();
+    $('.wallet-censored-address').show();
     $('.wallet-viewblock-anchor').attr('href', "https://viewblock.io/zilliqa/address/" + walletFullAddress);
     hideFullWalletAddress();
 }
 
 function showFullWalletAddress() {
-    $('#wallet_censor_icon').removeClass("fa-eye");
-    $('#wallet_censor_icon').addClass("fa-eye-slash");
-    $('#wallet_full_address').show();
-    $('#wallet_censored_address').hide();
+    $('.wallet-censor-icon').removeClass("fa-eye");
+    $('.wallet-censor-icon').addClass("fa-eye-slash");
+    $('.wallet-full-address').show();
+    $('.wallet-censored-address').hide();
 }
 
 function hideFullWalletAddress() {
-    $('#wallet_censor_icon').removeClass("fa-eye-slash");
-    $('#wallet_censor_icon').addClass("fa-eye");
-    $('#wallet_full_address').hide();
-    $('#wallet_censored_address').show();
+    $('.wallet-censor-icon').removeClass("fa-eye-slash");
+    $('.wallet-censor-icon').addClass("fa-eye");
+    $('.wallet-full-address').hide();
+    $('.wallet-censored-address').show();
 }
 
 /**
