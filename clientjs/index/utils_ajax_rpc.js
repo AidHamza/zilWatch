@@ -14,11 +14,11 @@ const ZILLIQA_API_URL = "https://api.zilliqa.com/";
  * @param {function?} successCallback optional function to execute upon success. function is in the form of successCallback(data);
  * @param {function?} errorCallback optional function to execute upon failure. function is in the form of errorCallback();
  */
-async function queryUrlGetAjax(urlToGet, successCallback, errorCallback) {
+async function queryUrlGetAjaxWithRetry(urlToGet, successCallback, errorCallback, maxRetry) {
     $.ajax({
         type: "GET",
         url: urlToGet,
-        retryLimit: MAX_RETRY,
+        retryLimit: maxRetry,
         success: function (data) {
             successCallback(data);
         },
@@ -37,6 +37,10 @@ async function queryUrlGetAjax(urlToGet, successCallback, errorCallback) {
         },
         timeout: AJAX_TIMEOUT_MS
     });
+}
+
+async function queryUrlGetAjax(urlToGet, successCallback, errorCallback) {
+    return queryUrlGetAjaxWithRetry(urlToGet, successCallback, errorCallback, MAX_RETRY);
 }
 
 /**

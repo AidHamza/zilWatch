@@ -59,7 +59,10 @@ block content
 
         button(id='wallet_refresh' class='btn btn-info my-2 my-sm-0 mr-2')
           i(id='wallet_refresh_icon' class='fa fa-refresh')
-        button(id='wallet_address' class='btn btn-outline-info my-2 my-sm-0' style='display: none;')
+        a(class='wallet-viewblock-anchor' target='_blank')
+          button(id='topbar_wallet_address_container' class='btn btn-outline-info my-2 my-sm-0' style='display: none;')
+            img(class='ark-profile-pic rounded-circle mr-2' height='24' src='' alt='ARK profile pic' style='display: none;')
+            span(id='topbar_wallet_address')
         button(id='topbar_wallet_connect_button' class='wallet_connect_button btn btn-info my-2 my-sm-0')= 'Connect'
 
       // Public Content Container
@@ -564,11 +567,13 @@ block content
 
               div(class='row')
                 div(class='col-12')
+                  a(class='ark-profile-anchor' target='_blank')
+                    img(class='ark-profile-pic rounded-circle mr-2' height='60' src='' alt='ARK profile pic' style='display: none;')
                   span(id='wallet_full_address' style='display: none;')
                   span(id='wallet_censored_address' style='display: none;')
                   span(id='wallet_censor_button' class='mini-button-box ml-1')
                     i(id='wallet_censor_icon' class='fa fa-eye-slash ml-1 mr-1')
-                  a(id='wallet_viewblock_anchor' class='mini-button-box ml-1' target='_blank' style='color: var(--text-color);')
+                  a(class='wallet-viewblock-anchor mini-button-box ml-1' target='_blank' style='color: var(--text-color);')
                     img(height='20' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo')
                     i(class='fa fa-external-link ml-1 mr-1')
                   span(id='wallet_copy_button' class='mini-button-box ml-1')
@@ -1369,6 +1374,7 @@ block script
     const priceChartStatus = new PriceChartStatus(zrcTokenPropertiesListMap, targetTokenSymbol, coinPriceStatus, zilswapDexStatus, zilswapTradeVolumeStatus);
 
     const nftCollectionStatus = new NftCollectionStatus(nftTokenPropertiesListMap);
+    const zilswapArkProfilePicStatus = new ZilswapArkProfilePicStatus();
 
     function getRandomInt(max) {
       return Math.floor(Math.random() * max);

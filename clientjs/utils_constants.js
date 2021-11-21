@@ -7,6 +7,10 @@ const CONST_ZILWATCH_ROOT_URL = window.location.host.includes('localhost') ? CON
 const CONST_ZILSWAP_ARK_ROOT_URL = CONST_HTTPS_PREFIX + 'zilswap.io/ark/collections'; // e.g., https://zilswap.io/ark/collections/<nft_address>/<nft_id>
 const CONST_STATS_ZILSWAP_ROOT_URL = CONST_HTTPS_PREFIX + 'stats.zilswap.org';
 
+const CONST_ZILSWAP_ARK_USER_PROFILE_URL = 'https://zilswap.io/ark/profile?address=<wallet_address_base_16>'
+const CONST_ZILSWAP_ARK_USER_DETAILS = 'https://api-ark.zilswap.org/user/<wallet_address_base_16>/detail';
+const CONST_ZILSWAP_ARK_WALLET_ADDRESS_REPLACE_TAG = '<wallet_address_base_16>';
+
 const CONST_META_VIEWBLOCK_IO = 'meta.viewblock.io';
 const CONST_ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16 = "0xea57c6b7b5475107688bc70aabefdd5352d0bed0";
 
@@ -32,6 +36,10 @@ if (typeof exports !== 'undefined') {
     exports.CONST_ZILWATCH_ROOT_URL = CONST_ZILWATCH_ROOT_URL;
     exports.CONST_ZILSWAP_ARK_ROOT_URL = CONST_ZILSWAP_ARK_ROOT_URL;
     exports.CONST_STATS_ZILSWAP_ROOT_URL = CONST_STATS_ZILSWAP_ROOT_URL;
+
+    exports.CONST_ZILSWAP_ARK_USER_PROFILE_URL = CONST_ZILSWAP_ARK_USER_PROFILE_URL;
+    exports.CONST_ZILSWAP_ARK_USER_DETAILS = CONST_ZILSWAP_ARK_USER_DETAILS;
+    exports.CONST_ZILSWAP_ARK_WALLET_ADDRESS_REPLACE_TAG = CONST_ZILSWAP_ARK_WALLET_ADDRESS_REPLACE_TAG;
 
     exports.CONST_META_VIEWBLOCK_IO = CONST_META_VIEWBLOCK_IO;
     exports.CONST_ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16 = CONST_ZILSWAP_REWARD_DISTRIBUTOR_ADDRESS_BASE16;

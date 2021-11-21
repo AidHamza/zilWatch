@@ -56,6 +56,9 @@ window.addEventListener("load", async () => {
 });
 
 $(".wallet_connect_button").on('click', function () {
+    if (typeof window.zilPay === 'undefined') {
+        alert("ZilPay not installed!");
+    }
     window.zilPay.wallet.connect().then(
         function (isUnlockSuccessful) {
             console.log("Wallet connect unlock successful: " + isUnlockSuccessful);
@@ -193,6 +196,20 @@ function refreshMainContentData(account) {
 
     // (9) Get NFT Collection
     computeNftCollectionStatus(walletAddressBase16);
+
+    // (10) Get ARK profile pic
+    computeArkProfilePic(walletAddressBase16);
+}
+
+function computeArkProfilePic(walletAddressBase16) {
+    zilswapArkProfilePicStatus.setWalletAddressBase16(walletAddressBase16);
+    zilswapArkProfilePicStatus.computeDataRpc(
+        /* beforeRpcCallback= */
+        function () {},
+        /* onSuccessCallback= */
+        function () {},
+        /* onErrorCallback= */
+        function () {});
 }
 
 function computeNftCollectionStatus(walletAddressBase16) {

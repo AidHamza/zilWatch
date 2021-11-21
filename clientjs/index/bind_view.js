@@ -17,11 +17,10 @@ function getNumberFromView(viewId) {
  * 1 --------------------------------------------------------------------------------
  */
 
-function bindViewLoggedInButton(walletAddress) {
+function bindViewLoggedInButton(walletCensoredAddress) {
     $('#topbar_wallet_connect_button').hide();
-    $('#wallet_address').text(walletAddress);
-    $('#wallet_address').show();
-    $('#wallet_refresh').show();
+    $('#topbar_wallet_address').text(walletCensoredAddress);
+    $('#topbar_wallet_address_container').show();
 }
 
 function bindViewFullWalletAddress(walletFullAddress, walletCensoredAddress) {
@@ -29,7 +28,7 @@ function bindViewFullWalletAddress(walletFullAddress, walletCensoredAddress) {
     $('#wallet_censored_address').text(walletCensoredAddress);
     $('#wallet_full_address').hide();
     $('#wallet_censored_address').show();
-    $('#wallet_viewblock_anchor').attr('href', "https://viewblock.io/zilliqa/address/" + walletFullAddress);
+    $('.wallet-viewblock-anchor').attr('href', "https://viewblock.io/zilliqa/address/" + walletFullAddress);
     hideFullWalletAddress();
 }
 

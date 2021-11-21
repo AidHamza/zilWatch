@@ -20,8 +20,8 @@ describe('BindView1', function () {
     describe('#bindViewLoggedInButton()', function () {
 
         beforeEach(function () {
-            assert.strictEqual($('#wallet_address').text(), '');
-            assert.strictEqual($('#wallet_address').css('display'), 'none');
+            assert.strictEqual($('#topbar_wallet_address').text(), '');
+            assert.strictEqual($('#topbar_wallet_address_container').css('display'), 'none');
             assert.strictEqual($('#wallet_refresh').css('display'), 'inline-block');
             assert.strictEqual($('#topbar_wallet_connect_button').css('display'), 'inline-block');
         });
@@ -31,8 +31,8 @@ describe('BindView1', function () {
             BindView.bindViewLoggedInButton('abcd');
 
             // Assert
-            assert.strictEqual($('#wallet_address').text(), 'abcd');
-            assert.strictEqual($('#wallet_address').css('display'), 'inline-block');
+            assert.strictEqual($('#topbar_wallet_address').text(), 'abcd');
+            assert.strictEqual($('#topbar_wallet_address_container').css('display'), 'inline-block');
             assert.strictEqual($('#wallet_refresh').css('display'), 'inline-block');
             assert.strictEqual($('#topbar_wallet_connect_button').css('display'), 'none');
         });
@@ -42,8 +42,8 @@ describe('BindView1', function () {
             BindView.bindViewLoggedInButton('');
 
             // Assert
-            assert.strictEqual($('#wallet_address').text(), '');
-            assert.strictEqual($('#wallet_address').css('display'), 'inline-block');
+            assert.strictEqual($('#topbar_wallet_address').text(), '');
+            assert.strictEqual($('#topbar_wallet_address_container').css('display'), 'inline-block');
             assert.strictEqual($('#wallet_refresh').css('display'), 'inline-block');
             assert.strictEqual($('#topbar_wallet_connect_button').css('display'), 'none');
         });
@@ -53,8 +53,8 @@ describe('BindView1', function () {
             BindView.bindViewLoggedInButton(null);
 
             // Assert
-            assert.strictEqual($('#wallet_address').text(), '');
-            assert.strictEqual($('#wallet_address').css('display'), 'inline-block');
+            assert.strictEqual($('#topbar_wallet_address').text(), '');
+            assert.strictEqual($('#topbar_wallet_address_container').css('display'), 'inline-block');
             assert.strictEqual($('#wallet_refresh').css('display'), 'inline-block');
             assert.strictEqual($('#topbar_wallet_connect_button').css('display'), 'none');
         });
@@ -83,7 +83,10 @@ describe('BindView1', function () {
             assert.strictEqual($('#wallet_censored_address').css('display'), '');
             assert.strictEqual($('#wallet_censor_icon').hasClass('fa-eye'), true);
             assert.strictEqual($('#wallet_censor_icon').hasClass('fa-eye-slash'), false);
-            assert.strictEqual($('#wallet_viewblock_anchor').attr('href'), "https://viewblock.io/zilliqa/address/" + walletFullAddress);
+
+            $('.wallet_viewblock_anchor').each(function() {
+                assert.strictEqual(this.attr('href'), "https://viewblock.io/zilliqa/address/" + walletFullAddress);
+            })
         });
 
         it('#showFullWalletAddress()', function () {
