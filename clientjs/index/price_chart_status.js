@@ -483,8 +483,9 @@ class PriceChartStatus {
             lineColor: priceDifference >= 0 ? CONST_GREEN_LINE_RGBA_STRING : CONST_RED_LINE_RGBA_STRING,
             lineWidth: 2,
             priceFormat: {
+                type: 'custom',
                 minMove: Math.pow(10, (-1 * dataPrecision)),
-                precision: dataPrecision,
+                formatter: price => parseFloat(price).toFixed(dataPrecision),
             },
         });
         series.setData(data);
