@@ -3,10 +3,10 @@ var fs = require('fs')
 var $ = indexJsdom.$;
 
 var assert = require('assert');
-var ZilswapDexStatus = require('../../../clientjs/index//zilswap_dex_status.js');
-var CoinPriceStatus = require('../../../clientjs/index//coin_price_status.js');
-var StakingBalanceStatus = require('../../../clientjs/index//staking_balance_status.js');
-var StakingCarbonStatus = require('../../../clientjs/index//staking_carbon_status.js');
+var ZilswapDexStatus = require('../../../clientjs/index/zilswap_dex_status.js');
+var CoinPriceStatus = require('../../../clientjs/index/coin_price_status.js');
+var StakingBalanceStatus = require('../../../clientjs/index/staking_balance_status.js');
+var StakingZrcStatus = require('../../../clientjs/index/staking_zrc_status.js');
 var Constants = require('../../../constants.js');
 
 describe('StakingBalanceStatus', function () {
@@ -49,7 +49,7 @@ describe('StakingBalanceStatus', function () {
 
         it('create plain object', function () {
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ null, /* coinPriceCoingecko24hAgoData= */ null);
-            let stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilStakingBalanceData= */ null, /* zilStakingWithdrawalBalanceData= */ null);
+            let stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilStakingBalanceData= */ null, /* zilStakingWithdrawalBalanceData= */ null);
 
             assert.strictEqual(stakingBalanceStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
             assert.strictEqual(stakingBalanceStatus.ssnListMap_, ssnListMap);
@@ -110,7 +110,7 @@ describe('StakingBalanceStatus', function () {
             zilStakingBalanceEmptyWithdrawalData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":null}');
             zilStakingBalanceWithdrawalData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"withdrawal_pending":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":{"1037958":"14063107679853089", "1137958":"7063107679853089"}}}}');
             
-            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilStakingBalanceData= */ null, /* zilStakingWithdrawalBalanceData= */ null);
+            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilStakingBalanceData= */ null, /* zilStakingWithdrawalBalanceData= */ null);
         });
 
         it('no action, no balance, and no withdrawal balance', function () {
@@ -134,7 +134,7 @@ describe('StakingBalanceStatus', function () {
         });
         
         it('compute, wallet set, have staking balance', function () {
-            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceEmptyWithdrawalData);
+            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceEmptyWithdrawalData);
         
             // Act
             stakingBalanceStatus.computeStakingBalanceMap();
@@ -160,7 +160,7 @@ describe('StakingBalanceStatus', function () {
         });
 
         it('compute, wallet set with withdrawal data, have staking data and withdrawal balance', function () {
-            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData);
+            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData);
         
             // Act
             stakingBalanceStatus.computeStakingBalanceMap();
@@ -186,7 +186,7 @@ describe('StakingBalanceStatus', function () {
         });
 
         it('compute, wallet set, bindView(), assertView', function () {
-            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData);
+            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData);
         
             // Act
             stakingBalanceStatus.computeStakingBalanceMap();
@@ -233,8 +233,10 @@ describe('StakingBalanceStatus', function () {
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
             let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData,  zilswapDexSmartContractStateData24hAgo);
             let carbonBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"stakers":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":"9036430995"}}}');
-            let stakingCarbonStatus = new StakingCarbonStatus.StakingCarbonStatus(coinPriceStatus, zilswapDexStatus, walletAddressBase16, carbonBalanceData);
-            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData, stakingCarbonStatus);
+            let stakingZrcStatus = new StakingZrcStatus.StakingZrcStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus);
+            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', walletAddressBase16, Constants.zrcStakingTokenPropertiesListMap['CARB'].state_attributes.staked_amount);
+
+            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData, stakingZrcStatus);
         
             stakingBalanceStatus.computeStakingBalanceMap();
             stakingBalanceStatus.computeStakingWithdrawalBalance();
@@ -254,8 +256,7 @@ describe('StakingBalanceStatus', function () {
             assert.strictEqual(stakingBalanceStatus.zilStakingWithdrawalBalance_, null);
             assert.deepStrictEqual(stakingBalanceStatus.zilStakingBalanceMap_, {});
 
-            assert.strictEqual(stakingBalanceStatus.stakingCarbonStatus_.carbonBalanceData_, null);
-            assert.strictEqual(stakingBalanceStatus.stakingCarbonStatus_.carbonBalance_, null);
+            assert.deepStrictEqual(stakingBalanceStatus.stakingZrcStatus_.zrcBalance_, {});
 
             assert.strictEqual($('#staking_container').css('display'), 'none');
 
@@ -273,15 +274,17 @@ describe('StakingBalanceStatus', function () {
             assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(), '');
             assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text(), '');
 
-            // Assert Carbon
-            assert.strictEqual($('#carbon_staking_container').css('display'), 'none');
-            assert.strictEqual($('#carbon_staking_balance').text(), 'Loading...');
-            assert.strictEqual($('#carbon_staking_balance_zil').text(), 'Loading...');
-            assert.strictEqual($('#carbon_staking_balance_zil_24h_ago').text(), '');
-            assert.strictEqual($('#carbon_staking_balance_zil_percent_change_24h').text(), '');
-            assert.strictEqual($('#carbon_staking_balance_fiat').text(), 'Loading...');
-            assert.strictEqual($('#carbon_staking_balance_fiat_24h_ago').text(), '');
-            assert.strictEqual($('#carbon_staking_balance_fiat_percent_change_24h').text(), '');
+            // Assert zrc staking 
+            for (let tickerId in Constants.zrcStakingTokenPropertiesListMap) {
+                assert.strictEqual($('#' + tickerId + '_staking_container').css('display'), 'none');
+                assert.strictEqual($('#' + tickerId + '_staking_balance').text(), 'Loading...');
+                assert.strictEqual($('#' + tickerId + '_staking_balance_zil').text(), 'Loading...');
+                assert.strictEqual($('#' + tickerId + '_staking_balance_zil_24h_ago').text(), '');
+                assert.strictEqual($('#' + tickerId + '_staking_balance_zil_percent_change_24h').text(), '');
+                assert.strictEqual($('#' + tickerId + '_staking_balance_fiat').text(), 'Loading...');
+                assert.strictEqual($('#' + tickerId + '_staking_balance_fiat_24h_ago').text(), '');
+                assert.strictEqual($('#' + tickerId + '_staking_balance_fiat_percent_change_24h').text(), '');
+            }
         });
     });
 
@@ -346,7 +349,7 @@ describe('StakingBalanceStatus', function () {
             let zilStakingBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"deposit_amt_deleg":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":{"0xbf4e5001339dec3cda012f471f4f2d9e8bed2f5b":"2300000000000000", "0x82b82c65213e0b2b206492d3d8a2a679e7fe52e0":"7063107679853089"}}}}');
             let zilStakingBalanceWithdrawalData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"withdrawal_pending":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":{"1037958":"14063107679853089", "1137958":"7063107679853089"}}}}');
             
-            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData);
+            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData);
         });
 
         it('compute, wallet set, bindView(), assertView', function () {
@@ -426,8 +429,9 @@ describe('StakingBalanceStatus', function () {
 
         var walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
         var coinPriceStatus;
-        var stakingCarbonStatus;
+        var stakingZrcStatus;
         var stakingBalanceStatus;
+        let carbonBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"stakers":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":"9036430995"}}}');
 
         beforeEach(function () {
             // Arrange
@@ -442,16 +446,17 @@ describe('StakingBalanceStatus', function () {
             let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8'));
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
             let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData,  zilswapDexSmartContractStateData24hAgo);
-            let carbonBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"stakers":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":"9036430995"}}}');
-            stakingCarbonStatus = new StakingCarbonStatus.StakingCarbonStatus(coinPriceStatus, zilswapDexStatus, walletAddressBase16, carbonBalanceData);
 
-            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData, stakingCarbonStatus);
+            stakingZrcStatus = new StakingZrcStatus.StakingZrcStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus);
+            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData, stakingZrcStatus);
         });
 
         it('compute, wallet set, bindView(), assertView', function () {
             // Act
-            stakingCarbonStatus.computeCarbonBalance();
-            stakingCarbonStatus.bindViewStakingBalance();
+            tickerId = 'CARB';
+            stakingZrcStatus.computeZrcBalance(carbonBalanceData, tickerId, walletAddressBase16, Constants.zrcStakingTokenPropertiesListMap['CARB'].state_attributes.staked_amount);
+            stakingZrcStatus.bindViewStakingBalance(tickerId);
+
             stakingBalanceStatus.computeStakingBalanceMap();
             stakingBalanceStatus.computeStakingWithdrawalBalance();
 
@@ -464,14 +469,14 @@ describe('StakingBalanceStatus', function () {
             assert.strictEqual(stakingBalanceStatus.getAllStakingBalanceInZil24hAgo(), 32022.371219777688);
 
             // Assert IDR
-            assert.strictEqual($('#carbon_staking_balance').text(), '90.36');
-            assert.strictEqual($('#carbon_staking_balance_zil').text(), '1,371');
-            assert.strictEqual($('#carbon_staking_balance_zil_24h_ago').text(), '1,533');
-            assert.strictEqual($('#carbon_staking_balance_zil_percent_change_24h').text(), '-10.6');
-            assert.strictEqual($('#carbon_staking_balance_fiat').text(), '2,209,430');
-            assert.strictEqual($('#carbon_staking_balance_fiat_24h_ago').text(), '2,296,506');
-            assert.strictEqual($('#carbon_staking_balance_fiat_percent_change_24h').text(), '-3.8');
-            assert.strictEqual($('#carbon_staking_container').css('display'), 'block');
+            assert.strictEqual($('#' + tickerId + '_staking_balance').text(), '90.36');
+            assert.strictEqual($('#' + tickerId + '_staking_balance_zil').text(), '1,371');
+            assert.strictEqual($('#' + tickerId + '_staking_balance_zil_24h_ago').text(), '1,533');
+            assert.strictEqual($('#' + tickerId + '_staking_balance_zil_percent_change_24h').text(), '-10.6');
+            assert.strictEqual($('#' + tickerId + '_staking_balance_fiat').text(), '2,209,430');
+            assert.strictEqual($('#' + tickerId + '_staking_balance_fiat_24h_ago').text(), '2,296,506');
+            assert.strictEqual($('#' + tickerId + '_staking_balance_fiat_percent_change_24h').text(), '-3.8');
+            assert.strictEqual($('#' + tickerId + '_staking_container').css('display'), 'block');
             assert.strictEqual($('#staking_container').css('display'), 'block');
         });
     });
@@ -481,7 +486,7 @@ describe('StakingBalanceStatus', function () {
 
         beforeEach(function () {
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ null, /* coinPriceCoingecko24hAgoData= */ null);
-            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilStakingBalanceData= */ null, /* zilStakingWithdrawalBalanceData= */ null);
+            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilStakingBalanceData= */ null, /* zilStakingWithdrawalBalanceData= */ null);
         });
 
         describe('#bindViewZilStakingBalance()', function () {

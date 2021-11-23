@@ -1,13 +1,14 @@
 /** A class to represent global wallet balance status.  */
 class StakingBalanceStatus {
 
-    constructor(zrcTokenPropertiesListMap, ssnListMap, /* nullable= */ coinPriceStatus, /* nullable= */ walletAddressBase16, /* nullable= */ zilStakingBalanceData, /* nullable= */ zilStakingWithdrawalBalanceData, /* nullable= */ stakingCarbonStatus) {
+    constructor(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, ssnListMap, /* nullable= */ coinPriceStatus, /* nullable= */ walletAddressBase16, /* nullable= */ zilStakingBalanceData, /* nullable= */ zilStakingWithdrawalBalanceData, /* nullable= */ stakingZrcStatus) {
         // Constants
         this.zilSeedNodeStakingImplementationAddress_ = "zil15lr86jwg937urdeayvtypvhy6pnp6d7p8n5z09"; // v 1.1
         this.zilSeedNodeStakingImplementationAddressBase16_ = "a7C67D49C82c7dc1B73D231640B2e4d0661D37c1"; // v 1.1
 
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
+        this.zrcStakingTokenPropertiesListMap_ = zrcStakingTokenPropertiesListMap; // Refer to constants.js for definition
         this.ssnListMap_ = ssnListMap; // Refer to constants.js for definition
         this.coinPriceStatus_ = coinPriceStatus;
 
@@ -15,7 +16,7 @@ class StakingBalanceStatus {
         this.walletAddressBase16_ = walletAddressBase16;
         this.zilStakingBalanceData_ = zilStakingBalanceData;
         this.zilStakingWithdrawalBalanceData_ = zilStakingWithdrawalBalanceData;
-        this.stakingCarbonStatus_ = stakingCarbonStatus;
+        this.stakingZrcStatus_ = stakingZrcStatus;
 
         // Private derived variable
         this.zilStakingBalanceMap_ = {};
@@ -26,8 +27,8 @@ class StakingBalanceStatus {
      * Callback method to be executed if any properties in zilswapDexStatus_ is changed.
      */
     onZilswapDexStatusChange() {
-        if (this.stakingCarbonStatus_) {
-            this.stakingCarbonStatus_.onZilswapDexStatusChange();
+        if (this.stakingZrcStatus_) {
+            this.stakingZrcStatus_.onZilswapDexStatusChange();
         }
     }
 
@@ -37,8 +38,8 @@ class StakingBalanceStatus {
     onCoinPriceStatusChange() {
         this.bindViewStakingBalanceFiat();
         this.bindViewStakingWithdrawalBalanceFiat();
-        if (this.stakingCarbonStatus_) {
-            this.stakingCarbonStatus_.onCoinPriceStatusChange();
+        if (this.stakingZrcStatus_) {
+            this.stakingZrcStatus_.onCoinPriceStatusChange();
         }
     }
 
@@ -48,8 +49,8 @@ class StakingBalanceStatus {
         this.zilStakingBalanceMap_ = {};
         this.zilStakingWithdrawalBalance_ = null;
         this.resetView();
-        if (this.stakingCarbonStatus_) {
-            this.stakingCarbonStatus_.reset();
+        if (this.stakingZrcStatus_) {
+            this.stakingZrcStatus_.reset();
         }
     }
 
@@ -57,8 +58,8 @@ class StakingBalanceStatus {
         // Need to reset the attributes when wallet is changed.
         this.reset();
         this.walletAddressBase16_ = walletAddressBase16;
-        if (this.stakingCarbonStatus_) {
-            this.stakingCarbonStatus_.setWalletAddressBase16(walletAddressBase16);
+        if (this.stakingZrcStatus_) {
+            this.stakingZrcStatus_.setWalletAddressBase16(walletAddressBase16);
         }
     }
 
@@ -112,10 +113,12 @@ class StakingBalanceStatus {
     getAllStakingBalanceInZil() {
         let totalStakingInZil = this.getStakingAllSsnAndWithdrawalBalance();
 
-        if (this.stakingCarbonStatus_) {
-            let stakingCarbonInZil = this.stakingCarbonStatus_.getCarbonStakingBalanceInZil();
-            if (stakingCarbonInZil) {
-                totalStakingInZil += stakingCarbonInZil;
+        if (this.stakingZrcStatus_) {
+            for (let tickerId in this.zrcStakingTokenPropertiesListMap_) {
+                let stakingZrcInZil = this.stakingZrcStatus_.getZrcStakingBalanceInZil(tickerId);
+                if (stakingZrcInZil) {
+                    totalStakingInZil += stakingZrcInZil;
+                }
             }
         }
         return totalStakingInZil;
@@ -131,15 +134,17 @@ class StakingBalanceStatus {
         // they are in ZIL, not affected by ZRC prices.
         let totalStakingInZil = this.getStakingAllSsnAndWithdrawalBalance();
 
-        if (this.stakingCarbonStatus_) {
-            // If staking carbon is present and there is no 24h ago data, return 0 not to pollute the data.
-            if (!this.stakingCarbonStatus_.has24hAgoData()) {
+        if (this.stakingZrcStatus_) {
+            // If staking zrc is present and there is no 24h ago data, return 0 not to pollute the data.
+            if (!this.stakingZrcStatus_.has24hAgoData()) {
                 return 0;
             }
             // Else compute 24h ago as usual.
-            let stakingCarbonInZil24hAgo = this.stakingCarbonStatus_.getCarbonStakingBalanceInZil24hAgo();
-            if (stakingCarbonInZil24hAgo) {
-                totalStakingInZil += stakingCarbonInZil24hAgo;
+            for (let tickerId in this.zrcStakingTokenPropertiesListMap_) {
+                let stakingZrcInZil = this.stakingZrcStatus_.getZrcStakingBalanceInZil24hAgo(tickerId);
+                if (stakingZrcInZil) {
+                    totalStakingInZil += stakingZrcInZil;
+                }
             }
         }
         return totalStakingInZil;
@@ -235,8 +240,8 @@ class StakingBalanceStatus {
                 onErrorCallback();
             });
 
-        if (this.stakingCarbonStatus_) {
-            this.stakingCarbonStatus_.computeDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback);
+        if (this.stakingZrcStatus_) {
+            this.stakingZrcStatus_.computeDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback);
         }
     }
 

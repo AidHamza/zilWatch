@@ -995,47 +995,48 @@ block content
                                 span(id='zil_staking_withdrawal_pending_balance_fiat_24h_ago')
                               td(style='text-align: right; white-space: nowrap;' )
 
-                    div(id='carbon_staking_container' class='col-lg-6' style='padding: 0; display: none')
-                      div(class='box')
-                        table(class='table table-sm table-borderless')
-                          tbody
-                            tr
-                              td(scope='row' rowspan='4' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                                img(height='32' width='32' src=zrcTokenPropertiesListMap['CARB'].logo_url loading='lazy')
-                              td(style='text-align: left; white-space: nowrap; width: 35%;' )
-                                span(class='font-weight-bold')= zrcTokenPropertiesListMap['CARB'].name
-                                span(class=zrcTokenPropertiesListMap['CARB'].ticker+'_price_zil ml-2 text-secondary')= 'Loading...'
-                                span(class='ml-1 text-secondary')= 'ZIL'
-                              td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                                span(id='carbon_staking_balance_zil')= 'Loading...'
-                                span(class='ml-1')= 'ZIL'
-                              td(id='carbon_staking_balance_zil_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
-                                span(id='carbon_staking_balance_zil_percent_change_24h')
-                                span= '%'
-                              tr(id='carbon_staking_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
-                                td(scope='row' style='white-space: nowrap;' )
-                                  span= 'Balance 24h ago'
-                                td(style='text-align: right; white-space: nowrap;' )
-                                  span(id='carbon_staking_balance_zil_24h_ago')
+                    each stakingTokenProperty, tickerId in zrcStakingTokenPropertiesListMap
+                      div(id=tickerId + '_staking_container' class='col-lg-6' style='padding: 0; display: none')
+                        div(class='box')
+                          table(class='table table-sm table-borderless')
+                            tbody
+                              tr
+                                td(scope='row' rowspan='4' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                                  img(height='32' width='32' src=zrcTokenPropertiesListMap[stakingTokenProperty.ticker].logo_url loading='lazy')
+                                td(style='text-align: left; white-space: nowrap; width: 35%;' )
+                                  span(class='font-weight-bold')= stakingTokenProperty.name
+                                  span(class=stakingTokenProperty.ticker+'_price_zil ml-2 text-secondary')= 'Loading...'
+                                  span(class='ml-1 text-secondary')= 'ZIL'
+                                td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                                  span(id=tickerId + '_staking_balance_zil')= 'Loading...'
                                   span(class='ml-1')= 'ZIL'
-                                td(style='text-align: right; white-space: nowrap;' )
-                            tr
-                              td(style='text-align: left; white-space: nowrap; width: 35%;' )
-                                span(id='carbon_staking_balance')= 'Loading...'
-                                span(id='carbon_zil_staking_balance_unit' class='ml-1')= zrcTokenPropertiesListMap['CARB'].ticker
-                              td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                                span(class='currency_symbol mr-1')= '$'
-                                span(id='carbon_staking_balance_fiat')= 'Loading...'
-                              td(id='carbon_staking_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
-                                span(id='carbon_staking_balance_fiat_percent_change_24h')
-                                span= '%'
-                              tr(id='carbon_staking_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
-                                td(scope='row' style='white-space: nowrap;' )
-                                  span= 'Balance 24h ago'
-                                td(style='text-align: right; white-space: nowrap;' )
+                                td(id=tickerId + '_staking_balance_zil_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                                  span(id=tickerId + '_staking_balance_zil_percent_change_24h')
+                                  span= '%'
+                                tr(id=tickerId + '_staking_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
+                                  td(scope='row' style='white-space: nowrap;' )
+                                    span= 'Balance 24h ago'
+                                  td(style='text-align: right; white-space: nowrap;' )
+                                    span(id=tickerId + '_staking_balance_zil_24h_ago')
+                                    span(class='ml-1')= 'ZIL'
+                                  td(style='text-align: right; white-space: nowrap;' )
+                              tr
+                                td(style='text-align: left; white-space: nowrap; width: 35%;' )
+                                  span(id=tickerId + '_staking_balance')= 'Loading...'
+                                  span(id=tickerId + '_zil_staking_balance_unit' class='ml-1')= stakingTokenProperty.ticker
+                                td(style='text-align: right; white-space: nowrap; width: 40%;' )
                                   span(class='currency_symbol mr-1')= '$'
-                                  span(id='carbon_staking_balance_fiat_24h_ago')
-                                td(style='text-align: right; white-space: nowrap;' )
+                                  span(id=tickerId + '_staking_balance_fiat')= 'Loading...'
+                                td(id=tickerId + '_staking_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                                  span(id=tickerId + '_staking_balance_fiat_percent_change_24h')
+                                  span= '%'
+                                tr(id=tickerId + '_staking_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
+                                  td(scope='row' style='white-space: nowrap;' )
+                                    span= 'Balance 24h ago'
+                                  td(style='text-align: right; white-space: nowrap;' )
+                                    span(class='currency_symbol mr-1')= '$'
+                                    span(id=tickerId + '_staking_balance_fiat_24h_ago')
+                                  td(style='text-align: right; white-space: nowrap;' )
                 hr
 
         // Contents for pills-wallet-nft tab
@@ -1349,6 +1350,7 @@ block script
     var currencyMap = !{JSON.stringify(currencyMap)};
     var ssnListMap = !{JSON.stringify(ssnListMap)};
     var zrcTokenPropertiesListMap = !{JSON.stringify(zrcTokenPropertiesListMap)};
+    var zrcStakingTokenPropertiesListMap = !{JSON.stringify(zrcStakingTokenPropertiesListMap)};
     var nftTokenPropertiesListMap = !{JSON.stringify(nftTokenPropertiesListMap)};
     var targetTokenSymbol = !{JSON.stringify(targetTokenSymbol)};
     // Cache from redis (if any). If there are no cache, we will fallback to RPC network call.
@@ -1373,15 +1375,15 @@ block script
     const coinPriceStatus = new CoinPriceStatus(coinMap, currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
     const zilswapDexStatus = new ZilswapDexStatus(zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData,  zilswapDexSmartContractState24hAgoData, zrcTokensCirculatingSupplyData, zrcTokensTotalSupplyData);
     const walletBalanceStatus = new WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBase16= */ null, /* zilBalanceData= */ null, /* zilBalanceDataMap= */ null);
-    const stakingCarbonStatus = new StakingCarbonStatus(coinPriceStatus, zilswapDexStatus, /* walletAddressBase16= */ null, /* carbonBalanceData= */ null);
-    const stakingBalanceStatus = new StakingBalanceStatus(zrcTokenPropertiesListMap, ssnListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilStakingBalanceData= */ null, /* zilStakingWithdrawalBalanceData= */ null, stakingCarbonStatus);
+    const stakingZrcStatus = new StakingZrcStatus(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus);
+    const stakingBalanceStatus = new StakingBalanceStatus(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, ssnListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilStakingBalanceData= */ null, /* zilStakingWithdrawalBalanceData= */ null, stakingZrcStatus);
     const netWorthStatus = new NetWorthStatus(barChartDrawer, coinPriceStatus, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus);
 
     const coinMarketStatus = new CoinMarketStatus(coinMap, coinPriceStatus, coinMarketCoingeckoData);
     const zilswapZrcPrice24hLowHighStatus = new ZilswapZrcPrice24hLowHighStatus(zrcTokenPropertiesListMap, zilswapDexStatus, zrcTokenPrice24hLowData, zrcTokenPrice24hHighData);
 
     const zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDex24hTradeVolumeData)
-    const uniqueCoinStatus = new UniqueCoinStatus(zrcTokenPropertiesListMap, barChartDrawer, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingCarbonStatus);
+    const uniqueCoinStatus = new UniqueCoinStatus(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, barChartDrawer, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingZrcStatus);
     const zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus(zrcTokenPropertiesListMap, zilswapDexStatus, zilswapTradeVolumeStatus);
     const zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, zilswapDistributorToTickerMap);
 

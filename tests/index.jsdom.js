@@ -21,6 +21,7 @@ app.render('index', {
     coinMap: Constants.coinMap,
     currencyMap: Constants.currencyMap,
     zrcTokenPropertiesListMap: Constants.zrcTokenPropertiesListMap,
+    zrcStakingTokenPropertiesListMap: Constants.zrcStakingTokenPropertiesListMap,
     nftTokenPropertiesListMap: Constants.nftTokenPropertiesListMap,
     ssnListMap: Constants.ssnListMap,
     zrcTokensTotalSupply: Constants.emptyZrcTokensSupply,

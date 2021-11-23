@@ -2,12 +2,12 @@ var indexJsdom = require('../../index.jsdom.js');
 var fs = require('fs')
 
 var assert = require('assert');
-var ZilswapDexStatus = require('../../../clientjs/index//zilswap_dex_status.js');
-var CoinPriceStatus = require('../../../clientjs/index//coin_price_status.js');
-var WalletBalanceStatus = require('../../../clientjs/index//wallet_balance_status.js');
-var StakingCarbonStatus = require('../../../clientjs/index//staking_carbon_status.js');
-var StakingBalanceStatus = require('../../../clientjs/index//staking_balance_status.js');
-var UniqueCoinStatus = require('../../../clientjs/index//unique_coin_status.js');
+var ZilswapDexStatus = require('../../../clientjs/index/zilswap_dex_status.js');
+var CoinPriceStatus = require('../../../clientjs/index/coin_price_status.js');
+var WalletBalanceStatus = require('../../../clientjs/index/wallet_balance_status.js');
+var StakingZrcStatus = require('../../../clientjs/index/staking_zrc_status.js');
+var StakingBalanceStatus = require('../../../clientjs/index/staking_balance_status.js');
+var UniqueCoinStatus = require('../../../clientjs/index/unique_coin_status.js');
 var Constants = require('../../../constants.js');
 
 describe('NetWorthStatus', function () {
@@ -15,27 +15,27 @@ describe('NetWorthStatus', function () {
     describe('#constructor()', function () {
 
         it('create empty object', function () {
-            let uniqueCoinStatus = new UniqueCoinStatus.UniqueCoinStatus(Constants.zrcTokenPropertiesListMap, /* barChartDrawer= */ null, /* zilswapDexStatus= */ null, /* walletBalanceStatus= */ null, /* stakingBalanceStatus= */ null, /* stakingCarbonStatus= */ null);
+            let uniqueCoinStatus = new UniqueCoinStatus.UniqueCoinStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, /* barChartDrawer= */ null, /* zilswapDexStatus= */ null, /* walletBalanceStatus= */ null, /* stakingBalanceStatus= */ null, /* stakingZrcStatus= */ null);
 
             assert.strictEqual(uniqueCoinStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
             assert.strictEqual(uniqueCoinStatus.barChartDrawer_, null);
             assert.strictEqual(uniqueCoinStatus.zilswapDexStatus_, null);
             assert.strictEqual(uniqueCoinStatus.walletBalanceStatus_, null);
             assert.strictEqual(uniqueCoinStatus.stakingBalanceStatus_, null);
-            assert.strictEqual(uniqueCoinStatus.stakingCarbonStatus_, null);
+            assert.strictEqual(uniqueCoinStatus.stakingZrcStatus_, null);
         });
     });
 
     describe('#methods(), with 24h ago, includes everything', function () {
         var zilswapDexStatus;
         var walletBalanceStatus;
-        var stakingCarbonStatus;
+        var stakingZrcStatus;
         var stakingBalanceStatus;
         var uniqueCoinStatus;
+        let carbonBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"stakers":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":"9036430995"}}}');
+        let walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
 
         beforeEach(function () {
-            let walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
-
             let coinPriceCoingeckoData = JSON.parse('{"zilliqa":{"usd":0.11819,"idr":1612}}');
             let coinPriceCoingecko24hAgoData = JSON.parse('{"zilliqa":{"usd":0.10519,"idr":1498}}');
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
@@ -63,14 +63,13 @@ describe('NetWorthStatus', function () {
 
             walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletAddressBase16, zilBalanceData, zrcBalanceDataMap);
 
-            let carbonBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"stakers":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":"9036430995"}}}');
-            stakingCarbonStatus = new StakingCarbonStatus.StakingCarbonStatus(coinPriceStatus, zilswapDexStatus, walletAddressBase16, carbonBalanceData);
+            stakingZrcStatus = new StakingZrcStatus.StakingZrcStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus);
 
             let zilStakingBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"deposit_amt_deleg":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":{"0xbf4e5001339dec3cda012f471f4f2d9e8bed2f5b":"2300000000000000", "0x82b82c65213e0b2b206492d3d8a2a679e7fe52e0":"7063107679853089"}}}}');
             let zilStakingBalanceWithdrawalData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"withdrawal_pending":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":{"1037958":"14063107679853089", "1137958":"7063107679853089"}}}}');
-            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData, stakingCarbonStatus);
+            stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData, stakingZrcStatus);
 
-            uniqueCoinStatus = new UniqueCoinStatus.UniqueCoinStatus(Constants.zrcTokenPropertiesListMap, /* barChartDrawer= */ null, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingCarbonStatus);
+            uniqueCoinStatus = new UniqueCoinStatus.UniqueCoinStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, /* barChartDrawer= */ null, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingZrcStatus);
         });
 
         it('compute unique coins, computed and sorted correctly', function () {
@@ -82,7 +81,13 @@ describe('NetWorthStatus', function () {
                 ['REDC', 1092.6018798700845],
                 ['ZLP', 903.0779495449406],
             ];
-            let nonZeroTickerDummyMap = {'ZIL': 0, 'CARB': 0, 'ZWAP': 0, 'REDC': 0, 'ZLP': 0}
+            let nonZeroTickerDummyMap = {
+                'ZIL': 0,
+                'CARB': 0,
+                'ZWAP': 0,
+                'REDC': 0,
+                'ZLP': 0
+            }
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 // If token not in the list, i.e., new token, it's 0, we add it into the list
                 if (!(ticker in nonZeroTickerDummyMap)) {
@@ -97,7 +102,7 @@ describe('NetWorthStatus', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 walletBalanceStatus.computeTokenBalanceMap(ticker);
             }
-            stakingCarbonStatus.computeCarbonBalance();
+            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', walletAddressBase16, Constants.zrcStakingTokenPropertiesListMap['CARB'].state_attributes.staked_amount);
             stakingBalanceStatus.computeStakingBalanceMap();
             stakingBalanceStatus.computeStakingWithdrawalBalance();
             zilswapDexStatus.computeZilswapPairPublicPersonalStatusMap();

@@ -740,6 +740,48 @@ const zrcTokenPropertiesListMap = {
   },
 }
 
+const zrcStakingTokenPropertiesListMap = {
+  'CARB': {
+    "ticker": "CARB",
+    "name": "Carbon",
+    "address": "zil18r37xks4r3rj7rzydujcckzlylftdy2qerszne",
+    "address_base16": "0x38e3e35a151C472f0c446f258c585F27d2B69140",
+    "state_attributes": {
+      "reward_apr" : "rewardPercent",
+      "unbonding_days" : "unstakeDays",
+      "staked_amount" : "stakers",
+      "unclaimed_rewards_amount" : "pending_carbs",
+      "pending_withdrawal_amount" : "removeStaker",
+    }
+  },
+  'PORT-BUOY': {
+    "ticker": "PORT",
+    "name": "PORT Buoy",
+    "address": "zil1lkhea3egremrwtn4lfhsa4psk978k2sat3cs3u",
+    "address_base16": "0xFdaF9EC7281E76372e75fA6F0Ed430b17c7b2a1d",
+    "state_attributes": {
+      "reward_apr" : "rewardPercent",
+      "unbonding_days" : "unstakeDays",
+      "staked_amount" : "stakers",
+      "unclaimed_rewards_amount" : "pendingRewards",
+      "pending_withdrawal_amount" : "removeStaker",
+    }
+  },
+  'PORT-DOCK': {
+    "ticker": "PORT",
+    "name": "PORT Dock",
+    "address": "zil1yhy3wm79cx8v9zyg7qecwa457w0ysupgvzk5pt",
+    "address_base16": "0x25c9176Fc5C18eC28888f0338776B4F39e487028",
+    "state_attributes": {
+      "reward_apr" : "rewardPercent",
+      "unbonding_days" : "unstakeDays",
+      "staked_amount" : "stakers",
+      "unclaimed_rewards_amount" : "pendingRewards",
+      "pending_withdrawal_amount" : "removeStaker",
+    }
+  },
+}
+
 const nftTokenPropertiesListMap = {
   'BEAR': {
     "ticker": "BEAR",
@@ -1050,6 +1092,7 @@ module.exports = {
   currencyMap: currencyMap,
   ssnListMap: ssnListMap,
   zrcTokenPropertiesListMap: zrcTokenPropertiesListMap,
+  zrcStakingTokenPropertiesListMap: zrcStakingTokenPropertiesListMap,
   nftTokenPropertiesListMap: nftTokenPropertiesListMap,
   emptyZrcTokensSupply: emptyZrcTokensSupply,
 };

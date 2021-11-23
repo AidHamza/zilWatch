@@ -1,15 +1,16 @@
 /** A class to represent global net worth status.  */
 class UniqueCoinStatus {
 
-    constructor(zrcTokenPropertiesListMap, /* nullable= */ barChartDrawer, /* nullable= */ zilswapDexStatus, /* nullable= */ walletBalanceStatus, /* nullable= */ stakingBalanceStatus, /* nullable= */ stakingCarbonStatus) {
+    constructor(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, /* nullable= */ barChartDrawer, /* nullable= */ zilswapDexStatus, /* nullable= */ walletBalanceStatus, /* nullable= */ stakingBalanceStatus, /* nullable= */ stakingZrcStatus) {
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
+        this.zrcStakingTokenPropertiesListMap_ = zrcStakingTokenPropertiesListMap; // Refer to constants.js for definition
 
         // Private variable
         this.barChartDrawer_ = barChartDrawer;
         this.zilswapDexStatus_ = zilswapDexStatus;
         this.walletBalanceStatus_ = walletBalanceStatus
         this.stakingBalanceStatus_ = stakingBalanceStatus;
-        this.stakingCarbonStatus_ = stakingCarbonStatus;
+        this.stakingZrcStatus_ = stakingZrcStatus;
 
         // Private derived variable
         // A sorted 2D array, containing multiple ['coin_name', 'coin_amount']
@@ -97,18 +98,21 @@ class UniqueCoinStatus {
             }
         }
 
-        // Carbon Staking balance
-        if (this.stakingCarbonStatus_) {
-            let carbonStakingBalanceInZil = this.stakingCarbonStatus_.getCarbonStakingBalanceInZil();
-            if (carbonStakingBalanceInZil) {
-                uniqueCoinsBalanceInZil['CARB'] += carbonStakingBalanceInZil;
+        // ZRC Staking balance
+        if (this.stakingZrcStatus_) {
+            for (let tickerId in this.zrcStakingTokenPropertiesListMap_) {
+                let zrcStakingBalanceInZil = this.stakingZrcStatus_.getZrcStakingBalanceInZil(tickerId);
+                if (zrcStakingBalanceInZil) {
+                    let currentTicker = this.zrcStakingTokenPropertiesListMap_[tickerId].ticker;
+                    uniqueCoinsBalanceInZil[currentTicker] += zrcStakingBalanceInZil;
+                }
             }
         }
-        
+
         // Sort descending based on value
         let uniqueCoinsBalanceArray = [];
         for (let key in uniqueCoinsBalanceInZil) {
-            uniqueCoinsBalanceArray.push([ key, uniqueCoinsBalanceInZil[key] ])
+            uniqueCoinsBalanceArray.push([key, uniqueCoinsBalanceInZil[key]])
         }
         uniqueCoinsBalanceArray.sort(function compare(kv1, kv2) {
             return kv2[1] - kv1[1]

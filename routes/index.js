@@ -138,6 +138,7 @@ router.get('/', function (req, res, next) {
         coinMap: constants.coinMap,
         currencyMap: constants.currencyMap,
         zrcTokenPropertiesListMap: constants.zrcTokenPropertiesListMap,
+        zrcStakingTokenPropertiesListMap: constants.zrcStakingTokenPropertiesListMap,
         nftTokenPropertiesListMap: constants.nftTokenPropertiesListMap,
         ssnListMap: constants.ssnListMap,
         targetTokenSymbol: currTargetTokenSymbol,
