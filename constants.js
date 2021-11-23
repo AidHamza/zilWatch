@@ -977,6 +977,16 @@ const nftTokenPropertiesListMap = {
     "is_zilswap_ark_supported": false,
     "website": "https://www.spardawallet.com/marketsearch.html?6865134bdb192780692400f0dfa0d459bf39dfa9",
   },
+  'MONSTERS': {
+    "ticker": "MONSTERS",
+    "name": "Space Monsters",
+    "address": "zil1qq5xx3jh26h2nnfynz5ljds0vpu8pp4n6c2xkk",
+    "address_base16": "0x002863465756Aea9cd2498a9F9360f60787086b3",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1qq5xx3jh26h2nnfynz5ljds0vpu8pp4n6c2xkk/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": true,
+    "website": "https://zilswap.io/ark/collections/zil1qq5xx3jh26h2nnfynz5ljds0vpu8pp4n6c2xkk",
+  },
   'NFTA': {
     "ticker": "NFTA",
     "name": "NFT Natalie",
@@ -1024,7 +1034,7 @@ const nftTokenPropertiesListMap = {
     "address_base16": "0x6EE87a80d700395d0D13A3f12f5481aF8DE74509",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1dm584qxhqqu46rgn50cj74yp47x7w3gf7q4j36/logo",
     "image_dict_path": ["image"],
-    "is_zilswap_ark_supported": false,
+    "is_zilswap_ark_supported": true,
     "website": "https://www.spardawallet.com/marketsearch.html?6ee87a80d700395d0d13a3f12f5481af8de74509",
   },
 }
