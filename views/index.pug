@@ -208,7 +208,7 @@ block content
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           span(id=tokenProperties.ticker+'_total_supply_fiat')= '0'
 
-          if zilswapDexReward || zilStakingReward
+          if zilswapDexReward || zilStakingReward || zrcStakingReward
             div(class='col-xl-6 col-xxl-4' style='padding: 0;')
 
               div(class='box-public')
@@ -216,7 +216,7 @@ block content
                   a(id='farming_info_content_header_title' class='card-title font-weight-bold')= 'Farming Information'
                 div(id='farming_info_content_container' class='card-body collapse')
 
-                  if zilStakingReward
+                  if zilStakingReward || zrcStakingReward
                     table(class='table table-sm table-borderless' width='100%')
                       tbody(class='table-background-color-header')
                         tr
@@ -228,19 +228,37 @@ block content
                           th(style='text-align: right; white-space: nowrap; width: 25%;')
                             span= 'APR %'
                       tbody
-                        tr
-                          td(rowspan=2 scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                            img(height='18' width='18' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
-                          td(rowspan=2 style='display:table-cell; vertical-align: middle; text-align: left; white-space: nowrap;' )
-                            span= 'Zilliqa'
-                          td(rowspan=2 style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap;' )
-                            span= zilStakingReward.unbonding_period_days + ' days'
-                          td(style='text-align: right; white-space: nowrap;' )
-                            span(class='text-secondary mr-1')= '(ZIL)'
-                            span= zilStakingReward.zil_reward_daily_percent
-                          td(style='text-align: right; white-space: nowrap;' )
-                            span(class='text-secondary mr-1')= '(ZIL)'
-                            span= zilStakingReward.zil_reward_apr_percent
+                        - let oddRow = false
+
+                        if zilStakingReward
+                          - oddRow = !oddRow
+                          tr(class= oddRow ? 'table-background-dark' : 'table-background-light')
+                            td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                              img(height='18' width='18' src='https://meta.viewblock.io/ZIL/logo' loading='lazy')
+                            td(style='display:table-cell; vertical-align: middle; text-align: left; white-space: nowrap;' )
+                              span= 'Zilliqa'
+                            td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap;' )
+                              span= zilStakingReward.unbonding_period_days + ' days'
+                            td(style='text-align: right; white-space: nowrap;' )
+                              span= zilStakingReward.zil_reward_daily_percent
+                            td(style='text-align: right; white-space: nowrap;' )
+                              span= zilStakingReward.zil_reward_apr_percent
+
+                        if zrcStakingReward
+                          each zrcStakingTokenProperty, tickerId in zrcStakingReward
+                            - oddRow = !oddRow
+                            - let currLogoUrl = zrcTokenPropertiesListMap[zrcStakingTokenPropertiesListMap[tickerId].ticker].logo_url
+                            tr(class= oddRow ? 'table-background-dark' : 'table-background-light')
+                              td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                                img(height='18' width='18' src=currLogoUrl loading='lazy')
+                              td(style='display:table-cell; vertical-align: middle; text-align: left; white-space: nowrap;' )
+                                span= zrcStakingTokenPropertiesListMap[tickerId].name
+                              td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap;' )
+                                span= zrcStakingTokenProperty.unbonding_period_days + ' days'
+                              td(style='text-align: right; white-space: nowrap;' )
+                                span= zrcStakingTokenProperty.reward_daily_percent
+                              td(style='text-align: right; white-space: nowrap;' )
+                                span= zrcStakingTokenProperty.reward_apr_percent
 
                   if zilswapDexReward
                     table(class='table table-sm table-borderless' width='100%')

@@ -32,8 +32,9 @@ router.get('/', function (req, res, next) {
       "zrc_tokens_circulating_supply_sorted_market_cap", // 12
       "zilswap_dex_reward_and_apr", // 13
       "zil_staking_reward_and_apr", // 14
-      "zilswap_dex_zrc_tokens_price_in_zil_24h_low", // 15
-      "zilswap_dex_zrc_tokens_price_in_zil_24h_high", // 16
+      "zrc_staking_reward_and_apr", // 15
+      "zilswap_dex_zrc_tokens_price_in_zil_24h_low", // 16
+      "zilswap_dex_zrc_tokens_price_in_zil_24h_high", // 17
     ],
     function (err, reply) {
       let currZilswapDexSmartContractStateTimestampSeconds = null; // 0
@@ -56,8 +57,9 @@ router.get('/', function (req, res, next) {
 
       let currZilswapDexReward = null; // 13
       let currZilStakingReward = null; // 14
-      let currZrcTokenPrice24hLow = null; // 15
-      let currZrcTokenPrice24hHigh = null; // 16
+      let currZrcStakingReward = null; // 15
+      let currZrcTokenPrice24hLow = null; // 16
+      let currZrcTokenPrice24hHigh = null; // 17
 
       let currentDate = new Date();
       let currentTimeSeconds = currentDate.getTime() / 1000;
@@ -120,12 +122,15 @@ router.get('/', function (req, res, next) {
           if (reply[14]) {
             currZilStakingReward = JSON.parse(reply[14]);
           }
-
           if (reply[15]) {
-            currZrcTokenPrice24hLow = JSON.parse(reply[15]);
+            currZrcStakingReward = JSON.parse(reply[15]);
           }
+
           if (reply[16]) {
-            currZrcTokenPrice24hHigh = JSON.parse(reply[16]);
+            currZrcTokenPrice24hLow = JSON.parse(reply[16]);
+          }
+          if (reply[17]) {
+            currZrcTokenPrice24hHigh = JSON.parse(reply[17]);
           }
 
         } catch (ex) {
@@ -153,6 +158,7 @@ router.get('/', function (req, res, next) {
         zrcTokensCirculatingSupply: currZrcTokensCirculatingSupply,
         zilswapDexReward: currZilswapDexReward,
         zilStakingReward: currZilStakingReward,
+        zrcStakingReward: currZrcStakingReward,
         zrcTokenPrice24hLow: currZrcTokenPrice24hLow,
         zrcTokenPrice24hHigh: currZrcTokenPrice24hHigh,
       });

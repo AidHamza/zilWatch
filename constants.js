@@ -756,7 +756,7 @@ const zrcStakingTokenPropertiesListMap = {
   },
   'PORT-BUOY': {
     "ticker": "PORT",
-    "name": "PORT Buoy",
+    "name": "Port Buoy",
     "address": "zil1lkhea3egremrwtn4lfhsa4psk978k2sat3cs3u",
     "address_base16": "0xFdaF9EC7281E76372e75fA6F0Ed430b17c7b2a1d",
     "state_attributes": {
@@ -769,7 +769,7 @@ const zrcStakingTokenPropertiesListMap = {
   },
   'PORT-DOCK': {
     "ticker": "PORT",
-    "name": "PORT Dock",
+    "name": "Port Dock",
     "address": "zil1yhy3wm79cx8v9zyg7qecwa457w0ysupgvzk5pt",
     "address_base16": "0x25c9176Fc5C18eC28888f0338776B4F39e487028",
     "state_attributes": {
