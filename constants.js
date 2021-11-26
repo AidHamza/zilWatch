@@ -747,11 +747,11 @@ const zrcStakingTokenPropertiesListMap = {
     "address": "zil18r37xks4r3rj7rzydujcckzlylftdy2qerszne",
     "address_base16": "0x38e3e35a151C472f0c446f258c585F27d2B69140",
     "state_attributes": {
-      "reward_apr" : "rewardPercent",
-      "unbonding_days" : "unstakeDays",
-      "staked_amount" : "stakers",
-      "unclaimed_rewards_amount" : "pending_carbs",
-      "pending_withdrawal_amount" : "removeStaker",
+      "reward_apr": "rewardPercent",
+      "unbonding_days": "unstakeDays",
+      "staked_amount": "stakers",
+      "unclaimed_rewards_amount": "pending_carbs",
+      "pending_withdrawal_amount": "removeStaker",
     }
   },
   'PORT-BUOY': {
@@ -760,11 +760,11 @@ const zrcStakingTokenPropertiesListMap = {
     "address": "zil1lkhea3egremrwtn4lfhsa4psk978k2sat3cs3u",
     "address_base16": "0xFdaF9EC7281E76372e75fA6F0Ed430b17c7b2a1d",
     "state_attributes": {
-      "reward_apr" : "rewardPercent",
-      "unbonding_days" : "unstakeDays",
-      "staked_amount" : "stakers",
-      "unclaimed_rewards_amount" : "pendingRewards",
-      "pending_withdrawal_amount" : "removeStaker",
+      "reward_apr": "rewardPercent",
+      "unbonding_days": "unstakeDays",
+      "staked_amount": "stakers",
+      "unclaimed_rewards_amount": "pendingRewards",
+      "pending_withdrawal_amount": "removeStaker",
     }
   },
   'PORT-DOCK': {
@@ -773,11 +773,11 @@ const zrcStakingTokenPropertiesListMap = {
     "address": "zil1yhy3wm79cx8v9zyg7qecwa457w0ysupgvzk5pt",
     "address_base16": "0x25c9176Fc5C18eC28888f0338776B4F39e487028",
     "state_attributes": {
-      "reward_apr" : "rewardPercent",
-      "unbonding_days" : "unstakeDays",
-      "staked_amount" : "stakers",
-      "unclaimed_rewards_amount" : "pendingRewards",
-      "pending_withdrawal_amount" : "removeStaker",
+      "reward_apr": "rewardPercent",
+      "unbonding_days": "unstakeDays",
+      "staked_amount": "stakers",
+      "unclaimed_rewards_amount": "pendingRewards",
+      "pending_withdrawal_amount": "removeStaker",
     }
   },
 }
@@ -894,6 +894,26 @@ const nftTokenPropertiesListMap = {
     "image_url_by_id": "https://images.unicutes.app/09-12-2021-05-52-31-output",
     "image_url_by_id_suffix": ".png",
   },
+  'PELECAN': {
+    "ticker": "PELECAN",
+    "name": "PELECAN",
+    "address": "zil182h3g4u9uuzxtvhcqhm5ru53se5f69krfuu40x",
+    "address_base16": "0x3AaF145785e70465b2f805f741F29186689d16c3",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil182h3g4u9uuzxtvhcqhm5ru53se5f69krfuu40x/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": true,
+    "website": " https://pele.network",
+  },
+  'PLVRS': {
+    "ticker": "PLVRS",
+    "name": "PELEverse",
+    "address": "zil1lc4k29ccau48zd25trx2sc3d6c6nt96jc6grpj",
+    "address_base16": "0xfe2B651718eF2A71355458cCa8622DD635359752",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1lc4k29ccau48zd25trx2sc3d6c6nt96jc6grpj/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": true,
+    "website": " https://pele.network",
+  },
   'PUNK': {
     "ticker": "PUNK",
     "name": "ScarPunk",
@@ -910,7 +930,7 @@ const nftTokenPropertiesListMap = {
     "name": "ZILAPES",
     "address": "zil15uqy4c6sagcfgd0gyvy8274eggpknwnzlnaest",
     "address_base16": "0xa7004ae350eA309435E82308757AB9420369bA62",
-    "logo_url": "https://zilapes.com/wp-content/uploads/2021/09/Zilapes-This-One-253x300.png",
+    "logo_url": "https://pbs.twimg.com/profile_images/1438967691323265025/BJNbksw9_400x400.jpg",
     "image_dict_path": [],
     "is_zilswap_ark_supported": false,
     "website": "https://zilapes.com",
