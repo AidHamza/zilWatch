@@ -580,6 +580,15 @@ const zrcTokenPropertiesListMap = {
     "website": "https://xcadnetwork.com/",
     "telegram": "https://t.me/xcademy",
   },
+  'XIDR': {
+    "ticker": "XIDR",
+    "name": "IDR Stablecoin",
+    "address": "zil1n02sfv2ytldc7jnyx3f7c9zehwdzlxy2ykrhf9",
+    "address_base16": "0x9Bd504b1445fdB8F4a643453ec1459bb9a2f988a",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1n02sfv2ytldc7jnyx3f7c9zehwdzlxy2ykrhf9/logo",
+    "decimals": 6,
+    "website": "https://www.straitsx.com/id",
+  },
   'XSGD': {
     "ticker": "XSGD",
     "name": "SGD Stablecoin",
@@ -587,7 +596,7 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x173Ca6770Aa56EB00511Dac8e6E13B3D7f16a5a5",
     "logo_url": "https://meta.viewblock.io/ZIL.zil180v66mlw007ltdv8tq5t240y7upwgf7djklmwh/logo",
     "decimals": 6,
-    "website": "https://www.xfers.com/sg-blog/introducing-xsgd-the-singapore-dollar-backed-and-travel-rule1-compliant-stablecoin",
+    "website": "https://www.straitsx.com/sg",
   },
   'YODA': {
     "ticker": "YODA",
