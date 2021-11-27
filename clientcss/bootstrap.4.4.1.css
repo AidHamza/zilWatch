@@ -5499,7 +5499,7 @@ a.badge-dark.focus, a.badge-dark:focus {
 
 .alert-warning {
     color: #856404;
-    background-color: var(--white)3cd;
+    background-color: #fff3cd;
     border-color: #ffeeba
 }
 
