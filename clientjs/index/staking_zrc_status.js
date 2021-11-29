@@ -126,7 +126,7 @@ class StakingZrcStatus {
         try {
             return this.zrcBalance_[tickerId][stakingCategoryId];
         } catch (err) {
-            console.log("Failed to obtain zrc staking balance " + tickerId + " " + stakingCategoryId);
+            // Do nothing
         }
         return null;
     }
