@@ -758,10 +758,12 @@ const zrcStakingTokenPropertiesListMap = {
     "state_attributes": {
       "reward_apr": "rewardPercent",
       "unbonding_days": "unstakeDays",
-      "staked_amount": "stakers",
-      "unclaimed_rewards_amount": "pending_carbs",
-      "pending_withdrawal_amount": "removeStaker",
-    }
+    },
+    "state_attributes_amount": {
+      "staked": "stakers",
+      "unclaimed": "pending_carbs",
+      "pending_withdrawal": "removeStaker",
+    },
   },
   'PORT-BUOY': {
     "ticker": "PORT",
@@ -771,9 +773,11 @@ const zrcStakingTokenPropertiesListMap = {
     "state_attributes": {
       "reward_apr": "rewardPercent",
       "unbonding_days": "unstakeDays",
-      "staked_amount": "stakers",
-      "unclaimed_rewards_amount": "pendingRewards",
-      "pending_withdrawal_amount": "removeStaker",
+    },
+    "state_attributes_amount": {
+      "staked": "stakers",
+      "unclaimed": "pendingRewards",
+      "pending_withdrawal": "removeStaker",
     }
   },
   'PORT-DOCK': {
@@ -784,10 +788,12 @@ const zrcStakingTokenPropertiesListMap = {
     "state_attributes": {
       "reward_apr": "rewardPercent",
       "unbonding_days": "unstakeDays",
-      "staked_amount": "stakers",
-      "unclaimed_rewards_amount": "pendingRewards",
-      "pending_withdrawal_amount": "removeStaker",
-    }
+    },
+    "state_attributes_amount": {
+      "staked": "stakers",
+      "unclaimed": "pendingRewards",
+      "pending_withdrawal": "removeStaker",
+    },
   },
 }
 

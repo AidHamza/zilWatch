@@ -199,6 +199,7 @@ router.get('/24h_simple_all_tokens', function (req, res, next) {
         let currentTimeSeconds = Math.round(currentDate.getTime() / 1000);
         for (let ticker in ticker_to_index_map) {
           try {
+            let data_arr = null;
             let curr_idx = ticker_to_index_map[ticker];
             if (reply[curr_idx]) {
               data_arr = JSON.parse(reply[curr_idx]);

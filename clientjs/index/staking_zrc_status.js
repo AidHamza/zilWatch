@@ -26,7 +26,13 @@ class StakingZrcStatus {
      */
     onZilswapDexStatusChange() {
         for (let tickerId in this.zrcStakingTokenPropertiesListMap_) {
-            this.bindViewStakingBalanceZilFiat(tickerId);
+            let currentStakingTokenProperty = this.zrcStakingTokenPropertiesListMap_[tickerId];
+            if (!('state_attributes_amount' in currentStakingTokenProperty)) {
+                continue;
+            }
+            for (let stakingCategoryId in currentStakingTokenProperty.state_attributes_amount) {
+                this.bindViewStakingBalanceZilFiat(tickerId, stakingCategoryId);
+            }
         }
     }
 
@@ -35,7 +41,13 @@ class StakingZrcStatus {
      */
     onCoinPriceStatusChange() {
         for (let tickerId in this.zrcStakingTokenPropertiesListMap_) {
-            this.bindViewStakingBalanceZilFiat(tickerId);
+            let currentStakingTokenProperty = this.zrcStakingTokenPropertiesListMap_[tickerId];
+            if (!('state_attributes_amount' in currentStakingTokenProperty)) {
+                continue;
+            }
+            for (let stakingCategoryId in currentStakingTokenProperty.state_attributes_amount) {
+                this.bindViewStakingBalanceZilFiat(tickerId, stakingCategoryId);
+            }
         }
     }
 
@@ -53,13 +65,21 @@ class StakingZrcStatus {
     /**
      * Returns staking balance in ZRC, number data type.
      * 
-     * Any error will result in returning null.
+     * Any error will result in returning 0.
      */
     getZrcStakingBalance(tickerId) {
-        if (tickerId in this.zrcBalance_) {
-            return this.zrcBalance_[tickerId];
+        let currentStakingTokenProperty = this.zrcStakingTokenPropertiesListMap_[tickerId];
+        if (!('state_attributes_amount' in currentStakingTokenProperty)) {
+            return 0;
         }
-        return null;
+        let amount = 0;
+        for (let stakingCategoryId in currentStakingTokenProperty.state_attributes_amount) {
+            let currAmount = this.getSingleCategoryZrcStakingBalance(tickerId, stakingCategoryId);
+            if (currAmount) {
+                amount += currAmount;
+            }
+        }
+        return amount;
     }
 
     /**
@@ -96,22 +116,45 @@ class StakingZrcStatus {
         return 1.0 * zrcStakingBalance * zrcPriceInZil;
     }
 
-    computeZrcBalance(data, tickerId, walletAddressBase16, stakedAmountVarName) {
+    /**
+     * (Private) For this class only
+     * Returns staking balance in ZRC, number data type.
+     * 
+     * Any error will result in returning null.
+     */
+    getSingleCategoryZrcStakingBalance(tickerId, stakingCategoryId) {
+        try {
+            return this.zrcBalance_[tickerId][stakingCategoryId];
+        } catch (err) {
+            console.log("Failed to obtain zrc staking balance " + tickerId + " " + stakingCategoryId);
+        }
+        return null;
+    }
+
+    computeZrcBalance(data, tickerId, stakingCategoryId, walletAddressBase16) {
         if (!data) {
             return;
         }
         if (!walletAddressBase16) {
             return;
         }
-        if (data.result && data.result[stakedAmountVarName]) {
-            let stakedZrcBalance = parseInt(data.result[stakedAmountVarName][walletAddressBase16]);
-            if (!stakedZrcBalance) {
-                return;
-            }
-            let currentTicker = this.zrcStakingTokenPropertiesListMap_[tickerId].ticker;
-            let zrcDecimals = this.zrcTokenPropertiesListMap_[currentTicker].decimals;
+        try {
+            let stakedAmountVarName = this.zrcStakingTokenPropertiesListMap_[tickerId].state_attributes_amount[stakingCategoryId];
+            if (data.result && data.result[stakedAmountVarName]) {
+                let stakedZrcBalance = parseInt(data.result[stakedAmountVarName][walletAddressBase16]);
+                if (!stakedZrcBalance) {
+                    return;
+                }
+                let currentTicker = this.zrcStakingTokenPropertiesListMap_[tickerId].ticker;
+                let zrcDecimals = this.zrcTokenPropertiesListMap_[currentTicker].decimals;
 
-            this.zrcBalance_[tickerId] = 1.0 * stakedZrcBalance / Math.pow(10, zrcDecimals);
+                if (!(tickerId in this.zrcBalance_)) {
+                    this.zrcBalance_[tickerId] = {};
+                }
+                this.zrcBalance_[tickerId][stakingCategoryId] = 1.0 * stakedZrcBalance / Math.pow(10, zrcDecimals);
+            }
+        } catch (err) {
+            console.log("Failed to compute staking ZrcBalance " + tickerId + " " + stakingCategoryId);
         }
     }
 
@@ -123,43 +166,46 @@ class StakingZrcStatus {
         let currWalletAddressBase16 = this.walletAddressBase16_;
 
         for (let tickerId in this.zrcStakingTokenPropertiesListMap_) {
-            let currentContractAddressBase16 = this.zrcStakingTokenPropertiesListMap_[tickerId].address_base16.toLowerCase().substring(2);
-            if (!('staked_amount' in this.zrcStakingTokenPropertiesListMap_[tickerId].state_attributes)) {
+            let currentStakingTokenProperty = this.zrcStakingTokenPropertiesListMap_[tickerId];
+            let currentContractAddressBase16 = currentStakingTokenProperty.address_base16.toLowerCase().substring(2);
+            if (!('state_attributes_amount' in currentStakingTokenProperty)) {
                 continue;
             }
-            let stakedAmountVarName = this.zrcStakingTokenPropertiesListMap_[tickerId].state_attributes.staked_amount;
+            for (let stakingCategoryId in currentStakingTokenProperty.state_attributes_amount) {
+                let stakedAmountVarName = this.zrcStakingTokenPropertiesListMap_[tickerId].state_attributes_amount[stakingCategoryId];
 
-            beforeRpcCallback();
-            queryZilliqaApiAjax(
-                /* method= */
-                "GetSmartContractSubState",
-                /* params= */
-                [currentContractAddressBase16, stakedAmountVarName, [currWalletAddressBase16]],
-                /* successCallback= */
-                function (data) {
-                    self.computeZrcBalance(data, tickerId, currWalletAddressBase16, stakedAmountVarName);
-                    self.bindViewStakingBalance(tickerId);
-                    onSuccessCallback();
-                },
-                /* errorCallback= */
-                function () {
-                    onErrorCallback();
-                });
+                beforeRpcCallback();
+                queryZilliqaApiAjax(
+                    /* method= */
+                    "GetSmartContractSubState",
+                    /* params= */
+                    [currentContractAddressBase16, stakedAmountVarName, [currWalletAddressBase16]],
+                    /* successCallback= */
+                    function (data) {
+                        self.computeZrcBalance(data, tickerId, stakingCategoryId, currWalletAddressBase16);
+                        self.bindViewStakingBalance(tickerId, stakingCategoryId);
+                        onSuccessCallback();
+                    },
+                    /* errorCallback= */
+                    function () {
+                        onErrorCallback();
+                    });
+            }
         }
     }
 
-    bindViewStakingBalance(tickerId) {
-        let zrcStakingBalance = this.getZrcStakingBalance(tickerId);
+    bindViewStakingBalance(tickerId, stakingCategoryId) {
+        let zrcStakingBalance = this.getSingleCategoryZrcStakingBalance(tickerId, stakingCategoryId);
         if (!zrcStakingBalance) {
             return;
         }
         let zrcStakingBalanceString = convertNumberQaToDecimalString(zrcStakingBalance, /* decimals= */ 0);
-        this.bindViewZrcStakingBalance(tickerId, zrcStakingBalanceString);
+        this.bindViewZrcStakingBalance(tickerId, stakingCategoryId, zrcStakingBalanceString);
 
-        this.bindViewStakingBalanceZilFiat(tickerId);
+        this.bindViewStakingBalanceZilFiat(tickerId, stakingCategoryId);
     }
 
-    bindViewStakingBalanceZilFiat(tickerId) {
+    bindViewStakingBalanceZilFiat(tickerId, stakingCategoryId) {
         if (!this.coinPriceStatus_) {
             return;
         }
@@ -169,7 +215,7 @@ class StakingZrcStatus {
 
         // Process ZRC in ZIL
         let currTicker = this.zrcStakingTokenPropertiesListMap_[tickerId].ticker;
-        let zrcStakingBalance = this.getZrcStakingBalance(tickerId);
+        let zrcStakingBalance = this.getSingleCategoryZrcStakingBalance(tickerId, stakingCategoryId);
         if (!zrcStakingBalance) {
             return;
         }
@@ -179,7 +225,7 @@ class StakingZrcStatus {
         }
         let zrcStakingBalanceZil = 1.0 * zrcPriceInZil * zrcStakingBalance;
         let zrcStakingBalanceZilString = convertNumberQaToDecimalString(zrcStakingBalanceZil, /* decimals= */ 0);
-        this.bindViewZrcStakingBalanceZil(tickerId, zrcStakingBalanceZilString);
+        this.bindViewZrcStakingBalanceZil(tickerId, stakingCategoryId, zrcStakingBalanceZilString);
 
         // Process ZRC in fiat
         if (!zilPriceInFiatFloat) {
@@ -187,7 +233,7 @@ class StakingZrcStatus {
         }
         let zrcStakingBalanceFiat = 1.0 * zilPriceInFiatFloat * zrcStakingBalanceZil;
         let zrcStakingBalanceFiatString = commafyNumberToString(zrcStakingBalanceFiat, decimals);
-        this.bindViewZrcStakingBalanceFiat(tickerId, zrcStakingBalanceFiatString);
+        this.bindViewZrcStakingBalanceFiat(tickerId, stakingCategoryId, zrcStakingBalanceFiatString);
 
         // Process ZRC in ZIL 24h ago
         let zrcPriceInZil24hAgo = this.zilswapDexStatus_.getZrcPriceInZil24hAgo(currTicker);
@@ -197,7 +243,7 @@ class StakingZrcStatus {
         let zrcStakingBalanceZil24hAgo = 1.0 * zrcPriceInZil24hAgo * zrcStakingBalance;
         let zrcStakingBalanceZil24hAgoString = convertNumberQaToDecimalString(zrcStakingBalanceZil24hAgo, /* decimals= */ 0);
         let zrcStakingBalanceZil24hAgoPercentChange = getPercentChange(zrcStakingBalanceZil, zrcStakingBalanceZil24hAgo).toFixed(1);
-        this.bindViewZrcStakingBalanceZil24hAgo(tickerId, zrcStakingBalanceZil24hAgoString, zrcStakingBalanceZil24hAgoPercentChange);
+        this.bindViewZrcStakingBalanceZil24hAgo(tickerId, stakingCategoryId, zrcStakingBalanceZil24hAgoString, zrcStakingBalanceZil24hAgoPercentChange);
 
         // Process ZRC in fiat 24h ago
         if (!zilPriceInFiat24hAgoFloat || !zrcStakingBalanceZil24hAgo) {
@@ -206,50 +252,56 @@ class StakingZrcStatus {
         let zrcStakingBalanceFiat24hAgo = 1.0 * zilPriceInFiat24hAgoFloat * zrcStakingBalanceZil24hAgo;
         let zrcStakingBalanceFiat24hAgoString = commafyNumberToString(zrcStakingBalanceFiat24hAgo, decimals);
         let zrcStakingBalanceFiat24hAgoPercentChange = getPercentChange(zrcStakingBalanceFiat, zrcStakingBalanceFiat24hAgo).toFixed(1);
-        this.bindViewZrcStakingBalanceFiat24hAgo(tickerId, zrcStakingBalanceFiat24hAgoString, zrcStakingBalanceFiat24hAgoPercentChange);
+        this.bindViewZrcStakingBalanceFiat24hAgo(tickerId, stakingCategoryId, zrcStakingBalanceFiat24hAgoString, zrcStakingBalanceFiat24hAgoPercentChange);
     }
 
-    bindViewZrcStakingBalance(tickerId, zrcStakingBalance) {
-        $('#' + tickerId + '_staking_balance').text(zrcStakingBalance);
-        $('#' + tickerId + '_staking_container').show();
+    bindViewZrcStakingBalance(tickerId, stakingCategoryId, zrcStakingBalance) {
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance').text(zrcStakingBalance);
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_container').show();
         $('#staking_container').show();
     }
 
-    bindViewZrcStakingBalanceZil24hAgo(tickerId, zrcStakingBalanceZil24hAgo, zrcStakingBalanceZilPercentChange24h) {
-        $('#' + tickerId + '_staking_balance_zil_24h_ago').text(zrcStakingBalanceZil24hAgo);
-        $('#' + tickerId + '_staking_balance_zil_percent_change_24h').text(zrcStakingBalanceZilPercentChange24h);
-        bindViewPercentChangeColorContainer('#' + tickerId + '_staking_balance_zil_percent_change_24h_container', zrcStakingBalanceZilPercentChange24h);
+    bindViewZrcStakingBalanceZil24hAgo(tickerId, stakingCategoryId, zrcStakingBalanceZil24hAgo, zrcStakingBalanceZilPercentChange24h) {
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_24h_ago').text(zrcStakingBalanceZil24hAgo);
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_percent_change_24h').text(zrcStakingBalanceZilPercentChange24h);
+        bindViewPercentChangeColorContainer('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_percent_change_24h_container', zrcStakingBalanceZilPercentChange24h);
     }
 
-    bindViewZrcStakingBalanceZil(tickerId, zrcStakingBalanceZil) {
-        $('#' + tickerId + '_staking_balance_zil').text(zrcStakingBalanceZil);
+    bindViewZrcStakingBalanceZil(tickerId, stakingCategoryId, zrcStakingBalanceZil) {
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil').text(zrcStakingBalanceZil);
     }
 
-    bindViewZrcStakingBalanceFiat24hAgo(tickerId, zrcStakingBalanceFiat24hAgo, zrcStakingBalanceFiatPercentChange24h) {
-        $('#' + tickerId + '_staking_balance_fiat_24h_ago').text(zrcStakingBalanceFiat24hAgo);
-        $('#' + tickerId + '_staking_balance_fiat_percent_change_24h').text(zrcStakingBalanceFiatPercentChange24h);
-        bindViewPercentChangeColorContainer('#' + tickerId + '_staking_balance_fiat_percent_change_24h_container', zrcStakingBalanceFiatPercentChange24h);
+    bindViewZrcStakingBalanceFiat24hAgo(tickerId, stakingCategoryId, zrcStakingBalanceFiat24hAgo, zrcStakingBalanceFiatPercentChange24h) {
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_24h_ago').text(zrcStakingBalanceFiat24hAgo);
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_percent_change_24h').text(zrcStakingBalanceFiatPercentChange24h);
+        bindViewPercentChangeColorContainer('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_percent_change_24h_container', zrcStakingBalanceFiatPercentChange24h);
     }
 
-    bindViewZrcStakingBalanceFiat(tickerId, zrcStakingBalanceFiat) {
-        $('#' + tickerId + '_staking_balance_fiat').text(zrcStakingBalanceFiat);
+    bindViewZrcStakingBalanceFiat(tickerId, stakingCategoryId, zrcStakingBalanceFiat) {
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat').text(zrcStakingBalanceFiat);
     }
 
     resetAllView() {
         for (let tickerId in this.zrcStakingTokenPropertiesListMap_) {
-            this.resetView(tickerId);
+            let currentStakingTokenProperty = this.zrcStakingTokenPropertiesListMap_[tickerId];
+            if (!('state_attributes_amount' in currentStakingTokenProperty)) {
+                continue;
+            }
+            for (let stakingCategoryId in currentStakingTokenProperty.state_attributes_amount) {
+                this.resetView(tickerId, stakingCategoryId);
+            }
         }
     }
 
-    resetView(tickerId) {
-        $('#' + tickerId + '_staking_container').hide();
-        $('#' + tickerId + '_staking_balance').text('Loading...');
-        $('#' + tickerId + '_staking_balance_zil').text('Loading...');
-        $('#' + tickerId + '_staking_balance_zil_24h_ago').text('');
-        $('#' + tickerId + '_staking_balance_zil_percent_change_24h').text('');
-        $('#' + tickerId + '_staking_balance_fiat').text('Loading...');
-        $('#' + tickerId + '_staking_balance_fiat_24h_ago').text('');
-        $('#' + tickerId + '_staking_balance_fiat_percent_change_24h').text('');
+    resetView(tickerId, stakingCategoryId) {
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_container').hide();
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance').text('Loading...');
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil').text('Loading...');
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_24h_ago').text('');
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_percent_change_24h').text('');
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat').text('Loading...');
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_24h_ago').text('');
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_percent_change_24h').text('');
     }
 }
 

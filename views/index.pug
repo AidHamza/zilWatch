@@ -1021,47 +1021,53 @@ block content
                               td(style='text-align: right; white-space: nowrap;' )
 
                     each stakingTokenProperty, tickerId in zrcStakingTokenPropertiesListMap
-                      div(id=tickerId + '_staking_container' class='col-lg-6' style='padding: 0; display: none')
-                        div(class='box')
-                          table(class='table table-sm table-borderless')
-                            tbody
-                              tr
-                                td(scope='row' rowspan='4' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                                  img(height='32' width='32' src=zrcTokenPropertiesListMap[stakingTokenProperty.ticker].logo_url loading='lazy')
-                                td(style='text-align: left; white-space: nowrap; width: 35%;' )
-                                  span(class='font-weight-bold')= stakingTokenProperty.name
-                                  span(class=stakingTokenProperty.ticker+'_price_zil ml-2 text-secondary')= 'Loading...'
-                                  span(class='ml-1 text-secondary')= 'ZIL'
-                                td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                                  span(id=tickerId + '_staking_balance_zil')= 'Loading...'
-                                  span(class='ml-1')= 'ZIL'
-                                td(id=tickerId + '_staking_balance_zil_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
-                                  span(id=tickerId + '_staking_balance_zil_percent_change_24h')
-                                  span= '%'
-                                tr(id=tickerId + '_staking_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
-                                  td(scope='row' style='white-space: nowrap;' )
-                                    span= 'Balance 24h ago'
-                                  td(style='text-align: right; white-space: nowrap;' )
-                                    span(id=tickerId + '_staking_balance_zil_24h_ago')
+                      //- There are staking category per staking token, examples (amount staked, unclaimed, withdrawal pending)
+                      each unusedProperty, stakingCategoryId in stakingTokenProperty.state_attributes_amount
+                        div(id=tickerId + '_' + stakingCategoryId + '_staking_container' class='col-lg-6' style='padding: 0; display: none')
+                          div(class='box')
+                            table(class='table table-sm table-borderless')
+                              tbody
+                                tr
+                                  td(scope='row' rowspan='5' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                                    img(height='32' width='32' src=zrcTokenPropertiesListMap[stakingTokenProperty.ticker].logo_url loading='lazy')
+                                  td(style='text-align: left; white-space: nowrap; width: 35%;' )
+                                    span(class='font-weight-bold')= stakingTokenProperty.name
+                                    span(class=stakingTokenProperty.ticker+'_price_zil ml-2 text-secondary')= 'Loading...'
+                                    span(class='ml-1 text-secondary')= 'ZIL'
+                                  td(style='text-align: right; white-space: nowrap; width: 40%;' )
+                                    span(id=tickerId + '_' + stakingCategoryId + '_staking_balance_zil')= 'Loading...'
                                     span(class='ml-1')= 'ZIL'
-                                  td(style='text-align: right; white-space: nowrap;' )
-                              tr
-                                td(style='text-align: left; white-space: nowrap; width: 35%;' )
-                                  span(id=tickerId + '_staking_balance')= 'Loading...'
-                                  span(id=tickerId + '_zil_staking_balance_unit' class='ml-1')= stakingTokenProperty.ticker
-                                td(style='text-align: right; white-space: nowrap; width: 40%;' )
-                                  span(class='currency_symbol mr-1')= '$'
-                                  span(id=tickerId + '_staking_balance_fiat')= 'Loading...'
-                                td(id=tickerId + '_staking_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
-                                  span(id=tickerId + '_staking_balance_fiat_percent_change_24h')
-                                  span= '%'
-                                tr(id=tickerId + '_staking_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
-                                  td(scope='row' style='white-space: nowrap;' )
-                                    span= 'Balance 24h ago'
-                                  td(style='text-align: right; white-space: nowrap;' )
+                                  td(id=tickerId + '_' + stakingCategoryId + '_staking_balance_zil_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                                    span(id=tickerId + '_' + stakingCategoryId + '_staking_balance_zil_percent_change_24h')
+                                    span= '%'
+                                  tr(id=tickerId + '_' + stakingCategoryId + '_staking_balance_zil_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
+                                    td(scope='row' style='white-space: nowrap;' )
+                                      span= 'Balance 24h ago'
+                                    td(style='text-align: right; white-space: nowrap;' )
+                                      span(id=tickerId + '_' + stakingCategoryId + '_staking_balance_zil_24h_ago')
+                                      span(class='ml-1')= 'ZIL'
+                                    td(style='text-align: right; white-space: nowrap;' )
+                                tr
+                                  td(style='text-align: left; white-space: nowrap; width: 35%;' )
+                                    span(id=tickerId + '_' + stakingCategoryId + '_staking_balance')= 'Loading...'
+                                    span(id=tickerId + '_' + stakingCategoryId + '_zil_staking_balance_unit' class='ml-1')= stakingTokenProperty.ticker
+                                  td(style='text-align: right; white-space: nowrap; width: 40%;' )
                                     span(class='currency_symbol mr-1')= '$'
-                                    span(id=tickerId + '_staking_balance_fiat_24h_ago')
-                                  td(style='text-align: right; white-space: nowrap;' )
+                                    span(id=tickerId + '_' + stakingCategoryId + '_staking_balance_fiat')= 'Loading...'
+                                  td(id=tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_percent_change_24h_container' class='tooltip-container text-secondary' style='text-align: right; white-space: nowrap; width: 10%;' )
+                                    span(id=tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_percent_change_24h')
+                                    span= '%'
+                                  tr(id=tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_percent_change_24h_tooltip_content' class='tooltip-content' style='display: none;')
+                                    td(scope='row' style='white-space: nowrap;' )
+                                      span= 'Balance 24h ago'
+                                    td(style='text-align: right; white-space: nowrap;' )
+                                      span(class='currency_symbol mr-1')= '$'
+                                      span(id=tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_24h_ago')
+                                    td(style='text-align: right; white-space: nowrap;' )
+                                tr
+                                  td(colspan=3 class='text-secondary' style='text-align: left; white-space: nowrap;' )
+                                    - let userFriendlyStakingCategoryName = (stakingCategoryId.charAt(0).toUpperCase() + stakingCategoryId.slice(1)).replace("_", " ");
+                                    span=userFriendlyStakingCategoryName
                 hr
 
         // Contents for pills-wallet-nft tab

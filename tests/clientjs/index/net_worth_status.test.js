@@ -117,7 +117,7 @@ describe('NetWorthStatus', function () {
             let carbonBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"stakers":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":"9036430995"}}}');
 
             let stakingZrcStatus = new StakingZrcStatus.StakingZrcStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus);
-            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', walletAddressBase16, Constants.zrcStakingTokenPropertiesListMap['CARB'].state_attributes.staked_amount);
+            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', 'staked', walletAddressBase16);
             stakingZrcStatus.bindViewStakingBalance('CARB');
 
             let zilStakingBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"deposit_amt_deleg":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":{"0xbf4e5001339dec3cda012f471f4f2d9e8bed2f5b":"2300000000000000", "0x82b82c65213e0b2b206492d3d8a2a679e7fe52e0":"7063107679853089"}}}}');
@@ -261,7 +261,7 @@ describe('NetWorthStatus', function () {
         });
 
         it('onStakingBalanceStatusChange() updates staking balance and net worth', function () {
-            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', walletAddressBase16, Constants.zrcStakingTokenPropertiesListMap['CARB'].state_attributes.staked_amount);
+            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', 'staked', walletAddressBase16);
             stakingZrcStatus.bindViewStakingBalance('CARB');
             stakingBalanceStatus.computeStakingBalanceMap();
             stakingBalanceStatus.computeStakingWithdrawalBalance();
@@ -344,7 +344,7 @@ describe('NetWorthStatus', function () {
                 walletBalanceStatus.bindViewDataFiat(ticker);
             }
 
-            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', walletAddressBase16, Constants.zrcStakingTokenPropertiesListMap['CARB'].state_attributes.staked_amount);
+            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', 'staked', walletAddressBase16);
             stakingZrcStatus.bindViewStakingBalance('CARB');
             stakingBalanceStatus.computeStakingBalanceMap();
             stakingBalanceStatus.computeStakingWithdrawalBalance();
@@ -396,7 +396,7 @@ describe('NetWorthStatus', function () {
                 walletBalanceStatus.bindViewDataFiat(ticker);
             }
 
-            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', walletAddressBase16, Constants.zrcStakingTokenPropertiesListMap['CARB'].state_attributes.staked_amount);
+            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', 'staked', walletAddressBase16);
             stakingZrcStatus.bindViewStakingBalance('CARB');
             stakingBalanceStatus.computeStakingBalanceMap();
             stakingBalanceStatus.computeStakingWithdrawalBalance();
@@ -451,7 +451,7 @@ describe('NetWorthStatus', function () {
                 walletBalanceStatus.bindViewDataFiat(ticker);
             }
 
-            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', walletAddressBase16, Constants.zrcStakingTokenPropertiesListMap['CARB'].state_attributes.staked_amount);
+            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', 'staked', walletAddressBase16);
             stakingZrcStatus.bindViewStakingBalance('CARB');
             stakingBalanceStatus.computeStakingBalanceMap();
             stakingBalanceStatus.computeStakingWithdrawalBalance();

@@ -234,7 +234,7 @@ describe('StakingBalanceStatus', function () {
             let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData,  zilswapDexSmartContractStateData24hAgo);
             let carbonBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"stakers":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":"9036430995"}}}');
             let stakingZrcStatus = new StakingZrcStatus.StakingZrcStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus);
-            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', walletAddressBase16, Constants.zrcStakingTokenPropertiesListMap['CARB'].state_attributes.staked_amount);
+            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', 'staked', walletAddressBase16);
 
             stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData, stakingZrcStatus);
         
@@ -276,14 +276,16 @@ describe('StakingBalanceStatus', function () {
 
             // Assert zrc staking 
             for (let tickerId in Constants.zrcStakingTokenPropertiesListMap) {
-                assert.strictEqual($('#' + tickerId + '_staking_container').css('display'), 'none');
-                assert.strictEqual($('#' + tickerId + '_staking_balance').text(), 'Loading...');
-                assert.strictEqual($('#' + tickerId + '_staking_balance_zil').text(), 'Loading...');
-                assert.strictEqual($('#' + tickerId + '_staking_balance_zil_24h_ago').text(), '');
-                assert.strictEqual($('#' + tickerId + '_staking_balance_zil_percent_change_24h').text(), '');
-                assert.strictEqual($('#' + tickerId + '_staking_balance_fiat').text(), 'Loading...');
-                assert.strictEqual($('#' + tickerId + '_staking_balance_fiat_24h_ago').text(), '');
-                assert.strictEqual($('#' + tickerId + '_staking_balance_fiat_percent_change_24h').text(), '');
+                for (let stakingCategoryId in Constants.zrcStakingTokenPropertiesListMap[tickerId].staked_attributes_amount) {
+                    assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_container').css('display'), 'none');
+                    assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_balance').text(), 'Loading...');
+                    assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil').text(), 'Loading...');
+                    assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_24h_ago').text(), '');
+                    assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_percent_change_24h').text(), '');
+                    assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat').text(), 'Loading...');
+                    assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_24h_ago').text(), '');
+                    assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_percent_change_24h').text(), '');
+                }
             }
         });
     });
@@ -454,8 +456,9 @@ describe('StakingBalanceStatus', function () {
         it('compute, wallet set, bindView(), assertView', function () {
             // Act
             tickerId = 'CARB';
-            stakingZrcStatus.computeZrcBalance(carbonBalanceData, tickerId, walletAddressBase16, Constants.zrcStakingTokenPropertiesListMap['CARB'].state_attributes.staked_amount);
-            stakingZrcStatus.bindViewStakingBalance(tickerId);
+            stakingCategoryId = 'staked';
+            stakingZrcStatus.computeZrcBalance(carbonBalanceData, tickerId, 'staked', walletAddressBase16);
+            stakingZrcStatus.bindViewStakingBalance(tickerId, stakingCategoryId);
 
             stakingBalanceStatus.computeStakingBalanceMap();
             stakingBalanceStatus.computeStakingWithdrawalBalance();
@@ -469,14 +472,14 @@ describe('StakingBalanceStatus', function () {
             assert.strictEqual(stakingBalanceStatus.getAllStakingBalanceInZil24hAgo(), 32022.371219777688);
 
             // Assert IDR
-            assert.strictEqual($('#' + tickerId + '_staking_balance').text(), '90.36');
-            assert.strictEqual($('#' + tickerId + '_staking_balance_zil').text(), '1,371');
-            assert.strictEqual($('#' + tickerId + '_staking_balance_zil_24h_ago').text(), '1,533');
-            assert.strictEqual($('#' + tickerId + '_staking_balance_zil_percent_change_24h').text(), '-10.6');
-            assert.strictEqual($('#' + tickerId + '_staking_balance_fiat').text(), '2,209,430');
-            assert.strictEqual($('#' + tickerId + '_staking_balance_fiat_24h_ago').text(), '2,296,506');
-            assert.strictEqual($('#' + tickerId + '_staking_balance_fiat_percent_change_24h').text(), '-3.8');
-            assert.strictEqual($('#' + tickerId + '_staking_container').css('display'), 'block');
+            assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_balance').text(), '90.36');
+            assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil').text(), '1,371');
+            assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_24h_ago').text(), '1,533');
+            assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_percent_change_24h').text(), '-10.6');
+            assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat').text(), '2,209,430');
+            assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_24h_ago').text(), '2,296,506');
+            assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_percent_change_24h').text(), '-3.8');
+            assert.strictEqual($('#' + tickerId + '_' + stakingCategoryId + '_staking_container').css('display'), 'block');
             assert.strictEqual($('#staking_container').css('display'), 'block');
         });
     });

@@ -102,7 +102,7 @@ describe('NetWorthStatus', function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 walletBalanceStatus.computeTokenBalanceMap(ticker);
             }
-            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', walletAddressBase16, Constants.zrcStakingTokenPropertiesListMap['CARB'].state_attributes.staked_amount);
+            stakingZrcStatus.computeZrcBalance(carbonBalanceData, 'CARB', 'staked', walletAddressBase16);
             stakingBalanceStatus.computeStakingBalanceMap();
             stakingBalanceStatus.computeStakingWithdrawalBalance();
             zilswapDexStatus.computeZilswapPairPublicPersonalStatusMap();

@@ -75,6 +75,9 @@ class SimpleChartStatus {
             // LightweightCharts are not testable because it's 3rd party library.
             return null;
         }
+        if (!data) {
+            return null;
+        }
 
         let chart = LightweightCharts.createChart(container, {
             width: 70,
