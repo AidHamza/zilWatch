@@ -61,7 +61,7 @@ block content
           i(id='wallet_refresh_icon' class='fa fa-refresh')
         a(class='wallet-viewblock-anchor' target='_blank')
           button(id='topbar_wallet_address_container' class='btn btn-outline-info my-2 my-sm-0' style='display: none;')
-            img(class='ark-profile-pic rounded-circle mr-2' height='24' src='' alt='ARK profile pic' style='display: none;')
+            img(class='ark-profile-pic rounded-circle mr-2' height='24' src='' loading='lazy' alt='ARK profile pic' style='display: none;')
             span(id='topbar_wallet_address' style='vertical-align: middle;')
         button(id='topbar_wallet_connect_button' class='wallet_connect_button btn btn-info my-2 my-sm-0')= 'Connect'
 
@@ -586,13 +586,13 @@ block content
               div(class='row')
                 div(class='col-12')
                   a(class='ark-profile-anchor' target='_blank')
-                    img(class='ark-profile-pic rounded-circle mr-2' height='60' src='' alt='ARK profile pic' style='display: none;')
+                    img(class='ark-profile-pic rounded-circle mr-2' height='60' src='' loading='lazy' alt='ARK profile pic' style='display: none;')
                   span(class='wallet-full-address' style='display: none;')
                   span(class='wallet-censored-address' style='display: none;')
                   span(class='wallet-censor-button' class='mini-button-box ml-1')
                     i(class='wallet-censor-icon fa fa-eye-slash ml-1 mr-1')
                   a(class='wallet-viewblock-anchor mini-button-box ml-1' target='_blank' style='color: var(--text-color);')
-                    img(height='18' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo')
+                    img(height='18' src='https://cdn.viewblock.io/viewblock-light.png' loading='lazy' alt='ViewBlock logo')
                     i(class='fa fa-external-link ml-1 mr-1')
                   span(class='wallet-copy-button mini-button-box ml-1')
                     i(class='fa fa-copy ml-1 mr-1')
@@ -1058,9 +1058,14 @@ block content
                                       span(id=tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_24h_ago')
                                     td(style='text-align: right; white-space: nowrap;' )
                                 tr
-                                  td(colspan=3 class='text-secondary' style='text-align: left; white-space: nowrap;' )
+                                  td(class='text-secondary' style='text-align: left; white-space: nowrap;' )
                                     - let userFriendlyStakingCategoryName = (stakingCategoryId.charAt(0).toUpperCase() + stakingCategoryId.slice(1)).replace("_", " ");
                                     span=userFriendlyStakingCategoryName
+                                  if 'website' in stakingTokenProperty
+                                    td(colspan=2 style='text-align: right; white-space: nowrap;' )
+                                      a(class='slim-mini-button-box ' href=stakingTokenProperty.website target='_blank')
+                                        img(height='14' src=zrcTokenPropertiesListMap[stakingTokenProperty.ticker].logo_url loading='lazy' alt='ViewBlock logo')
+                                        i(class='fa fa-external-link ml-2 mr-1')
                 hr
 
         // Contents for pills-wallet-nft tab
@@ -1087,7 +1092,7 @@ block content
                 each nftTokenProperty, nftTicker in nftTokenPropertiesListMap
                   li
                     a(class='mini-button-box mr-2' href='https://viewblock.io/zilliqa/address/' + nftTokenProperty.address target='_blank')
-                      img(height='18' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo')
+                      img(height='18' src='https://cdn.viewblock.io/viewblock-light.png' loading='lazy' alt='ViewBlock logo')
                       i(class='fa fa-external-link ml-2 mr-1')
                     a(href=nftTokenProperty.website)=nftTokenProperty.name + ' (' + nftTicker + ')'
 
@@ -1110,13 +1115,13 @@ block content
               div(class='row')
                 div(class='col-12')
                   a(class='ark-profile-anchor' target='_blank')
-                    img(class='ark-profile-pic rounded-circle mr-2' height='60' src='' alt='ARK profile pic' style='display: none;')
+                    img(class='ark-profile-pic rounded-circle mr-2' height='60' src='' loading='lazy' alt='ARK profile pic' style='display: none;')
                   span(class='wallet-full-address' style='display: none;')
                   span(class='wallet-censored-address' style='display: none;')
                   span(class='wallet-censor-button' class='mini-button-box ml-1')
                     i(class='wallet-censor-icon fa fa-eye-slash ml-1 mr-1')
                   a(class='wallet-viewblock-anchor mini-button-box ml-1' target='_blank' style='color: var(--text-color);')
-                    img(height='18' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo')
+                    img(height='18' src='https://cdn.viewblock.io/viewblock-light.png' loading='lazy' alt='ViewBlock logo')
                     i(class='fa fa-external-link ml-1 mr-1')
                   span(class='wallet-copy-button mini-button-box ml-1')
                     i(class='fa fa-copy ml-1 mr-1')
@@ -1138,7 +1143,7 @@ block content
                       i(class='fa fa-external-link ml-2 mr-1')
 
                   a(class='mini-button-box mr-1' href='https://viewblock.io/zilliqa/address/' + nftTokenProperty.address target='_blank')
-                    img(height='18' src='https://cdn.viewblock.io/viewblock-light.png' alt='ViewBlock logo')
+                    img(height='18' src='https://cdn.viewblock.io/viewblock-light.png' loading='lazy' alt='ViewBlock logo')
                     i(class='fa fa-external-link ml-2 mr-1')
 
                 div(class='container')

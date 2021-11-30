@@ -358,6 +358,29 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] {
   background-color: var(--primary-alpha-3);
 }
 
+/* Mini buttons slim */
+
+.slim-mini-button-box {
+  margin: 0;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  background-color: var(--primary-alpha-1);
+  border-radius: 6px;
+  color: var(--text-color);
+  display: inline-block;
+}
+
+.slim-mini-button-box:hover {
+  background-color: var(--primary-alpha-2);
+  cursor: pointer;
+}
+
+.slim-mini-button-box-highlight {
+  background-color: var(--primary-alpha-3);
+}
+
 /* Custom data tables. */
 .dataTables_wrapper {
   display: inline-block;
