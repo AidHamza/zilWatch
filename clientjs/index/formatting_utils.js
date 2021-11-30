@@ -87,6 +87,26 @@ function convertNumberQaToDecimalString(numberQa, decimals, isCommafied = true) 
     return null;
 }
 
+/**
+ * Truncate the back of the string if it's longer than the specified allowed length.
+ * If the string is cut, it will be appended with "..."
+ * The string returned is guaranteed not to be longer than the allowed length.
+ */
+function truncateBackString(originalString, maxLength) {
+    if (typeof maxLength !== 'number' && typeof maxLength !== 'bigint') {
+        return null;
+    }
+    if (typeof originalString !== 'string') {
+        return null;
+    }
+    if (originalString.length <= maxLength) {
+        return originalString;
+    } else {
+        let truncatedString = originalString.substring(0, maxLength - 3);
+        return truncatedString + "...";
+    }
+}
+
 function getAutoPrecisionFromNumberDecimal(numberDecimal) {
     if (typeof numberDecimal !== 'number' && typeof numberDecimal !== 'bigint') {
         return -1;
@@ -152,6 +172,7 @@ if (typeof exports !== 'undefined') {
     exports.parseFloatFromCommafiedNumberString = parseFloatFromCommafiedNumberString;
     exports.commafyNumberToString = commafyNumberToString;
     exports.convertNumberQaToDecimalString = convertNumberQaToDecimalString;
+    exports.truncateBackString = truncateBackString;
     exports.getAutoPrecisionFromNumberDecimal = getAutoPrecisionFromNumberDecimal;
     exports.censorBech32Address = censorBech32Address;
 

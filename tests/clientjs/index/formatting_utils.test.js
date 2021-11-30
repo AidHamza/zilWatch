@@ -537,6 +537,27 @@ describe('FormattingUtils', function () {
     });
   });
 
+  describe('#truncateBackString()', function () {
+
+    it('More than maxLength, truncated', function () {
+      let result = FormattingUtils.truncateBackString("123456789.123456789", /* decimals= */ 15);
+      let expected = "123456789.12...";
+      assert.strictEqual(result, expected);
+    });
+
+    it('1 more than maxLength, truncated', function () {
+      let result = FormattingUtils.truncateBackString("123.45678", /* decimals= */ 8);
+      let expected = "123.4...";
+      assert.strictEqual(result, expected);
+    });
+
+    it('Within maxLength, not truncated', function () {
+      let result = FormattingUtils.truncateBackString("12345.67", /* decimals= */ 8);
+      let expected = "12345.67";
+      assert.strictEqual(result, expected);
+    });
+  });
+
   describe('#getAutoPrecisionFromNumberDecimal', function () {
 
     it('>>1000 = 0', function () {

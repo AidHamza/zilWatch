@@ -1,3 +1,5 @@
+const { truncateBackString } = require('./formatting_utils.js');
+
 /** A class to represent global wallet balance status.  */
 class WalletBalanceStatus {
 
@@ -316,7 +318,12 @@ class WalletBalanceStatus {
             if (zilBalance) {
                 zilBalanceString = convertNumberQaToDecimalString(zilBalance, /* decimals= */ 0);
             }
-            this.bindViewZilBalancePrecise(zilBalance);
+            let zilBalancePreciseString = zilBalance.toString();
+            if(isSmallScreen()) {
+                zilBalancePreciseString = truncateBackString(zilBalancePreciseString, /* maxLength= */ 15);
+            }
+
+            this.bindViewZilBalancePrecise(zilBalancePreciseString);
             this.bindViewZilBalance(zilBalanceString);
             return;
         }
@@ -329,7 +336,12 @@ class WalletBalanceStatus {
         if (!zrcBalanceString) {
             return;
         }
-        this.bindViewZrcTokenWalletBalancePrecise(zrcBalance, coinSymbol);
+
+        let zrcBalancePreciseString = zrcBalance.toString();
+        if(isSmallScreen()) {
+            zrcBalancePreciseString = truncateBackString(zrcBalancePreciseString, /* maxLength= */ 15);
+        }
+        this.bindViewZrcTokenWalletBalancePrecise(zrcBalancePreciseString, coinSymbol);
         this.bindViewZrcTokenWalletBalance(zrcBalanceString, coinSymbol);
     }
 
@@ -496,6 +508,7 @@ if (typeof exports !== 'undefined') {
         FormattingUtils = require('./formatting_utils.js');
         convertNumberQaToDecimalString = FormattingUtils.convertNumberQaToDecimalString;
         commafyNumberToString = FormattingUtils.commafyNumberToString;
+        truncateBackString = FormattingUtils.truncateBackString;
     }
     if (typeof getPercentChange === 'undefined') {
         TokenUtils = require('./token_utils.js');
@@ -509,6 +522,11 @@ if (typeof exports !== 'undefined') {
     if (typeof bindViewPercentChangeColorContainer === 'undefined') {
         BindView = require('./bind_view.js');
         bindViewPercentChangeColorContainer = BindView.bindViewPercentChangeColorContainer;
+    }
+
+    if (typeof isSmallScreen === 'undefined') {
+        UtilsView = require('../utils_view.js');
+        isSmallScreen = UtilsView.isSmallScreen;
     }
 
     exports.WalletBalanceStatus = WalletBalanceStatus;

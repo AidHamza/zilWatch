@@ -11,7 +11,6 @@ class BarChartDrawer {
         this.fontColor_ = '#212529';
         this.fontColorDarkMode_ = '#d5d9dd';
 
-        this.maxWidthSmallScreen_ = 576;
         this.fontName_ = 'Lato';
 
         this.fontSize_ = 14;
@@ -53,7 +52,7 @@ class BarChartDrawer {
         let fontSize = this.fontSize_;
         let height = this.height_;
 
-        if ($(document).width() < this.maxWidthSmallScreen_) {
+        if (isSmallScreen()) {
             fontSize = this.fontSizeSmallScreen_;
             height = this.heightSmallScreen_;
         }

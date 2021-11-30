@@ -31,7 +31,7 @@ window.addEventListener('DOMContentLoaded', event => {
         priceChartStatus.updateTokenUrlState(tokenSymbol, /* isUserAction= */ true);
 
         // If smaller than 576 px, i.e., phone screen, auto-close the sidebar upon tapping.
-        if ($(document).width() < 576) {
+        if (isSmallScreen()) {
             toggleSidebar();
         }
         showPriceChart(tokenSymbol);

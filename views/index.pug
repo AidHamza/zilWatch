@@ -1189,13 +1189,13 @@ block content
                           span=currTokenStartingAlphabet
 
                     tr(id=ticker+'_token_list_row' class='token-list-row' data-ticker=ticker style=trStyle)
-                      th(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                      th(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 10%;')
                         img(height='28' width='28' src=tokenProperties.logo_url loading='lazy')
-                      th(style='display: table-cell; vertical-align: middle; white-space: nowrap; line-height: 1.1; width: 1%;')
+                      th(style='display: table-cell; vertical-align: middle; line-height: 1.1; width: 30%;')
                         span= tokenProperties.ticker
                         br
                         small(class='text-secondary')= tokenProperties.name
-                      td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap; width: 90%;' )
+                      td(style='display:table-cell; vertical-align: middle; text-align: right; white-space: nowrap;  width: 60%; ')
                         h5(id=tokenProperties.ticker+'_balance_precise' style='vertical-align: middle; margin:0;')= '0'
 
       //- Modal for swap token settings

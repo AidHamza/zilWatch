@@ -405,7 +405,7 @@ const zrcTokenPropertiesListMap = {
   },
   'NFTDEX': {
     "ticker": "NFTDEX",
-    "name": "Zilliqa NFT Index Compound",
+    "name": "Zilliqa NFT Index",
     "address": "zil18l7eyut8t4gu68w7mg0ck664ee33mykrycps6l",
     "address_base16": "0x3fFD9271675d51Cd1DdeDA1f8B6b55cE631D92c3",
     "logo_url": "https://meta.viewblock.io/ZIL.zil18l7eyut8t4gu68w7mg0ck664ee33mykrycps6l/logo",
@@ -552,7 +552,7 @@ const zrcTokenPropertiesListMap = {
   },
   'UNIDEX': {
     "ticker": "UNIDEX",
-    "name": "United DEX Index Compound",
+    "name": "United DEX Index",
     "address": "zil19cyp6kj7zrz3c2q50ts2nly6hrhrr7vr89g9gf",
     "address_base16": "0x2E081d5a5E10C51c28147Ae0a9fc9aB8Ee31f983",
     "logo_url": "https://meta.viewblock.io/ZIL.zil19cyp6kj7zrz3c2q50ts2nly6hrhrr7vr89g9gf/logo",
@@ -562,7 +562,7 @@ const zrcTokenPropertiesListMap = {
   },
   'UNIDEX-V2': {
     "ticker": "UNIDEX-V2",
-    "name": "United DEX Index Compound V2",
+    "name": "United DEX Index V2",
     "address": "zil1jqkdlkfxdcd2xxjeg7m3xcpyhrgy2yjx2cul6d",
     "address_base16": "0x902cdfD9266e1AA31a5947B7136024B8D0451246",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1jqkdlkfxdcd2xxjeg7m3xcpyhrgy2yjx2cul6d/logo",
@@ -631,7 +631,7 @@ const zrcTokenPropertiesListMap = {
   },
   'ZILLEX': {
     "ticker": "ZILLEX",
-    "name": "Zilliqa Index Compound",
+    "name": "Zilliqa Index",
     "address": "zil1rcp57nc2ue00f2hk7esxaa3j8q93xrexgrmpz7",
     "address_base16": "0x1E034f4f0AE65Ef4AAF6F6606EF632380B130F26",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1rcp57nc2ue00f2hk7esxaa3j8q93xrexgrmpz7/logo",
