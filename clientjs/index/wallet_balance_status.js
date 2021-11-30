@@ -1,5 +1,3 @@
-const { truncateBackString } = require('./formatting_utils.js');
-
 /** A class to represent global wallet balance status.  */
 class WalletBalanceStatus {
 
