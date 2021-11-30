@@ -3,8 +3,8 @@ class ZilswapDexStatus {
 
     constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ walletAddressBase16, /* nullable= */ zilswapDexSmartContractStateData, /* nullable= */ zilswapDexSmartContractState24hAgoData, /* nullable= */ zrcTokensCirculatingSupplyData, /* nullable= */ zrcTokensTotalSupplyData) {
         // Constants
-        this.zilswapDexAddress_ = "zil1hgg7k77vpgpwj3av7q7vv5dl4uvunmqqjzpv2w";
-        this.zilswapDexAddressBase16_ = "0xBa11eB7bCc0a02e947ACF03Cc651Bfaf19C9EC00";
+        this.zilswapDexAddress_ = "zil1gkwt95a67lnpe774lcmz72y6ay4jh2asmmjw6u";
+        this.zilswapDexAddressBase16_ = "0x459CB2d3BAF7e61cFbD5FE362f289aE92b2BaBb0";
         this.zilswapDexAddressBase16LowerCase_ = this.zilswapDexAddressBase16_.toLowerCase();
 
         // Private variable
