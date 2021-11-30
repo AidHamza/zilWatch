@@ -650,7 +650,7 @@ describe('SwapStatusBindView', function () {
                     let zrcBalanceData = {
                         'DUCK': duckBalanceData,
                     }
-                    let duckAllowanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"allowances":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85": {"0xba11eb7bcc0a02e947acf03cc651bfaf19c9ec00" : "4851423"}}}}');
+                    let duckAllowanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"allowances":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85": {"0x459cb2d3baf7e61cfbd5fe362f289ae92b2babb0" : "4851423"}}}}');
                     let zrcAllowanceData = {
                         'DUCK': duckAllowanceData,
                     }
