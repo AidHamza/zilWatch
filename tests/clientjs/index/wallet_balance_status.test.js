@@ -3,9 +3,9 @@ var fs = require('fs')
 var $ = indexJsdom.$;
 
 var assert = require('assert');
-var ZilswapDexStatus = require('../../../clientjs/index//zilswap_dex_status.js');
-var CoinPriceStatus = require('../../../clientjs/index//coin_price_status.js');
-var WalletBalanceStatus = require('../../../clientjs/index//wallet_balance_status.js');
+var ZilswapDexStatus = require('../../../clientjs/index/zilswap_dex_status.js');
+var CoinPriceStatus = require('../../../clientjs/index/coin_price_status.js');
+var WalletBalanceStatus = require('../../../clientjs/index/wallet_balance_status.js');
 var Constants = require('../../../constants.js');
 
 describe('WalletBalanceStatus', function () {

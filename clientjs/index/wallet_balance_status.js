@@ -504,8 +504,11 @@ class WalletBalanceStatus {
 if (typeof exports !== 'undefined') {
     if (typeof convertNumberQaToDecimalString === 'undefined') {
         FormattingUtils = require('./formatting_utils.js');
-        convertNumberQaToDecimalString = FormattingUtils.convertNumberQaToDecimalString;
         commafyNumberToString = FormattingUtils.commafyNumberToString;
+        convertNumberQaToDecimalString = FormattingUtils.convertNumberQaToDecimalString;
+    }
+    if (typeof truncateBackString === 'undefined') {
+        FormattingUtils = require('./formatting_utils.js');
         truncateBackString = FormattingUtils.truncateBackString;
     }
     if (typeof getPercentChange === 'undefined') {
