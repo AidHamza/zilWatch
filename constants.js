@@ -1,6 +1,27 @@
 // Constants.js
 // Constants in the server mainly to pass to router to render main page.
 
+const checkpointPastRangeMap = {
+  '1h': {
+      'range_hours': 1,
+  },
+  '24h': {
+      'range_hours': 24,
+  },
+  '7d': {
+      'range_hours': 7 * 24,
+  },
+  '1m': {
+      'range_hours': 30 * 24,
+  },
+  '3m': {
+      'range_hours': 3 * 30 * 24,
+  },
+  '6m': {
+      'range_hours': 6 * 30 * 24,
+  },
+}
+
 const coinMap = {
   "BTC": {
     name: "Bitcoin",
