@@ -93,6 +93,8 @@ describe('StakingBalanceStatus', function () {
             '0xbf4e5001339dec3cda012f471f4f2d9e8bed2f5b': ['2,300', '271.84', '', '',],
             '0xc3ed69338765424f4771dd636a5d3bfa0a776a35': ['Loading...', 'Loading...', '', '',],
             '0xd8de27a85c0dbc43bdd9a525e016670732db899f': ['Loading...', 'Loading...', '', '',],
+            '0x9598f6224cf66665e74b265680423750b1fd2816': ['Loading...', 'Loading...', '', '',],
+            '0xb4305fa80b363d12ddfedcc4bfcf51f70f58032f': ['Loading...', 'Loading...', '', '',],
         }
 
         let walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
@@ -320,6 +322,8 @@ describe('StakingBalanceStatus', function () {
             '0xbf4e5001339dec3cda012f471f4f2d9e8bed2f5b': ['2,300', '271.84', '241.94', '12.4',],
             '0xc3ed69338765424f4771dd636a5d3bfa0a776a35': ['Loading...', 'Loading...', '', '',],
             '0xd8de27a85c0dbc43bdd9a525e016670732db899f': ['Loading...', 'Loading...', '', '',],
+            '0x9598f6224cf66665e74b265680423750b1fd2816': ['Loading...', 'Loading...', '', '',],
+            '0xb4305fa80b363d12ddfedcc4bfcf51f70f58032f': ['Loading...', 'Loading...', '', '',],
         }
 
         var expectedIdrDataMap = {
@@ -336,6 +340,8 @@ describe('StakingBalanceStatus', function () {
             '0xbf4e5001339dec3cda012f471f4f2d9e8bed2f5b': ['2,300', '3,707,600', '3,445,400', '7.6',],
             '0xc3ed69338765424f4771dd636a5d3bfa0a776a35': ['Loading...', 'Loading...', '', '',],
             '0xd8de27a85c0dbc43bdd9a525e016670732db899f': ['Loading...', 'Loading...', '', '',],
+            '0x9598f6224cf66665e74b265680423750b1fd2816': ['Loading...', 'Loading...', '', '',],
+            '0xb4305fa80b363d12ddfedcc4bfcf51f70f58032f': ['Loading...', 'Loading...', '', '',],
         }
 
         var walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
