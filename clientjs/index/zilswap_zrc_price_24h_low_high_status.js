@@ -93,17 +93,17 @@ class ZilswapZrcPrice24hLowHighStatus {
 
     // Exception, no need reset
     bindViewZrcPrice24hLow(zrcPrice24hLow, ticker) {
-        $('#' + ticker + '_price_24h_low').text(zrcPrice24hLow);
+        $('#' + ticker + '_price_past_range_low').text(zrcPrice24hLow);
     }
     // Exception, no need reset
     bindViewZrcPrice24hHigh(zrcPrice24hHigh, ticker) {
-        $('#' + ticker + '_price_24h_high').text(zrcPrice24hHigh);
+        $('#' + ticker + '_price_past_range_high').text(zrcPrice24hHigh);
     }
     // Exception, no need reset
     bindViewZrcPriceProgress24hPercent(currentPricePercent, ticker) {
         let currentPricePercentString = currentPricePercent.toString();
-        $('#' + ticker + '_price_24h_low_high_progress').attr('aria-valuenow', currentPricePercentString);
-        $('#' + ticker + '_price_24h_low_high_progress').width(currentPricePercentString + '%');
+        $('#' + ticker + '_price_past_range_low_high_progress').attr('aria-valuenow', currentPricePercentString);
+        $('#' + ticker + '_price_past_range_low_high_progress').width(currentPricePercentString + '%');
     }
 
 }

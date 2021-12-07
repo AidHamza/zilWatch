@@ -152,7 +152,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             // Assert
             assert.deepStrictEqual(zilswapTradeVolumeStatus.coinToVolumeMap_['24h'], expectedCoinToVolumeMap);
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_24h_volume_fiat').text(), expectedTotalVolumeFiatUsdMap[ticker]);
+                assert.strictEqual($('#' + ticker + '_lp_past_range_volume_fiat').text(), expectedTotalVolumeFiatUsdMap[ticker]);
             }
 
             // Change to IDR
@@ -160,7 +160,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             zilswapTradeVolumeStatus.onCoinPriceStatusChange();
 
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_24h_volume_fiat').text(), expectedTotalVolumeFiatIdrMap[ticker]);
+                assert.strictEqual($('#' + ticker + '_lp_past_range_volume_fiat').text(), expectedTotalVolumeFiatIdrMap[ticker]);
             }
         });
     });
@@ -177,7 +177,7 @@ describe('ZilswapTradeVolumeStatus', function () {
 
             beforeEach(function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                    assert.strictEqual($('#' + ticker + '_lp_24h_volume_fiat').text(), '0');
+                    assert.strictEqual($('#' + ticker + '_lp_past_range_volume_fiat').text(), '0');
                 }
             });
 
@@ -187,7 +187,7 @@ describe('ZilswapTradeVolumeStatus', function () {
                     zilswapTradeVolumeStatus.bindView24hVolumeFiat('1234.4', ticker);
 
                     // Assert
-                    assert.strictEqual($('#' + ticker + '_lp_24h_volume_fiat').text(), '1234.4');
+                    assert.strictEqual($('#' + ticker + '_lp_past_range_volume_fiat').text(), '1234.4');
                 }
             });
 
@@ -197,7 +197,7 @@ describe('ZilswapTradeVolumeStatus', function () {
                     zilswapTradeVolumeStatus.bindView24hVolumeFiat('asdf', ticker);
 
                     // Assert
-                    assert.strictEqual($('#' + ticker + '_lp_24h_volume_fiat').text(), 'asdf');
+                    assert.strictEqual($('#' + ticker + '_lp_past_range_volume_fiat').text(), 'asdf');
                 }
             });
         });

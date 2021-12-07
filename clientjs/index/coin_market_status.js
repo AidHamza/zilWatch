@@ -266,7 +266,7 @@ class CoinMarketStatus {
 
     /** Private static method. Public. */
     bindView24hVolumeFiat(tradeVolumeFiat, ticker) {
-        $('#' + ticker + '_lp_24h_volume_fiat').text(tradeVolumeFiat);
+        $('#' + ticker + '_lp_past_range_volume_fiat').text(tradeVolumeFiat);
     }
 
     /** Private static method. Public. */
@@ -291,19 +291,19 @@ class CoinMarketStatus {
 
     /** Private static method. Public. */
     bindView24hLowFiat(coinPrice24hLowFiat, ticker) {
-        $('#' + ticker + '_price_24h_low_fiat').text(coinPrice24hLowFiat);
+        $('#' + ticker + '_price_past_range_low_fiat').text(coinPrice24hLowFiat);
     }
 
     /** Private static method. Public. */
     bindView24hHighFiat(coinPrice24hHighFiat, ticker) {
-        $('#' + ticker + '_price_24h_high_fiat').text(coinPrice24hHighFiat);
+        $('#' + ticker + '_price_past_range_high_fiat').text(coinPrice24hHighFiat);
     }
 
     // Exception, no need reset
     bindViewProgress24hPercent(currentPricePercent, ticker) {
         let currentPricePercentString = currentPricePercent.toString();
-        $('#' + ticker + '_price_24h_low_high_progress').attr("aria-valuenow", currentPricePercentString);
-        $('#' + ticker + '_price_24h_low_high_progress').width(currentPricePercentString + '%');
+        $('#' + ticker + '_price_past_range_low_high_progress').attr("aria-valuenow", currentPricePercentString);
+        $('#' + ticker + '_price_past_range_low_high_progress').width(currentPricePercentString + '%');
     }
 }
 

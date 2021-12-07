@@ -134,17 +134,17 @@ block content
                           span(class=coinProperties.ticker+'_price_zil_percent_change_past_range')
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           div(class='progress' style='height: 0.4rem; margin-top: 0.2rem;')
-                            div(id=coinProperties.ticker+'_price_24h_low_high_progress' class='progress-bar' role='progressbar' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
+                            div(id=coinProperties.ticker+'_price_past_range_low_high_progress' class='progress-bar' role='progressbar' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
                           span(class='currency_symbol mr-1')= '$'
-                          span(id=coinProperties.ticker+'_price_24h_low_fiat')= ''
+                          span(id=coinProperties.ticker+'_price_past_range_low_fiat')= ''
                           span(class='ml-1 mr-1')='/'
-                          span(id=coinProperties.ticker+'_price_24h_high_fiat')= ''
+                          span(id=coinProperties.ticker+'_price_past_range_high_fiat')= ''
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           span(class=coinProperties.ticker+'_price_fiat')= 'Loading...'
                         td(class=coinProperties.ticker+'_price_fiat_percent_change_past_range_container pr-3' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           span(class=coinProperties.ticker+'_price_fiat_percent_change_past_range')
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                          span(id=coinProperties.ticker+'_lp_24h_volume_fiat')= '0'
+                          span(id=coinProperties.ticker+'_lp_past_range_volume_fiat')= '0'
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           span(id=coinProperties.ticker+'_lp_total_pool_fiat')
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
@@ -164,12 +164,12 @@ block content
                         div(style='display:none')
                           span(id='public_'+tokenProperties.ticker+'_price_zil')= 'Loading...'
                           span(class=tokenProperties.ticker+'_price_zil_percent_change_past_range')
-                          span(id=tokenProperties.ticker+'_price_24h_low_high_progress' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
-                          span(id=tokenProperties.ticker+'_price_24h_low')= ''
-                          span(id=tokenProperties.ticker+'_price_24h_high')= ''
+                          span(id=tokenProperties.ticker+'_price_past_range_low_high_progress' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
+                          span(id=tokenProperties.ticker+'_price_past_range_low')= ''
+                          span(id=tokenProperties.ticker+'_price_past_range_high')= ''
                           span(id='public_'+tokenProperties.ticker+'_price_fiat')= 'Loading...'
                           span(class=tokenProperties.ticker+'_price_fiat_percent_change_past_range')
-                          span(id=tokenProperties.ticker+'_lp_24h_volume_fiat')= '0'
+                          span(id=tokenProperties.ticker+'_lp_past_range_volume_fiat')= '0'
                           span(id=tokenProperties.ticker+'_lp_total_pool_fiat')= 'Loading...'
                           span(id=tokenProperties.ticker+'_circulating_supply_zrc')= '0'
                           span(id=tokenProperties.ticker+'_circulating_supply_fiat')= '0'
@@ -187,16 +187,16 @@ block content
                           span(class=tokenProperties.ticker+'_price_zil_percent_change_past_range')
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           div(class='progress' style='height: 0.4rem; margin-top: 0.2rem;')
-                            div(id=tokenProperties.ticker+'_price_24h_low_high_progress' class='progress-bar' role='progressbar' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
-                          span(id=tokenProperties.ticker+'_price_24h_low')= ''
+                            div(id=tokenProperties.ticker+'_price_past_range_low_high_progress' class='progress-bar' role='progressbar' style='width: 0%;' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100')
+                          span(id=tokenProperties.ticker+'_price_past_range_low')= ''
                           span(class='ml-1 mr-1')='/'
-                          span(id=tokenProperties.ticker+'_price_24h_high')= ''
+                          span(id=tokenProperties.ticker+'_price_past_range_high')= ''
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           span(id='public_'+tokenProperties.ticker+'_price_fiat')= 'Loading...'
                         td(class=tokenProperties.ticker+'_price_fiat_percent_change_past_range_container pr-3' style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           span(class=tokenProperties.ticker+'_price_fiat_percent_change_past_range')
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
-                          span(id=tokenProperties.ticker+'_lp_24h_volume_fiat')= '0'
+                          span(id=tokenProperties.ticker+'_lp_past_range_volume_fiat')= '0'
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           span(id=tokenProperties.ticker+'_lp_total_pool_fiat')= 'Loading...'
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )

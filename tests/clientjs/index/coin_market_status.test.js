@@ -45,15 +45,15 @@ describe('CoinMarketStatus', function () {
 
         // console.log("'%s': ['%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'],",
         // coinTicker,
-        // $('#' + coinTicker + '_lp_24h_volume_fiat').text(),
+        // $('#' + coinTicker + '_lp_past_range_volume_fiat').text(),
         // $('#' + coinTicker + '_circulating_supply_coin').text(),
         // $('#' + coinTicker + '_circulating_supply_fiat').text(),
         // $('#' + coinTicker + '_total_supply_coin').text(),
         // $('#' + coinTicker + '_total_supply_fiat').text(),
-        // $('#' + coinTicker + '_price_24h_low_fiat').text(),
-        // $('#' + coinTicker + '_price_24h_high_fiat').text(),
-        // $('#' + coinTicker + '_price_24h_low_high_progress').attr('aria-valuenow'),
-        // $('#' + coinTicker + '_price_24h_low_high_progress').css('width')
+        // $('#' + coinTicker + '_price_past_range_low_fiat').text(),
+        // $('#' + coinTicker + '_price_past_range_high_fiat').text(),
+        // $('#' + coinTicker + '_price_past_range_low_high_progress').attr('aria-valuenow'),
+        // $('#' + coinTicker + '_price_past_range_low_high_progress').css('width')
         // );
         let expectedMap = {
             'BTC': ['23,223,888,493', '18,747,706', '663,631,296,988', '21,000,000', '743,358,000,000', '34,406.27', '35,735.25', '74.62349397590361', '74.62349397590361%'],
@@ -77,15 +77,15 @@ describe('CoinMarketStatus', function () {
             let coinMarketStatus = new CoinMarketStatus.CoinMarketStatus(Constants.coinMap, coinPriceStatus, coinMarketCoingeckoData);
 
             for (let coinTicker in Constants.coinMap) {
-                assert.strictEqual($('#' + coinTicker + '_lp_24h_volume_fiat').text(), expectedMap[coinTicker][0]);
+                assert.strictEqual($('#' + coinTicker + '_lp_past_range_volume_fiat').text(), expectedMap[coinTicker][0]);
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_coin').text(), expectedMap[coinTicker][1]);
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_fiat').text(), expectedMap[coinTicker][2]);
                 assert.strictEqual($('#' + coinTicker + '_total_supply_coin').text(), expectedMap[coinTicker][3]);
                 assert.strictEqual($('#' + coinTicker + '_total_supply_fiat').text(), expectedMap[coinTicker][4]);
-                assert.strictEqual($('#' + coinTicker + '_price_24h_low_fiat').text(), expectedMap[coinTicker][5]);
-                assert.strictEqual($('#' + coinTicker + '_price_24h_high_fiat').text(), expectedMap[coinTicker][6]);
-                assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').attr('aria-valuenow'), expectedMap[coinTicker][7]);
-                assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').css('width'), expectedMap[coinTicker][8]);
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_low_fiat').text(), expectedMap[coinTicker][5]);
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_high_fiat').text(), expectedMap[coinTicker][6]);
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').attr('aria-valuenow'), expectedMap[coinTicker][7]);
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').css('width'), expectedMap[coinTicker][8]);
             }
         });
 
@@ -93,15 +93,15 @@ describe('CoinMarketStatus', function () {
             let coinMarketStatus = new CoinMarketStatus.CoinMarketStatus(Constants.coinMap, coinPriceStatus, /* coinMarketCoingeckoData= */ null);
 
             for (let coinTicker in Constants.coinMap) {
-                assert.strictEqual($('#' + coinTicker + '_lp_24h_volume_fiat').text(), "0");
+                assert.strictEqual($('#' + coinTicker + '_lp_past_range_volume_fiat').text(), "0");
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_coin').text(), "0");
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_fiat').text(), "0");
                 assert.strictEqual($('#' + coinTicker + '_total_supply_coin').text(), "");
                 assert.strictEqual($('#' + coinTicker + '_total_supply_fiat').text(), "");
-                assert.strictEqual($('#' + coinTicker + '_price_24h_low_fiat').text(), "");
-                assert.strictEqual($('#' + coinTicker + '_price_24h_high_fiat').text(), "");
-                assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').attr('aria-valuenow'), "0");
-                assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').css('width'), "0%");
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_low_fiat').text(), "");
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_high_fiat').text(), "");
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').attr('aria-valuenow'), "0");
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').css('width'), "0%");
             }
 
             coinMarketStatus.coinMarketCoingeckoData_ = coinMarketCoingeckoData;
@@ -109,15 +109,15 @@ describe('CoinMarketStatus', function () {
             coinMarketStatus.bindViewIfDataExist();
 
             for (let coinTicker in Constants.coinMap) {
-                assert.strictEqual($('#' + coinTicker + '_lp_24h_volume_fiat').text(), expectedMap[coinTicker][0]);
+                assert.strictEqual($('#' + coinTicker + '_lp_past_range_volume_fiat').text(), expectedMap[coinTicker][0]);
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_coin').text(), expectedMap[coinTicker][1]);
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_fiat').text(), expectedMap[coinTicker][2]);
                 assert.strictEqual($('#' + coinTicker + '_total_supply_coin').text(), expectedMap[coinTicker][3]);
                 assert.strictEqual($('#' + coinTicker + '_total_supply_fiat').text(), expectedMap[coinTicker][4]);
-                assert.strictEqual($('#' + coinTicker + '_price_24h_low_fiat').text(), expectedMap[coinTicker][5]);
-                assert.strictEqual($('#' + coinTicker + '_price_24h_high_fiat').text(), expectedMap[coinTicker][6]);
-                assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').attr('aria-valuenow'), expectedMap[coinTicker][7]);
-                assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').css('width'), expectedMap[coinTicker][8]);
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_low_fiat').text(), expectedMap[coinTicker][5]);
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_high_fiat').text(), expectedMap[coinTicker][6]);
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').attr('aria-valuenow'), expectedMap[coinTicker][7]);
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').css('width'), expectedMap[coinTicker][8]);
             }
         });
 
@@ -128,15 +128,15 @@ describe('CoinMarketStatus', function () {
             coinMarketStatus.onCoinPriceStatusChange();
 
             for (let coinTicker in Constants.coinMap) {
-                assert.strictEqual($('#' + coinTicker + '_lp_24h_volume_fiat').text(), expectedMapSgd[coinTicker][0]);
+                assert.strictEqual($('#' + coinTicker + '_lp_past_range_volume_fiat').text(), expectedMapSgd[coinTicker][0]);
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_coin').text(), expectedMapSgd[coinTicker][1]);
                 assert.strictEqual($('#' + coinTicker + '_circulating_supply_fiat').text(), expectedMapSgd[coinTicker][2]);
                 assert.strictEqual($('#' + coinTicker + '_total_supply_coin').text(), expectedMapSgd[coinTicker][3]);
                 assert.strictEqual($('#' + coinTicker + '_total_supply_fiat').text(), expectedMapSgd[coinTicker][4]);
-                assert.strictEqual($('#' + coinTicker + '_price_24h_low_fiat').text(), expectedMapSgd[coinTicker][5]);
-                assert.strictEqual($('#' + coinTicker + '_price_24h_high_fiat').text(), expectedMapSgd[coinTicker][6]);
-                assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').attr('aria-valuenow'), expectedMapSgd[coinTicker][7]);
-                assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').css('width'), expectedMapSgd[coinTicker][8]);
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_low_fiat').text(), expectedMapSgd[coinTicker][5]);
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_high_fiat').text(), expectedMapSgd[coinTicker][6]);
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').attr('aria-valuenow'), expectedMapSgd[coinTicker][7]);
+                assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').css('width'), expectedMapSgd[coinTicker][8]);
             }
         });
 
@@ -152,7 +152,7 @@ describe('CoinMarketStatus', function () {
 
             beforeEach(function () {
                 for (let coinTicker in Constants.coinMap) {
-                    assert.strictEqual($('#' + coinTicker + '_lp_24h_volume_fiat').text(), '0');
+                    assert.strictEqual($('#' + coinTicker + '_lp_past_range_volume_fiat').text(), '0');
                 }
             });
 
@@ -160,7 +160,7 @@ describe('CoinMarketStatus', function () {
                 for (let coinTicker in Constants.coinMap) {
                     coinMarketStatus.bindView24hVolumeFiat('0.123', coinTicker);
 
-                    assert.strictEqual($('#' + coinTicker + '_lp_24h_volume_fiat').text(), '0.123');
+                    assert.strictEqual($('#' + coinTicker + '_lp_past_range_volume_fiat').text(), '0.123');
                 }
             });
         });
@@ -240,7 +240,7 @@ describe('CoinMarketStatus', function () {
 
             beforeEach(function () {
                 for (let coinTicker in Constants.coinMap) {
-                    assert.strictEqual($('#' + coinTicker + '_price_24h_low_fiat').text(), '');
+                    assert.strictEqual($('#' + coinTicker + '_price_past_range_low_fiat').text(), '');
                 }
             });
 
@@ -248,7 +248,7 @@ describe('CoinMarketStatus', function () {
                 for (let coinTicker in Constants.coinMap) {
                     coinMarketStatus.bindView24hLowFiat('0.123', coinTicker);
 
-                    assert.strictEqual($('#' + coinTicker + '_price_24h_low_fiat').text(), '0.123');
+                    assert.strictEqual($('#' + coinTicker + '_price_past_range_low_fiat').text(), '0.123');
                 }
             });
         });
@@ -257,7 +257,7 @@ describe('CoinMarketStatus', function () {
 
             beforeEach(function () {
                 for (let coinTicker in Constants.coinMap) {
-                    assert.strictEqual($('#' + coinTicker + '_price_24h_high_fiat').text(), '');
+                    assert.strictEqual($('#' + coinTicker + '_price_past_range_high_fiat').text(), '');
                 }
             });
 
@@ -265,7 +265,7 @@ describe('CoinMarketStatus', function () {
                 for (let coinTicker in Constants.coinMap) {
                     coinMarketStatus.bindView24hHighFiat('0.123', coinTicker);
 
-                    assert.strictEqual($('#' + coinTicker + '_price_24h_high_fiat').text(), '0.123');
+                    assert.strictEqual($('#' + coinTicker + '_price_past_range_high_fiat').text(), '0.123');
                 }
             });
         });
@@ -274,8 +274,8 @@ describe('CoinMarketStatus', function () {
 
             beforeEach(function () {
                 for (let coinTicker in Constants.coinMap) {
-                    assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').attr('aria-valuenow'), "0");
-                    assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').css('width'), "0%");
+                    assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').attr('aria-valuenow'), "0");
+                    assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').css('width'), "0%");
                 }
             });
 
@@ -285,8 +285,8 @@ describe('CoinMarketStatus', function () {
                 for (let coinTicker in Constants.coinMap) {
                     coinMarketStatus.bindViewProgress24hPercent(currentPricePercent, coinTicker);
 
-                    assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').attr('aria-valuenow'), currentPricePercentString);
-                    assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').css('width'), currentPricePercentString + '%');
+                    assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').attr('aria-valuenow'), currentPricePercentString);
+                    assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').css('width'), currentPricePercentString + '%');
                 }
             });
 
@@ -296,8 +296,8 @@ describe('CoinMarketStatus', function () {
                 for (let coinTicker in Constants.coinMap) {
                     coinMarketStatus.bindViewProgress24hPercent(currentPricePercent, coinTicker);
 
-                    assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').attr('aria-valuenow'), currentPricePercentString);
-                    assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').css('width'), currentPricePercentString + '%');
+                    assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').attr('aria-valuenow'), currentPricePercentString);
+                    assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').css('width'), currentPricePercentString + '%');
                 }
             });
 
@@ -308,8 +308,8 @@ describe('CoinMarketStatus', function () {
                 for (let coinTicker in Constants.coinMap) {
                     coinMarketStatus.bindViewProgress24hPercent(currentPricePercent, coinTicker);
 
-                    assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').attr('aria-valuenow'), currentPricePercentString);
-                    assert.strictEqual($('#' + coinTicker + '_price_24h_low_high_progress').css('width'), '0%');
+                    assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').attr('aria-valuenow'), currentPricePercentString);
+                    assert.strictEqual($('#' + coinTicker + '_price_past_range_low_high_progress').css('width'), '0%');
                 }
             });
         });

@@ -122,7 +122,7 @@ class ZilswapTradeVolumeStatus {
 
     // Exception, no need reset
     bindView24hVolumeFiat(totalVolumeFiat, ticker) {
-        $('#' + ticker + '_lp_24h_volume_fiat').text(totalVolumeFiat);
+        $('#' + ticker + '_lp_past_range_volume_fiat').text(totalVolumeFiat);
     }
 }
 

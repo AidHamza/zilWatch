@@ -3,8 +3,8 @@ var fs = require('fs')
 var $ = indexJsdom.$;
 
 var assert = require('assert');
-var ZilswapDexStatus = require('../../../clientjs/index//zilswap_dex_status.js');
-var ZilswapZrcPrice24hLowHighStatus = require('../../../clientjs/index//zilswap_zrc_price_24h_low_high_status.js');
+var ZilswapDexStatus = require('../../../clientjs/index/zilswap_dex_status.js');
+var ZilswapZrcPrice24hLowHighStatus = require('../../../clientjs/index/zilswap_zrc_price_24h_low_high_status.js');
 var Constants = require('../../../constants.js');
 
 describe('ZilswapZrcPrice24hLowHighStatus', function () {
@@ -124,10 +124,10 @@ describe('ZilswapZrcPrice24hLowHighStatus', function () {
 
         // console.log("'%s': ['%s', '%s', '%s', '%s'],",
         //     ticker,
-        //     $('#' + ticker + '_price_24h_low').text(),
-        //     $('#' + ticker + '_price_24h_high').text(),
-        //     $('#' + ticker + '_price_24h_low_high_progress').attr('aria-valuenow'),
-        //     $('#' + ticker + '_price_24h_low_high_progress').css('width')
+        //     $('#' + ticker + '_price_past_range_low').text(),
+        //     $('#' + ticker + '_price_past_range_high').text(),
+        //     $('#' + ticker + '_price_past_range_low_high_progress').attr('aria-valuenow'),
+        //     $('#' + ticker + '_price_past_range_low_high_progress').css('width')
         // );
         let expectedMap = {
             'BOLT': ['0.25', '0.67', '12.182022045813543', '12.182022045813543%'],
@@ -174,10 +174,10 @@ describe('ZilswapZrcPrice24hLowHighStatus', function () {
             let zilswapZrcPrice24hLowHighStatus = new ZilswapZrcPrice24hLowHighStatus.ZilswapZrcPrice24hLowHighStatus(Constants.zrcTokenPropertiesListMap, zilswapDexStatus, zrcTokenPrice24hLowData, zrcTokenPrice24hHighData);
 
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_price_24h_low').text(), expectedMap[ticker][0]);
-                assert.strictEqual($('#' + ticker + '_price_24h_high').text(), expectedMap[ticker][1]);
-                assert.strictEqual($('#' + ticker + '_price_24h_low_high_progress').attr('aria-valuenow'), expectedMap[ticker][2]);
-                assert.strictEqual($('#' + ticker + '_price_24h_low_high_progress').css('width'), expectedMap[ticker][3]);
+                assert.strictEqual($('#' + ticker + '_price_past_range_low').text(), expectedMap[ticker][0]);
+                assert.strictEqual($('#' + ticker + '_price_past_range_high').text(), expectedMap[ticker][1]);
+                assert.strictEqual($('#' + ticker + '_price_past_range_low_high_progress').attr('aria-valuenow'), expectedMap[ticker][2]);
+                assert.strictEqual($('#' + ticker + '_price_past_range_low_high_progress').css('width'), expectedMap[ticker][3]);
             }
         });
 
@@ -185,10 +185,10 @@ describe('ZilswapZrcPrice24hLowHighStatus', function () {
             let zilswapZrcPrice24hLowHighStatus = new ZilswapZrcPrice24hLowHighStatus.ZilswapZrcPrice24hLowHighStatus(Constants.zrcTokenPropertiesListMap, zilswapDexStatus, /* zrcTokenPrice24hLowData= */ null, /* zrcTokenPrice24hHighData= */ null);
 
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_price_24h_low').text(), "");
-                assert.strictEqual($('#' + ticker + '_price_24h_high').text(), "");
-                assert.strictEqual($('#' + ticker + '_price_24h_low_high_progress').attr('aria-valuenow'), "0");
-                assert.strictEqual($('#' + ticker + '_price_24h_low_high_progress').css('width'), "0%");
+                assert.strictEqual($('#' + ticker + '_price_past_range_low').text(), "");
+                assert.strictEqual($('#' + ticker + '_price_past_range_high').text(), "");
+                assert.strictEqual($('#' + ticker + '_price_past_range_low_high_progress').attr('aria-valuenow'), "0");
+                assert.strictEqual($('#' + ticker + '_price_past_range_low_high_progress').css('width'), "0%");
             }
 
             zilswapZrcPrice24hLowHighStatus.zrcTokenPrice24hLowMap_ = zrcTokenPrice24hLowData;
@@ -196,10 +196,10 @@ describe('ZilswapZrcPrice24hLowHighStatus', function () {
             zilswapZrcPrice24hLowHighStatus.bindViewZrcPrice24hLowHigh();
 
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_price_24h_low').text(), expectedMap[ticker][0]);
-                assert.strictEqual($('#' + ticker + '_price_24h_high').text(), expectedMap[ticker][1]);
-                assert.strictEqual($('#' + ticker + '_price_24h_low_high_progress').attr('aria-valuenow'), expectedMap[ticker][2]);
-                assert.strictEqual($('#' + ticker + '_price_24h_low_high_progress').css('width'), expectedMap[ticker][3]);
+                assert.strictEqual($('#' + ticker + '_price_past_range_low').text(), expectedMap[ticker][0]);
+                assert.strictEqual($('#' + ticker + '_price_past_range_high').text(), expectedMap[ticker][1]);
+                assert.strictEqual($('#' + ticker + '_price_past_range_low_high_progress').attr('aria-valuenow'), expectedMap[ticker][2]);
+                assert.strictEqual($('#' + ticker + '_price_past_range_low_high_progress').css('width'), expectedMap[ticker][3]);
             }
         });
     });
@@ -215,7 +215,7 @@ describe('ZilswapZrcPrice24hLowHighStatus', function () {
 
             beforeEach(function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                    assert.strictEqual($('#' + ticker + '_price_24h_low').text(), '');
+                    assert.strictEqual($('#' + ticker + '_price_past_range_low').text(), '');
                 }
             });
 
@@ -223,7 +223,7 @@ describe('ZilswapZrcPrice24hLowHighStatus', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     zilswapZrcPrice24hLowHighStatus.bindViewZrcPrice24hLow('0.123', ticker);
 
-                    assert.strictEqual($('#' + ticker + '_price_24h_low').text(), '0.123');
+                    assert.strictEqual($('#' + ticker + '_price_past_range_low').text(), '0.123');
                 }
             });
         });
@@ -232,7 +232,7 @@ describe('ZilswapZrcPrice24hLowHighStatus', function () {
 
             beforeEach(function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                    assert.strictEqual($('#' + ticker + '_price_24h_high').text(), '');
+                    assert.strictEqual($('#' + ticker + '_price_past_range_high').text(), '');
                 }
             });
 
@@ -240,7 +240,7 @@ describe('ZilswapZrcPrice24hLowHighStatus', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     zilswapZrcPrice24hLowHighStatus.bindViewZrcPrice24hHigh('0.123', ticker);
 
-                    assert.strictEqual($('#' + ticker + '_price_24h_high').text(), '0.123');
+                    assert.strictEqual($('#' + ticker + '_price_past_range_high').text(), '0.123');
                 }
             });
         });
@@ -249,8 +249,8 @@ describe('ZilswapZrcPrice24hLowHighStatus', function () {
 
             beforeEach(function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                    assert.strictEqual($('#' + ticker + '_price_24h_low_high_progress').attr('aria-valuenow'), "0");
-                    assert.strictEqual($('#' + ticker + '_price_24h_low_high_progress').css('width'), "0%");
+                    assert.strictEqual($('#' + ticker + '_price_past_range_low_high_progress').attr('aria-valuenow'), "0");
+                    assert.strictEqual($('#' + ticker + '_price_past_range_low_high_progress').css('width'), "0%");
                 }
             });
 
@@ -260,8 +260,8 @@ describe('ZilswapZrcPrice24hLowHighStatus', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     zilswapZrcPrice24hLowHighStatus.bindViewZrcPriceProgress24hPercent(currentPricePercent, ticker);
 
-                    assert.strictEqual($('#' + ticker + '_price_24h_low_high_progress').attr('aria-valuenow'), currentPricePercentString);
-                    assert.strictEqual($('#' + ticker + '_price_24h_low_high_progress').css('width'), currentPricePercentString + '%');
+                    assert.strictEqual($('#' + ticker + '_price_past_range_low_high_progress').attr('aria-valuenow'), currentPricePercentString);
+                    assert.strictEqual($('#' + ticker + '_price_past_range_low_high_progress').css('width'), currentPricePercentString + '%');
                 }
             });
 
@@ -271,8 +271,8 @@ describe('ZilswapZrcPrice24hLowHighStatus', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     zilswapZrcPrice24hLowHighStatus.bindViewZrcPriceProgress24hPercent(currentPricePercent, ticker);
 
-                    assert.strictEqual($('#' + ticker + '_price_24h_low_high_progress').attr('aria-valuenow'), currentPricePercentString);
-                    assert.strictEqual($('#' + ticker + '_price_24h_low_high_progress').css('width'), currentPricePercentString + '%');
+                    assert.strictEqual($('#' + ticker + '_price_past_range_low_high_progress').attr('aria-valuenow'), currentPricePercentString);
+                    assert.strictEqual($('#' + ticker + '_price_past_range_low_high_progress').css('width'), currentPricePercentString + '%');
                 }
             });
 
@@ -283,8 +283,8 @@ describe('ZilswapZrcPrice24hLowHighStatus', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     zilswapZrcPrice24hLowHighStatus.bindViewZrcPriceProgress24hPercent(currentPricePercent, ticker);
 
-                    assert.strictEqual($('#' + ticker + '_price_24h_low_high_progress').attr('aria-valuenow'), currentPricePercentString);
-                    assert.strictEqual($('#' + ticker + '_price_24h_low_high_progress').css('width'), '0%');
+                    assert.strictEqual($('#' + ticker + '_price_past_range_low_high_progress').attr('aria-valuenow'), currentPricePercentString);
+                    assert.strictEqual($('#' + ticker + '_price_past_range_low_high_progress').css('width'), '0%');
                 }
             });
         });
