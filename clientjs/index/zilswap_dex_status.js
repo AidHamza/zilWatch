@@ -652,9 +652,9 @@ class ZilswapDexStatus {
         $('#' + ticker + '_lp_pool_share_percent_24h_ago').text(poolSharePercent24hAgo);
         $('#' + ticker + '_lp_zil_balance_24h_ago').text(zilBalance24hAgo);
         $('#' + ticker + '_lp_token_balance_24h_ago').text(zrcBalance24hAgo);
-        $('#' + ticker + '_lp_balance_zil_24h_ago').text(balanceInZil24hAgo);
-        $('#' + ticker + '_lp_balance_zil_percent_change_24h').text(balanceInZilPercentChange24h);
-        bindViewPercentChangeColorContainer('#' + ticker + '_lp_balance_zil_percent_change_24h_container', balanceInZilPercentChange24h);
+        $('#' + ticker + '_lp_balance_zil_past_range_ago').text(balanceInZil24hAgo);
+        $('#' + ticker + '_lp_balance_zil_percent_change_past_range').text(balanceInZilPercentChange24h);
+        bindViewPercentChangeColorContainer('#' + ticker + '_lp_balance_zil_percent_change_past_range_container', balanceInZilPercentChange24h);
     }
 
     /** Private static method. Personal. */
@@ -669,9 +669,9 @@ class ZilswapDexStatus {
 
     /** Private static method. Personal. */
     bindViewZrcTokenLpBalanceFiat24hAgo(lpBalanceFiat24hAgo, lpBalanceFiatPercentChange24h, ticker) {
-        $('#' + ticker + '_lp_balance_fiat_24h_ago').text(lpBalanceFiat24hAgo);
-        $('#' + ticker + '_lp_balance_fiat_percent_change_24h').text(lpBalanceFiatPercentChange24h);
-        bindViewPercentChangeColorContainer('#' + ticker + '_lp_balance_fiat_percent_change_24h_container', lpBalanceFiatPercentChange24h);
+        $('#' + ticker + '_lp_balance_fiat_past_range_ago').text(lpBalanceFiat24hAgo);
+        $('#' + ticker + '_lp_balance_fiat_percent_change_past_range').text(lpBalanceFiatPercentChange24h);
+        bindViewPercentChangeColorContainer('#' + ticker + '_lp_balance_fiat_percent_change_past_range_container', lpBalanceFiatPercentChange24h);
     }
 
     /** Private static method. Personal. */
@@ -693,12 +693,12 @@ class ZilswapDexStatus {
             $('#' + ticker + '_lp_token_balance_24h_ago').text('');
 
             $('#' + ticker + '_lp_balance_zil').text('');
-            $('#' + ticker + '_lp_balance_zil_24h_ago').text('');
-            $('#' + ticker + '_lp_balance_zil_percent_change_24h').text('');
+            $('#' + ticker + '_lp_balance_zil_past_range_ago').text('');
+            $('#' + ticker + '_lp_balance_zil_percent_change_past_range').text('');
 
             $('#' + ticker + '_lp_balance_fiat').text('Loading...');
-            $('#' + ticker + '_lp_balance_fiat_24h_ago').text('');
-            $('#' + ticker + '_lp_balance_fiat_percent_change_24h').text('');
+            $('#' + ticker + '_lp_balance_fiat_past_range_ago').text('');
+            $('#' + ticker + '_lp_balance_fiat_percent_change_past_range').text('');
         }
     }
 

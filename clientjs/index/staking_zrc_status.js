@@ -262,9 +262,9 @@ class StakingZrcStatus {
     }
 
     bindViewZrcStakingBalanceZil24hAgo(tickerId, stakingCategoryId, zrcStakingBalanceZil24hAgo, zrcStakingBalanceZilPercentChange24h) {
-        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_24h_ago').text(zrcStakingBalanceZil24hAgo);
-        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_percent_change_24h').text(zrcStakingBalanceZilPercentChange24h);
-        bindViewPercentChangeColorContainer('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_percent_change_24h_container', zrcStakingBalanceZilPercentChange24h);
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_past_range_ago').text(zrcStakingBalanceZil24hAgo);
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_percent_change_past_range').text(zrcStakingBalanceZilPercentChange24h);
+        bindViewPercentChangeColorContainer('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_percent_change_past_range_container', zrcStakingBalanceZilPercentChange24h);
     }
 
     bindViewZrcStakingBalanceZil(tickerId, stakingCategoryId, zrcStakingBalanceZil) {
@@ -272,9 +272,9 @@ class StakingZrcStatus {
     }
 
     bindViewZrcStakingBalanceFiat24hAgo(tickerId, stakingCategoryId, zrcStakingBalanceFiat24hAgo, zrcStakingBalanceFiatPercentChange24h) {
-        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_24h_ago').text(zrcStakingBalanceFiat24hAgo);
-        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_percent_change_24h').text(zrcStakingBalanceFiatPercentChange24h);
-        bindViewPercentChangeColorContainer('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_percent_change_24h_container', zrcStakingBalanceFiatPercentChange24h);
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_past_range_ago').text(zrcStakingBalanceFiat24hAgo);
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_percent_change_past_range').text(zrcStakingBalanceFiatPercentChange24h);
+        bindViewPercentChangeColorContainer('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_percent_change_past_range_container', zrcStakingBalanceFiatPercentChange24h);
     }
 
     bindViewZrcStakingBalanceFiat(tickerId, stakingCategoryId, zrcStakingBalanceFiat) {
@@ -297,11 +297,11 @@ class StakingZrcStatus {
         $('#' + tickerId + '_' + stakingCategoryId + '_staking_container').hide();
         $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance').text('Loading...');
         $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil').text('Loading...');
-        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_24h_ago').text('');
-        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_percent_change_24h').text('');
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_past_range_ago').text('');
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_zil_percent_change_past_range').text('');
         $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat').text('Loading...');
-        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_24h_ago').text('');
-        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_percent_change_24h').text('');
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_past_range_ago').text('');
+        $('#' + tickerId + '_' + stakingCategoryId + '_staking_balance_fiat_percent_change_past_range').text('');
     }
 }
 

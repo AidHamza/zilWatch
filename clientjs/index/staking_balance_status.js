@@ -339,9 +339,9 @@ class StakingBalanceStatus {
 
     /** Private static method */
     bindViewZilStakingBalanceFiat24hAgo(zilStakingBalanceFiat24hAgo, zilStakingBalanceFiatPercentChange24h, ssnAddress) {
-        $('#' + ssnAddress + '_zil_staking_balance_fiat_24h_ago').text(zilStakingBalanceFiat24hAgo);
-        $('#' + ssnAddress + '_zil_staking_balance_fiat_percent_change_24h').text(zilStakingBalanceFiatPercentChange24h);
-        bindViewPercentChangeColorContainer('#' + ssnAddress + '_zil_staking_balance_fiat_percent_change_24h_container', zilStakingBalanceFiatPercentChange24h);
+        $('#' + ssnAddress + '_zil_staking_balance_fiat_past_range_ago').text(zilStakingBalanceFiat24hAgo);
+        $('#' + ssnAddress + '_zil_staking_balance_fiat_percent_change_past_range').text(zilStakingBalanceFiatPercentChange24h);
+        bindViewPercentChangeColorContainer('#' + ssnAddress + '_zil_staking_balance_fiat_percent_change_past_range_container', zilStakingBalanceFiatPercentChange24h);
     }
 
     /** Private static method */
@@ -375,8 +375,8 @@ class StakingBalanceStatus {
             $('#' + ssnAddress + '_zil_staking_container').hide();
             $('#' + ssnAddress + '_zil_staking_balance').text('Loading...');
             $('#' + ssnAddress + '_zil_staking_balance_fiat').text('Loading...');
-            $('#' + ssnAddress + '_zil_staking_balance_fiat_24h_ago').text('');
-            $('#' + ssnAddress + '_zil_staking_balance_fiat_percent_change_24h').text('');
+            $('#' + ssnAddress + '_zil_staking_balance_fiat_past_range_ago').text('');
+            $('#' + ssnAddress + '_zil_staking_balance_fiat_percent_change_past_range').text('');
         }
 
         $('#zil_staking_withdrawal_pending_balance').text('Loading...');
