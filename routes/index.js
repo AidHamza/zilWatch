@@ -1,13 +1,8 @@
 var constants = require('../constants.js');
-var redis = require('redis')
+var redisClient = require('../libraries/redis_client.js');
+
 var express = require('express');
 var router = express.Router();
-
-// localhost, default port
-var redisClient = redis.createClient();
-redisClient.on("error", function (error) {
-  console.error(error);
-});
 
 /* GET home page. */
 router.get('/', function (req, res, next) {

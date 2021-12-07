@@ -1,18 +1,8 @@
-var constants = require('../constants.js');
+var redisClient = require('../libraries/redis_client.js');
+var visitor = require('../libraries/universal_analytics_client.js');
 
-var ua = require('universal-analytics');
-var ua_key = 'UA-194858212-1';
-var visitor = ua(ua_key);
-
-var redis = require('redis')
 var express = require('express');
 var router = express.Router();
-
-// localhost, default port
-var redisClient = redis.createClient();
-redisClient.on("error", function (error) {
-    console.error(error);
-});
 
 /* GET api for historical coingecko state a given range (e.g., 24h). */
 router.get('/coingecko', function (req, res, next) {
