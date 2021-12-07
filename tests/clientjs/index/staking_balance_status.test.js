@@ -38,8 +38,8 @@ describe('StakingBalanceStatus', function () {
         }
 
         // bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo()
-        assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(), '');
-        assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text(), '');
+        assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_past_range_ago').text(), '');
+        assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_past_range').text(), '');
 
         // bindViewZilStakingWithdrawalPendingBalanceFiat()
         assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat').text(), 'Loading...');
@@ -69,8 +69,8 @@ describe('StakingBalanceStatus', function () {
         // 'withdrawal',
         // $('#zil_staking_withdrawal_pending_balance').text(),
         // $('#zil_staking_withdrawal_pending_balance_fiat').text(),
-        // $('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(),
-        // $('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text());
+        // $('#zil_staking_withdrawal_pending_balance_fiat_past_range_ago').text(),
+        // $('#zil_staking_withdrawal_pending_balance_fiat_percent_change_past_range').text());
 
         // console.log("'%s': ['%s', '%s', '%s', '%s',],",
         // ssnAddress,
@@ -218,8 +218,8 @@ describe('StakingBalanceStatus', function () {
             }
             assert.strictEqual($('#zil_staking_withdrawal_pending_balance').text(),  expectedDataMap['withdrawal'][0]);
             assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat').text(), expectedDataMap['withdrawal'][1]);
-            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(), expectedDataMap['withdrawal'][2]);
-            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text(), expectedDataMap['withdrawal'][3]);
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_past_range_ago').text(), expectedDataMap['withdrawal'][2]);
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_past_range').text(), expectedDataMap['withdrawal'][3]);
             if ($('#zil_staking_withdrawal_pending_balance').text() === 'Loading...') {
                 assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'none');
                 assert.strictEqual($('#staking_container').css('display'), 'none');
@@ -273,8 +273,8 @@ describe('StakingBalanceStatus', function () {
             assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'none');
             assert.strictEqual($('#zil_staking_withdrawal_pending_balance').text(), 'Loading...');
             assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat').text(), 'Loading...');
-            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(), '');
-            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text(), '');
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_past_range_ago').text(), '');
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_past_range').text(), '');
 
             // Assert zrc staking 
             for (let tickerId in Constants.zrcStakingTokenPropertiesListMap) {
@@ -298,8 +298,8 @@ describe('StakingBalanceStatus', function () {
         // 'withdrawal',
         // $('#zil_staking_withdrawal_pending_balance').text(),
         // $('#zil_staking_withdrawal_pending_balance_fiat').text(),
-        // $('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(),
-        // $('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text());
+        // $('#zil_staking_withdrawal_pending_balance_fiat_past_range_ago').text(),
+        // $('#zil_staking_withdrawal_pending_balance_fiat_percent_change_past_range').text());
 
         // console.log("'%s': ['%s', '%s', '%s', '%s',],",
         // ssnAddress,
@@ -389,8 +389,8 @@ describe('StakingBalanceStatus', function () {
             }
             assert.strictEqual($('#zil_staking_withdrawal_pending_balance').text(),  expectedDataMap['withdrawal'][0]);
             assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat').text(), expectedDataMap['withdrawal'][1]);
-            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(), expectedDataMap['withdrawal'][2]);
-            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text(), expectedDataMap['withdrawal'][3]);
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_past_range_ago').text(), expectedDataMap['withdrawal'][2]);
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_past_range').text(), expectedDataMap['withdrawal'][3]);
             if ($('#zil_staking_withdrawal_pending_balance').text() === 'Loading...') {
                 assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'none');
                 assert.strictEqual($('#staking_container').css('display'), 'none');
@@ -421,8 +421,8 @@ describe('StakingBalanceStatus', function () {
             }
             assert.strictEqual($('#zil_staking_withdrawal_pending_balance').text(),  expectedIdrDataMap['withdrawal'][0]);
             assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat').text(), expectedIdrDataMap['withdrawal'][1]);
-            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(), expectedIdrDataMap['withdrawal'][2]);
-            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text(), expectedIdrDataMap['withdrawal'][3]);
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_past_range_ago').text(), expectedIdrDataMap['withdrawal'][2]);
+            assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_past_range').text(), expectedIdrDataMap['withdrawal'][3]);
             if ($('#zil_staking_withdrawal_pending_balance').text() === 'Loading...') {
                 assert.strictEqual($('#zil_staking_withdrawal_pending_container').css('display'), 'none');
                 assert.strictEqual($('#staking_container').css('display'), 'none');
@@ -628,8 +628,8 @@ describe('StakingBalanceStatus', function () {
         describe('#bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo()', function () {
 
             beforeEach(function () {
-                assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(), '');
-                assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text(), '');
+                assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_past_range_ago').text(), '');
+                assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_past_range').text(), '');
             });
 
             it('bind view happy case', function () {
@@ -637,8 +637,8 @@ describe('StakingBalanceStatus', function () {
                 stakingBalanceStatus.bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo('1234.4', '4.2');
 
                 // Assert
-                assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(), '1234.4');
-                assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text(), '4.2');
+                assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_past_range_ago').text(), '1234.4');
+                assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_past_range').text(), '4.2');
 
             });
 
@@ -647,8 +647,8 @@ describe('StakingBalanceStatus', function () {
                 stakingBalanceStatus.bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo('asdf', 'qwer');
 
                 // Assert
-                assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(), 'asdf');
-                assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text(), 'qwer');
+                assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_past_range_ago').text(), 'asdf');
+                assert.strictEqual($('#zil_staking_withdrawal_pending_balance_fiat_percent_change_past_range').text(), 'qwer');
             });
         });
 

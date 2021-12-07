@@ -358,9 +358,9 @@ class StakingBalanceStatus {
 
     /** Private static method */
     bindViewZilStakingWithdrawalPendingBalanceFiat24hAgo(zilStakingWithdrawalBalanceFiat24hAgo, zilStakingWithdrawalBalanceFiatPercentChange24h) {
-        $('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text(zilStakingWithdrawalBalanceFiat24hAgo);
-        $('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text(zilStakingWithdrawalBalanceFiatPercentChange24h);
-        bindViewPercentChangeColorContainer('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h_container', zilStakingWithdrawalBalanceFiatPercentChange24h);
+        $('#zil_staking_withdrawal_pending_balance_fiat_past_range_ago').text(zilStakingWithdrawalBalanceFiat24hAgo);
+        $('#zil_staking_withdrawal_pending_balance_fiat_percent_change_past_range').text(zilStakingWithdrawalBalanceFiatPercentChange24h);
+        bindViewPercentChangeColorContainer('#zil_staking_withdrawal_pending_balance_fiat_percent_change_past_range_container', zilStakingWithdrawalBalanceFiatPercentChange24h);
     }
 
     /** Private static method */
@@ -381,8 +381,8 @@ class StakingBalanceStatus {
 
         $('#zil_staking_withdrawal_pending_balance').text('Loading...');
         $('#zil_staking_withdrawal_pending_balance_fiat').text('Loading...');
-        $('#zil_staking_withdrawal_pending_balance_fiat_24h_ago').text('');
-        $('#zil_staking_withdrawal_pending_balance_fiat_percent_change_24h').text('');
+        $('#zil_staking_withdrawal_pending_balance_fiat_past_range_ago').text('');
+        $('#zil_staking_withdrawal_pending_balance_fiat_percent_change_past_range').text('');
     }
 }
 

@@ -621,8 +621,8 @@ class ZilswapDexStatus {
 
     /** Private static method. public. */
     bindViewZrcTokenPriceInZil24hAgo(publicZrcTokenPriceInZilPercentChange24h, ticker) {
-        $('.' + ticker + '_price_zil_percent_change_24h').text(publicZrcTokenPriceInZilPercentChange24h);
-        bindViewPercentChangeColorContainer('.' + ticker + '_price_zil_percent_change_24h_container', publicZrcTokenPriceInZilPercentChange24h);
+        $('.' + ticker + '_price_zil_percent_change_past_range').text(publicZrcTokenPriceInZilPercentChange24h);
+        bindViewPercentChangeColorContainer('.' + ticker + '_price_zil_percent_change_past_range_container', publicZrcTokenPriceInZilPercentChange24h);
     }
 
     /** Private static method. public. */
@@ -633,8 +633,8 @@ class ZilswapDexStatus {
 
     /** Private static method. public. */
     bindViewZrcTokenPriceInFiat24hAgo(zrcTokenPriceInFiatPercentChange24h, ticker) {
-        $('.' + ticker + '_price_fiat_percent_change_24h').text(zrcTokenPriceInFiatPercentChange24h);
-        bindViewPercentChangeColorContainer('.' + ticker + '_price_fiat_percent_change_24h_container', zrcTokenPriceInFiatPercentChange24h);
+        $('.' + ticker + '_price_fiat_percent_change_past_range').text(zrcTokenPriceInFiatPercentChange24h);
+        bindViewPercentChangeColorContainer('.' + ticker + '_price_fiat_percent_change_past_range_container', zrcTokenPriceInFiatPercentChange24h);
     }
 
     /** Private static method. public. */
@@ -649,9 +649,9 @@ class ZilswapDexStatus {
 
     /** Private static method. Personal. */
     bindViewZrcTokenLpBalance24hAgo(poolSharePercent24hAgo, zilBalance24hAgo, zrcBalance24hAgo, balanceInZil24hAgo, balanceInZilPercentChange24h, ticker) {
-        $('#' + ticker + '_lp_pool_share_percent_24h_ago').text(poolSharePercent24hAgo);
-        $('#' + ticker + '_lp_zil_balance_24h_ago').text(zilBalance24hAgo);
-        $('#' + ticker + '_lp_token_balance_24h_ago').text(zrcBalance24hAgo);
+        $('#' + ticker + '_lp_pool_share_percent_past_range_ago').text(poolSharePercent24hAgo);
+        $('#' + ticker + '_lp_zil_balance_past_range_ago').text(zilBalance24hAgo);
+        $('#' + ticker + '_lp_token_balance_past_range_ago').text(zrcBalance24hAgo);
         $('#' + ticker + '_lp_balance_zil_past_range_ago').text(balanceInZil24hAgo);
         $('#' + ticker + '_lp_balance_zil_percent_change_past_range').text(balanceInZilPercentChange24h);
         bindViewPercentChangeColorContainer('#' + ticker + '_lp_balance_zil_percent_change_past_range_container', balanceInZilPercentChange24h);
@@ -685,12 +685,12 @@ class ZilswapDexStatus {
             $('#' + ticker + '_lp_container').hide();
 
             $('#' + ticker + '_lp_pool_share_percent').text('Loading...');
-            $('#' + ticker + '_lp_pool_share_percent_24h_ago').text('');
+            $('#' + ticker + '_lp_pool_share_percent_past_range_ago').text('');
 
             $('#' + ticker + '_lp_zil_balance').text('');
-            $('#' + ticker + '_lp_zil_balance_24h_ago').text('');
+            $('#' + ticker + '_lp_zil_balance_past_range_ago').text('');
             $('#' + ticker + '_lp_token_balance').text('');
-            $('#' + ticker + '_lp_token_balance_24h_ago').text('');
+            $('#' + ticker + '_lp_token_balance_past_range_ago').text('');
 
             $('#' + ticker + '_lp_balance_zil').text('');
             $('#' + ticker + '_lp_balance_zil_past_range_ago').text('');
