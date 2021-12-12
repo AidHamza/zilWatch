@@ -4,7 +4,7 @@ function getRewardLpHtmlTemplate(isFirstElement, rewardAmountString, rewardTicke
         elementString += "<span class='ml-1 mr-1'>+</span>";
     }
     return elementString + "<span class='mr-1'>" + rewardAmountString + "</span>" +
-        "<img height='16' src='" + rewardTokenLogoUrl + "' alt='" + rewardTicker + " logo' />";
+        "<img height='16' src='" + rewardTokenLogoUrl + "' alt='" + rewardTicker + " logo' loading='lazy'/>";
 }
 
 /** A class to represent Zilswap LP ZWAP reward status.  */

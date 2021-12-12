@@ -540,6 +540,18 @@ block content
                 br
                 span(id='price_chart_all_time_low_timestamp' class='h6')
 
+            div(class='row mb-2')
+
+              div(id='price_chart_zilswap_liquidity_reward_container' class='col-6 col-xl-3 my-2' style='display:none;')
+                p(class='h6')='Liquidity reward'
+                span(id='price_chart_zilswap_liquidity_apr' class='h5 font-weight-bold')='-'
+                span(class='ml-1')='APR'
+                div(id='price_chart_zilswap_liquidity_reward_weekly_list')
+
+              div(id='price_chart_staking_reward_container' class='col-6 col-xl-3 my-2' style='display:none;')
+                p(class='h6')='Staking reward'
+                div(id='price_chart_staking_list')
+
             div(class='row')
               div(id='price_chart_period_tabs_container' class='container')
                 ul(class='nav nav-pills justify-content-end mb-3' role='tablist')
@@ -1393,6 +1405,9 @@ block script
     var zrcTokensTotalSupplyData = !{JSON.stringify(zrcTokensTotalSupply)};
     var zrcTokensCirculatingSupplyData = !{JSON.stringify(zrcTokensCirculatingSupply)};
 
+    var zilswapDexRewardData = !{JSON.stringify(zilswapDexReward)};
+    var zrcStakingRewardData = !{JSON.stringify(zrcStakingReward)};
+
     var zrcTokenPrice24hLowData = !{JSON.stringify(zrcTokenPrice24hLow)};
     var zrcTokenPrice24hHighData = !{JSON.stringify(zrcTokenPrice24hHigh)};
 
@@ -1418,7 +1433,7 @@ block script
 
     const swapStatus = new SwapStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletBalanceStatus)
 
-    const priceChartStatus = new PriceChartStatus(zrcTokenPropertiesListMap, targetTokenSymbol, coinPriceStatus, zilswapDexStatus, zilswapTradeVolumeStatus);
+    const priceChartStatus = new PriceChartStatus(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, targetTokenSymbol, coinPriceStatus, zilswapDexStatus, zilswapTradeVolumeStatus, zilswapDexRewardData, zrcStakingRewardData);
 
     const nftCollectionStatus = new NftCollectionStatus(nftTokenPropertiesListMap);
     const zilswapArkProfilePicStatus = new ZilswapArkProfilePicStatus();

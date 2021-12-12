@@ -1,16 +1,42 @@
+function getLpRewardPriceChartHtmlTemplate(rewardAmountString, rewardTicker, rewardTokenLogoUrl, rewardApr) {
+    let elementString = "";
+    elementString += getRewardLpHtmlTemplate(/* isElementEmpty= */ true, rewardAmountString, rewardTicker, rewardTokenLogoUrl);
+    elementString += "<span class='ml-1 mr-1'>/ week</span>";
+    elementString += "<span class='mr-1 text-secondary'>(" + rewardApr + " %)</span>";
+    elementString += "<br/>";
+    return elementString;
+}
+
+function getStakingRewardPriceChartHtmlTemplate(stakingName, rewardApr, unbondingDays) {
+    let elementString = "<div class='mb-2'>"
+    elementString += "<span class='font-weight-bold'>" + stakingName + "</span>";
+    elementString += "<br/>";
+    elementString += "<span class='h5 font-weight-bold'>" + rewardApr + " %</span>";
+    elementString += "<span class='ml-1 text-secondary'>(APR)</span>";
+    elementString += "<br/>";
+    elementString += "<span>" + unbondingDays + "</span>";
+    elementString += "<span class='ml-1 text-secondary'>(unbonding days)</span>";
+    elementString += "<br/>";
+    elementString += "</div>";
+    return elementString;
+}
+
 /**
  * A utility class to draw full price charts.
  * Requires lightweight charts library script src='https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js'.
  */
 class PriceChartStatus {
 
-    constructor(zrcTokenPropertiesListMap, /* nullable= */ defaultTokenSymbol, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ zilswapTradeVolumeStatus) {
+    constructor(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, /* nullable= */ defaultTokenSymbol, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ zilswapTradeVolumeStatus, /* nullable= */ zilswapDexRewardData,  /* nullable= */ zrcStakingRewardData) {
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
+        this.zrcStakingTokenPropertiesListMap_ = zrcStakingTokenPropertiesListMap;
 
         this.coinPriceStatus_ = coinPriceStatus;
         this.zilswapDexStatus_ = zilswapDexStatus;
         this.zilswapTradeVolumeStatus_ = zilswapTradeVolumeStatus;
+        this.zilswapDexRewardData_ = zilswapDexRewardData;
+        this.zrcStakingRewardData_ = zrcStakingRewardData;
 
         let initTokenSymbol = 'gZIL';
         if (defaultTokenSymbol in this.zrcTokenPropertiesListMap_) {
@@ -182,6 +208,7 @@ class PriceChartStatus {
             return;
         }
         this.bindViewStaticInformation(this.historicalPriceData_.ticker);
+        this.bindViewStaticLiquidityAndStakingApr(this.historicalPriceData_.ticker);
         this.bindViewPriceTextInformation(this.historicalPriceData_.ticker);
         this.bindViewZilswapDexAndFiatInformation(this.historicalPriceData_.ticker, this.historicalPriceData_.range);
     }
@@ -225,6 +252,62 @@ class PriceChartStatus {
         } else {
             $('#price_chart_token_whitepaper_anchor').hide();
         }
+    }
+
+    bindViewStaticLiquidityAndStakingApr(ticker) {
+        if (this.zilswapDexRewardData_) {
+            this.resetStaticLiquidityApr();
+            let totalApr = 0.0;
+            if (ticker in this.zilswapDexRewardData_) {
+                for (let rewardTicker in this.zilswapDexRewardData_[ticker]) {
+                    try {
+                        let rewardAmount = parseFloat(this.zilswapDexRewardData_[ticker][rewardTicker].reward_amount);
+                        let rewardAmountString = convertNumberQaToDecimalString(rewardAmount, /* decimals= */ 0);
+                        let rewardApr = parseFloat(this.zilswapDexRewardData_[ticker][rewardTicker].apr_percent);
+                        let rewardTokenLogoUrl = this.zrcTokenPropertiesListMap_[rewardTicker].logo_url;
+                        $('#price_chart_zilswap_liquidity_reward_weekly_list').append(getLpRewardPriceChartHtmlTemplate(rewardAmountString, rewardTicker, rewardTokenLogoUrl, rewardApr));
+
+                        totalApr += rewardApr;
+                    } catch (err) {
+                        console.log("Failed to load reward " + rewardTicker + " from LP " + ticker);
+                    }
+                }
+                if (totalApr > 0.0) {
+                     $('#price_chart_zilswap_liquidity_apr').text(totalApr + ' %');
+                     $('#price_chart_zilswap_liquidity_reward_container').show();
+                }
+            }
+        }
+
+        if (this.zrcStakingRewardData_) {
+            this.resetStaticStakingApr();
+            for (let tickerId in this.zrcStakingRewardData_) {
+                try {
+                    let rewardTicker =  this.zrcStakingTokenPropertiesListMap_[tickerId].ticker;
+                    if (rewardTicker !== ticker) {
+                        continue;
+                    }
+                    let stakingName = this.zrcStakingTokenPropertiesListMap_[tickerId].name;
+                    let stakingApr = this.zrcStakingRewardData_[tickerId].reward_apr_percent;
+                    let unbondingDays = this.zrcStakingRewardData_[tickerId].unbonding_period_days;
+                    $('#price_chart_staking_list').append(getStakingRewardPriceChartHtmlTemplate(stakingName, stakingApr, unbondingDays));
+                    $('#price_chart_staking_reward_container').show();
+                } catch (err) {
+                    console.log("Failed to load reward " + tickerId + " from staking " + ticker);
+                }
+            }
+        }
+    }
+
+    resetStaticLiquidityApr() {
+        $('#price_chart_zilswap_liquidity_reward_container').hide();
+        $('#price_chart_zilswap_liquidity_apr').text('-');
+        $('#price_chart_zilswap_liquidity_reward_weekly_list').empty();
+    }
+
+    resetStaticStakingApr() {
+        $('#price_chart_staking_reward_container').hide();
+        $('#price_chart_staking_list').empty();
     }
 
     bindViewPriceTextInformation(ticker) {
