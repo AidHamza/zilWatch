@@ -729,6 +729,16 @@ const zrcTokenPropertiesListMap = {
     "website": "https://zilstream.com/",
     "telegram": "https://t.me/zilstream",
   },
+  'SWTH': {
+    "ticker": "SWTH",
+    "name": "Switcheo",
+    "address": "zil1yk93f957fanapf0yszgm84p62xrxxfytj4d2tl",
+    "address_base16": "0x258b14969E4F67D0A5e48091B3D43A518663248b",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1yk93f957fanapf0yszgm84p62xrxxfytj4d2tl/logo",
+    "decimals": 8,
+    "website": "https://carbon.network/",
+    "telegram": "https://t.me/switcheo",
+  },
   'UNIDEX': {
     "ticker": "UNIDEX",
     "name": "United DEX Index",
