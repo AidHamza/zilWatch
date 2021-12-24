@@ -966,6 +966,22 @@ const zrcStakingTokenPropertiesListMap = {
       "pending_withdrawal": "removeStaker",
     },
   },
+  'OKIPAD': {
+    "ticker": "OKI",
+    "name": "Okipad",
+    "address": "zil1eeahtrggk3m77nu40ltmaqdmtcyhdh9ujahgf6",
+    "address_base16": "0xce7b758d08B477EF4F957fd7Be81Bb5E0976DCBC",
+    "website": "https://okimoto.io/okipad/",
+    "state_attributes": {
+      "reward_apr": "rewardPercent",
+      "unbonding_days": "unstakeDays",
+    },
+    "state_attributes_amount": {
+      "staked": "stakers",
+      "unclaimed": "pending_okis",
+      "pending_withdrawal": "removeStaker",
+    }
+  },
   'PORT-BUOY': {
     "ticker": "PORT",
     "name": "Port Buoy",
