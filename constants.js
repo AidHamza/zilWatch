@@ -798,6 +798,17 @@ const zrcTokenPropertiesListMap = {
     "telegram": "https://t.me/Yodaco",
     "whitepaper": "https://www.yodaco.co.za/",
   },
+  'ZAME': {
+    "ticker": "ZAME",
+    "name": "ZAME",
+    "address": "zil133qfql0r3k33j8te8kpaxagdemupfd9wvh88ka",
+    "address_base16": "0x8c40907dE38Da3191d793d83D3750dCef814B4ae",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil133qfql0r3k33j8te8kpaxagdemupfd9wvh88ka/logo",
+    "decimals": 6,
+    "website": "https://thezame.app",
+    "telegram": "https://t.me/zametoken",
+    "whitepaper": "https://thezame.app/wp-content/uploads/2021/12/ZAME-Coin-Whitepaper.pdf",
+  },
   'ZCH': {
     "ticker": "ZCH",
     "name": "Zilchess",
