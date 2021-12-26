@@ -273,7 +273,7 @@ class PriceChartStatus {
                     }
                 }
                 if (totalApr > 0.0) {
-                     $('#price_chart_zilswap_liquidity_apr').text(totalApr + ' %');
+                     $('#price_chart_zilswap_liquidity_apr').text(totalApr.toFixed(1) + ' %');
                      $('#price_chart_zilswap_liquidity_reward_container').show();
                 }
             }
