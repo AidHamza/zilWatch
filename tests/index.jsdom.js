@@ -25,7 +25,8 @@ app.render('index', {
     nftTokenPropertiesListMap: Constants.nftTokenPropertiesListMap,
     ssnListMap: Constants.ssnListMap,
     zrcTokensTotalSupply: Constants.emptyZrcTokensSupply,
-    zrcTokensCirculatingSupply: Constants.emptyZrcTokensSupply
+    zrcTokensCirculatingSupply: Constants.emptyZrcTokensSupply,
+    supportedDexToBaseTokenMap: Constants.supportedDexToBaseTokenMap
 }, function (err, html) {
     // Deep copy and keep html result;
     indexHtml = html.slice();

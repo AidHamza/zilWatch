@@ -3,6 +3,7 @@ var fs = require('fs')
 var $ = indexJsdom.$;
 
 var assert = require('assert');
+var XcadDexStatus = require('../../../clientjs/index/xcad_dex_status.js');
 var ZilswapDexStatus = require('../../../clientjs/index/zilswap_dex_status.js');
 var CoinPriceStatus = require('../../../clientjs/index/coin_price_status.js');
 var WalletBalanceStatus = require('../../../clientjs/index/wallet_balance_status.js');
@@ -10,6 +11,8 @@ var StakingZrcStatus = require('../../../clientjs/index/staking_zrc_status.js');
 var StakingBalanceStatus = require('../../../clientjs/index/staking_balance_status.js');
 var NetWorthStatus = require('../../../clientjs/index/net_worth_status.js');
 var Constants = require('../../../constants.js');
+
+let blankXcadDexStatus = new XcadDexStatus.XcadDexStatus(Constants.zrcTokenPropertiesListMap, /* walletAddressBase16= */ null, /* xcadDexSmartContractStateData= */ null);
 
 describe('NetWorthStatus', function () {
 
@@ -93,7 +96,7 @@ describe('NetWorthStatus', function () {
 
             let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8'));
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, blankXcadDexStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
 
             let zilBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"balance":"7476589135982234","nonce":46}}');
             let redcBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"balances":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":"657942857"}}}');
@@ -133,6 +136,33 @@ describe('NetWorthStatus', function () {
         });
     });
 
+    // console.log($('#wallet_balance_zil').text());
+    // console.log($('#wallet_balance_zil_past_range_ago').text());
+    // console.log($('#wallet_balance_zil_percent_change_past_range').text());
+    // console.log($('#wallet_balance_fiat').text());
+    // console.log($('#wallet_balance_fiat_past_range_ago').text());
+    // console.log($('#wallet_balance_fiat_percent_change_past_range').text());
+
+    // console.log($('#lp_balance_zil').text());
+    // console.log($('#lp_balance_zil_past_range_ago').text());
+    // console.log($('#lp_balance_zil_percent_change_past_range').text());
+    // console.log($('#lp_balance_fiat').text());
+    // console.log($('#lp_balance_fiat_past_range_ago').text());
+    // console.log($('#lp_balance_fiat_percent_change_past_range').text());
+
+    // console.log($('#staking_balance_zil').text());
+    // console.log($('#staking_balance_zil_past_range_ago').text());
+    // console.log($('#staking_balance_zil_percent_change_past_range').text());
+    // console.log($('#staking_balance_fiat').text());
+    // console.log($('#staking_balance_fiat_past_range_ago').text());
+    // console.log($('#staking_balance_fiat_percent_change_past_range').text());
+
+    // console.log($('#net_worth_zil').text());
+    // console.log($('#net_worth_zil_past_range_ago').text());
+    // console.log($('#net_worth_zil_percent_change_past_range').text());
+    // console.log($('#net_worth_fiat').text());
+    // console.log($('#net_worth_fiat_past_range_ago').text());
+    // console.log($('#net_worth_fiat_percent_change_past_range').text());
     describe('#methods(), with 24h ago, includes everything', function () {
         var walletBalanceStatus;
         var coinPriceStatus;
@@ -148,9 +178,14 @@ describe('NetWorthStatus', function () {
             let coinPriceCoingecko24hAgoData = JSON.parse('{"zilliqa":{"usd":0.10519,"idr":1498}}');
             coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
 
-            let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8'));
-            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
-            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, walletAddressBase16, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
+            let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_pools_20220102.txt', 'utf8'));
+            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20220102.txt', 'utf8'));
+
+            let xcadSmartContractState24hAgoData = JSON.parse(fs.readFileSync('./tests/testdata/xcaddex_contractstate_pools_20220102.txt', 'utf8'));
+            let xcadSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/xcaddex_contractstate_20220102.txt', 'utf8'));
+            let xcadDexStatus = new XcadDexStatus.XcadDexStatus(Constants.zrcTokenPropertiesListMap,walletAddressBase16, xcadSmartContractStateData, xcadSmartContractState24hAgoData);
+
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, xcadDexStatus, walletAddressBase16, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
 
             let zilBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"balance":"7476589135982234","nonce":46}}');
             let redcBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"balances":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":"657942857"}}}');
@@ -198,9 +233,9 @@ describe('NetWorthStatus', function () {
             assert.strictEqual($('#lp_balance_zil').text(), 'Loading...');
             assert.strictEqual($('#lp_balance_zil_past_range_ago').text(), '');
             assert.strictEqual($('#lp_balance_zil_percent_change_past_range').text(), '');
-            assert.strictEqual($('#lp_balance_fiat').text(), '1,099.73');
-            assert.strictEqual($('#lp_balance_fiat_past_range_ago').text(), '1,064.16');
-            assert.strictEqual($('#lp_balance_fiat_percent_change_past_range').text(), '3.3');
+            assert.strictEqual($('#lp_balance_fiat').text(), '1,661.08');
+            assert.strictEqual($('#lp_balance_fiat_past_range_ago').text(), '1,405.83');
+            assert.strictEqual($('#lp_balance_fiat_percent_change_past_range').text(), '18.2');
 
             assert.strictEqual($('#staking_balance_zil').text(), 'Loading...');
             assert.strictEqual($('#staking_balance_zil_past_range_ago').text(), '');
@@ -209,12 +244,12 @@ describe('NetWorthStatus', function () {
             assert.strictEqual($('#staking_balance_fiat_past_range_ago').text(), '');
             assert.strictEqual($('#staking_balance_fiat_percent_change_past_range').text(), '');
 
-            assert.strictEqual($('#net_worth_zil').text(), '9,305');
-            assert.strictEqual($('#net_worth_zil_past_range_ago').text(), '10,117');
-            assert.strictEqual($('#net_worth_zil_percent_change_past_range').text(), '-8.0');
-            assert.strictEqual($('#net_worth_fiat').text(), '1,099.73');
-            assert.strictEqual($('#net_worth_fiat_past_range_ago').text(), '1,064.16');
-            assert.strictEqual($('#net_worth_fiat_percent_change_past_range').text(), '3.3');
+            assert.strictEqual($('#net_worth_zil').text(), '14,054');
+            assert.strictEqual($('#net_worth_zil_past_range_ago').text(), '13,365');
+            assert.strictEqual($('#net_worth_zil_percent_change_past_range').text(), '5.2');
+            assert.strictEqual($('#net_worth_fiat').text(), '1,661.08');
+            assert.strictEqual($('#net_worth_fiat_past_range_ago').text(), '1,405.83');
+            assert.strictEqual($('#net_worth_fiat_percent_change_past_range').text(), '18.2');
         });
 
         it('onWalletBalanceStatusChange() updates wallet balance and net worth', function () {
@@ -231,12 +266,12 @@ describe('NetWorthStatus', function () {
             netWorthStatus.onWalletBalanceStatusChange();
 
             // Assert
-            assert.strictEqual($('#wallet_balance_zil').text(), '7,665');
-            assert.strictEqual($('#wallet_balance_zil_past_range_ago').text(), '7,683');
-            assert.strictEqual($('#wallet_balance_zil_percent_change_past_range').text(), '-0.2');
-            assert.strictEqual($('#wallet_balance_fiat').text(), '905.96');
-            assert.strictEqual($('#wallet_balance_fiat_past_range_ago').text(), '808.12');
-            assert.strictEqual($('#wallet_balance_fiat_percent_change_past_range').text(), '12.1');
+            assert.strictEqual($('#wallet_balance_zil').text(), '7,846');
+            assert.strictEqual($('#wallet_balance_zil_past_range_ago').text(), '7,819');
+            assert.strictEqual($('#wallet_balance_zil_percent_change_past_range').text(), '0.3');
+            assert.strictEqual($('#wallet_balance_fiat').text(), '927.30');
+            assert.strictEqual($('#wallet_balance_fiat_past_range_ago').text(), '822.50');
+            assert.strictEqual($('#wallet_balance_fiat_percent_change_past_range').text(), '12.7');
 
             assert.strictEqual($('#lp_balance_zil').text(), 'Loading...');
             assert.strictEqual($('#lp_balance_zil_past_range_ago').text(), '');
@@ -252,12 +287,12 @@ describe('NetWorthStatus', function () {
             assert.strictEqual($('#staking_balance_fiat_past_range_ago').text(), '');
             assert.strictEqual($('#staking_balance_fiat_percent_change_past_range').text(), '');
 
-            assert.strictEqual($('#net_worth_zil').text(), '16,970');
-            assert.strictEqual($('#net_worth_zil_past_range_ago').text(), '17,799');
-            assert.strictEqual($('#net_worth_zil_percent_change_past_range').text(), '-4.7');
-            assert.strictEqual($('#net_worth_fiat').text(), '2,005.70');
-            assert.strictEqual($('#net_worth_fiat_past_range_ago').text(), '1,872.29');
-            assert.strictEqual($('#net_worth_fiat_percent_change_past_range').text(), '7.1');
+            assert.strictEqual($('#net_worth_zil').text(), '21,900');
+            assert.strictEqual($('#net_worth_zil_past_range_ago').text(), '21,184');
+            assert.strictEqual($('#net_worth_zil_percent_change_past_range').text(), '3.4');
+            assert.strictEqual($('#net_worth_fiat').text(), '2,588.38');
+            assert.strictEqual($('#net_worth_fiat_past_range_ago').text(), '2,228.33');
+            assert.strictEqual($('#net_worth_fiat_percent_change_past_range').text(), '16.2');
         });
 
         it('onStakingBalanceStatusChange() updates staking balance and net worth', function () {
@@ -283,19 +318,19 @@ describe('NetWorthStatus', function () {
             assert.strictEqual($('#lp_balance_fiat_past_range_ago').text(), '');
             assert.strictEqual($('#lp_balance_fiat_percent_change_past_range').text(), '');
 
-            assert.strictEqual($('#staking_balance_zil').text(), '31,860');
-            assert.strictEqual($('#staking_balance_zil_past_range_ago').text(), '32,022');
-            assert.strictEqual($('#staking_balance_zil_percent_change_past_range').text(), '-0.5');
-            assert.strictEqual($('#staking_balance_fiat').text(), '3,765.53');
-            assert.strictEqual($('#staking_balance_fiat_past_range_ago').text(), '3,368.43');
-            assert.strictEqual($('#staking_balance_fiat_percent_change_past_range').text(), '11.8');
+            assert.strictEqual($('#staking_balance_zil').text(), '33,326');
+            assert.strictEqual($('#staking_balance_zil_past_range_ago').text(), '33,114');
+            assert.strictEqual($('#staking_balance_zil_percent_change_past_range').text(), '0.6');
+            assert.strictEqual($('#staking_balance_fiat').text(), '3,938.75');
+            assert.strictEqual($('#staking_balance_fiat_past_range_ago').text(), '3,483.31');
+            assert.strictEqual($('#staking_balance_fiat_percent_change_past_range').text(), '13.1');
 
-            assert.strictEqual($('#net_worth_zil').text(), '41,165');
-            assert.strictEqual($('#net_worth_zil_past_range_ago').text(), '42,139');
-            assert.strictEqual($('#net_worth_zil_percent_change_past_range').text(), '-2.3');
-            assert.strictEqual($('#net_worth_fiat').text(), '4,865.26');
-            assert.strictEqual($('#net_worth_fiat_past_range_ago').text(), '4,432.60');
-            assert.strictEqual($('#net_worth_fiat_percent_change_past_range').text(), '9.8');
+            assert.strictEqual($('#net_worth_zil').text(), '47,380');
+            assert.strictEqual($('#net_worth_zil_past_range_ago').text(), '46,479');
+            assert.strictEqual($('#net_worth_zil_percent_change_past_range').text(), '1.9');
+            assert.strictEqual($('#net_worth_fiat').text(), '5,599.83');
+            assert.strictEqual($('#net_worth_fiat_past_range_ago').text(), '4,889.13');
+            assert.strictEqual($('#net_worth_fiat_percent_change_past_range').text(), '14.5');
         });
 
         it('onZilswapDexStatusChange() updates everything', function () {
@@ -312,12 +347,12 @@ describe('NetWorthStatus', function () {
             assert.strictEqual($('#wallet_balance_fiat_past_range_ago').text(), '');
             assert.strictEqual($('#wallet_balance_fiat_percent_change_past_range').text(), '');
 
-            assert.strictEqual($('#lp_balance_zil').text(), '9,305');
-            assert.strictEqual($('#lp_balance_zil_past_range_ago').text(), '10,117');
-            assert.strictEqual($('#lp_balance_zil_percent_change_past_range').text(), '-8.0');
-            assert.strictEqual($('#lp_balance_fiat').text(), '1,099.73');
-            assert.strictEqual($('#lp_balance_fiat_past_range_ago').text(), '1,064.16');
-            assert.strictEqual($('#lp_balance_fiat_percent_change_past_range').text(), '3.3');
+            assert.strictEqual($('#lp_balance_zil').text(), '14,054');
+            assert.strictEqual($('#lp_balance_zil_past_range_ago').text(), '13,365');
+            assert.strictEqual($('#lp_balance_zil_percent_change_past_range').text(), '5.2');
+            assert.strictEqual($('#lp_balance_fiat').text(), '1,661.08');
+            assert.strictEqual($('#lp_balance_fiat_past_range_ago').text(), '1,405.83');
+            assert.strictEqual($('#lp_balance_fiat_percent_change_past_range').text(), '18.2');
 
             assert.strictEqual($('#staking_balance_zil').text(), '');
             assert.strictEqual($('#staking_balance_zil_past_range_ago').text(), '');
@@ -326,12 +361,12 @@ describe('NetWorthStatus', function () {
             assert.strictEqual($('#staking_balance_fiat_past_range_ago').text(), '');
             assert.strictEqual($('#staking_balance_fiat_percent_change_past_range').text(), '');
 
-            assert.strictEqual($('#net_worth_zil').text(), '9,305');
-            assert.strictEqual($('#net_worth_zil_past_range_ago').text(), '10,117');
-            assert.strictEqual($('#net_worth_zil_percent_change_past_range').text(), '-8.0');
-            assert.strictEqual($('#net_worth_fiat').text(), '1,099.73');
-            assert.strictEqual($('#net_worth_fiat_past_range_ago').text(), '1,064.16');
-            assert.strictEqual($('#net_worth_fiat_percent_change_past_range').text(), '3.3');
+            assert.strictEqual($('#net_worth_zil').text(), '14,054');
+            assert.strictEqual($('#net_worth_zil_past_range_ago').text(), '13,365');
+            assert.strictEqual($('#net_worth_zil_percent_change_past_range').text(), '5.2');
+            assert.strictEqual($('#net_worth_fiat').text(), '1,661.08');
+            assert.strictEqual($('#net_worth_fiat_past_range_ago').text(), '1,405.83');
+            assert.strictEqual($('#net_worth_fiat_percent_change_past_range').text(), '18.2');
         });
 
         it('all invoked, updates everything', function () {
@@ -357,33 +392,33 @@ describe('NetWorthStatus', function () {
             netWorthStatus.onWalletBalanceStatusChange();
 
             // Assert
-            assert.strictEqual($('#wallet_balance_zil').text(), '7,665');
-            assert.strictEqual($('#wallet_balance_zil_past_range_ago').text(), '7,683');
-            assert.strictEqual($('#wallet_balance_zil_percent_change_past_range').text(), '-0.2');
-            assert.strictEqual($('#wallet_balance_fiat').text(), '905.96');
-            assert.strictEqual($('#wallet_balance_fiat_past_range_ago').text(), '808.12');
-            assert.strictEqual($('#wallet_balance_fiat_percent_change_past_range').text(), '12.1');
+            assert.strictEqual($('#wallet_balance_zil').text(), '7,846');
+            assert.strictEqual($('#wallet_balance_zil_past_range_ago').text(), '7,819');
+            assert.strictEqual($('#wallet_balance_zil_percent_change_past_range').text(), '0.3');
+            assert.strictEqual($('#wallet_balance_fiat').text(), '927.30');
+            assert.strictEqual($('#wallet_balance_fiat_past_range_ago').text(), '822.50');
+            assert.strictEqual($('#wallet_balance_fiat_percent_change_past_range').text(), '12.7');
 
-            assert.strictEqual($('#lp_balance_zil').text(), '9,305');
-            assert.strictEqual($('#lp_balance_zil_past_range_ago').text(), '10,117');
-            assert.strictEqual($('#lp_balance_zil_percent_change_past_range').text(), '-8.0');
-            assert.strictEqual($('#lp_balance_fiat').text(), '1,099.73');
-            assert.strictEqual($('#lp_balance_fiat_past_range_ago').text(), '1,064.16');
-            assert.strictEqual($('#lp_balance_fiat_percent_change_past_range').text(), '3.3');
+            assert.strictEqual($('#lp_balance_zil').text(), '14,054');
+            assert.strictEqual($('#lp_balance_zil_past_range_ago').text(), '13,365');
+            assert.strictEqual($('#lp_balance_zil_percent_change_past_range').text(), '5.2');
+            assert.strictEqual($('#lp_balance_fiat').text(), '1,661.08');
+            assert.strictEqual($('#lp_balance_fiat_past_range_ago').text(), '1,405.83');
+            assert.strictEqual($('#lp_balance_fiat_percent_change_past_range').text(), '18.2');
 
-            assert.strictEqual($('#staking_balance_zil').text(), '31,860');
-            assert.strictEqual($('#staking_balance_zil_past_range_ago').text(), '32,022');
-            assert.strictEqual($('#staking_balance_zil_percent_change_past_range').text(), '-0.5');
-            assert.strictEqual($('#staking_balance_fiat').text(), '3,765.53');
-            assert.strictEqual($('#staking_balance_fiat_past_range_ago').text(), '3,368.43');
-            assert.strictEqual($('#staking_balance_fiat_percent_change_past_range').text(), '11.8');
+            assert.strictEqual($('#staking_balance_zil').text(), '33,326');
+            assert.strictEqual($('#staking_balance_zil_past_range_ago').text(), '33,114');
+            assert.strictEqual($('#staking_balance_zil_percent_change_past_range').text(), '0.6');
+            assert.strictEqual($('#staking_balance_fiat').text(), '3,938.75');
+            assert.strictEqual($('#staking_balance_fiat_past_range_ago').text(), '3,483.31');
+            assert.strictEqual($('#staking_balance_fiat_percent_change_past_range').text(), '13.1');
 
-            assert.strictEqual($('#net_worth_zil').text(), '48,830');
-            assert.strictEqual($('#net_worth_zil_past_range_ago').text(), '49,821');
-            assert.strictEqual($('#net_worth_zil_percent_change_past_range').text(), '-2.0');
-            assert.strictEqual($('#net_worth_fiat').text(), '5,771.22');
-            assert.strictEqual($('#net_worth_fiat_past_range_ago').text(), '5,240.72');
-            assert.strictEqual($('#net_worth_fiat_percent_change_past_range').text(), '10.1');
+            assert.strictEqual($('#net_worth_zil').text(), '55,226');
+            assert.strictEqual($('#net_worth_zil_past_range_ago').text(), '54,298');
+            assert.strictEqual($('#net_worth_zil_percent_change_past_range').text(), '1.7');
+            assert.strictEqual($('#net_worth_fiat').text(), '6,527.13');
+            assert.strictEqual($('#net_worth_fiat_past_range_ago').text(), '5,711.63');
+            assert.strictEqual($('#net_worth_fiat_percent_change_past_range').text(), '14.3');
         });
 
         it('all invoked, updates everything, change currency', function () {
@@ -412,33 +447,33 @@ describe('NetWorthStatus', function () {
             netWorthStatus.onCoinPriceStatusChange();
 
             // Assert
-            assert.strictEqual($('#wallet_balance_zil').text(), '7,665');
-            assert.strictEqual($('#wallet_balance_zil_past_range_ago').text(), '7,683');
-            assert.strictEqual($('#wallet_balance_zil_percent_change_past_range').text(), '-0.2');
-            assert.strictEqual($('#wallet_balance_fiat').text(), '12,356,501');
-            assert.strictEqual($('#wallet_balance_fiat_past_range_ago').text(), '11,508,420');
-            assert.strictEqual($('#wallet_balance_fiat_percent_change_past_range').text(), '7.4');
+            assert.strictEqual($('#wallet_balance_zil').text(), '7,846');
+            assert.strictEqual($('#wallet_balance_zil_past_range_ago').text(), '7,819');
+            assert.strictEqual($('#wallet_balance_zil_percent_change_past_range').text(), '0.3');
+            assert.strictEqual($('#wallet_balance_fiat').text(), '12,647,495');
+            assert.strictEqual($('#wallet_balance_fiat_past_range_ago').text(), '11,713,120');
+            assert.strictEqual($('#wallet_balance_fiat_percent_change_past_range').text(), '8.0');
 
-            assert.strictEqual($('#lp_balance_zil').text(), '9,305');
-            assert.strictEqual($('#lp_balance_zil_past_range_ago').text(), '10,117');
-            assert.strictEqual($('#lp_balance_zil_percent_change_past_range').text(), '-8.0');
-            assert.strictEqual($('#lp_balance_fiat').text(), '14,999,288');
-            assert.strictEqual($('#lp_balance_fiat_past_range_ago').text(), '15,154,651');
-            assert.strictEqual($('#lp_balance_fiat_percent_change_past_range').text(), '-1.0');
+            assert.strictEqual($('#lp_balance_zil').text(), '14,054');
+            assert.strictEqual($('#lp_balance_zil_past_range_ago').text(), '13,365');
+            assert.strictEqual($('#lp_balance_zil_percent_change_past_range').text(), '5.2');
+            assert.strictEqual($('#lp_balance_fiat').text(), '22,655,568');
+            assert.strictEqual($('#lp_balance_fiat_past_range_ago').text(), '20,020,234');
+            assert.strictEqual($('#lp_balance_fiat_percent_change_past_range').text(), '13.2');
 
-            assert.strictEqual($('#staking_balance_zil').text(), '31,860');
-            assert.strictEqual($('#staking_balance_zil_past_range_ago').text(), '32,022');
-            assert.strictEqual($('#staking_balance_zil_percent_change_past_range').text(), '-0.5');
-            assert.strictEqual($('#staking_balance_fiat').text(), '51,358,219');
-            assert.strictEqual($('#staking_balance_fiat_past_range_ago').text(), '47,969,512');
-            assert.strictEqual($('#staking_balance_fiat_percent_change_past_range').text(), '7.1');
+            assert.strictEqual($('#staking_balance_zil').text(), '33,326');
+            assert.strictEqual($('#staking_balance_zil_past_range_ago').text(), '33,114');
+            assert.strictEqual($('#staking_balance_zil_percent_change_past_range').text(), '0.6');
+            assert.strictEqual($('#staking_balance_fiat').text(), '53,720,790');
+            assert.strictEqual($('#staking_balance_fiat_past_range_ago').text(), '49,605,425');
+            assert.strictEqual($('#staking_balance_fiat_percent_change_past_range').text(), '8.3');
 
-            assert.strictEqual($('#net_worth_zil').text(), '48,830');
-            assert.strictEqual($('#net_worth_zil_past_range_ago').text(), '49,821');
-            assert.strictEqual($('#net_worth_zil_percent_change_past_range').text(), '-2.0');
-            assert.strictEqual($('#net_worth_fiat').text(), '78,714,008');
-            assert.strictEqual($('#net_worth_fiat_past_range_ago').text(), '74,632,584');
-            assert.strictEqual($('#net_worth_fiat_percent_change_past_range').text(), '5.5');
+            assert.strictEqual($('#net_worth_zil').text(), '55,226');
+            assert.strictEqual($('#net_worth_zil_past_range_ago').text(), '54,298');
+            assert.strictEqual($('#net_worth_zil_percent_change_past_range').text(), '1.7');
+            assert.strictEqual($('#net_worth_fiat').text(), '89,023,854');
+            assert.strictEqual($('#net_worth_fiat_past_range_ago').text(), '81,338,780');
+            assert.strictEqual($('#net_worth_fiat_percent_change_past_range').text(), '9.4');
         });
 
         it('all invoked, resetView(), views reset', function () {

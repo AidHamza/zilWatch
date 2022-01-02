@@ -27,13 +27,22 @@ function getStakingRewardPriceChartHtmlTemplate(stakingName, rewardApr, unbondin
  */
 class PriceChartStatus {
 
-    constructor(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, /* nullable= */ defaultTokenSymbol, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ zilswapTradeVolumeStatus, /* nullable= */ zilswapDexRewardData,  /* nullable= */ zrcStakingRewardData) {
+    constructor(zrcTokenPropertiesListMap,
+        zrcStakingTokenPropertiesListMap,
+        /* nullable= */ defaultTokenSymbol,
+        /* nullable= */ coinPriceStatus,
+        /* nullable= */ zilswapDexStatus,
+        /* nullable= */ xcadDexStatus,
+        /* nullable= */ zilswapTradeVolumeStatus,
+        /* nullable= */ zilswapDexRewardData, 
+        /* nullable= */ zrcStakingRewardData) {
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
         this.zrcStakingTokenPropertiesListMap_ = zrcStakingTokenPropertiesListMap;
 
         this.coinPriceStatus_ = coinPriceStatus;
         this.zilswapDexStatus_ = zilswapDexStatus;
+        this.xcadDexStatus_ = xcadDexStatus;
         this.zilswapTradeVolumeStatus_ = zilswapTradeVolumeStatus;
         this.zilswapDexRewardData_ = zilswapDexRewardData;
         this.zrcStakingRewardData_ = zrcStakingRewardData;
@@ -311,11 +320,23 @@ class PriceChartStatus {
     }
 
     bindViewPriceTextInformation(ticker) {
+        this.resetPriceTextInformation();
         let currPriceInZil = null;
         if (this.zilswapDexStatus_) {
-            currPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil(ticker);
+            currPriceInZil = this.zilswapDexStatus_.getZrcPriceInZilWithFallback(ticker);
             let userFriendlyZrcTokenPriceInZil = convertNumberQaToDecimalString(currPriceInZil, /* decimals= */ 0);
             $('#price_chart_current_token_price_zil').text(userFriendlyZrcTokenPriceInZil);
+        }
+
+        if (this.xcadDexStatus_ && this.zilswapDexStatus_) {
+            let currPriceInXcad = this.xcadDexStatus_.getZrcPriceInXcad(ticker);
+            let xcadPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil('XCAD');
+            if (currPriceInXcad) {
+                let currPriceInZilViaXcad = currPriceInXcad * xcadPriceInZil;
+                let userFriendlyZrcTokenPriceInZil = convertNumberQaToDecimalString(currPriceInZilViaXcad, /* decimals= */ 0);
+                $('#price_chart_xcaddex_current_token_price_zil').text(userFriendlyZrcTokenPriceInZil);
+                $('#price_chart_xcaddex_current_token_price_zil_container').show();
+            }
         }
 
         if (this.coinPriceStatus_) {
@@ -412,23 +433,42 @@ class PriceChartStatus {
         $('#price_chart_low_high_progress').width(currentPricePercentString + '%');
     }
 
+    resetPriceTextInformation() {
+        $('#price_chart_xcaddex_current_token_price_zil').text('-');
+        $('#price_chart_xcaddex_current_token_price_zil_container').hide();
+        $('#price_chart_current_token_price_zil').text('-')
+        $('#price_chart_current_token_price_fiat').text('-');
+        $('#price_chart_all_time_high').text('-');
+        $('#price_chart_all_time_high_timestamp').text('-');
+        $('#price_chart_all_time_low').text('-');
+        $('#price_chart_all_time_low_timestamp').text('-');
+        $('#price_chart_current_token_price_zil').text('-');
+        $('#price_chart_current_percent_change').text('-');
+        $('#price_chart_range_low').text('-');
+        $('#price_chart_range_high').text('-');
+        $('#price_chart_low_high_progress').attr('aria-valuenow', "0");
+        $('#price_chart_low_high_progress').width('0%');
+    }
+
     bindViewZilswapDexAndFiatInformation(ticker, range) {
+        this.resetZilswapDexAndFiatInformation();
+        $('.price-chart-ticker').text(ticker);
+        $('.price_chart_range').text(range);
+
         if (!this.zilswapDexStatus_) {
             return;
         }
         if (!this.coinPriceStatus_) {
             return;
         }
-        let zrcPairPublicStatus = this.zilswapDexStatus_.getZilswapPairPublicStatus(ticker);
-        if (!zrcPairPublicStatus) {
+        let zrcPriceInZil = this.zilswapDexStatus_.getZrcPriceInZilWithFallback(ticker);
+        if (!zrcPriceInZil) {
             return;
         }
         let zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
         if (!zilPriceInFiatFloat) {
             return;
         }
-        $('.price-chart-ticker').text(ticker);
-        $('.price_chart_range').text(range);
 
         // ---- Circulating supply and market cap ----
         let zrcCirculatingSupply = this.zilswapDexStatus_.getCirculatingSupply(ticker);
@@ -438,19 +478,41 @@ class PriceChartStatus {
             let zrcCirculatingSupplyString = convertNumberQaToDecimalString(zrcCirculatingSupply, /* decimals= */ 0);
             $('#price_chart_circulating_supply').text(zrcCirculatingSupplyString);
 
-            zrcCirculatingSupplyInFiat = 1.0 * zrcCirculatingSupply * zrcPairPublicStatus.zrcTokenPriceInZil * zilPriceInFiatFloat;
+            zrcCirculatingSupplyInFiat = 1.0 * zrcCirculatingSupply * zrcPriceInZil * zilPriceInFiatFloat;
             let zrcCirculatingSupplyInFiatString = commafyNumberToString(zrcCirculatingSupplyInFiat, /* decimals= */ 0);
             $('#price_chart_market_cap').text(zrcCirculatingSupplyInFiatString);
         }
 
         // ---- Liquidity ----
-        // ZRC token price in ZIL
-        let zrcPool = convertNumberQaToDecimalString(zrcPairPublicStatus.totalPoolZrcTokenAmount, /* decimals= */ 0);
-        let zilPool = convertNumberQaToDecimalString(zrcPairPublicStatus.totalPoolZilAmount, /* decimals= */ 0);
-        $("#price_chart_liquidity_zrc").text(zrcPool);
-        $("#price_chart_liquidity_zil").text(zilPool);
+        let totalLiquidityInZil = 0;
 
-        let totalLiquidityFiat = 2.0 * zrcPairPublicStatus.totalPoolZilAmount * zilPriceInFiatFloat;
+        let zilswapPairPublicStatus = this.zilswapDexStatus_.getZilswapPairPublicStatus(ticker);
+        if (zilswapPairPublicStatus) {
+            // ZRC token price in ZIL
+            totalLiquidityInZil += 2.0 * zilswapPairPublicStatus.totalPoolZilAmount;
+
+            let zrcPool = convertNumberQaToDecimalString(zilswapPairPublicStatus.totalPoolZrcTokenAmount, /* decimals= */ 0);
+            let zilPool = convertNumberQaToDecimalString(zilswapPairPublicStatus.totalPoolZilAmount, /* decimals= */ 0);
+            $("#price_chart_zilswap_liquidity_zrc").text(zrcPool);
+            $("#price_chart_zilswap_liquidity_zil").text(zilPool);
+            $("#price_chart_zilswap_liquidity_container").show();
+        }
+        let xcadPairPublicStatus = this.xcadDexStatus_.getXcadPairPublicStatus(ticker);
+        if (xcadPairPublicStatus) {
+            let xcadPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil('XCAD');
+            if (xcadPriceInZil) {
+                totalLiquidityInZil += 2.0 * xcadPriceInZil * xcadPairPublicStatus.totalPoolXcadAmount;
+            }
+
+            // ZRC token price in ZIL
+            let zrcPool = convertNumberQaToDecimalString(xcadPairPublicStatus.totalPoolZrcTokenAmount, /* decimals= */ 0);
+            let xcadPool = convertNumberQaToDecimalString(xcadPairPublicStatus.totalPoolXcadAmount, /* decimals= */ 0);
+            $("#price_chart_xcaddex_liquidity_zrc").text(zrcPool);
+            $("#price_chart_xcaddex_liquidity_xcad").text(xcadPool);
+            $("#price_chart_xcaddex_liquidity_container").show();
+        }
+
+        let totalLiquidityFiat = totalLiquidityInZil * zilPriceInFiatFloat;
         let totalLiquidityFiatString = commafyNumberToString(totalLiquidityFiat, /* decimals= */ 0);
         $("#price_chart_liquidity_fiat").text(totalLiquidityFiatString);
 
@@ -482,6 +544,19 @@ class PriceChartStatus {
             }
             $('#price_chart_trade_volume_market_cap_ratio').text(volumeMarketCapRatioString);
         }
+    }
+
+    resetZilswapDexAndFiatInformation() {
+        $("#price_chart_zilswap_liquidity_container").hide();
+        $("#price_chart_xcaddex_liquidity_container").hide();
+        $('#price_chart_circulating_supply').text('-')
+        $('#price_chart_market_cap').text('-');
+        $('#price_chart_zilswap_liquidity_zrc').text('-');
+        $('#price_chart_zilswap_liquidity_zil').text('-');
+        $('#price_chart_liquidity_fiat').text('-');
+        $('#price_chart_liquidity_market_cap_ratio').text('-');
+        $('#price_chart_trade_volume_fiat').text('-');
+        $('#price_chart_trade_volume_market_cap_ratio').text('-');
     }
 
     bindViewPriceChart(isForceRedraw) {

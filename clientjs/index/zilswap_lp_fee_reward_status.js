@@ -81,12 +81,12 @@ class ZilswapLpFeeRewardStatus {
     }
 
     bindViewLpFeeReward(currLpFeeRewardString, ticker) {
-        $('#' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(currLpFeeRewardString);
+        $('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(currLpFeeRewardString);
     }
 
     resetView() {
         for (let ticker in this.zrcTokenPropertiesListMap_) {
-            $('#' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text('Loading...');
+            $('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text('Loading...');
         }
     }
 }

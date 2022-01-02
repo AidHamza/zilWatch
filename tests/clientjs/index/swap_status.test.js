@@ -4,12 +4,15 @@ var $ = indexJsdom.$;
 
 var assert = require('assert');
 var UtilsConstants = require('../../../clientjs/utils_constants.js');
+var XcadDexStatus = require('../../../clientjs/index/xcad_dex_status.js');
 var ZilswapDexStatus = require('../../../clientjs/index//zilswap_dex_status.js');
 var CoinPriceStatus = require('../../../clientjs/index//coin_price_status.js');
 var WalletBalanceStatus = require('../../../clientjs/index//wallet_balance_status.js');
 var SwapStatus = require('../../../clientjs/index//swap_status.js');
 var SwapTxnWrapper = require('../../../clientjs/index//swap_txn_wrapper.js');
 var Constants = require('../../../constants.js');
+
+let blankXcadDexStatus = new XcadDexStatus.XcadDexStatus(Constants.zrcTokenPropertiesListMap, /* walletAddressBase16= */ null, /* xcadDexSmartContractStateData= */ null);
 
 function assertWalletIsNotConnectedAndSwapButtonDisabled() {
     // Assert message wallet is not connected and swap button disabled
@@ -100,7 +103,7 @@ describe('SwapStatus', function () {
 
         it('create plain object', function () {
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ null, /* coinPriceCoingecko24hAgoData= */ null);
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, blankXcadDexStatus, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
             let walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBase16= */ null, /* zilBalanceData= */ null, /* zrcBalanceDataMap= */ null);
             let swapStatus = new SwapStatus.SwapStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletBalanceStatus);
 
@@ -146,7 +149,7 @@ describe('SwapStatus', function () {
 
         beforeEach(function () {
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ null, /* coinPriceCoingecko24hAgoData= */ null);
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, blankXcadDexStatus, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
             let walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletAddressBase16, /* zilBalanceData= */ null, /* zrcBalanceDataMap= */ null);
             swapStatus = new SwapStatus.SwapStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletBalanceStatus);
 
@@ -298,7 +301,7 @@ describe('SwapStatus', function () {
 
         beforeEach(function () {
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ null, /* coinPriceCoingecko24hAgoData= */ null);
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, blankXcadDexStatus, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
             let walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletAddressBase16, /* zilBalanceData= */ null, /* zrcBalanceDataMap= */ null);
             swapStatus = new SwapStatus.SwapStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletBalanceStatus);
 
@@ -365,7 +368,7 @@ describe('SwapStatus', function () {
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
 
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, /* coinPriceCoingecko24hAgoData= */ null);
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, blankXcadDexStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
             let walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBase16= */ null, /* zilBalanceData= */ null, /* zrcBalanceDataMap= */ null);
             swapStatus = new SwapStatus.SwapStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletBalanceStatus);
 
@@ -827,7 +830,7 @@ describe('SwapStatus', function () {
 
         beforeEach(function () {
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ null, /* coinPriceCoingecko24hAgoData= */ null);
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, blankXcadDexStatus, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
             let walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBase16= */ null, /* zilBalanceData= */ null, /* zrcBalanceDataMap= */ null);
             swapStatus = new SwapStatus.SwapStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletBalanceStatus);
         });
@@ -967,7 +970,7 @@ describe('SwapStatus', function () {
 
         beforeEach(function () {
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ null, /* coinPriceCoingecko24hAgoData= */ null);
-            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, blankXcadDexStatus, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
             let walletBalanceStatus = new WalletBalanceStatus.WalletBalanceStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, /* walletAddressBase16= */ null, /* zilBalanceData= */ null, /* zrcBalanceDataMap= */ null);
             swapStatus = new SwapStatus.SwapStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletBalanceStatus);
 
@@ -1196,7 +1199,7 @@ describe('SwapStatus', function () {
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, /* coinPriceCoingecko24hAgoData= */ null);
 
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
-            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, blankXcadDexStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
 
             let zilBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"balance":"7476589135982234","nonce":46}}');
             let duckBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"balances":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":"4231"}}}');

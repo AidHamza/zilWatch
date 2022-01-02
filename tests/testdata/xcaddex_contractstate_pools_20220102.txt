@@ -1,0 +1,42 @@
+{
+    "result": {
+        "xpools": {
+            "0x153feaddc48871108e286de3304b9597c817b456,0x327082dd216ff625748b13e156b9d1a5d3dd41f2": {
+                "argtypes": [],
+                "arguments": ["0x153feaddc48871108e286de3304b9597c817b456", "0x327082dd216ff625748b13e156b9d1a5d3dd41f2", "931420379231474506320963", "13615379188305595302330"],
+                "constructor": "0x1fb1a4fd7ba94b1617641d6022ba48cafa77eef0.XPool"
+            },
+            "0x153feaddc48871108e286de3304b9597c817b456,0x3a683fdc022b26d755c70e9ed7cfcc446658018b": {
+                "argtypes": [],
+                "arguments": ["0x153feaddc48871108e286de3304b9597c817b456", "0x3a683fdc022b26d755c70e9ed7cfcc446658018b", "164177503590074878395169", "852313472"],
+                "constructor": "0x1fb1a4fd7ba94b1617641d6022ba48cafa77eef0.XPool"
+            },
+            "0x153feaddc48871108e286de3304b9597c817b456,0x818ca2e217e060ad17b7bd0124a483a1f66930a9": {
+                "argtypes": [],
+                "arguments": ["0x153feaddc48871108e286de3304b9597c817b456", "0x818ca2e217e060ad17b7bd0124a483a1f66930a9", "406624287504708944910520", "2986932829041"],
+                "constructor": "0x1fb1a4fd7ba94b1617641d6022ba48cafa77eef0.XPool"
+            },
+            "0x153feaddc48871108e286de3304b9597c817b456,0xbf79e16872fad92c16810ddd2a7b9b6858c7b756": {
+                "argtypes": [],
+                "arguments": ["0x153feaddc48871108e286de3304b9597c817b456", "0xbf79e16872fad92c16810ddd2a7b9b6858c7b756", "101633757031256227558538", "34356019642704"],
+                "constructor": "0x1fb1a4fd7ba94b1617641d6022ba48cafa77eef0.XPool"
+            }
+        },
+        "xtotal_contributions": {
+            "0x153feaddc48871108e286de3304b9597c817b456,0x327082dd216ff625748b13e156b9d1a5d3dd41f2": {
+                "0x153feaddc48871108e286de3304b9597c817b456": "546960004984625097954917"
+            },
+            "0x153feaddc48871108e286de3304b9597c817b456,0x3a683fdc022b26d755c70e9ed7cfcc446658018b": {
+                "0x153feaddc48871108e286de3304b9597c817b456": "150402299198726216065758"
+            },
+            "0x153feaddc48871108e286de3304b9597c817b456,0x818ca2e217e060ad17b7bd0124a483a1f66930a9": {
+                "0x153feaddc48871108e286de3304b9597c817b456": "397510883137240395655009"
+            },
+            "0x153feaddc48871108e286de3304b9597c817b456,0xbf79e16872fad92c16810ddd2a7b9b6858c7b756": {
+                "0x153feaddc48871108e286de3304b9597c817b456": "99937546404732964657593"
+            }
+        },
+        "pools": {},
+        "total_contributions": {}
+    }
+}

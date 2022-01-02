@@ -1,13 +1,22 @@
 /** A class to represent global net worth status.  */
 class UniqueCoinStatus {
 
-    constructor(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, /* nullable= */ barChartDrawer, /* nullable= */ zilswapDexStatus, /* nullable= */ walletBalanceStatus, /* nullable= */ stakingBalanceStatus, /* nullable= */ stakingZrcStatus) {
+    constructor(zrcTokenPropertiesListMap,
+        zrcStakingTokenPropertiesListMap,
+        /* nullable= */ barChartDrawer,
+        /* nullable= */ zilswapDexStatus,
+        /* nullable= */ xcadDexStatus,
+        /* nullable= */ walletBalanceStatus,
+        /* nullable= */ stakingBalanceStatus,
+        /* nullable= */ stakingZrcStatus) {
+
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
         this.zrcStakingTokenPropertiesListMap_ = zrcStakingTokenPropertiesListMap; // Refer to constants.js for definition
 
         // Private variable
         this.barChartDrawer_ = barChartDrawer;
         this.zilswapDexStatus_ = zilswapDexStatus;
+        this.xcadDexStatus_ = xcadDexStatus;
         this.walletBalanceStatus_ = walletBalanceStatus
         this.stakingBalanceStatus_ = stakingBalanceStatus;
         this.stakingZrcStatus_ = stakingZrcStatus;
@@ -60,7 +69,7 @@ class UniqueCoinStatus {
         // Zilswap DEX dependent
         if (this.zilswapDexStatus_) {
             for (let ticker in this.zrcTokenPropertiesListMap_) {
-                let zrcPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil(ticker);
+                let zrcPriceInZil = this.zilswapDexStatus_.getZrcPriceInZilWithFallback(ticker);
                 if (!zrcPriceInZil) {
                     continue;
                 }
@@ -77,6 +86,24 @@ class UniqueCoinStatus {
                     let zrcWalletBalance = this.walletBalanceStatus_.getTokenBalance(ticker);
                     if (zrcWalletBalance) {
                         uniqueCoinsBalanceInZil[ticker] += 1.0 * zrcWalletBalance * zrcPriceInZil;
+                    }
+                }
+            }
+        }
+
+        // Xcad DEX dependent
+        if (this.xcadDexStatus_ && this.zilswapDexStatus_) {
+            let xcadPriceInZil = this.zilswapDexStatus_.getZrcPriceInZilWithFallback('XCAD');
+            if (xcadPriceInZil) {
+                for (let ticker in this.zrcTokenPropertiesListMap_) {
+                    if (!this.zrcTokenPropertiesListMap_[ticker].supported_dex.includes('xcaddex')) {
+                        continue;
+                    }
+                    // LP balance
+                    let lpPersonalStatus = this.xcadDexStatus_.getXcadPairPersonalStatus(ticker);
+                    if (lpPersonalStatus) {
+                        uniqueCoinsBalanceInZil[ticker] += lpPersonalStatus.xcadAmount * xcadPriceInZil;
+                        uniqueCoinsBalanceInZil['XCAD'] += lpPersonalStatus.xcadAmount * xcadPriceInZil;
                     }
                 }
             }

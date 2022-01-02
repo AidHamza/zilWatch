@@ -3,8 +3,9 @@ var fs = require('fs')
 var $ = indexJsdom.$;
 
 var assert = require('assert');
-var ZilswapDexStatus = require('../../../clientjs/index//zilswap_dex_status.js');
-var CoinPriceStatus = require('../../../clientjs/index//coin_price_status.js');
+var XcadDexStatus = require('../../../clientjs/index/xcad_dex_status.js');
+var ZilswapDexStatus = require('../../../clientjs/index/zilswap_dex_status.js');
+var CoinPriceStatus = require('../../../clientjs/index/coin_price_status.js');
 var TokenUtils = require('../../../clientjs/index//token_utils.js');
 var Constants = require('../../../constants.js');
 
@@ -12,7 +13,7 @@ var Constants = require('../../../constants.js');
 
 // Prepare expected list
 // The array represents: [priceInZil, publicPriceInZil, priceInFiat, totalPoolFiat]
-// console.log("'%s': ['%s', '%s', '%s', '%s'],", ticker, $('.' + ticker + '_price_zil:first').text(), $('#public_' + ticker + '_price_zil').text(), $('#public_' + ticker + '_price_fiat').text(),$('#' + ticker + '_lp_total_pool_fiat').text());
+// console.log("'%s': ['%s', '%s', '%s', '%s'],", ticker, $('.' + ticker + '_price_zil:first').text(), $('#public_' + ticker + '_price_zil').text(), $('#public_' + ticker + '_price_fiat').text(),$('#zilswap_' + ticker + '_lp_total_pool_fiat').text());
 let expectedZrcPriceMap = {
     'BOLT': ['0.3044', '0.30', '0.04', '12,531'],
     'CARB': ['15.17', '15.17', '1.79', '2,780,378'],
@@ -140,18 +141,18 @@ for (let ticker in Constants.zrcTokenPropertiesListMap) {
 
 // console.log("'%s': ['%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'],",
 // ticker,
-// $('#' + ticker + '_lp_pool_share_percent_past_range_ago').text(),
-// $('#' + ticker + '_lp_zil_balance_past_range_ago').text(),
-// $('#' + ticker + '_lp_token_balance_past_range_ago').text(),
-// $('#' + ticker + '_lp_balance_zil_past_range_ago').text(),
-// $('#' + ticker + '_lp_balance_zil_percent_change_past_range').text(),
-// $('#' + ticker + '_lp_pool_share_percent').text(),
-// $('#' + ticker + '_lp_zil_balance').text(),
-// $('#' + ticker + '_lp_token_balance').text(),
-// $('#' + ticker + '_lp_balance_zil').text(),
-// $('#' + ticker + '_lp_balance_fiat_past_range_ago').text(),
-// $('#' + ticker + '_lp_balance_fiat_percent_change_past_range').text(),
-// $('#' + ticker + '_lp_balance_fiat').text());
+// $('#zilswap_' + ticker + '_lp_pool_share_percent_past_range_ago').text(),
+// $('#zilswap_' + ticker + '_lp_base_token_balance_past_range_ago').text(),
+// $('#zilswap_' + ticker + '_lp_token_balance_past_range_ago').text(),
+// $('#zilswap_' + ticker + '_lp_balance_zil_past_range_ago').text(),
+// $('#zilswap_' + ticker + '_lp_balance_zil_percent_change_past_range').text(),
+// $('#zilswap_' + ticker + '_lp_pool_share_percent').text(),
+// $('#zilswap_' + ticker + '_lp_base_token_balance').text(),
+// $('#zilswap_' + ticker + '_lp_token_balance').text(),
+// $('#zilswap_' + ticker + '_lp_balance_zil').text(),
+// $('#zilswap_' + ticker + '_lp_balance_fiat_past_range_ago').text(),
+// $('#zilswap_' + ticker + '_lp_balance_fiat_percent_change_past_range').text(),
+// $('#zilswap_' + ticker + '_lp_balance_fiat').text());
 let expectedPersonalBalanceMap = {
     'ZWAP': ['', '', '', '', '', '0.000534', '1,134', '0.4324', '2,267', '', '', '267.98'],
     'ZLP': ['', '', '', '', '', '0.00890', '903.1', '47.12', '1,806', '', '', '213.47'],
@@ -191,6 +192,8 @@ for (let ticker in Constants.zrcTokenPropertiesListMap) {
     }
 }
 
+let blankXcadDexStatus = new XcadDexStatus.XcadDexStatus(Constants.zrcTokenPropertiesListMap, /* walletAddressBase16= */ null, /* xcadDexSmartContractStateData= */ null);
+
 describe('ZilswapDexStatus', function () {
 
     beforeEach(function (done) {
@@ -198,32 +201,32 @@ describe('ZilswapDexStatus', function () {
 
         // bindViewZrcTokenLpBalance24hAgo()
         for (let ticker in Constants.zrcTokenPropertiesListMap) {
-            assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_past_range_ago').text(), '');
-            assert.strictEqual($('#' + ticker + '_lp_zil_balance_past_range_ago').text(), '');
-            assert.strictEqual($('#' + ticker + '_lp_token_balance_past_range_ago').text(), '');
-            assert.strictEqual($('#' + ticker + '_lp_balance_zil_past_range_ago').text(), '');
-            assert.strictEqual($('#' + ticker + '_lp_balance_zil_percent_change_past_range').text(), '');
+            assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent_past_range_ago').text(), '');
+            assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance_past_range_ago').text(), '');
+            assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance_past_range_ago').text(), '');
+            assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_past_range_ago').text(), '');
+            assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_percent_change_past_range').text(), '');
         }
 
         // bindViewZrcTokenLpBalance()
         for (let ticker in Constants.zrcTokenPropertiesListMap) {
-            assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
-            assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
-            assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
-            assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), '');
-            assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
+            assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
+            assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance').text(), '');
+            assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance').text(), '');
+            assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil').text(), '');
+            assert.strictEqual($('#zilswap_' + ticker + '_lp_container').css('display'), 'none');
         }
         assert.strictEqual($('#lp_container').css('display'), 'none');
 
         // bindViewZrcTokenLpBalanceFiat24hAgo()
         for (let ticker in Constants.zrcTokenPropertiesListMap) {
-            assert.strictEqual($('#' + ticker + '_lp_balance_fiat_past_range_ago').text(), '');
-            assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), '');
+            assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_past_range_ago').text(), '');
+            assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), '');
         }
 
         // bindViewZrcTokenLpBalanceFiat()
         for (let ticker in Constants.zrcTokenPropertiesListMap) {
-            assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), 'Loading...');
+            assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat').text(), 'Loading...');
         }
     });
 
@@ -231,7 +234,7 @@ describe('ZilswapDexStatus', function () {
 
         it('create plain object', function () {
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', /* coinPriceCoingeckoData= */ null, /* coinPriceCoingecko24hAgoData= */ null);
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, blankXcadDexStatus, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
 
             assert.strictEqual(zilswapDexStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
             assert.strictEqual(zilswapDexStatus.coinPriceStatus_, coinPriceStatus);
@@ -254,7 +257,7 @@ describe('ZilswapDexStatus', function () {
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
 
             // Act
-            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, blankXcadDexStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
 
             // Assert
             let zilswapSinglePairPublicStatusGzil = new TokenUtils.ZilswapSinglePairPublicStatus(
@@ -267,7 +270,7 @@ describe('ZilswapDexStatus', function () {
             assert.strictEqual(zilswapDexStatus.isWalletAddressSet(), false);
 
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPublicStatus('gZIL'), zilswapSinglePairPublicStatusGzil);
-            assert.strictEqual(zilswapDexStatus.getZrcPriceInZil('gZIL'), 1283.1734541352732);
+            assert.strictEqual(zilswapDexStatus.getZrcPriceInZilWithFallback('gZIL'), 1283.1734541352732);
             assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus('random'), undefined);
 
             assert.strictEqual(zilswapDexStatus.getZilswapPairPersonalStatus('gZIL'), undefined);
@@ -301,7 +304,7 @@ describe('ZilswapDexStatus', function () {
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
 
             // Act
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, blankXcadDexStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
 
             // Assert
             let zilswapSinglePairPublicStatusZwap24hAgo = new TokenUtils.ZilswapSinglePairPublicStatus(
@@ -313,7 +316,7 @@ describe('ZilswapDexStatus', function () {
             assert.strictEqual(zilswapDexStatus.isWalletAddressSet(), false);
 
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('ZWAP'), zilswapSinglePairPublicStatusZwap24hAgo);
-            assert.strictEqual(zilswapDexStatus.getZrcPriceInZil24hAgo('ZWAP'), 3799.198264240309);
+            assert.strictEqual(zilswapDexStatus.getZrcPriceInZil24hAgoWithFallback('ZWAP'), 3799.198264240309);
             assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('random'), undefined);
 
             assert.strictEqual(zilswapDexStatus.getZilswapPairPersonalStatus('ZWAP'), undefined);
@@ -344,7 +347,7 @@ describe('ZilswapDexStatus', function () {
 
             let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8'));
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, blankXcadDexStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
 
             // Act
             coinPriceStatus.setActiveCurrencyCode('idr');
@@ -374,10 +377,10 @@ describe('ZilswapDexStatus', function () {
         // for (let ticker in Constants.zrcTokenPropertiesListMap) {
         //     console.log("'%s': ['%s', '%s', '%s', '%s'],",
         //         ticker,
-        //         $('#' + ticker + '_circulating_supply_zrc').text(),
-        //         $('#' + ticker + '_circulating_supply_fiat').text(),
-        //         $('#' + ticker + '_total_supply_zrc').text(),
-        //         $('#' + ticker + '_total_supply_fiat').text());
+        //         $('#zilswap_' + ticker + '_circulating_supply_zrc').text(),
+        //         $('#zilswap_' + ticker + '_circulating_supply_fiat').text(),
+        //         $('#zilswap_' + ticker + '_total_supply_zrc').text(),
+        //         $('#zilswap_' + ticker + '_total_supply_fiat').text());
         // }
         var expectedCirculatingAndTotalSupplyMap = {
             'gZIL': ['346,029', '52,478,232', '346,029', '52,478,232'],
@@ -419,7 +422,7 @@ describe('ZilswapDexStatus', function () {
             let zrcTokensTotalSupplyData = JSON.parse("{\"gZIL\": \"346029474699163264909\", \"XSGD\": \"31416533610000\", \"ZWAP\": \"150750452810208786\", \"PORT\": \"100000000000\", \"XPORT\": \"1000000000000\", \"ZLP\": \"1000000000000000000000000\", \"REDC\": \"2000000000000000\", \"CARB\": \"1000000000000000\", \"SCO\": \"1000000000000\", \"SRV\": \"100000000\", \"DUCK\": \"42069\", \"ELONS\": \"1000000\", \"ZCH\": \"500000000000\", \"BOLT\": \"3000000000000010000000000\", \"ZYRO\": \"30000000000000000\", \"ZLF\": \"5000000000\", \"GARY\": \"1000000\", \"RECAP\": \"200000000000000000\", \"AXT\": \"311986000000\", \"SHRK\": \"91230460000000\"}");
 
             // Act
-            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null, zrcTokensCirculatingSupplyData, zrcTokensTotalSupplyData);
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, blankXcadDexStatus, /* walletAddressBase16= */ null, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null, zrcTokensCirculatingSupplyData, zrcTokensTotalSupplyData);
 
             // Assert
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
@@ -451,13 +454,13 @@ describe('ZilswapDexStatus', function () {
             let zilswapSinglePairPersonalStatusZlp = new TokenUtils.ZilswapSinglePairPersonalStatus(shareRatio, zilswapSinglePairPublicStatusZlp);
 
             // Act
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, walletAddressBase16, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, blankXcadDexStatus, walletAddressBase16, zilswapDexSmartContractStateData, /* zilswapDexSmartContractState24hAgoData= */ null);
             zilswapDexStatus.bindViewPersonalDataIfDataExist();
 
             // Assert
             // Public
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPublicStatus('ZLP'), zilswapSinglePairPublicStatusZlp);
-            assert.strictEqual(zilswapDexStatus.getZrcPriceInZil('ZLP'), 19.165985440110536);
+            assert.strictEqual(zilswapDexStatus.getZrcPriceInZilWithFallback('ZLP'), 19.165985440110536);
             assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus('random'), undefined);
 
             // Personal
@@ -486,26 +489,26 @@ describe('ZilswapDexStatus', function () {
             // Personal
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
 
-                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_past_range_ago').text(), expectedPersonalBalanceMap[ticker][0]);
-                assert.strictEqual($('#' + ticker + '_lp_zil_balance_past_range_ago').text(), expectedPersonalBalanceMap[ticker][1]);
-                assert.strictEqual($('#' + ticker + '_lp_token_balance_past_range_ago').text(), expectedPersonalBalanceMap[ticker][2]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil_past_range_ago').text(), expectedPersonalBalanceMap[ticker][3]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil_percent_change_past_range').text(), expectedPersonalBalanceMap[ticker][4]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent_past_range_ago').text(), expectedPersonalBalanceMap[ticker][0]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance_past_range_ago').text(), expectedPersonalBalanceMap[ticker][1]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance_past_range_ago').text(), expectedPersonalBalanceMap[ticker][2]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_past_range_ago').text(), expectedPersonalBalanceMap[ticker][3]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_percent_change_past_range').text(), expectedPersonalBalanceMap[ticker][4]);
 
-                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), expectedPersonalBalanceMap[ticker][5]);
-                assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), expectedPersonalBalanceMap[ticker][6]);
-                assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), expectedPersonalBalanceMap[ticker][7]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), expectedPersonalBalanceMap[ticker][8]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent').text(), expectedPersonalBalanceMap[ticker][5]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance').text(), expectedPersonalBalanceMap[ticker][6]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance').text(), expectedPersonalBalanceMap[ticker][7]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil').text(), expectedPersonalBalanceMap[ticker][8]);
 
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_past_range_ago').text(), expectedPersonalBalanceMap[ticker][9]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), expectedPersonalBalanceMap[ticker][10]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), expectedPersonalBalanceMap[ticker][11]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_past_range_ago').text(), expectedPersonalBalanceMap[ticker][9]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), expectedPersonalBalanceMap[ticker][10]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat').text(), expectedPersonalBalanceMap[ticker][11]);
 
                 if (expectedPersonalBalanceMap[ticker][6]) {
-                    assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'block');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_container').css('display'), 'block');
                     assert.strictEqual($('#lp_container').css('display'), 'block');
                 } else {
-                    assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_container').css('display'), 'none');
                 }
             }
         });
@@ -523,7 +526,7 @@ describe('ZilswapDexStatus', function () {
 
             let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8'));
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
-            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, walletAddressBase16, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, blankXcadDexStatus, walletAddressBase16, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
         });
 
         it('set basic: bindViewPersonal() with 24h ago ', function () {
@@ -542,7 +545,7 @@ describe('ZilswapDexStatus', function () {
             // Assert
             // Public
             assert.deepStrictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('ZLP'), zilswapSinglePairPublicStatusZlp24hAgo);
-            assert.strictEqual(zilswapDexStatus.getZrcPriceInZil24hAgo('ZLP'), 32.389165223025884);
+            assert.strictEqual(zilswapDexStatus.getZrcPriceInZil24hAgoWithFallback('ZLP'), 32.389165223025884);
             assert.strictEqual(zilswapDexStatus.getZilswapPairPublicStatus24hAgo('random'), undefined);
 
             // Personal
@@ -573,26 +576,26 @@ describe('ZilswapDexStatus', function () {
 
             // Personal
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][0]);
-                assert.strictEqual($('#' + ticker + '_lp_zil_balance_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][1]);
-                assert.strictEqual($('#' + ticker + '_lp_token_balance_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][2]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][3]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil_percent_change_past_range').text(), expectedPersonalBalanceWith24hAgoMap[ticker][4]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][0]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][1]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][2]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][3]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_percent_change_past_range').text(), expectedPersonalBalanceWith24hAgoMap[ticker][4]);
 
-                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), expectedPersonalBalanceWith24hAgoMap[ticker][5]);
-                assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), expectedPersonalBalanceWith24hAgoMap[ticker][6]);
-                assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), expectedPersonalBalanceWith24hAgoMap[ticker][7]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), expectedPersonalBalanceWith24hAgoMap[ticker][8]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent').text(), expectedPersonalBalanceWith24hAgoMap[ticker][5]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance').text(), expectedPersonalBalanceWith24hAgoMap[ticker][6]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance').text(), expectedPersonalBalanceWith24hAgoMap[ticker][7]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil').text(), expectedPersonalBalanceWith24hAgoMap[ticker][8]);
 
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][9]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), expectedPersonalBalanceWith24hAgoMap[ticker][10]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), expectedPersonalBalanceWith24hAgoMap[ticker][11]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][9]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), expectedPersonalBalanceWith24hAgoMap[ticker][10]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat').text(), expectedPersonalBalanceWith24hAgoMap[ticker][11]);
 
                 if (expectedPersonalBalanceWith24hAgoMap[ticker][6]) {
-                    assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'block');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_container').css('display'), 'block');
                     assert.strictEqual($('#lp_container').css('display'), 'block');
                 } else {
-                    assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_container').css('display'), 'none');
                 }
             }
         });
@@ -624,26 +627,26 @@ describe('ZilswapDexStatus', function () {
 
             // Personal
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_past_range_ago').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][0]);
-                assert.strictEqual($('#' + ticker + '_lp_zil_balance_past_range_ago').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][1]);
-                assert.strictEqual($('#' + ticker + '_lp_token_balance_past_range_ago').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][2]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil_past_range_ago').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][3]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil_percent_change_past_range').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][4]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent_past_range_ago').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][0]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance_past_range_ago').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][1]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance_past_range_ago').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][2]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_past_range_ago').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][3]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_percent_change_past_range').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][4]);
 
-                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][5]);
-                assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][6]);
-                assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][7]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][8]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][5]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][6]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][7]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][8]);
 
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_past_range_ago').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][9]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][10]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][11]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_past_range_ago').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][9]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][10]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat').text(), expectedPersonalBalanceWith24hAgoIdrMap[ticker][11]);
 
                 if (expectedPersonalBalanceWith24hAgoIdrMap[ticker][6]) {
-                    assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'block');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_container').css('display'), 'block');
                     assert.strictEqual($('#lp_container').css('display'), 'block');
                 } else {
-                    assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_container').css('display'), 'none');
                 }
             }
         });
@@ -662,24 +665,24 @@ describe('ZilswapDexStatus', function () {
 
             assert.strictEqual($('#lp_container').css('display'), 'none');
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_container').css('display'), 'none');
 
-                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
-                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_past_range_ago').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent_past_range_ago').text(), '');
 
-                assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_zil_balance_past_range_ago').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance_past_range_ago').text(), '');
 
-                assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_token_balance_past_range_ago').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance_past_range_ago').text(), '');
 
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil_past_range_ago').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil_percent_change_past_range').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_past_range_ago').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_percent_change_past_range').text(), '');
 
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_past_range_ago').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), 'Loading...');
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_past_range_ago').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat').text(), 'Loading...');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), '');
             }
         });
 
@@ -696,24 +699,24 @@ describe('ZilswapDexStatus', function () {
 
             assert.strictEqual($('#lp_container').css('display'), 'none');
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_container').css('display'), 'none');
 
-                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
-                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_past_range_ago').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent_past_range_ago').text(), '');
 
-                assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_zil_balance_past_range_ago').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance_past_range_ago').text(), '');
 
-                assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_token_balance_past_range_ago').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance_past_range_ago').text(), '');
 
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil_past_range_ago').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil_percent_change_past_range').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_past_range_ago').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_percent_change_past_range').text(), '');
 
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_past_range_ago').text(), '');
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), 'Loading...');
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_past_range_ago').text(), '');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat').text(), 'Loading...');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), '');
             }
 
             // Act, compute and bind again.
@@ -722,26 +725,26 @@ describe('ZilswapDexStatus', function () {
 
             // Personal
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][0]);
-                assert.strictEqual($('#' + ticker + '_lp_zil_balance_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][1]);
-                assert.strictEqual($('#' + ticker + '_lp_token_balance_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][2]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][3]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil_percent_change_past_range').text(), expectedPersonalBalanceWith24hAgoMap[ticker][4]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][0]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][1]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][2]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][3]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_percent_change_past_range').text(), expectedPersonalBalanceWith24hAgoMap[ticker][4]);
 
-                assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), expectedPersonalBalanceWith24hAgoMap[ticker][5]);
-                assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), expectedPersonalBalanceWith24hAgoMap[ticker][6]);
-                assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), expectedPersonalBalanceWith24hAgoMap[ticker][7]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), expectedPersonalBalanceWith24hAgoMap[ticker][8]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent').text(), expectedPersonalBalanceWith24hAgoMap[ticker][5]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance').text(), expectedPersonalBalanceWith24hAgoMap[ticker][6]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance').text(), expectedPersonalBalanceWith24hAgoMap[ticker][7]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil').text(), expectedPersonalBalanceWith24hAgoMap[ticker][8]);
 
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][9]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), expectedPersonalBalanceWith24hAgoMap[ticker][10]);
-                assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), expectedPersonalBalanceWith24hAgoMap[ticker][11]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_past_range_ago').text(), expectedPersonalBalanceWith24hAgoMap[ticker][9]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), expectedPersonalBalanceWith24hAgoMap[ticker][10]);
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat').text(), expectedPersonalBalanceWith24hAgoMap[ticker][11]);
 
                 if (expectedPersonalBalanceWith24hAgoMap[ticker][6]) {
-                    assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'block');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_container').css('display'), 'block');
                     assert.strictEqual($('#lp_container').css('display'), 'block');
                 } else {
-                    assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_container').css('display'), 'none');
                 }
             }
         });
@@ -752,46 +755,46 @@ describe('ZilswapDexStatus', function () {
         var zilswapDexStatus;
 
         beforeEach(function () {
-            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* xcadDexStatus= */ null, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
         });
 
         describe('#bindViewZrcTokenLpBalance24hAgo()', function () {
 
             beforeEach(function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                    assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_past_range_ago').text(), '');
-                    assert.strictEqual($('#' + ticker + '_lp_zil_balance_past_range_ago').text(), '');
-                    assert.strictEqual($('#' + ticker + '_lp_token_balance_past_range_ago').text(), '');
-                    assert.strictEqual($('#' + ticker + '_lp_balance_zil_past_range_ago').text(), '');
-                    assert.strictEqual($('#' + ticker + '_lp_balance_zil_percent_change_past_range').text(), '');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent_past_range_ago').text(), '');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance_past_range_ago').text(), '');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance_past_range_ago').text(), '');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_past_range_ago').text(), '');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_percent_change_past_range').text(), '');
                 }
             });
 
             it('bind view happy case', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
-                    zilswapDexStatus.bindViewZrcTokenLpBalance24hAgo( /* poolSharePercent= */ '0.0012', /* zilBalance= */ '1234.4', /* zrcBalance = */ '54.43', /* balanceZil= */ '2468.8', /* percentChange= */ '5.8', ticker);
+                    zilswapDexStatus.bindViewZrcTokenLpBalance24hAgo( /* poolSharePercent= */ '0.0012', /* zilBalance= */ '1234.4', /* zrcBalance = */ '54.43', /* balanceZil= */ '2468.8', /* percentChange= */ '5.8',  'zilswap',ticker);
 
                     // Assert
-                    assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_past_range_ago').text(), '0.0012');
-                    assert.strictEqual($('#' + ticker + '_lp_zil_balance_past_range_ago').text(), '1234.4');
-                    assert.strictEqual($('#' + ticker + '_lp_token_balance_past_range_ago').text(), '54.43');
-                    assert.strictEqual($('#' + ticker + '_lp_balance_zil_past_range_ago').text(), '2468.8');
-                    assert.strictEqual($('#' + ticker + '_lp_balance_zil_percent_change_past_range').text(), '5.8');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent_past_range_ago').text(), '0.0012');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance_past_range_ago').text(), '1234.4');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance_past_range_ago').text(), '54.43');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_past_range_ago').text(), '2468.8');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_percent_change_past_range').text(), '5.8');
                 }
             });
 
             it('bind view random string', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
-                    zilswapDexStatus.bindViewZrcTokenLpBalance24hAgo( /* poolSharePercent= */ 'asdf', /* zilBalance= */ 'hjkl', /* zrcBalance = */ 'qwer', /* balanceZil= */ 'ert', /* percentChange= */ 'abcd', ticker);
+                    zilswapDexStatus.bindViewZrcTokenLpBalance24hAgo( /* poolSharePercent= */ 'asdf', /* zilBalance= */ 'hjkl', /* zrcBalance = */ 'qwer', /* balanceZil= */ 'ert', /* percentChange= */ 'abcd',  'zilswap',ticker);
 
                     // Assert
-                    assert.strictEqual($('#' + ticker + '_lp_pool_share_percent_past_range_ago').text(), 'asdf');
-                    assert.strictEqual($('#' + ticker + '_lp_zil_balance_past_range_ago').text(), 'hjkl');
-                    assert.strictEqual($('#' + ticker + '_lp_token_balance_past_range_ago').text(), 'qwer');
-                    assert.strictEqual($('#' + ticker + '_lp_balance_zil_past_range_ago').text(), 'ert');
-                    assert.strictEqual($('#' + ticker + '_lp_balance_zil_percent_change_past_range').text(), 'abcd');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent_past_range_ago').text(), 'asdf');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance_past_range_ago').text(), 'hjkl');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance_past_range_ago').text(), 'qwer');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_past_range_ago').text(), 'ert');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil_percent_change_past_range').text(), 'abcd');
                 }
             });
         });
@@ -800,11 +803,11 @@ describe('ZilswapDexStatus', function () {
 
             beforeEach(function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                    assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
-                    assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '');
-                    assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '');
-                    assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), '');
-                    assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'none');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent').text(), 'Loading...');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance').text(), '');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance').text(), '');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil').text(), '');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_container').css('display'), 'none');
                 }
                 assert.strictEqual($('#lp_container').css('display'), 'none');
             });
@@ -812,14 +815,14 @@ describe('ZilswapDexStatus', function () {
             it('bind view happy case', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
-                    zilswapDexStatus.bindViewZrcTokenLpBalance( /* poolSharePercent= */ '0.0012', /* zilBalance= */ '1234.4', /* zrcBalance = */ '54.43', /* balanceZil= */ '2468.8', ticker);
+                    zilswapDexStatus.bindViewZrcTokenLpBalance( /* poolSharePercent= */ '0.0012', /* zilBalance= */ '1234.4', /* zrcBalance = */ '54.43', /* balanceZil= */ '2468.8',  'zilswap', ticker);
 
                     // Assert
-                    assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), '0.0012');
-                    assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), '1234.4');
-                    assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), '54.43');
-                    assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), '2468.8');
-                    assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'block');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent').text(), '0.0012');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance').text(), '1234.4');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance').text(), '54.43');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil').text(), '2468.8');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_container').css('display'), 'block');
                     assert.strictEqual($('#lp_container').css('display'), 'block');
                 }
             });
@@ -827,14 +830,14 @@ describe('ZilswapDexStatus', function () {
             it('bind view random string', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
-                    zilswapDexStatus.bindViewZrcTokenLpBalance( /* poolSharePercent= */ 'asdf', /* zilBalance= */ 'hjkl', /* zrcBalance = */ 'qwer', /* balanceZil= */ 'ert', ticker);
+                    zilswapDexStatus.bindViewZrcTokenLpBalance( /* poolSharePercent= */ 'asdf', /* zilBalance= */ 'hjkl', /* zrcBalance = */ 'qwer', /* balanceZil= */ 'ert',  'zilswap', ticker);
 
                     // Assert
-                    assert.strictEqual($('#' + ticker + '_lp_pool_share_percent').text(), 'asdf');
-                    assert.strictEqual($('#' + ticker + '_lp_zil_balance').text(), 'hjkl');
-                    assert.strictEqual($('#' + ticker + '_lp_token_balance').text(), 'qwer');
-                    assert.strictEqual($('#' + ticker + '_lp_balance_zil').text(), 'ert');
-                    assert.strictEqual($('#' + ticker + '_lp_container').css('display'), 'block');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_share_percent').text(), 'asdf');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_base_token_balance').text(), 'hjkl');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_token_balance').text(), 'qwer');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_zil').text(), 'ert');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_container').css('display'), 'block');
                     assert.strictEqual($('#lp_container').css('display'), 'block');
                 }
             });
@@ -844,30 +847,30 @@ describe('ZilswapDexStatus', function () {
 
             beforeEach(function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                    assert.strictEqual($('#' + ticker + '_lp_balance_fiat_past_range_ago').text(), '');
-                    assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), '');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_past_range_ago').text(), '');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), '');
                 }
             });
 
             it('bind view happy case', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
-                    zilswapDexStatus.bindViewZrcTokenLpBalanceFiat24hAgo('1234.4', '2.3', ticker);
+                    zilswapDexStatus.bindViewZrcTokenLpBalanceFiat24hAgo('1234.4', '2.3', 'zilswap', ticker);
 
                     // Assert
-                    assert.strictEqual($('#' + ticker + '_lp_balance_fiat_past_range_ago').text(), '1234.4');
-                    assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), '2.3');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_past_range_ago').text(), '1234.4');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), '2.3');
                 }
             });
 
             it('bind view random string', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
-                    zilswapDexStatus.bindViewZrcTokenLpBalanceFiat24hAgo('asdf', 'fdew', ticker);
+                    zilswapDexStatus.bindViewZrcTokenLpBalanceFiat24hAgo('asdf', 'fdew',  'zilswap', ticker);
 
                     // Assert
-                    assert.strictEqual($('#' + ticker + '_lp_balance_fiat_past_range_ago').text(), 'asdf');
-                    assert.strictEqual($('#' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), 'fdew');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_past_range_ago').text(), 'asdf');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat_percent_change_past_range').text(), 'fdew');
                 }
             });
         });
@@ -876,27 +879,27 @@ describe('ZilswapDexStatus', function () {
 
             beforeEach(function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                    assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), 'Loading...');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat').text(), 'Loading...');
                 }
             });
 
             it('bind view happy case', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
-                    zilswapDexStatus.bindViewZrcTokenLpBalanceFiat('1234.4', ticker);
+                    zilswapDexStatus.bindViewZrcTokenLpBalanceFiat('1234.4', 'zilswap', ticker);
 
                     // Assert
-                    assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), '1234.4');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat').text(), '1234.4');
                 }
             });
 
             it('bind view random string', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
-                    zilswapDexStatus.bindViewZrcTokenLpBalanceFiat('asdf', ticker);
+                    zilswapDexStatus.bindViewZrcTokenLpBalanceFiat('asdf', 'zilswap', ticker);
 
                     // Assert
-                    assert.strictEqual($('#' + ticker + '_lp_balance_fiat').text(), 'asdf');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_balance_fiat').text(), 'asdf');
                 }
             });
         });
@@ -906,7 +909,7 @@ describe('ZilswapDexStatus', function () {
         var zilswapDexStatus;
 
         beforeEach(function () {
-            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* xcadDexStatus= */ null, /* walletAddressBase16= */ null, /* zilswapDexSmartContractStateData= */ null, /* zilswapDexSmartContractState24hAgoData= */ null);
         });
 
         describe('#bindViewZrcTokenPriceInZil24hAgo()', function () {
@@ -986,7 +989,9 @@ describe('ZilswapDexStatus', function () {
 
             beforeEach(function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                    assert.strictEqual($('#public_' + ticker + '_price_fiat_percent_change_past_range').text(), '');
+                    $('.' + ticker + '_price_fiat_percent_change_past_range').each(function () {
+                        assert.strictEqual($(this).text(), '');
+                    });
                 }
             });
 

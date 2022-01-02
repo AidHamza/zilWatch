@@ -3,8 +3,8 @@ var fs = require('fs')
 var $ = indexJsdom.$;
 
 var assert = require('assert');
-var ZilswapDexStatus = require('../../../clientjs/index//zilswap_dex_status.js');
-var ZilswapTradeVolumeStatus = require('../../../clientjs/index//zilswap_trade_volume_status.js');
+var ZilswapDexStatus = require('../../../clientjs/index/zilswap_dex_status.js');
+var ZilswapTradeVolumeStatus = require('../../../clientjs/index/zilswap_trade_volume_status.js');
 var ZilswapLpFeeRewardStatus = require('../../../clientjs/index//zilswap_lp_fee_reward_status.js');
 var Constants = require('../../../constants.js');
 
@@ -51,10 +51,10 @@ describe('ZilswapLpFeeRewardStatus', function () {
 
             let walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
             let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
-            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, walletAddressBase16, zilswapDexSmartContractStateData, /* zilswapDexSmartContractStateData24hAgo= */ null);
+            let zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* xcadDexStatus= */ null, walletAddressBase16, zilswapDexSmartContractStateData, /* zilswapDexSmartContractStateData24hAgo= */ null);
 
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), "Loading...");
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), "Loading...");
             }
             zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus.ZilswapLpFeeRewardStatus(Constants.zrcTokenPropertiesListMap, zilswapDexStatus, zilswapTradeVolumeStatus);
         });
@@ -65,9 +65,9 @@ describe('ZilswapLpFeeRewardStatus', function () {
 
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 if (ticker in expectedEarnedFeeStringMap) {
-                    assert.strictEqual($('#' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), expectedEarnedFeeStringMap[ticker]);
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), expectedEarnedFeeStringMap[ticker]);
                 } else {
-                    assert.strictEqual($('#' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), "0");
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), "0");
                 }
             }
         });
@@ -79,7 +79,7 @@ describe('ZilswapLpFeeRewardStatus', function () {
             // Assert Empty
             assert.deepStrictEqual(zilswapLpFeeRewardStatus.coinToFeeRewardMap_, {});
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                assert.strictEqual($('#' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), 'Loading...');
+                assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), 'Loading...');
             }
         });
 
@@ -94,9 +94,9 @@ describe('ZilswapLpFeeRewardStatus', function () {
             assert.deepStrictEqual(zilswapLpFeeRewardStatus.coinToFeeRewardMap_, expectedEarnedFeeMap);
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 if (ticker in expectedEarnedFeeStringMap) {
-                    assert.strictEqual($('#' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), expectedEarnedFeeStringMap[ticker]);
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), expectedEarnedFeeStringMap[ticker]);
                 } else {
-                    assert.strictEqual($('#' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), "0");
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), "0");
                 }
             }
         });
@@ -112,9 +112,9 @@ describe('ZilswapLpFeeRewardStatus', function () {
             assert.deepStrictEqual(zilswapLpFeeRewardStatus.coinToFeeRewardMap_, expectedEarnedFeeMap);
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 if (ticker in expectedEarnedFeeStringMap) {
-                    assert.strictEqual($('#' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), expectedEarnedFeeStringMap[ticker]);
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), expectedEarnedFeeStringMap[ticker]);
                 } else {
-                    assert.strictEqual($('#' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), "0");
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), "0");
                 }
             }
         });
@@ -131,7 +131,7 @@ describe('ZilswapLpFeeRewardStatus', function () {
 
             beforeEach(function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
-                    assert.strictEqual($('#' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), 'Loading...');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), 'Loading...');
                 }
             });
 
@@ -141,7 +141,7 @@ describe('ZilswapLpFeeRewardStatus', function () {
                     zilswapLpFeeRewardStatus.bindViewLpFeeReward('1234.4', ticker);
 
                     // Assert
-                    assert.strictEqual($('#' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), '1234.4');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), '1234.4');
                 }
             });
 
@@ -151,7 +151,7 @@ describe('ZilswapLpFeeRewardStatus', function () {
                     zilswapLpFeeRewardStatus.bindViewLpFeeReward('asdf', ticker);
 
                     // Assert
-                    assert.strictEqual($('#' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), 'asdf');
+                    assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), 'asdf');
                 }
             });
         });

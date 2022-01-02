@@ -226,7 +226,7 @@ class ZilswapLpZwapRewardStatus {
             if (ticker.toLowerCase() === 'zil') {
                 totalRewardFiat += zilPriceInFiatFloat * totalRewardMap[ticker];
             } else {
-                let zrcTokenPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil(ticker);
+                let zrcTokenPriceInZil = this.zilswapDexStatus_.getZrcPriceInZilWithFallback(ticker);
                 if (!zrcTokenPriceInZil) {
                     continue;
                 }
@@ -298,8 +298,8 @@ class ZilswapLpZwapRewardStatus {
     }
 
     appendViewNextEpochSingleRewardSingleLp(poolTicker, rewardAmountString, rewardTicker, rewardTokenLogoUrl) {
-        let isElementEmpty = $('#' + poolTicker + '_lp_pool_reward').is(':empty');
-        $('#' + poolTicker + '_lp_pool_reward').append(getRewardLpHtmlTemplate(isElementEmpty, rewardAmountString, rewardTicker, rewardTokenLogoUrl));
+        let isElementEmpty = $('#zilswap_' + poolTicker + '_lp_pool_reward').is(':empty');
+        $('#zilswap_' + poolTicker + '_lp_pool_reward').append(getRewardLpHtmlTemplate(isElementEmpty, rewardAmountString, rewardTicker, rewardTokenLogoUrl));
     }
 
     appendViewNextEpochSingleRewardAllLp(rewardAmountString, rewardTicker, rewardTokenLogoUrl) {
@@ -339,8 +339,12 @@ class ZilswapLpZwapRewardStatus {
         $('#total_all_lp_reward_unclaimed').empty();
         $('#total_all_lp_reward_prev_epoch').empty();
 
-        for (let ticker in zrcTokenPropertiesListMap) {
-            $('#' + ticker + '_lp_pool_reward').empty();
+        for (let ticker in this.zrcTokenPropertiesListMap_) {
+            let length = this.zrcTokenPropertiesListMap_[ticker].supported_dex.length;
+            for (let i = 0; i < length; i++) {
+                let dexName = this.zrcTokenPropertiesListMap_[ticker].supported_dex[i];
+                $('#' + dexName + '_' + ticker + '_lp_pool_reward').empty();
+            }
         }
 
         $('#total_all_lp_reward_next_epoch_fiat').text('Loading...');

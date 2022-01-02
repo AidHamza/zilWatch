@@ -6,6 +6,7 @@ const CONST_HTTP_PREFIX = 'http://';
 const CONST_ZILWATCH_ROOT_URL = window.location.host.includes('localhost') ? CONST_HTTP_PREFIX + window.location.host : CONST_HTTPS_PREFIX + window.location.host;
 const CONST_ZILSWAP_ARK_ROOT_URL = CONST_HTTPS_PREFIX + 'zilswap.io/ark/collections'; // e.g., https://zilswap.io/ark/collections/<nft_address>/<nft_id>
 const CONST_STATS_ZILSWAP_ROOT_URL = CONST_HTTPS_PREFIX + 'stats.zilswap.org';
+const CONST_STATS_XCAD_DEX_ROOT_URL = CONST_HTTPS_PREFIX + 'rewards-api.xcadnetwork.com';
 
 const CONST_ZILSWAP_ARK_USER_PROFILE_URL = 'https://zilswap.io/ark/profile?address=<wallet_address_base_16>'
 const CONST_ZILSWAP_ARK_USER_DETAILS = 'https://api-ark.zilswap.org/user/<wallet_address_base_16>/detail';

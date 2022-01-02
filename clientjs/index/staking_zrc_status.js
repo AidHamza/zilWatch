@@ -92,7 +92,7 @@ class StakingZrcStatus {
         if (!zrcStakingBalance) {
             return 0;
         }
-        let zrcPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil(this.zrcStakingTokenPropertiesListMap_[tickerId].ticker);
+        let zrcPriceInZil = this.zilswapDexStatus_.getZrcPriceInZilWithFallback(this.zrcStakingTokenPropertiesListMap_[tickerId].ticker);
         if (!zrcPriceInZil) {
             return 0;
         }
@@ -109,7 +109,7 @@ class StakingZrcStatus {
         if (!zrcStakingBalance) {
             return 0;
         }
-        let zrcPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil24hAgo(this.zrcStakingTokenPropertiesListMap_[tickerId].ticker);
+        let zrcPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil24hAgoWithFallback(this.zrcStakingTokenPropertiesListMap_[tickerId].ticker);
         if (!zrcPriceInZil) {
             return 0;
         }
@@ -219,7 +219,7 @@ class StakingZrcStatus {
         if (!zrcStakingBalance) {
             return;
         }
-        let zrcPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil(currTicker);
+        let zrcPriceInZil = this.zilswapDexStatus_.getZrcPriceInZilWithFallback(currTicker);
         if (!zrcPriceInZil) {
             return;
         }
@@ -236,7 +236,7 @@ class StakingZrcStatus {
         this.bindViewZrcStakingBalanceFiat(tickerId, stakingCategoryId, zrcStakingBalanceFiatString);
 
         // Process ZRC in ZIL 24h ago
-        let zrcPriceInZil24hAgo = this.zilswapDexStatus_.getZrcPriceInZil24hAgo(currTicker);
+        let zrcPriceInZil24hAgo = this.zilswapDexStatus_.getZrcPriceInZil24hAgoWithFallback(currTicker);
         if (!zrcPriceInZil24hAgo) {
             return;
         }

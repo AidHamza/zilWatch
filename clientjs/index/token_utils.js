@@ -160,6 +160,137 @@ function getZilswapSinglePairPersonalStatus(shareRatio, zilswapSingleTokenPublic
     return new ZilswapSinglePairPersonalStatus(shareRatio, zilswapSingleTokenPublicStatus);
 }
 
+/*************************
+ * XCAD DEX helper
+ *************************/
+
+/**
+ * Parse data returned by ZIL API call getSmartContractState() for Xcad DEX and return the price
+ * of ZRC token in XCAD for the ZRC token defined in zrcTokenAddressBase16.
+ * 
+ * If the pool is found and there are no error state, return the price in XCAD in number type, else return null.
+ *
+ * @param {Object} dataObject required The data object returned by the getSmartContractState(ZilswapDexAddress)
+ * @param {string} zrcTokenAddressBase16 required The ZRC token contract address in base16
+ * @param {number} zrcTokenDecimals required The decimals of the ZRC token
+ *
+ * @returns {number} The number representation of price of ZRC token in terms of ZIL
+ */
+ function getXcadSinglePairPublicStatusFromDexState(dataObject, xcadTokenAddressBase16, xcadTokenDecimals, zrcTokenAddressBase16, zrcTokenDecimals) {
+    if (dataObject === null || typeof dataObject !== 'object') {
+        return null;
+    }
+    if (typeof xcadTokenAddressBase16 !== 'string') {
+        return null;
+    }
+    if (typeof xcadTokenDecimals !== 'number' && typeof xcadTokenDecimals !== 'bigint') {
+        return null;
+    }
+    if (typeof zrcTokenAddressBase16 !== 'string') {
+        return null;
+    }
+    if (typeof zrcTokenDecimals !== 'number' && typeof zrcTokenDecimals !== 'bigint') {
+        return null;
+    }
+
+    if (dataObject && dataObject.result && dataObject.result.xpools) {
+        let poolsKey = xcadTokenAddressBase16.toLowerCase() + "," + zrcTokenAddressBase16.toLowerCase();
+        let zrcTokenPools = dataObject.result.xpools[poolsKey];
+        if (zrcTokenPools) {
+            // arguments 0, 1 is the xcad and ZRC token address respectively.
+            let xcadPoolReserveQa = zrcTokenPools.arguments[2];
+            let zrcTokenPoolReserveQa = zrcTokenPools.arguments[3];
+
+            let xcadPoolReserveNumberQa = parseInt(xcadPoolReserveQa);
+            let zrcTokenPoolReserveNumberQa = parseInt(zrcTokenPoolReserveQa);
+            if (xcadPoolReserveNumberQa && zrcTokenPoolReserveNumberQa) {
+                let totalPoolXcadAmount = 1.0 * xcadPoolReserveNumberQa / Math.pow(10, xcadTokenDecimals);
+                let totalPoolZrcTokenAmount = 1.0 * zrcTokenPoolReserveNumberQa / Math.pow(10, zrcTokenDecimals);
+                return new XcadSinglePairPublicStatus(totalPoolXcadAmount, totalPoolZrcTokenAmount);
+            }
+        }
+    }
+    return null;
+}
+
+/**
+ * Parse data returned by ZIL API call getSmartContractState() for Xcad DEX and return the
+ * given wallet's share ratio of liquidity pool.
+ * 
+ * If the pool is found and there are no error state, return the share ratio, else return null.
+ *
+ * @param {Object} dataObject required The data object returned by the getSmartContractState() Zilliqa API call for Xcad DEX
+ * @param {string} zrcTokenAddressBase16 required The ZRC token contract address in base16
+ * @param {number} zrcTokenDecimals required The decimals of the ZRC token
+ * @param {string} walletAddressBase16 required The wallet address to obtain the share from
+ *
+ * @returns {number} a floating point representation of the share ratio
+ */
+ function getXcadSinglePairShareRatio(dataObject, xcadTokenAddressBase16, zrcTokenAddressBase16, walletAddressBase16) {
+    if (dataObject === null || typeof dataObject !== 'object') {
+        return null;
+    }
+    if (typeof xcadTokenAddressBase16 !== 'string') {
+        return null;
+    }
+    if (typeof zrcTokenAddressBase16 !== 'string') {
+        return null;
+    }
+    if (typeof walletAddressBase16 !== 'string') {
+        return null;
+    }
+    xcadTokenAddressBase16 = xcadTokenAddressBase16.toLowerCase();
+    zrcTokenAddressBase16 = zrcTokenAddressBase16.toLowerCase();
+    walletAddressBase16 = walletAddressBase16.toLowerCase();
+
+    if (dataObject && dataObject.result && dataObject.result.xbalances && dataObject.result.xtotal_contributions) {
+        let combinedTokenKeys = xcadTokenAddressBase16 + "," + zrcTokenAddressBase16;
+        let zrcTokenLiquidityMap = dataObject.result.xbalances[combinedTokenKeys];
+        if (!zrcTokenLiquidityMap) {
+            return null;
+        }
+        zrcTokenLiquidityMap = zrcTokenLiquidityMap[xcadTokenAddressBase16];
+        if (!zrcTokenLiquidityMap) {
+            return null;
+        }
+
+        let walletLiquidity = zrcTokenLiquidityMap[walletAddressBase16];
+        let walletLiquidityNumber = parseInt(walletLiquidity);
+
+        let poolTotalLiquidity = dataObject.result.xtotal_contributions[combinedTokenKeys];
+        if (!poolTotalLiquidity) {
+            return null;
+        }
+        poolTotalLiquidity = poolTotalLiquidity[xcadTokenAddressBase16];
+
+        let poolTotalLiquidityNumber = parseInt(poolTotalLiquidity);
+        return 1.0 * walletLiquidityNumber / poolTotalLiquidityNumber;
+    }
+    return null;
+}
+
+/** A class to represent a single token pair in Xcad LP.  */
+class XcadSinglePairPublicStatus {
+    constructor(totalPoolXcadAmount, totalPoolZrcTokenAmount) {
+        this.totalPoolXcadAmount = totalPoolXcadAmount;
+        this.totalPoolZrcTokenAmount = totalPoolZrcTokenAmount;
+        this.zrcTokenPriceInXcad = totalPoolXcadAmount / totalPoolZrcTokenAmount;
+    }
+}
+
+/** A class to represent a single token pair in Xcad LP.  */
+class XcadSinglePairPersonalStatus {
+    constructor(shareRatio, xcadSinglePairPublicStatus) {
+        this.shareRatio = shareRatio;
+        this.xcadAmount = xcadSinglePairPublicStatus.totalPoolXcadAmount * shareRatio;
+        this.zrcTokenAmount = xcadSinglePairPublicStatus.totalPoolZrcTokenAmount * shareRatio;
+    }
+}
+
+function getXcadSinglePairPersonalStatus(shareRatio, xcadSingleTokenPublicStatus) {
+    return new XcadSinglePairPersonalStatus(shareRatio, xcadSingleTokenPublicStatus);
+}
+
 if (typeof exports !== 'undefined') {
     exports.getZilswapSinglePairPublicStatusFromDexState = getZilswapSinglePairPublicStatusFromDexState;
     exports.getZilswapSinglePairShareRatio = getZilswapSinglePairShareRatio;
@@ -168,4 +299,10 @@ if (typeof exports !== 'undefined') {
     exports.ZilswapSinglePairPublicStatus = ZilswapSinglePairPublicStatus;
     exports.ZilswapSinglePairPersonalStatus = ZilswapSinglePairPersonalStatus;
     exports.getZilswapSinglePairPersonalStatus = getZilswapSinglePairPersonalStatus;
+
+    exports.getXcadSinglePairPublicStatusFromDexState = getXcadSinglePairPublicStatusFromDexState;
+    exports.getXcadSinglePairShareRatio = getXcadSinglePairShareRatio;
+    exports.XcadSinglePairPublicStatus = XcadSinglePairPublicStatus;
+    exports.XcadSinglePairPersonalStatus = XcadSinglePairPersonalStatus;
+    exports.getXcadSinglePairPersonalStatus = getXcadSinglePairPersonalStatus;
 }

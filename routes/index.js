@@ -30,6 +30,11 @@ router.get('/', function (req, res, next) {
       "zrc_staking_reward_and_apr", // 15
       "zilswap_dex_zrc_tokens_price_in_zil_24h_low", // 16
       "zilswap_dex_zrc_tokens_price_in_zil_24h_high", // 17
+      "xcad_dex_smart_contract_state_timestamp_seconds", // 18
+      "xcad_dex_smart_contract_state", // 19
+      "xcad_dex_smart_contract_state_24h_ago", // 20
+      "xcad_dex_distributor_to_ticker_map", // 21
+      "xcad_dex_reward_and_apr", // 22
     ],
     function (err, reply) {
       let currZilswapDexSmartContractStateTimestampSeconds = null; // 0
@@ -56,6 +61,13 @@ router.get('/', function (req, res, next) {
       let currZrcTokenPrice24hLow = null; // 16
       let currZrcTokenPrice24hHigh = null; // 17
 
+      let currXcadDexSmartContractStateTimestampSeconds = null; // 18
+      let currXcadDexSmartContractState = null; // 19
+      let currXcadDexSmartContractState24hAgo = null; // 20
+
+      let currXcadDexDistributorToTickerMap = null; // 21
+      let currXcadDexReward = null; // 22
+
       let currentDate = new Date();
       let currentTimeSeconds = currentDate.getTime() / 1000;
 
@@ -63,8 +75,8 @@ router.get('/', function (req, res, next) {
         try {
           if (reply[0]) {
             currZilswapDexSmartContractStateTimestampSeconds = parseInt(reply[0]);
-            // Only use the cache if it's within 20 seconds.
-            if (currentTimeSeconds - currZilswapDexSmartContractStateTimestampSeconds <= 20 && reply[1]) {
+            // Only use the cache if it's within 60 seconds.
+            if (currentTimeSeconds - currZilswapDexSmartContractStateTimestampSeconds <= 60 && reply[1]) {
               currZilswapDexSmartContractState = JSON.parse(reply[1]);
             }
           }
@@ -128,6 +140,23 @@ router.get('/', function (req, res, next) {
             currZrcTokenPrice24hHigh = JSON.parse(reply[17]);
           }
 
+          if (reply[18]) {
+            currXcadDexSmartContractStateTimestampSeconds = parseInt(reply[18]);
+            // Only use the cache if it's within 120 seconds.
+            if (currentTimeSeconds - currXcadDexSmartContractStateTimestampSeconds <= 120 && reply[19]) {
+              currXCADDexSmartContractState = JSON.parse(reply[19]);
+            }
+          }
+          if (reply[20]) {
+            currXcadDexSmartContractState24hAgo = JSON.parse(reply[20]);
+          }
+          if (reply[21]) {
+            currXcadDexDistributorToTickerMap = JSON.parse(reply[21]);
+          }
+          if (reply[22]) {
+            currXcadDexReward = JSON.parse(reply[22]);
+          }
+
         } catch (ex) {
           console.log(ex);
         }
@@ -137,6 +166,7 @@ router.get('/', function (req, res, next) {
         description: 'View your Zilliqa (ZIL) wallet balances and current ZIL and ZRC-2 prices today in an all-in-one smart dashboard.',
         coinMap: constants.coinMap,
         currencyMap: constants.currencyMap,
+        supportedDexToBaseTokenMap: constants.supportedDexToBaseTokenMap,
         zrcTokenPropertiesListMap: constants.zrcTokenPropertiesListMap,
         zrcStakingTokenPropertiesListMap: constants.zrcStakingTokenPropertiesListMap,
         nftTokenPropertiesListMap: constants.nftTokenPropertiesListMap,
@@ -156,6 +186,10 @@ router.get('/', function (req, res, next) {
         zrcStakingReward: currZrcStakingReward,
         zrcTokenPrice24hLow: currZrcTokenPrice24hLow,
         zrcTokenPrice24hHigh: currZrcTokenPrice24hHigh,
+        xcadDexSmartContractState: currXcadDexSmartContractState,
+        xcadDexSmartContractState24hAgo: currXcadDexSmartContractState24hAgo,
+        xcadDexDistributorToTickerMap: currXcadDexDistributorToTickerMap,
+        xcadDexReward: currXcadDexReward,
       });
     });
 });

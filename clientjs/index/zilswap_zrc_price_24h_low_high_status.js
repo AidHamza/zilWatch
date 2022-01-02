@@ -43,7 +43,7 @@ class ZilswapZrcPrice24hLowHighStatus {
                 if (!this.zilswapDexStatus_) {
                     continue;
                 }
-                let zrcTokenPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil(ticker);
+                let zrcTokenPriceInZil = this.zilswapDexStatus_.getZrcPriceInZilWithFallback(ticker);
                 if (!zrcTokenPriceInZil) {
                     continue
                 }

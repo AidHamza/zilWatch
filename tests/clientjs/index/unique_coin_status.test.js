@@ -2,6 +2,7 @@ var indexJsdom = require('../../index.jsdom.js');
 var fs = require('fs')
 
 var assert = require('assert');
+var XcadDexStatus = require('../../../clientjs/index/xcad_dex_status.js');
 var ZilswapDexStatus = require('../../../clientjs/index/zilswap_dex_status.js');
 var CoinPriceStatus = require('../../../clientjs/index/coin_price_status.js');
 var WalletBalanceStatus = require('../../../clientjs/index/wallet_balance_status.js');
@@ -10,12 +11,11 @@ var StakingBalanceStatus = require('../../../clientjs/index/staking_balance_stat
 var UniqueCoinStatus = require('../../../clientjs/index/unique_coin_status.js');
 var Constants = require('../../../constants.js');
 
-describe('NetWorthStatus', function () {
-
+describe('UniqueCoinStatus', function () {
     describe('#constructor()', function () {
 
         it('create empty object', function () {
-            let uniqueCoinStatus = new UniqueCoinStatus.UniqueCoinStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, /* barChartDrawer= */ null, /* zilswapDexStatus= */ null, /* walletBalanceStatus= */ null, /* stakingBalanceStatus= */ null, /* stakingZrcStatus= */ null);
+            let uniqueCoinStatus = new UniqueCoinStatus.UniqueCoinStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, /* barChartDrawer= */ null, /* zilswapDexStatus= */ null, /* xcadDexStatus= */ null, /* walletBalanceStatus= */ null, /* stakingBalanceStatus= */ null, /* stakingZrcStatus= */ null);
 
             assert.strictEqual(uniqueCoinStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
             assert.strictEqual(uniqueCoinStatus.barChartDrawer_, null);
@@ -28,6 +28,7 @@ describe('NetWorthStatus', function () {
 
     describe('#methods(), with 24h ago, includes everything', function () {
         var zilswapDexStatus;
+        var xcadDexStatus;
         var walletBalanceStatus;
         var stakingZrcStatus;
         var stakingBalanceStatus;
@@ -41,11 +42,13 @@ describe('NetWorthStatus', function () {
             let coinPriceStatus = new CoinPriceStatus.CoinPriceStatus(Constants.coinMap, Constants.currencyMap, /* activeCurrencyCode= */ 'usd', coinPriceCoingeckoData, coinPriceCoingecko24hAgoData);
 
             let zilswapDexSmartContractStateData24hAgo = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210422.txt', 'utf8'));
-            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
-            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, walletAddressBase16, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
+            let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20220102.txt', 'utf8'));
+            zilswapDexStatus = new ZilswapDexStatus.ZilswapDexStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, xcadDexStatus, walletAddressBase16, zilswapDexSmartContractStateData, zilswapDexSmartContractStateData24hAgo);
+
+            let xcadSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/xcaddex_contractstate_20220102.txt', 'utf8'));
+            xcadDexStatus = new XcadDexStatus.XcadDexStatus(Constants.zrcTokenPropertiesListMap, walletAddressBase16, xcadSmartContractStateData);
 
             let zilBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"balance":"7476589135982234","nonce":46}}');
-            let redcBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"balances":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":"657942857"}}}');
             let carbBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"balances":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":"1152887420"}}}');
             let zwapBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"balances":{"0x55bda0a066942d33103cfc47f08d0338536184ef":"54342341"}}}');
             let emptyResultBalanceData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{}}');
@@ -53,7 +56,6 @@ describe('NetWorthStatus', function () {
             let emptyString = '';
 
             let zrcBalanceDataMap = {
-                'REDC': redcBalanceData,
                 'CARB': carbBalanceData,
                 'ZWAP': zwapBalanceData,
                 'XCAD': emptyResultBalanceData,
@@ -69,24 +71,28 @@ describe('NetWorthStatus', function () {
             let zilStakingBalanceWithdrawalData = JSON.parse('{"id":"1","jsonrpc":"2.0","result":{"withdrawal_pending":{"0x278598f13a4cb142e44dde38aba8d8c0190bcb85":{"1037958":"14063107679853089", "1137958":"7063107679853089"}}}}');
             stakingBalanceStatus = new StakingBalanceStatus.StakingBalanceStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, Constants.ssnListMap, coinPriceStatus, walletAddressBase16, zilStakingBalanceData, zilStakingBalanceWithdrawalData, stakingZrcStatus);
 
-            uniqueCoinStatus = new UniqueCoinStatus.UniqueCoinStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, /* barChartDrawer= */ null, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingZrcStatus);
+            uniqueCoinStatus = new UniqueCoinStatus.UniqueCoinStatus(Constants.zrcTokenPropertiesListMap, Constants.zrcStakingTokenPropertiesListMap, /* barChartDrawer= */ null, zilswapDexStatus, xcadDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingZrcStatus);
         });
 
         it('compute unique coins, computed and sorted correctly', function () {
             // Default data from LP
             let expectedBeforeCompute = [
-                ['ZIL', 4652.384684855229],
-                ['CARB', 1523.0365065993913],
-                ['ZWAP', 1133.668348840813],
-                ['REDC', 1092.6018798700845],
-                ['ZLP', 903.0779495449406],
+                ["ZIL", 4537.529121538594],
+                ["XCAD", 2489.632321301231],
+                ["SHARDS", 2322.076168445796],
+                ["STREAM", 2215.452953092798],
+                ["PORT", 1433.8099515610213],
+                ["dXCAD", 560.6084285773145],
+                ["CARB", 495.213941162895],
             ];
             let nonZeroTickerDummyMap = {
                 'ZIL': 0,
+                'XCAD': 0,
+                'SHARDS': 0,
+                'STREAM': 0,
+                'PORT': 0,
+                'dXCAD': 0,
                 'CARB': 0,
-                'ZWAP': 0,
-                'REDC': 0,
-                'ZLP': 0
             }
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 // If token not in the list, i.e., new token, it's 0, we add it into the list
@@ -107,16 +113,18 @@ describe('NetWorthStatus', function () {
             stakingBalanceStatus.computeStakingWithdrawalBalance();
             zilswapDexStatus.computeZilswapPairPublicPersonalStatusMap();
 
-            // Compute unique cion status
+            // Compute unique coin status
             uniqueCoinStatus.computeUniqueCoinsBalance();
 
             // Assert
             let expectedAfterCompute = [
-                ['ZIL', 42618.29686039673],
-                ['CARB', 3068.5166993553257],
-                ['ZWAP', 1133.668348840813],
-                ['REDC', 1106.4699349599064],
-                ['ZLP', 903.0779495449406],
+                ["ZIL", 42503.44129708009],
+                ["CARB", 3693.2954139588405],
+                ["XCAD", 2489.632321301231],
+                ["SHARDS", 2322.076168445796],
+                ["STREAM", 2215.452953092798],
+                ["PORT", 1433.8099515610213],
+                ["dXCAD", 560.6084285773145],
             ];
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 // If token not in the list, i.e., new token, it's 0, we add it into the list
