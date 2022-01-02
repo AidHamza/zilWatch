@@ -1,7 +1,19 @@
-function getLpRewardPriceChartHtmlTemplate(rewardAmountString, rewardTicker, rewardTokenLogoUrl, rewardApr) {
+function getLpRewardSection(dexName, totalRewardApr, htmlElementSubList) {
+    let elementString = "<div class='mb-2'>"
+    elementString += "<span class='font-weight-bold'>" + dexName + "</span>";
+    elementString += "<br/>";
+    elementString += "<span class='h5 font-weight-bold'>" + totalRewardApr + " %</span>";
+    elementString += "<span class='ml-1 text-secondary'>(APR)</span>";
+    elementString += "<br/>";
+    elementString += htmlElementSubList;
+    elementString += "</div>";
+    return elementString;
+}
+
+function getIndividualLpRewardPriceChartHtmlTemplate(rewardAmountString, rewardTicker, rewardTokenLogoUrl, rewardApr, rewardPeriodFreq) {
     let elementString = "";
     elementString += getRewardLpHtmlTemplate(/* isElementEmpty= */ true, rewardAmountString, rewardTicker, rewardTokenLogoUrl);
-    elementString += "<span class='ml-1 mr-1'>/ week</span>";
+    elementString += "<span class='ml-1 mr-1'>/ " + rewardPeriodFreq + "</span>";
     elementString += "<span class='mr-1 text-secondary'>(" + rewardApr + " %)</span>";
     elementString += "<br/>";
     return elementString;
@@ -35,6 +47,7 @@ class PriceChartStatus {
         /* nullable= */ xcadDexStatus,
         /* nullable= */ zilswapTradeVolumeStatus,
         /* nullable= */ zilswapDexRewardData, 
+        /* nullable= */ xcadDexRewardData, 
         /* nullable= */ zrcStakingRewardData) {
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
@@ -45,6 +58,7 @@ class PriceChartStatus {
         this.xcadDexStatus_ = xcadDexStatus;
         this.zilswapTradeVolumeStatus_ = zilswapTradeVolumeStatus;
         this.zilswapDexRewardData_ = zilswapDexRewardData;
+        this.xcadDexRewardData_ = xcadDexRewardData;
         this.zrcStakingRewardData_ = zrcStakingRewardData;
 
         let initTokenSymbol = 'gZIL';
@@ -264,32 +278,60 @@ class PriceChartStatus {
     }
 
     bindViewStaticLiquidityAndStakingApr(ticker) {
+        this.resetStaticLiquidityApr();
+        this.resetStaticStakingApr();
+
         if (this.zilswapDexRewardData_) {
-            this.resetStaticLiquidityApr();
             let totalApr = 0.0;
             if (ticker in this.zilswapDexRewardData_) {
+                let htmlElementWeeklyRewardList = "";
                 for (let rewardTicker in this.zilswapDexRewardData_[ticker]) {
                     try {
                         let rewardAmount = parseFloat(this.zilswapDexRewardData_[ticker][rewardTicker].reward_amount);
                         let rewardAmountString = convertNumberQaToDecimalString(rewardAmount, /* decimals= */ 0);
                         let rewardApr = parseFloat(this.zilswapDexRewardData_[ticker][rewardTicker].apr_percent);
                         let rewardTokenLogoUrl = this.zrcTokenPropertiesListMap_[rewardTicker].logo_url;
-                        $('#price_chart_zilswap_liquidity_reward_weekly_list').append(getLpRewardPriceChartHtmlTemplate(rewardAmountString, rewardTicker, rewardTokenLogoUrl, rewardApr));
 
+                        htmlElementWeeklyRewardList += getIndividualLpRewardPriceChartHtmlTemplate(rewardAmountString, rewardTicker, rewardTokenLogoUrl, rewardApr, "week");
+                        
                         totalApr += rewardApr;
                     } catch (err) {
                         console.log("Failed to load reward " + rewardTicker + " from LP " + ticker);
                     }
                 }
                 if (totalApr > 0.0) {
-                     $('#price_chart_zilswap_liquidity_apr').text(totalApr.toFixed(1) + ' %');
-                     $('#price_chart_zilswap_liquidity_reward_container').show();
+                     $('#price_chart_liquidity_reward_list').append(getLpRewardSection('ZilSwap', totalApr.toFixed(1), htmlElementWeeklyRewardList));
+                     $('#price_chart_liquidity_reward_container').show();
+                }
+            }
+        }
+
+        if (this.xcadDexRewardData_) {
+            let totalApr = 0.0;
+            if (ticker in this.xcadDexRewardData_) {
+                let htmlElementWeeklyRewardList = "";
+                for (let rewardTicker in this.xcadDexRewardData_[ticker]) {
+                    try {
+                        let rewardAmount = parseFloat(this.xcadDexRewardData_[ticker][rewardTicker].reward_amount);
+                        let rewardAmountString = convertNumberQaToDecimalString(rewardAmount, /* decimals= */ 0);
+                        let rewardApr = parseFloat(this.xcadDexRewardData_[ticker][rewardTicker].apr_percent);
+                        let rewardTokenLogoUrl = this.zrcTokenPropertiesListMap_[rewardTicker].logo_url;
+
+                        htmlElementWeeklyRewardList += getIndividualLpRewardPriceChartHtmlTemplate(rewardAmountString, rewardTicker, rewardTokenLogoUrl, rewardApr, "day");
+                        
+                        totalApr += rewardApr;
+                    } catch (err) {
+                        console.log("Failed to load reward " + rewardTicker + " from LP " + ticker);
+                    }
+                }
+                if (totalApr > 0.0) {
+                     $('#price_chart_liquidity_reward_list').append(getLpRewardSection('XCAD Dex', totalApr.toFixed(1), htmlElementWeeklyRewardList));
+                     $('#price_chart_liquidity_reward_container').show();
                 }
             }
         }
 
         if (this.zrcStakingRewardData_) {
-            this.resetStaticStakingApr();
             for (let tickerId in this.zrcStakingRewardData_) {
                 try {
                     let rewardTicker =  this.zrcStakingTokenPropertiesListMap_[tickerId].ticker;
@@ -309,9 +351,8 @@ class PriceChartStatus {
     }
 
     resetStaticLiquidityApr() {
-        $('#price_chart_zilswap_liquidity_reward_container').hide();
-        $('#price_chart_zilswap_liquidity_apr').text('-');
-        $('#price_chart_zilswap_liquidity_reward_weekly_list').empty();
+        $('#price_chart_liquidity_reward_container').hide();
+        $('#price_chart_liquidity_reward_list').empty();
     }
 
     resetStaticStakingApr() {
@@ -574,7 +615,7 @@ class PriceChartStatus {
 
         // TODO: Remove the manual guard for dXCAD, this is to guard showing
         // zilswap price with low liquidity.
-        if (ticker === 'dXCAD') {
+        if (this.historicalPriceData_.ticker === 'dXCAD') {
             this.bindViewChartErrorDataNotAvailable();
             return;
         }

@@ -208,7 +208,7 @@ block content
                         td(style='text-align: right; white-space: nowrap; vertical-align: middle;' )
                           span(id=tokenProperties.ticker+'_total_supply_fiat')= '0'
 
-          if zilswapDexReward || zilStakingReward || zrcStakingReward
+          if zilswapDexReward || xcadDexReward || zilStakingReward || zrcStakingReward
             div(class='col-xl-6 col-xxl-4' style='padding: 0;')
 
               div(class='box-public')
@@ -261,6 +261,7 @@ block content
                                 span= zrcStakingTokenProperty.reward_apr_percent
 
                   if zilswapDexReward
+                    hr
                     table(class='table table-sm table-borderless' width='100%')
                       tbody(class='table-background-color-header')
                         tr
@@ -305,6 +306,51 @@ block content
                                 td(style='text-align: right; white-space: nowrap; width: 10%;' )
                                   span= rewardAttributes.apr_percent
 
+                  if xcadDexReward
+                    hr
+                    table(class='table table-sm table-borderless' width='100%')
+                      tbody(class='table-background-color-header')
+                        tr
+                          th(colspan=2 style='text-align: left; white-space: nowrap; width: 10%;' )= 'XCAD Dex LP'
+                          th(colspan=2 style='text-align: right; white-space: nowrap; width: 10%;')
+                            span= 'Daily Reward'
+                          th(style='text-align: right; white-space: nowrap; width: 10%;')
+                            span= 'Daily %'
+                          th(style='text-align: right; white-space: nowrap; width: 10%;')
+                            span= 'APR %'
+
+                      tbody
+                        - let oddRow = false
+                        each circulatingSupply, ticker in zrcTokensCirculatingSupply
+                          if !(ticker in zrcTokenPropertiesListMap)
+                            - continue
+                          - let tokenProperties = zrcTokenPropertiesListMap[ticker]
+                          if ('fixed_token_rate' in tokenProperties)
+                            - continue
+
+                          if xcadDexReward[ticker]
+                            - oddRow = !oddRow
+                            - let numOfRewardTickers = Object.keys(xcadDexReward[ticker]).length
+                            - let firstIteration = true
+
+                            each rewardAttributes, rewardTicker in xcadDexReward[ticker]
+                              - let currLogoUrl = rewardTicker in zrcTokenPropertiesListMap ? zrcTokenPropertiesListMap[rewardTicker].logo_url : 'https://meta.viewblock.io/ZIL/logo';
+                              tr(class= oddRow ? 'table-background-dark' : 'table-background-light')
+                                if firstIteration
+                                  td(rowspan=numOfRewardTickers scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                                    img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
+                                  td(rowspan=numOfRewardTickers style='display:table-cell; vertical-align: middle; text-align: left; white-space: nowrap;' )
+                                    span= tokenProperties.ticker + '-ZIL'
+                                  - firstIteration = false
+
+                                td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                                  span= rewardAttributes.reward_amount
+                                td(style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                                  img(height='18' width='18' src=currLogoUrl loading='lazy')
+                                td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                                  span= rewardAttributes.daily_percent
+                                td(style='text-align: right; white-space: nowrap; width: 10%;' )
+                                  span= rewardAttributes.apr_percent
 
           //---------------------- Start of Swap DIV ---------------------
           div(class='col-xl-6 col-xxl-4' style='padding: 0;')
@@ -554,11 +600,9 @@ block content
 
             div(class='row mb-2')
 
-              div(id='price_chart_zilswap_liquidity_reward_container' class='col-6 col-xl-3 my-2' style='display:none;')
+              div(id='price_chart_liquidity_reward_container' class='col-6 col-xl-3 my-2' style='display:none;')
                 p(class='h6')='Liquidity reward'
-                span(id='price_chart_zilswap_liquidity_apr' class='h5 font-weight-bold')='-'
-                span(class='ml-1 text-secondary')='(APR)'
-                div(id='price_chart_zilswap_liquidity_reward_weekly_list')
+                div(id='price_chart_liquidity_reward_list')
 
               div(id='price_chart_staking_reward_container' class='col-6 col-xl-3 my-2' style='display:none;')
                 p(class='h6')='Staking reward'
@@ -1426,6 +1470,7 @@ block script
     var zrcTokensCirculatingSupplyData = !{JSON.stringify(zrcTokensCirculatingSupply)};
 
     var zilswapDexRewardData = !{JSON.stringify(zilswapDexReward)};
+    var xcadDexRewardData = !{JSON.stringify(xcadDexReward)};
     var zrcStakingRewardData = !{JSON.stringify(zrcStakingReward)};
 
     var zrcTokenPrice24hLowData = !{JSON.stringify(zrcTokenPrice24hLow)};
@@ -1460,7 +1505,7 @@ block script
 
     const swapStatus = new SwapStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletBalanceStatus)
 
-    const priceChartStatus = new PriceChartStatus(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, targetTokenSymbol, coinPriceStatus, zilswapDexStatus, xcadDexStatus, zilswapTradeVolumeStatus, zilswapDexRewardData, zrcStakingRewardData);
+    const priceChartStatus = new PriceChartStatus(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, targetTokenSymbol, coinPriceStatus, zilswapDexStatus, xcadDexStatus, zilswapTradeVolumeStatus, zilswapDexRewardData, xcadDexRewardData, zrcStakingRewardData);
 
     const nftCollectionStatus = new NftCollectionStatus(nftTokenPropertiesListMap);
     const zilswapArkProfilePicStatus = new ZilswapArkProfilePicStatus();

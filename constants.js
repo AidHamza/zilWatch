@@ -480,7 +480,9 @@ const zrcTokenPropertiesListMap = {
     "name": "dXCAD",
     "address": "zil1xfcg9hfpdlmz2aytz0s4dww35hfa6s0jnjut5f",
     "address_base16": "0x327082dD216ff625748B13e156b9d1a5D3dD41f2",
-    "logo_url": "https://meta.viewblock.io/ZIL.zil1xfcg9hfpdlmz2aytz0s4dww35hfa6s0jnjut5f/logo",
+    // "logo_url": "https://meta.viewblock.io/ZIL.zil1xfcg9hfpdlmz2aytz0s4dww35hfa6s0jnjut5f/logo",
+    // TODO: To revert to viewblock logo once uploaded
+    "logo_url": "https://swap.xcadnetwork.com/icons/dXCAD.png",
     "decimals": 18,
     "supported_dex": ["zilswap", "xcaddex"],
     "website": "https://swap.xcadnetwork.com/",
