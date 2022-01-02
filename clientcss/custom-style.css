@@ -37,11 +37,20 @@ body {
   border-radius: 10px;
 }
 
-.highlight-box {
+.zilswap-highlight-box {
   margin: 0.3rem;
   /* this is a hack to keep the table inside the box */
   padding-right: 0.6rem;
   background-color: rgba(136, 213, 129, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-radius: 10px;
+}
+
+.xcaddex-highlight-box {
+  margin: 0.3rem;
+  /* this is a hack to keep the table inside the box */
+  padding-right: 0.6rem;
+  background-color: rgba(213, 129, 164, 0.15);
   border: 1px solid rgba(255, 255, 255, 0);
   border-radius: 10px;
 }

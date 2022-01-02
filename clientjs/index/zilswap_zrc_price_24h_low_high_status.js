@@ -28,6 +28,11 @@ class ZilswapZrcPrice24hLowHighStatus {
 
     bindViewZrcPrice24hLowHigh() {
         for (let ticker in this.zrcTokenPropertiesListMap_) {
+            // TODO: Remove manual guarding of dXCAD
+            if (ticker === 'dXCAD') {
+                continue;
+            }
+
             let zrcPrice24hLow = parseFloat(this.zrcTokenPrice24hLowMap_[ticker]);
             let zrcPrice24hHigh = parseFloat(this.zrcTokenPrice24hHighMap_[ticker]);
             if (zrcPrice24hLow && zrcPrice24hHigh) {

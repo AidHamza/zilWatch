@@ -5,7 +5,7 @@
   "scripts": {
     "start": "npm run uglifyjs && npm run uglifycss && node ./bin/www",
     "test": "nyc mocha --parallel --recursive tests/ --timeout 30000",
-    "t": "mocha tests/clientjs/index/net_worth_status.test.js --timeout 30000",
+    "t": "mocha tests/clientjs/index/zilswap_lp_zwap_reward_status.test.js --timeout 30000",
     "uglifyjs": "npm run uglifyjs-index && npm run uglifyjs-theme",
     "uglifyjs-index": "uglifyjs clientjs/*.js clientjs/index/*.js --compress --mangle --output public/javascripts/main.index.min.js",
     "uglifyjs-theme": "uglifyjs clientjs/utils_theme.js --compress --mangle --output public/javascripts/main.theme.min.js",

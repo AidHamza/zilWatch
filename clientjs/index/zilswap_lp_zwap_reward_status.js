@@ -1,30 +1,39 @@
-function getRewardLpHtmlTemplate(isFirstElement, rewardAmountString, rewardTicker, rewardTokenLogoUrl) {
-    let elementString = "";
-    if (!isFirstElement) {
-        elementString += "<span class='ml-1 mr-1'>+</span>";
-    }
-    return elementString + "<span class='mr-1'>" + rewardAmountString + "</span>" +
-        "<img height='16' src='" + rewardTokenLogoUrl + "' alt='" + rewardTicker + " logo' loading='lazy'/>";
-}
-
 /** A class to represent Zilswap LP ZWAP reward status.  */
 class ZilswapLpZwapRewardStatus {
 
-    constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDexStatus, /* nullable= */ zilswapDistributorToTickerMap) {
+    constructor(zrcTokenPropertiesListMap,
+        supportedDexToBaseTokenMap,
+        /* nullable= */ coinPriceStatus,
+        /* nullable= */ zilswapDexStatus,
+        /* nullable= */ zilswapDistributorToTickerMap,
+        /* nullable= */ xcadDistributorToTickerMap) {
 
         // Private variable
+        this.supportedDexToBaseTokenMap_ = supportedDexToBaseTokenMap;
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
         this.coinPriceStatus_ = coinPriceStatus;
         this.zilswapDexStatus_ = zilswapDexStatus;
-        this.zilswapDistributorToTickerMap_ = zilswapDistributorToTickerMap;
+        this.distributorToTickerMap_ = {
+            'zilswap' : zilswapDistributorToTickerMap,
+            'xcaddex' : xcadDistributorToTickerMap,
+        }
 
         this.epochInfoData_ = {
-            'epoch_period': 604800,
-            'distribution_start_time': 1629878400,
+            'zilswap' : {
+                'epoch_period': 604800,
+                'distribution_start_time': 1629878400,
+            }, 
+            'xcaddex' : {
+                'epoch_period': 86400,
+                'distribution_start_time': 1640894400,
+            }
         }
 
         this.walletAddressBech32_ = null;
-        this.contractAddressToRewardMapData_ = null;
+        this.contractAddressToRewardMapData_ = {};
+        for (let dexName in supportedDexToBaseTokenMap) {
+            this.contractAddressToRewardMapData_[dexName] = null;
+        }
 
         this.totalRewardNextEpoch_ = {};
         this.totalRewardUnclaimed_ = {};
@@ -32,15 +41,19 @@ class ZilswapLpZwapRewardStatus {
     }
 
     onCoinPriceStatusChange() {
-        this.refreshLpRewardFiat(this.totalRewardNextEpoch_, this.bindViewNextEpochAllLpFiat);
-        this.refreshLpRewardFiat(this.totalRewardUnclaimed_, this.bindViewUnclaimedAllLpFiat);
-        this.refreshLpRewardFiat(this.totalRewardPrevEpoch_, this.bindViewPrevEpochAllLpFiat);
+        this.refreshLpRewardFiat('zilswap', this.totalRewardNextEpoch_, this.bindViewNextEpochAllLpFiat);
+        this.refreshLpRewardFiat('zilswap', this.totalRewardUnclaimed_, this.bindViewUnclaimedAllLpFiat);
+        this.refreshLpRewardFiat('zilswap', this.totalRewardPrevEpoch_, this.bindViewPrevEpochAllLpFiat);
+        this.refreshLpRewardFiat('xcaddex', this.totalRewardNextEpoch_, this.bindViewNextEpochAllLpFiat);
+        this.refreshLpRewardFiat('xcaddex', this.totalRewardUnclaimed_, this.bindViewUnclaimedAllLpFiat);
     }
 
     onZilswapDexStatusChange() {
-        this.refreshLpRewardFiat(this.totalRewardNextEpoch_, this.bindViewNextEpochAllLpFiat);
-        this.refreshLpRewardFiat(this.totalRewardUnclaimed_, this.bindViewUnclaimedAllLpFiat);
-        this.refreshLpRewardFiat(this.totalRewardPrevEpoch_, this.bindViewPrevEpochAllLpFiat);
+        this.refreshLpRewardFiat('zilswap', this.totalRewardNextEpoch_, this.bindViewNextEpochAllLpFiat);
+        this.refreshLpRewardFiat('zilswap', this.totalRewardUnclaimed_, this.bindViewUnclaimedAllLpFiat);
+        this.refreshLpRewardFiat('zilswap', this.totalRewardPrevEpoch_, this.bindViewPrevEpochAllLpFiat);
+        this.refreshLpRewardFiat('xcaddex', this.totalRewardNextEpoch_, this.bindViewNextEpochAllLpFiat);
+        this.refreshLpRewardFiat('xcaddex', this.totalRewardUnclaimed_, this.bindViewUnclaimedAllLpFiat);
     }
 
     setWalletAddressBech32(walletAddressBech32) {
@@ -55,9 +68,14 @@ class ZilswapLpZwapRewardStatus {
         this.totalRewardPrevEpoch_ = {};
     }
 
-    computeEpochInfoLoaded() {
-        let epochPeriod = parseInt(this.epochInfoData_.epoch_period);
-        let distributionStartTimeSeconds = parseInt(this.epochInfoData_.distribution_start_time);
+    computeEpochInfoLoaded(dexName) {
+        if (!(dexName in this.epochInfoData_)) {
+            return;
+        }
+        let epochInfoData = this.epochInfoData_[dexName];
+
+        let epochPeriod = parseInt(epochInfoData.epoch_period);
+        let distributionStartTimeSeconds = parseInt(epochInfoData.distribution_start_time);
         let nextEpochStartSeconds = distributionStartTimeSeconds + epochPeriod;
 
         let currentDate = new Date();
@@ -70,30 +88,38 @@ class ZilswapLpZwapRewardStatus {
         let timeDiffSeconds = nextEpochStartSeconds - currentTimeSeconds;
         let timeDiffDuration = new Duration(timeDiffSeconds);
 
-        this.bindViewNextEpochCountdownCounter(timeDiffDuration.getUserFriendlyString());
+        this.bindViewNextEpochCountdownCounter(dexName, timeDiffDuration.getUserFriendlyString());
     }
 
-    computeNextEpochLoaded() {
-        if (!this.contractAddressToRewardMapData_) {
+    computeNextEpochLoaded(dexName) {
+        if (!(dexName in this.contractAddressToRewardMapData_)) {
             return;
         }
-        if (!this.zilswapDistributorToTickerMap_) {
+        if (!(dexName in this.distributorToTickerMap_)) {
             return;
         }
+        let currContractAddressToRewardMap = this.contractAddressToRewardMapData_[dexName];
+        let distributorToTickerMap = this.distributorToTickerMap_[dexName];
 
         let tickerToTotalRewardsQa = {}
 
-        for (let distributor_address in this.contractAddressToRewardMapData_) {
-            let rewardTokenTicker = this.zilswapDistributorToTickerMap_[distributor_address.toLowerCase()];
-            let contractAddressToRewardMap = this.contractAddressToRewardMapData_[distributor_address];
-
+        for (let distributor_address in currContractAddressToRewardMap) {
+            let rewardTokenTicker = distributorToTickerMap[distributor_address.toLowerCase()];
+            let contractAddressToRewardMap = currContractAddressToRewardMap[distributor_address];
             // This should be optimized using a lookup in the dictionary instead of a linear search
             // Loop all individuals ZRC token LP and show ZWAP reward per ZRC LP.
             for (let poolTicker in this.zrcTokenPropertiesListMap_) {
-                let zrcTokenAddress = this.zrcTokenPropertiesListMap_[poolTicker].address;
+                // zilswap use bech32 address as key
+                let poolKey = this.zrcTokenPropertiesListMap_[poolTicker].address;
+                if (dexName === 'xcaddex') {
+                    // xcaddex use base16 address pair (xcad,token) as key
+                    let xcadAddress = this.zrcTokenPropertiesListMap_['XCAD'].address_base16.toLowerCase();
+                    let zrcAddress = this.zrcTokenPropertiesListMap_[poolTicker].address_base16.toLowerCase();
+                    poolKey = xcadAddress + ',' + zrcAddress;
+                }
 
-                if (zrcTokenAddress in contractAddressToRewardMap) {
-                    let rewardAmountQa = parseInt(contractAddressToRewardMap[zrcTokenAddress]);
+                if (poolKey in contractAddressToRewardMap) {
+                    let rewardAmountQa = parseInt(contractAddressToRewardMap[poolKey]);
                     if (rewardAmountQa) {
                         // Sum and cumulate the rewards from different distributors for the summary view
                         let cumulativeRewardAmountQa = rewardAmountQa;
@@ -106,12 +132,12 @@ class ZilswapLpZwapRewardStatus {
                             let rewardAmountString = convertNumberQaToDecimalString(rewardAmountQa, this.zrcTokenPropertiesListMap_[rewardTokenTicker].decimals);
                             if (rewardAmountString) {
                                 let rewardTokenLogoUrl = this.zrcTokenPropertiesListMap_[rewardTokenTicker].logo_url;
-                                this.appendViewNextEpochSingleRewardSingleLp(poolTicker, rewardAmountString, rewardTokenTicker, rewardTokenLogoUrl);
+                                this.appendViewNextEpochSingleRewardSingleLp(dexName, poolTicker, rewardAmountString, rewardTokenTicker, rewardTokenLogoUrl);
                             }
                         } else if (rewardTokenTicker.toLowerCase() === 'zil') {
                             let rewardAmountString = convertNumberQaToDecimalString(rewardAmountQa, 12);
                             if (rewardAmountString) {
-                                this.appendViewNextEpochSingleRewardSingleLp(poolTicker, rewardAmountString, rewardTokenTicker, CONST_ZIL_LOGO_URL);
+                                this.appendViewNextEpochSingleRewardSingleLp(dexName, poolTicker, rewardAmountString, rewardTokenTicker, CONST_ZIL_LOGO_URL);
                             }
                         }
                     }
@@ -141,21 +167,21 @@ class ZilswapLpZwapRewardStatus {
             if (!totalRewardString) {
                 continue;
             }
-            this.appendViewNextEpochSingleRewardAllLp(totalRewardString, ticker, rewardTokenLogoUrl);
+            this.appendViewNextEpochSingleRewardAllLp(dexName, totalRewardString, ticker, rewardTokenLogoUrl);
         }
-        this.totalRewardNextEpoch_ = tickerToTotalRewardsAmount;
-        this.refreshLpRewardFiat(this.totalRewardNextEpoch_, this.bindViewNextEpochAllLpFiat);
+        this.totalRewardNextEpoch_[dexName] = tickerToTotalRewardsAmount;
+        this.refreshLpRewardFiat(dexName, this.totalRewardNextEpoch_, this.bindViewNextEpochAllLpFiat);
     }
 
     /** Generic function to compute all types of reward except next epoch (e.g., unclaimed, prev) */
-    computeUnclaimedOrPrevEpochLoaded(unclaimedOrPrevRewardList, appendViewSingleRewardAllLpFunction, bindViewAllLpFiatFunction) {
-        if (!this.zilswapDistributorToTickerMap_) {
+    computeUnclaimedOrPrevEpochLoaded(dexName, unclaimedOrPrevRewardList, appendViewSingleRewardAllLpFunction, bindViewAllLpFiatFunction) {
+        if (!(dexName in this.distributorToTickerMap_)) {
             return;
         }
         let rewardList = unclaimedOrPrevRewardList;
         if (!rewardList || rewardList.length < 1) {
             // If there is no data, it means user has no unclaimed or prev reward, show 0 to user
-            bindViewAllLpFiatFunction('0');
+            bindViewAllLpFiatFunction(dexName, '0');
             return;
         }
         let tickerToTotalQa = {}
@@ -166,7 +192,7 @@ class ZilswapLpZwapRewardStatus {
             }
 
             let currDistributorAddress = currReward.distributor_address;
-            let rewardTokenTicker = this.zilswapDistributorToTickerMap_[currDistributorAddress.toLowerCase()];
+            let rewardTokenTicker = this.distributorToTickerMap_[dexName][currDistributorAddress.toLowerCase()];
 
             let currQa = parseInt(currReward.amount)
             if (!currQa) {
@@ -203,18 +229,26 @@ class ZilswapLpZwapRewardStatus {
             if (!totalString) {
                 continue;
             }
-            appendViewSingleRewardAllLpFunction(totalString, ticker, rewardTokenLogoUrl);
+            appendViewSingleRewardAllLpFunction(dexName, totalString, ticker, rewardTokenLogoUrl);
         }
 
-        this.refreshLpRewardFiat(tickerToTotalAmount, bindViewAllLpFiatFunction);
+        let totalRewardMap = {};
+        totalRewardMap[dexName] = tickerToTotalAmount;
+
+        this.refreshLpRewardFiat(dexName, totalRewardMap, bindViewAllLpFiatFunction);
         return tickerToTotalAmount;
     }
 
     /** Generic function to refresh fiat for all types of of reward (e.g., next epoch, unclaimed, prev) */
-    refreshLpRewardFiat(totalRewardMap, bindViewFunction) {
+    refreshLpRewardFiat(dexName, totalRewardMap, bindViewFunction) {
         if (!this.coinPriceStatus_ || !this.zilswapDexStatus_) {
             return;
         }
+        if (!(dexName in totalRewardMap)) {
+            return;
+        }
+        let currTotalRewardMap = totalRewardMap[dexName];
+
         let zilPriceInFiatFloat = this.coinPriceStatus_.getCoinPriceFiat('ZIL');
         if (!zilPriceInFiatFloat) {
             return;
@@ -222,24 +256,26 @@ class ZilswapLpZwapRewardStatus {
         let decimals = (zilPriceInFiatFloat > 1) ? 0 : 2;
 
         let totalRewardFiat = 0.0;
-        for (let ticker in totalRewardMap) {
+        for (let ticker in currTotalRewardMap) {
             if (ticker.toLowerCase() === 'zil') {
-                totalRewardFiat += zilPriceInFiatFloat * totalRewardMap[ticker];
+                totalRewardFiat += zilPriceInFiatFloat * currTotalRewardMap[ticker];
             } else {
                 let zrcTokenPriceInZil = this.zilswapDexStatus_.getZrcPriceInZilWithFallback(ticker);
                 if (!zrcTokenPriceInZil) {
                     continue;
                 }
-                totalRewardFiat += (zilPriceInFiatFloat * zrcTokenPriceInZil * totalRewardMap[ticker]);
+                totalRewardFiat += (zilPriceInFiatFloat * zrcTokenPriceInZil * currTotalRewardMap[ticker]);
             }
         }
         let totalAllLpRewardFiat = commafyNumberToString(totalRewardFiat, decimals);
-        bindViewFunction(totalAllLpRewardFiat);
+        bindViewFunction(dexName, totalAllLpRewardFiat);
     }
 
     computeDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
         // This is now hardcoded because the value are static to reduce RPC.
-        this.computeEpochInfoLoaded();
+        for (let dexName in this.supportedDexToBaseTokenMap_) {
+            this.computeEpochInfoLoaded(dexName);
+        }
 
         if (!this.walletAddressBech32_) {
             return;
@@ -252,8 +288,8 @@ class ZilswapLpZwapRewardStatus {
             CONST_STATS_ZILSWAP_ROOT_URL + "/distribution/estimated_amounts/" + self.walletAddressBech32_,
             /* successCallback= */
             function (data) {
-                self.contractAddressToRewardMapData_ = data;
-                self.computeNextEpochLoaded();
+                self.contractAddressToRewardMapData_['zilswap'] = data;
+                self.computeNextEpochLoaded('zilswap');
 
                 onSuccessCallback();
             },
@@ -269,7 +305,7 @@ class ZilswapLpZwapRewardStatus {
             CONST_ZILWATCH_ROOT_URL + "/api/reward/prevepoch?token_symbol=ZWAP&wallet_address=" + self.walletAddressBech32_ + "&requester=zilwatch_dashboard",
             /* successCallback= */
             function (data) {
-                self.totalRewardPrevEpoch_ = self.computeUnclaimedOrPrevEpochLoaded(data, self.appendViewPrevEpochSingleRewardAllLp, self.bindViewPrevEpochAllLpFiat);
+                self.totalRewardPrevEpoch_['zilswap']  = self.computeUnclaimedOrPrevEpochLoaded('zilswap', data, self.appendViewPrevEpochSingleRewardAllLp, self.bindViewPrevEpochAllLpFiat);
                 onSuccessCallback();
             },
             /* errorCallback= */
@@ -283,7 +319,39 @@ class ZilswapLpZwapRewardStatus {
             CONST_STATS_ZILSWAP_ROOT_URL + "/distribution/claimable_data/" + self.walletAddressBech32_,
             /* successCallback= */
             function (data) {
-                self.totalRewardUnclaimed_ = self.computeUnclaimedOrPrevEpochLoaded(data, self.appendViewUnclaimedSingleRewardAllLp, self.bindViewUnclaimedAllLpFiat);
+                self.totalRewardUnclaimed_['zilswap'] = self.computeUnclaimedOrPrevEpochLoaded('zilswap', data, self.appendViewUnclaimedSingleRewardAllLp, self.bindViewUnclaimedAllLpFiat);
+                onSuccessCallback();
+            },
+            /* errorCallback= */
+            function () {
+                onErrorCallback();
+            });
+        
+        // XCAD from here
+        beforeRpcCallback();
+        queryUrlGetAjax(
+            /* urlToGet= */
+            CONST_STATS_XCAD_DEX_ROOT_URL + "/distribution/estimated_amounts/" + self.walletAddressBech32_,
+            /* successCallback= */
+            function (data) {
+                self.contractAddressToRewardMapData_['xcaddex'] = data;
+                self.computeNextEpochLoaded('xcaddex');
+
+                onSuccessCallback();
+            },
+            /* errorCallback= */
+            function () {
+                onErrorCallback();
+            });
+
+
+        beforeRpcCallback();
+        queryUrlGetAjax(
+            /* urlToGet= */
+            CONST_STATS_XCAD_DEX_ROOT_URL + "/distribution/claimable_data/" + self.walletAddressBech32_,
+            /* successCallback= */
+            function (data) {
+                self.totalRewardUnclaimed_['xcaddex']  = self.computeUnclaimedOrPrevEpochLoaded('xcaddex', data, self.appendViewUnclaimedSingleRewardAllLp, self.bindViewUnclaimedAllLpFiat);
                 onSuccessCallback();
             },
             /* errorCallback= */
@@ -293,63 +361,68 @@ class ZilswapLpZwapRewardStatus {
     }
 
     // Exception, no need reset
-    bindViewNextEpochCountdownCounter(timeDurationString) {
-        $('#lp_reward_next_epoch_duration_counter').text(timeDurationString);
+    bindViewNextEpochCountdownCounter(dexName, timeDurationString) {
+        $('#' + dexName + '_lp_reward_next_epoch_duration_counter').text(timeDurationString);
     }
 
-    appendViewNextEpochSingleRewardSingleLp(poolTicker, rewardAmountString, rewardTicker, rewardTokenLogoUrl) {
-        let isElementEmpty = $('#zilswap_' + poolTicker + '_lp_pool_reward').is(':empty');
-        $('#zilswap_' + poolTicker + '_lp_pool_reward').append(getRewardLpHtmlTemplate(isElementEmpty, rewardAmountString, rewardTicker, rewardTokenLogoUrl));
+    appendViewNextEpochSingleRewardSingleLp(dexName, poolTicker, rewardAmountString, rewardTicker, rewardTokenLogoUrl) {
+        let isElementEmpty = $('#' + dexName + '_' + poolTicker + '_lp_pool_reward').is(':empty');
+        $('#' + dexName + '_' + poolTicker + '_lp_pool_reward').append(getRewardLpHtmlTemplate(isElementEmpty, rewardAmountString, rewardTicker, rewardTokenLogoUrl));
     }
 
-    appendViewNextEpochSingleRewardAllLp(rewardAmountString, rewardTicker, rewardTokenLogoUrl) {
-        let isElementEmpty = $('#total_all_lp_reward_next_epoch').is(':empty');
-        $('#total_all_lp_reward_next_epoch').append(getRewardLpHtmlTemplate(isElementEmpty, rewardAmountString, rewardTicker, rewardTokenLogoUrl));
-        $('#total_all_lp_reward_next_epoch_container').show();
+    appendViewNextEpochSingleRewardAllLp(dexName, rewardAmountString, rewardTicker, rewardTokenLogoUrl) {
+        let isElementEmpty = $('#' + dexName + '_total_all_lp_reward_next_epoch').is(':empty');
+        $('#' + dexName + '_total_all_lp_reward_next_epoch').append(getRewardLpHtmlTemplate(isElementEmpty, rewardAmountString, rewardTicker, rewardTokenLogoUrl));
+        $('#' + dexName + '_total_all_lp_reward_next_epoch_container').show();
         $('#lp_container').show();
     }
 
-    bindViewNextEpochAllLpFiat(totalAllLpRewardFiat) {
-        $('#total_all_lp_reward_next_epoch_fiat').text(totalAllLpRewardFiat);
+    bindViewNextEpochAllLpFiat(dexName, totalAllLpRewardFiat) {
+        $('#' + dexName + '_total_all_lp_reward_next_epoch_fiat').text(totalAllLpRewardFiat);
     }
 
-    appendViewPrevEpochSingleRewardAllLp(rewardAmountString, rewardTicker, rewardTokenLogoUrl) {
-        let isElementEmpty = $('#total_all_lp_reward_prev_epoch').is(':empty');
-        $('#total_all_lp_reward_prev_epoch').append(getRewardLpHtmlTemplate(isElementEmpty, rewardAmountString, rewardTicker, rewardTokenLogoUrl));
+    appendViewPrevEpochSingleRewardAllLp(dexName, rewardAmountString, rewardTicker, rewardTokenLogoUrl) {
+        let isElementEmpty = $('#' + dexName + '_total_all_lp_reward_prev_epoch').is(':empty');
+        $('#' + dexName + '_total_all_lp_reward_prev_epoch').append(getRewardLpHtmlTemplate(isElementEmpty, rewardAmountString, rewardTicker, rewardTokenLogoUrl));
     }
 
-    bindViewPrevEpochAllLpFiat(prevTotalAllLpRewardFiat) {
-        $('#total_all_lp_reward_prev_epoch_fiat').text(prevTotalAllLpRewardFiat);
+    bindViewPrevEpochAllLpFiat(dexName, prevTotalAllLpRewardFiat) {
+        $('#' + dexName + '_total_all_lp_reward_prev_epoch_fiat').text(prevTotalAllLpRewardFiat);
+        $('#' + dexName + '_total_all_lp_reward_past_epoch_container').show();
     }
 
-    appendViewUnclaimedSingleRewardAllLp(rewardAmountString, rewardTicker, rewardTokenLogoUrl) {
-        let isElementEmpty = $('#total_all_lp_reward_unclaimed').is(':empty');
-        $('#total_all_lp_reward_unclaimed').append(getRewardLpHtmlTemplate(isElementEmpty, rewardAmountString, rewardTicker, rewardTokenLogoUrl));
+    appendViewUnclaimedSingleRewardAllLp(dexName, rewardAmountString, rewardTicker, rewardTokenLogoUrl) {
+        let isElementEmpty = $('#' + dexName + '_total_all_lp_reward_unclaimed').is(':empty');
+        $('#' + dexName + '_total_all_lp_reward_unclaimed').append(getRewardLpHtmlTemplate(isElementEmpty, rewardAmountString, rewardTicker, rewardTokenLogoUrl));
     }
 
-    bindViewUnclaimedAllLpFiat(totalUnclaimedRewardFiat) {
-        $('#total_all_lp_reward_unclaimed_fiat').text(totalUnclaimedRewardFiat);
+    bindViewUnclaimedAllLpFiat(dexName, totalUnclaimedRewardFiat) {
+        $('#' + dexName + '_total_all_lp_reward_unclaimed_fiat').text(totalUnclaimedRewardFiat);
     }
 
     resetView() {
         $('#lp_container').hide();
-        $('#total_all_lp_reward_next_epoch_container').hide();
 
-        $('#total_all_lp_reward_next_epoch').empty();
-        $('#total_all_lp_reward_unclaimed').empty();
-        $('#total_all_lp_reward_prev_epoch').empty();
+        for (let dexName in this.supportedDexToBaseTokenMap_) {
+            $('#' + dexName + '_total_all_lp_reward_next_epoch_container').hide();
 
-        for (let ticker in this.zrcTokenPropertiesListMap_) {
-            let length = this.zrcTokenPropertiesListMap_[ticker].supported_dex.length;
-            for (let i = 0; i < length; i++) {
-                let dexName = this.zrcTokenPropertiesListMap_[ticker].supported_dex[i];
-                $('#' + dexName + '_' + ticker + '_lp_pool_reward').empty();
+            $('#' + dexName + '_total_all_lp_reward_next_epoch').empty();
+            $('#' + dexName + '_total_all_lp_reward_unclaimed').empty();
+            $('#' + dexName + '_total_all_lp_reward_prev_epoch').empty();
+
+            for (let ticker in this.zrcTokenPropertiesListMap_) {
+                let length = this.zrcTokenPropertiesListMap_[ticker].supported_dex.length;
+                for (let i = 0; i < length; i++) {
+                    let dexName = this.zrcTokenPropertiesListMap_[ticker].supported_dex[i];
+                    $('#' + dexName + '_' + ticker + '_lp_pool_reward').empty();
+                }
             }
-        }
+            $('#' + dexName + '_total_all_lp_reward_past_epoch_container').hide();
 
-        $('#total_all_lp_reward_next_epoch_fiat').text('Loading...');
-        $('#total_all_lp_reward_prev_epoch_fiat').text('Loading...');
-        $('#total_all_lp_reward_unclaimed_fiat').text('Loading...');
+            $('#' + dexName + '_total_all_lp_reward_next_epoch_fiat').text('Loading...');
+            $('#' + dexName + '_total_all_lp_reward_prev_epoch_fiat').text('Loading...');
+            $('#' + dexName + '_total_all_lp_reward_unclaimed_fiat').text('Loading...');
+        }
     }
 }
 
@@ -362,6 +435,10 @@ if (typeof exports !== 'undefined') {
     if (typeof Duration === 'undefined') {
         UtilsDuration = require('./utils_duration.js');
         Duration = UtilsDuration.Duration;
+    }
+    if (typeof getRewardLpHtmlTemplate === 'undefined') {
+        UtilsView = require('../utils_view.js');
+        getRewardLpHtmlTemplate = UtilsView.getRewardLpHtmlTemplate;
     }
     if (typeof CONST_ZIL_LOGO_URL  === 'undefined') {
         UtilsConstants = require('../utils_constants.js');

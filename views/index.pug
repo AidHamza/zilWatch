@@ -893,39 +893,42 @@ block content
 
                   div(class='row')
 
-                    div(id='total_all_lp_reward_next_epoch_container' class='col-lg-6' style='padding: 0; display: none')
-                      div(class='highlight-box')
-                        table(class='table table-sm table-borderless')
-                          tbody
-                            tr
-                              td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
-                                img(height='18' width='18' src=zrcTokenPropertiesListMap['ZWAP'].logo_url loading='lazy')
-                              td(style='text-align: left; white-space: nowrap; width: 40%;' )
-                                span(class='font-weight-bold')= 'Est. reward'
-                              td(style='text-align: right; white-space: nowrap; width: 50%;' )
-                                span(id='lp_reward_next_epoch_duration_counter' class='font-weight-normal')
-                            tr
-                              td(colspan='2' style='text-align: left; white-space: nowrap;' )
-                                span(class='mr-3')= 'Next epoch'
-                                span(class='currency_symbol text-secondary mr-1')= '$'
-                                span(id='total_all_lp_reward_next_epoch_fiat' class='text-secondary')= 'Loading...'
-                              td(id='total_all_lp_reward_next_epoch' class='text-secondary' style='text-align: right; white-space: nowrap;' )
-                            tr
-                              td(colspan='2' style='text-align: left; white-space: nowrap;' )
-                                span(class='mr-3')= 'Unclaimed'
-                                span(class='currency_symbol text-secondary mr-1')= '$'
-                                span(id='total_all_lp_reward_unclaimed_fiat' class='text-secondary')= 'Loading...'
-                              td(id='total_all_lp_reward_unclaimed' class='text-secondary' style='text-align: right; white-space: nowrap;' )
-                            tr(id='total_all_lp_reward_past_epoch_container')
-                              td(colspan='2' style='text-align: left; white-space: nowrap;' )
-                                span(class='mr-3')= 'Prev epoch'
-                                span(class='currency_symbol text-secondary mr-1')= '$'
-                                span(id='total_all_lp_reward_prev_epoch_fiat' class='text-secondary')= 'Loading...'
-                              td(id='total_all_lp_reward_prev_epoch' class='text-secondary' style='text-align: right; white-space: nowrap;' )
-
-                            tbody(id='total_all_lp_reward_past_epoch_tooltip_content' class='tooltip-content' style='display: none')
-
                     each baseTokenTicker, supportedDexName in supportedDexToBaseTokenMap
+                      - let rewardLogo = supportedDexName === 'zilswap'? 'ZWAP' : 'XCAD';
+                      - let hightlightBoxClass = supportedDexName === 'zilswap'? 'zilswap-highlight-box' : 'xcaddex-highlight-box';
+
+                      div(id=supportedDexName + '_total_all_lp_reward_next_epoch_container' class='col-lg-6' style='padding: 0; display: none')
+                        div(class=hightlightBoxClass)
+                          table(class='table table-sm table-borderless')
+                            tbody
+                              tr
+                                td(scope='row' style='display:table-cell; vertical-align: middle; white-space: nowrap; width: 1%;')
+                                  img(height='18' width='18' src=zrcTokenPropertiesListMap[rewardLogo].logo_url loading='lazy')
+                                td(style='text-align: left; white-space: nowrap; width: 40%;' )
+                                  span(class='font-weight-bold')= 'Est. reward'
+                                td(style='text-align: right; white-space: nowrap; width: 50%;' )
+                                  span(id=supportedDexName + '_lp_reward_next_epoch_duration_counter' class='font-weight-normal')
+                              tr
+                                td(colspan='2' style='text-align: left; white-space: nowrap;' )
+                                  span(class='mr-3')= 'Next epoch'
+                                  span(class='currency_symbol text-secondary mr-1')= '$'
+                                  span(id=supportedDexName + '_total_all_lp_reward_next_epoch_fiat' class='text-secondary')= 'Loading...'
+                                td(id=supportedDexName + '_total_all_lp_reward_next_epoch' class='text-secondary' style='text-align: right; white-space: nowrap;' )
+                              tr
+                                td(colspan='2' style='text-align: left; white-space: nowrap;' )
+                                  span(class='mr-3')= 'Unclaimed'
+                                  span(class='currency_symbol text-secondary mr-1')= '$'
+                                  span(id=supportedDexName + '_total_all_lp_reward_unclaimed_fiat' class='text-secondary')= 'Loading...'
+                                td(id=supportedDexName + '_total_all_lp_reward_unclaimed' class='text-secondary' style='text-align: right; white-space: nowrap;' )
+                              
+                              tr(id=supportedDexName + '_total_all_lp_reward_past_epoch_container' style='display:none;')
+                                td(colspan='2' style='text-align: left; white-space: nowrap;' )
+                                  span(class='mr-3')= 'Prev epoch'
+                                  span(class='currency_symbol text-secondary mr-1')= '$'
+                                  span(id=supportedDexName + '_total_all_lp_reward_prev_epoch_fiat' class='text-secondary')= 'Loading...'
+                                td(id=supportedDexName + '_total_all_lp_reward_prev_epoch' class='text-secondary' style='text-align: right; white-space: nowrap;' )
+
+                              tbody(id=supportedDexName + '_total_all_lp_reward_past_epoch_tooltip_content' class='tooltip-content' style='display: none')
 
                       each circulatingSupply, ticker in zrcTokensCirculatingSupply
                         if !(ticker in zrcTokenPropertiesListMap)
@@ -1454,6 +1457,7 @@ block script
     var coinMap = !{JSON.stringify(coinMap)};
     var currencyMap = !{JSON.stringify(currencyMap)};
     var ssnListMap = !{JSON.stringify(ssnListMap)};
+    var supportedDexToBaseTokenMap = !{JSON.stringify(supportedDexToBaseTokenMap)};
     var zrcTokenPropertiesListMap = !{JSON.stringify(zrcTokenPropertiesListMap)};
     var zrcStakingTokenPropertiesListMap = !{JSON.stringify(zrcStakingTokenPropertiesListMap)};
     var nftTokenPropertiesListMap = !{JSON.stringify(nftTokenPropertiesListMap)};
@@ -1501,7 +1505,7 @@ block script
     const zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDex24hTradeVolumeData)
     const uniqueCoinStatus = new UniqueCoinStatus(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, barChartDrawer, zilswapDexStatus, xcadDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingZrcStatus);
     const zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus(zrcTokenPropertiesListMap, zilswapDexStatus, zilswapTradeVolumeStatus);
-    const zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, zilswapDistributorToTickerMapData);
+    const zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus(zrcTokenPropertiesListMap, supportedDexToBaseTokenMap, coinPriceStatus, zilswapDexStatus, zilswapDistributorToTickerMapData, xcadDexDistributorToTickerMapData);
 
     const swapStatus = new SwapStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletBalanceStatus)
 
