@@ -251,9 +251,13 @@ class ZilswapDexStatus {
      * Try to get zrc price from zilswap first, and then fallback to other dexes if there is no liquidity in zilswap
      */
     getZrcPriceInZilWithFallback(zrcSymbol) {
-        let zilswapZrcPriceInZil = this.getZrcPriceInZil(zrcSymbol);
-        if (zilswapZrcPriceInZil) {
-            return zilswapZrcPriceInZil;
+        // TODO: Remove the manual guard for dXCAD, this is to guard showing
+        // zilswap price with low liquidity.
+        if (zrcSymbol !== 'dXCAD') {
+            let zilswapZrcPriceInZil = this.getZrcPriceInZil(zrcSymbol);
+            if (zilswapZrcPriceInZil) {
+                return zilswapZrcPriceInZil;
+            }
         }
 
         if (!this.xcadDexStatus_) {
@@ -280,9 +284,13 @@ class ZilswapDexStatus {
      * Try to get zrc price from zilswap first, and then fallback to other dexes if there is no liquidity in zilswap
      */
     getZrcPriceInZil24hAgoWithFallback(zrcSymbol) {
-        let zilswapZrcPriceInZil = this.getZrcPriceInZil24hAgo(zrcSymbol);
-        if (zilswapZrcPriceInZil) {
-            return zilswapZrcPriceInZil;
+        // TODO: Remove the manual guard for dXCAD, this is to guard showing
+        // zilswap price with low liquidity.
+        if (zrcSymbol !== 'dXCAD') {
+            let zilswapZrcPriceInZil = this.getZrcPriceInZil24hAgo(zrcSymbol);
+            if (zilswapZrcPriceInZil) {
+                return zilswapZrcPriceInZil;
+            }
         }
 
         if (!this.xcadDexStatus_) {

@@ -348,6 +348,12 @@ class PriceChartStatus {
             }
         }
 
+        // TODO: Remove the manual guard for dXCAD, this is to guard showing
+        // zilswap price with low liquidity.
+        if (ticker === 'dXCAD') {
+            return;
+        }
+
         if ('all_time_high' in this.historicalPriceData_) {
             let ath_dict = this.historicalPriceData_.all_time_high;
             if ('value' in ath_dict) {
@@ -565,6 +571,14 @@ class PriceChartStatus {
             // LightweightCharts are not testable because it's 3rd party library.
             return;
         }
+
+        // TODO: Remove the manual guard for dXCAD, this is to guard showing
+        // zilswap price with low liquidity.
+        if (ticker === 'dXCAD') {
+            this.bindViewChartErrorDataNotAvailable();
+            return;
+        }
+
         if (!('data' in this.historicalPriceData_)) {
             return;
         }
