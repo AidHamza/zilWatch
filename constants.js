@@ -1040,22 +1040,16 @@ const zrcStakingTokenPropertiesListMap = {
       "pending_withdrawal": "removeStaker",
     },
   },
-  'dXCAD-PORT': {
-    "ticker": "dXCAD",
-    "name": "dXCAD → PORT",
-    "address": "zil1cer5kct0hdcle2xu7jcfkh4pk4fjxxjd82ther",
-    "address_base16": "0xC6474B616fBb71FCA8Dcf4b09B5EA1b553231a4d",
-    "website": "https://swap.xcadnetwork.com/pool-overview/",
-    "state_attributes_amount": {
-      "staked": "stakers_total_bal",
-    },
-  },
   'dXCAD-CARB': {
     "ticker": "dXCAD",
     "name": "dXCAD → CARB",
     "address": "zil1hyxx8yhzc4gw4l64lk7gzqdlyn9kasux3mmfl9",
     "address_base16": "0xB90C6392e2c550eaFF55FDbC8101BF24cb6ec386",
     "website": "https://swap.xcadnetwork.com/pool-overview/",
+    "state_attributes": {
+      "reward_apr": "customXcadDex",
+      "unbonding_days": "lockup_cycle",
+    },
     "state_attributes_amount": {
       "staked": "stakers_total_bal",
     },
@@ -1066,6 +1060,24 @@ const zrcStakingTokenPropertiesListMap = {
     "address": "zil15wtur23s2j76mzhv7ez69dvzyqhw54aerlwpna",
     "address_base16": "0xa397C1aA3054bdAD8AEcf645a2B582202EeA57b9",
     "website": "https://swap.xcadnetwork.com/pool-overview/",
+    "state_attributes": {
+      "reward_apr": "customXcadDex",
+      "unbonding_days": "lockup_cycle",
+    },
+    "state_attributes_amount": {
+      "staked": "stakers_total_bal",
+    },
+  },
+  'dXCAD-PORT': {
+    "ticker": "dXCAD",
+    "name": "dXCAD → PORT",
+    "address": "zil1cer5kct0hdcle2xu7jcfkh4pk4fjxxjd82ther",
+    "address_base16": "0xC6474B616fBb71FCA8Dcf4b09B5EA1b553231a4d",
+    "website": "https://swap.xcadnetwork.com/pool-overview/",
+    "state_attributes": {
+      "reward_apr": "customXcadDex",
+      "unbonding_days": "lockup_cycle",
+    },
     "state_attributes_amount": {
       "staked": "stakers_total_bal",
     },
